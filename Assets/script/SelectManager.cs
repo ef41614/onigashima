@@ -5,13 +5,16 @@ using UnityEngine.UI;
 using DG.Tweening;
 using System.Linq;
 using System;
+using UnityEngine.SceneManagement;
 
 public class SelectManager : MonoBehaviour
 {
 
     public GameObject PanelCheck;
+    public GameObject PanelCheck_numberOfPersons;
     public Image CharaFace;
     public GameObject CharaNameText;
+    public GameObject PanelNextToScene;
 
     public GameObject Cover_01;
     public GameObject Cover_02;
@@ -40,24 +43,44 @@ public class SelectManager : MonoBehaviour
     public Sprite VTuber_icon11;
     public Sprite VTuber_icon12;
 
-    int siteA = 0;
-    int siteB = 0;
-    int siteC = 0;
-    int siteD = 0;
-    int siteE = 0;
-    int siteF = 0;
-    int siteG = 0;
-    int siteH = 0;
+    public static int siteA = 0;
+    public static int siteB = 0;
+    public static int siteC = 0;
+    public static int siteD = 0;
+    public static int siteE = 0;
+    public static int siteF = 0;
+    public static int siteG = 0;
+    public static int siteH = 0;
 
     int charaNum = 0;
     Image image;
 
+    public static int hito_num = 1;
+    public int robo_num = 0;
+    public GameObject hito_numText;
+    public GameObject robo_numText;
+    int HandOfTime = 0;    // 「つぎの人に渡してね」のメッセージを表示させる
+    public GameObject ImageHandToNext;
+
+    public GameObject robo_01;
+    public GameObject robo_02;
+    public GameObject robo_03;
+    public GameObject robo_04;
+    public GameObject robo_05;
+    public GameObject robo_06;
+    public GameObject robo_07;
+    public GameObject robo_08;
+
+    int rndNum = 0;
+    bool InputOKFlg = false;  // 各サイトにキャラ番号情報（数値）を入力できるフラグ
+    public int[] charaN = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }; //VTuberのキャラネーム
 
     //☆################☆################  Start  ################☆################☆
 
     void Start()
     {
-        CloseWindow();
+ //       CloseWindow();
+ //       CloseWindow2();
         KesuCover_01();
         KesuCover_02();
         KesuCover_03();
@@ -73,6 +96,7 @@ public class SelectManager : MonoBehaviour
         KesuCover_12();
 
         image = this.GetComponent<Image>();
+        Check_numberOfPersons();
     }
 
 
@@ -89,11 +113,77 @@ public class SelectManager : MonoBehaviour
     public void CloseWindow()
     {
         PanelCheck.SetActive(false);
+        Debug.Log("HandOfTime == " + HandOfTime);
+
+        if (HandOfTime > 0)
+        {
+            var sequence = DOTween.Sequence();
+            sequence.InsertCallback(0.5f, () => OpenImageHandToNext());
+            sequence.InsertCallback(2.0f, () => CloseImageHandToNext());
+            recordChara();
+            HandOfTime--;
+        }
+        else if (HandOfTime <= 0)
+        {
+            recordChara();
+            Debug.Log("InputEmptySite ：空のサイトに数字をランダムに入れる");
+            var sequence = DOTween.Sequence();
+            sequence.InsertCallback(0.3f, () => InputEmptySite());
+            sequence.InsertCallback(0.5f, () => OpenWindow3());
+        }
+        Debug.Log("siteA == " + siteA);
+        Debug.Log("siteB == " + siteB);
+        Debug.Log("siteC == " + siteC);
+        Debug.Log("siteD == " + siteD);
+
+        Debug.Log("siteE == " + siteE);
+        Debug.Log("siteF == " + siteF);
+        Debug.Log("siteG == " + siteG);
+        Debug.Log("siteH == " + siteH);
+        Debug.Log("-----------------");
+    }
+
+    public void CloseWindowOnly()
+    {
+        PanelCheck.SetActive(false);
     }
 
     public void OpenWindow()
     {
         PanelCheck.SetActive(true);
+    }
+
+    public void CloseWindow2()
+    {
+        PanelCheck_numberOfPersons.SetActive(false);
+        Debug.Log("hito_num == " + hito_num);
+        Debug.Log("HandOfTime == " + HandOfTime);
+    }
+
+    public void OpenWindow2()
+    {
+        PanelCheck_numberOfPersons.SetActive(true);
+    }
+
+    public void CloseWindow3()
+    {
+        PanelNextToScene.SetActive(false);
+        SceneManager.LoadScene("GameScene");
+    }
+
+    public void OpenWindow3()
+    {
+        PanelNextToScene.SetActive(true);
+    }
+
+    public void OpenImageHandToNext()
+    {
+        ImageHandToNext.SetActive(true);
+    }
+
+    public void CloseImageHandToNext()
+    {
+        ImageHandToNext.SetActive(false);
     }
 
     #region recordChara
@@ -409,6 +499,280 @@ public class SelectManager : MonoBehaviour
                 break;
         }
     }
+
+    public void Check_numberOfPersons()
+    {
+        robo_num = 8 - hito_num;
+        HandOfTime = hito_num - 1;
+        hito_numText.GetComponent<Text>().text = hito_num+"";
+        robo_numText.GetComponent<Text>().text = robo_num + "";
+        OnRoboImgage();
+        OffRoboImgage();
+    }
+
+    public void hitoNumPlus()
+    {
+        if(hito_num < 8)
+        {
+            hito_num++;
+            Check_numberOfPersons();
+        }
+    }
+
+    public void hitoNumMinus()
+    {
+        if (hito_num > 1)
+        {
+            hito_num--;
+            Check_numberOfPersons();
+        }
+    }
+
+    public void OnRoboImgage()
+    {
+        if (hito_num < 2)
+        {
+            robo_02.SetActive(true);
+        }
+        if (hito_num < 3)
+        {
+            robo_03.SetActive(true);
+        }
+        if (hito_num < 4)
+        {
+            robo_04.SetActive(true);
+        }
+        if (hito_num < 5)
+        {
+            robo_05.SetActive(true);
+        }
+        if (hito_num < 6)
+        {
+            robo_06.SetActive(true);
+        }
+        if (hito_num < 7)
+        {
+            robo_07.SetActive(true);
+        }
+        if (hito_num < 8)
+        {
+            robo_08.SetActive(true);
+        }
+    }
+
+    public void OffRoboImgage()
+    {
+        if (hito_num >= 2)
+        {
+            robo_02.SetActive(false);
+        }
+        if (hito_num >= 3)
+        {
+            robo_03.SetActive(false);
+        }
+        if (hito_num >= 4)
+        {
+            robo_04.SetActive(false);
+        }
+        if (hito_num >= 5)
+        {
+            robo_05.SetActive(false);
+        }
+        if (hito_num >= 6)
+        {
+            robo_06.SetActive(false);
+        }
+        if (hito_num >= 7)
+        {
+            robo_07.SetActive(false);
+        }
+        if (hito_num >= 8)
+        {
+            robo_08.SetActive(false);
+        }
+    }
+
+    public static int getHito_num()
+    {
+        return hito_num;
+    }
+
+
+    public void InputEmptySite()
+    {
+        var ary = Enumerable.Range(1, 12).OrderBy(n => Guid.NewGuid()).Take(8).ToArray();
+
+        for (int s = 0; s < ary.Length; s++)
+        {
+            charaN[s + 1] = ary[s];
+            Debug.Log(ary[s]);
+            Debug.Log("charaN[" + (s + 1) + "]" + charaN[(s + 1)]);
+        }
+
+        for (int s = 0; s < 8; s++)
+        {
+            rndNum = charaN[s + 1];
+            if (siteA == 0)
+            {
+                checkDouble();
+                if (InputOKFlg)
+                {
+                    siteA = rndNum;
+                }
+            }
+            else if (siteB == 0)
+            {
+                checkDouble();
+                if (InputOKFlg)
+                {
+                    siteB = rndNum;
+                }
+            }
+            else if (siteC == 0)
+            {
+                checkDouble();
+                if (InputOKFlg)
+                {
+                    siteC = rndNum;
+                }
+            }
+            else if (siteD == 0)
+            {
+                checkDouble();
+                if (InputOKFlg)
+                {
+                    siteD = rndNum;
+                }
+            }
+            else if (siteE == 0)
+            {
+                checkDouble();
+                if (InputOKFlg)
+                {
+                    siteE = rndNum;
+                }
+            }
+            else if (siteF == 0)
+            {
+                checkDouble();
+                if (InputOKFlg)
+                {
+                    siteF = rndNum;
+                }
+            }
+            else if (siteG == 0)
+            {
+                checkDouble();
+                if (InputOKFlg)
+                {
+                    siteG = rndNum;
+                }
+            }
+            else if (siteH == 0)
+            {
+                checkDouble();
+                if (InputOKFlg)
+                {
+                    siteH = rndNum;
+                }
+            }
+        }
+        Debug.Log("siteA == " + siteA);
+        Debug.Log("siteB == " + siteB);
+        Debug.Log("siteC == " + siteC);
+        Debug.Log("siteD == " + siteD);
+
+        Debug.Log("siteE == " + siteE);
+        Debug.Log("siteF == " + siteF);
+        Debug.Log("siteG == " + siteG);
+        Debug.Log("siteH == " + siteH);
+    }
+
+
+
+    public void checkDouble()
+    {
+        int PassTotal = 0;
+        InputOKFlg = false;
+        if (siteA != rndNum)
+        {
+            PassTotal++;
+        }
+        if (siteB != rndNum)
+        {
+            PassTotal++;
+        }
+        if (siteC != rndNum)
+        {
+            PassTotal++;
+        }
+        if (siteD != rndNum)
+        {
+            PassTotal++;
+        }
+        if (siteE != rndNum)
+        {
+            PassTotal++;
+        }
+        if (siteF != rndNum)
+        {
+            PassTotal++;
+        }
+        if (siteG != rndNum)
+        {
+            PassTotal++;
+        }
+        if (siteH != rndNum)
+        {
+            PassTotal++;
+        }
+        if (PassTotal >= 8)
+        {
+            InputOKFlg = true;
+        }
+    }
+
+    #region getSiteInfo
+    public static int getSiteAInfo()
+    {
+        return siteA;
+    }
+
+    public static int getSiteBInfo()
+    {
+        return siteB;
+    }
+
+    public static int getSiteCInfo()
+    {
+        return siteC;
+    }
+
+    public static int getSiteDInfo()
+    {
+        return siteD;
+    }
+
+    public static int getSiteEInfo()
+    {
+        return siteE;
+    }
+
+    public static int getSiteFInfo()
+    {
+        return siteF;
+    }
+
+    public static int getSiteGInfo()
+    {
+        return siteG;
+    }
+
+    public static int getSiteHInfo()
+    {
+        return siteH;
+    }
+    #endregion
 
     //#################################################################################
 

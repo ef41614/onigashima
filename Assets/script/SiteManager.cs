@@ -23,7 +23,8 @@ public class SiteManager : MonoBehaviour
     private void Awake()
     {
         shakeTurnMark();
-        shakeCharaN();
+        //       shakeCharaN();
+        convertSiteInfo();
         shakeRollFace();
     }
 
@@ -55,6 +56,19 @@ public class SiteManager : MonoBehaviour
             Debug.Log(ary[s]);
             Debug.Log("charaN[" + (s + 1) + "]" + charaN[(s + 1)]);
         }
+    }
+
+    public void convertSiteInfo()
+    {
+        charaN[1] = SelectManager.getSiteAInfo();
+        charaN[2] = SelectManager.getSiteBInfo();
+        charaN[3] = SelectManager.getSiteCInfo();
+        charaN[4] = SelectManager.getSiteDInfo();
+
+        charaN[5] = SelectManager.getSiteEInfo();
+        charaN[6] = SelectManager.getSiteFInfo();
+        charaN[7] = SelectManager.getSiteGInfo();
+        charaN[8] = SelectManager.getSiteHInfo();
     }
 
     public void shakeTurnMark()

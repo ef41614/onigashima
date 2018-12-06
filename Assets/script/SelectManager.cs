@@ -118,7 +118,7 @@ public class SelectManager : MonoBehaviour
         if (HandOfTime > 0)
         {
             var sequence = DOTween.Sequence();
-            sequence.InsertCallback(0.5f, () => OpenImageHandToNext());
+            sequence.InsertCallback(0.2f, () => OpenImageHandToNext());
             sequence.InsertCallback(2.0f, () => CloseImageHandToNext());
             recordChara();
             HandOfTime--;
@@ -771,6 +771,11 @@ public class SelectManager : MonoBehaviour
     public static int getSiteHInfo()
     {
         return siteH;
+    }
+
+    public static int getHito_numInfo()
+    {
+        return hito_num;
     }
     #endregion
 

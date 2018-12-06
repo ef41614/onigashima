@@ -13,6 +13,7 @@ public class SEManager : MonoBehaviour {
     public AudioClip OK2_SE;
     public AudioClip cancelSE;
     public AudioClip cursorSE;
+    public AudioClip bridge10;
 
 
     //☆################☆################  Start  ################☆################☆
@@ -52,6 +53,11 @@ public class SEManager : MonoBehaviour {
     public void cursor_SE()
     {
         audioSource.PlayOneShot(cursorSE);
+    }
+
+    public void bridge10_SE()
+    {
+        audioSource.PlayOneShot(bridge10);
     }
 
     //#################################################################################

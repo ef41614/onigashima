@@ -34,6 +34,10 @@ public class YakuManager : MonoBehaviour {
     public Image SiteH_rollF;
     public Image SiteTrash_rollF;
 
+    public Image PreventRollFace;
+    public GameObject RollNameText;
+    public int countX = 1;
+
 
     //☆################☆################  Start  ################☆################☆
 
@@ -54,6 +58,7 @@ public class YakuManager : MonoBehaviour {
 
 
         //this.gameObject.GetComponent<Image>().sprite = Yaku_icon1;
+        AppearPreventRoll();
 
     }
 
@@ -102,6 +107,58 @@ public class YakuManager : MonoBehaviour {
         }
         image = RollFace;
         image.SetNativeSize();
+    }
+
+    public void AppearPreventRoll()
+    {
+        if (countX <= SiteMSC.human_num)
+        {
+            switch (SiteMSC.rollF[countX])
+            {
+                case 1:
+                    PreventRollFace.sprite = Yaku_icon1;
+                    RollNameText.GetComponent<Text>().text = "ももたろう";
+                    break;
+                case 2:
+                    PreventRollFace.sprite = Yaku_icon2;
+                    RollNameText.GetComponent<Text>().text = "いぬ";
+                    break;
+                case 3:
+                    PreventRollFace.sprite = Yaku_icon3;
+                    RollNameText.GetComponent<Text>().text = "さる";
+                    break;
+                case 4:
+                    PreventRollFace.sprite = Yaku_icon4;
+                    RollNameText.GetComponent<Text>().text = "きじ";
+                    break;
+                case 5:
+                    PreventRollFace.sprite = Yaku_icon5;
+                    RollNameText.GetComponent<Text>().text = "オニのおやぶん";
+                    break;
+                case 6:
+                    PreventRollFace.sprite = Yaku_icon6;
+                    RollNameText.GetComponent<Text>().text = "こオニ";
+                    break;
+                case 7:
+                    PreventRollFace.sprite = Yaku_icon7;
+                    RollNameText.GetComponent<Text>().text = "こオニ";
+                    break;
+                case 8:
+                    PreventRollFace.sprite = Yaku_icon8;
+                    RollNameText.GetComponent<Text>().text = "こオニ";
+                    break;
+                default:
+                    // 処理３
+                    break;
+            }
+        }
+        countX++;
+        image = PreventRollFace;
+        image.SetNativeSize();
+
+        //       PreventRollFace = Site_rollF1;
+        //      image = PreventRollFace;
+
     }
 
     //#################################################################################

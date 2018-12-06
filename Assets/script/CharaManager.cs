@@ -35,11 +35,16 @@ public class CharaManager : MonoBehaviour {
     public Image SiteF_charaF;
     public Image SiteG_charaF;
     public Image SiteH_charaF;
-    
+
+    public Image PreventCharaFace;
+    public GameObject CharaNameText;
+    public int countX = 1; 
+
     //☆################☆################  Start  ################☆################☆
 
     void Start()
     {
+        //countX = SiteMSC.human_num;
         SiteMSC = SiteManager.GetComponent<SiteManager>();
         image = this.GetComponent<Image>();
 
@@ -56,6 +61,7 @@ public class CharaManager : MonoBehaviour {
         //        image.SetNativeSize();
 
         //this.gameObject.GetComponent<Image>().sprite = VTuber_icon1;
+        AppearPreventChara();
 
     }
 
@@ -115,6 +121,74 @@ public class CharaManager : MonoBehaviour {
                 break;
         }
         image = charaFace;
+//        PreventCharaFace = image;
+    }
+
+    public void AppearPreventChara()
+    {
+        if (countX <= SiteMSC.human_num)
+        {
+            switch (SiteMSC.charaN[countX])
+            {
+                case 1:
+                    PreventCharaFace.sprite = VTuber_icon1;
+                    CharaNameText.GetComponent<Text>().text = "アイ";
+                    break;
+                case 2:
+                    PreventCharaFace.sprite = VTuber_icon2;
+                    CharaNameText.GetComponent<Text>().text = "アカリ";
+                    break;
+                case 3:
+                    PreventCharaFace.sprite = VTuber_icon3;
+                    CharaNameText.GetComponent<Text>().text = "あおい";
+                    break;
+                case 4:
+                    PreventCharaFace.sprite = VTuber_icon4;
+                    CharaNameText.GetComponent<Text>().text = "ひなた";
+                    break;
+                case 5:
+                    PreventCharaFace.sprite = VTuber_icon5;
+                    CharaNameText.GetComponent<Text>().text = "かえで";
+                    break;
+                case 6:
+                    PreventCharaFace.sprite = VTuber_icon6;
+                    CharaNameText.GetComponent<Text>().text = "ルナ";
+                    break;
+                case 7:
+                    PreventCharaFace.sprite = VTuber_icon7;
+                    CharaNameText.GetComponent<Text>().text = "みと";
+                    break;
+                case 8:
+                    PreventCharaFace.sprite = VTuber_icon8;
+                    CharaNameText.GetComponent<Text>().text = "ねこます";
+                    break;
+                case 9:
+                    PreventCharaFace.sprite = VTuber_icon9;
+                    CharaNameText.GetComponent<Text>().text = "のら";
+                    break;
+                case 10:
+                    PreventCharaFace.sprite = VTuber_icon10;
+                    CharaNameText.GetComponent<Text>().text = "りん";
+                    break;
+                case 11:
+                    PreventCharaFace.sprite = VTuber_icon11;
+                    CharaNameText.GetComponent<Text>().text = "シロ";
+                    break;
+                case 12:
+                    PreventCharaFace.sprite = VTuber_icon12;
+                    CharaNameText.GetComponent<Text>().text = "そら";
+                    break;
+                default:
+                    // 処理３
+                    break;
+            }
+        }
+        countX++;
+        image = PreventCharaFace;
+
+ //       PreventCharaFace.sprite = VTuber_icon1;
+ //      image = PreventCharaFace;
+
     }
     
     //#################################################################################

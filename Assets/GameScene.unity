@@ -42140,6 +42140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9c9185c92b8c0a49b9373aab1b193bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CharaManager: {fileID: 56574418}
   PanelHandToNext: {fileID: 2027257163}
   RollInfo: {fileID: 1946472985}
   PanelCheckEnd: {fileID: 1552215481}
@@ -42165,6 +42166,14 @@ MonoBehaviour:
   aliveSiteF: 0
   aliveSiteG: 0
   aliveSiteH: 0
+  TurnChip_A: 0
+  TurnChip_B: 0
+  TurnChip_C: 0
+  TurnChip_D: 0
+  TurnChip_E: 0
+  TurnChip_F: 0
+  TurnChip_G: 0
+  TurnChip_H: 0
 --- !u!4 &2013157666
 Transform:
   m_ObjectHideFlags: 0

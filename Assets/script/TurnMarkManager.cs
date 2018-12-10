@@ -41,14 +41,14 @@ public class TurnMarkManager : MonoBehaviour {
         SiteMSC = SiteManager.GetComponent<SiteManager>();
         image = this.GetComponent<Image>();
 
-        TurnMarkSet(SiteA_turn, 1);
-        TurnMarkSet(SiteB_turn, 2);
-        TurnMarkSet(SiteC_turn, 3);
-        TurnMarkSet(SiteD_turn, 4);
-        TurnMarkSet(SiteE_turn, 5);
-        TurnMarkSet(SiteF_turn, 6);
-        TurnMarkSet(SiteG_turn, 7);
-        TurnMarkSet(SiteH_turn, 8);
+        SiteMSC.TurnChip_A = TurnMarkSet(SiteA_turn, 1);
+        SiteMSC.TurnChip_B = TurnMarkSet(SiteB_turn, 2);
+        SiteMSC.TurnChip_C = TurnMarkSet(SiteC_turn, 3);
+        SiteMSC.TurnChip_D = TurnMarkSet(SiteD_turn, 4);
+        SiteMSC.TurnChip_E = TurnMarkSet(SiteE_turn, 5);
+        SiteMSC.TurnChip_F = TurnMarkSet(SiteF_turn, 6);
+        SiteMSC.TurnChip_G = TurnMarkSet(SiteG_turn, 7);
+        SiteMSC.TurnChip_H = TurnMarkSet(SiteH_turn, 8);
 
 
         //this.gameObject.GetComponent<Image>().sprite = Turn_num_icon1;
@@ -66,7 +66,7 @@ public class TurnMarkManager : MonoBehaviour {
 
     //####################################  other  ####################################
 
-    public void TurnMarkSet(Image turnMark, int x)
+    public int TurnMarkSet(Image turnMark, int x)
     {
         switch (SiteMSC.turnM[x])
         {
@@ -98,6 +98,7 @@ public class TurnMarkManager : MonoBehaviour {
                 // 処理３
                 break;
         }
+        return SiteMSC.turnM[x];
         image = turnMark;
     }
 

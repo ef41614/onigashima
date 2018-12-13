@@ -77,8 +77,8 @@ public class CharaManager : MonoBehaviour {
         //        image.SetNativeSize();
 
         //this.gameObject.GetComponent<Image>().sprite = VTuber_icon1;
-        AppearPreventChara();
-        AppearNowActiveSite();
+        AppearPreventChara();  // 【初回時】巻物に現在手番のキャラを表示させる（やくわりチェック）
+        AppearNowActiveSite(); // 下のスクロール欄に現在手番のキャラを表示させる
     }
 
 
@@ -156,7 +156,7 @@ public class CharaManager : MonoBehaviour {
         //        PreventCharaFace = image;
     }
 
-    public void AppearPreventChara()
+    public void AppearPreventChara() // 【初回時】巻物に現在手番のキャラを表示させる（やくわりチェック）
     {
         if (countX <= SiteMSC.human_num)
         {
@@ -223,7 +223,7 @@ public class CharaManager : MonoBehaviour {
 
     }
 
-    public void AppearNowActiveSite()
+    public void AppearNowActiveSite() // 下のスクロール欄に現在手番のキャラを表示させる
     {
         Debug.Log("◎●SiteMSC.NowActiveSiteN: " + SiteMSC.NowActiveSiteN);
         switch (SiteMSC.NowActiveSiteN)
@@ -266,8 +266,51 @@ public class CharaManager : MonoBehaviour {
         }
         image = NowActiveCharaFace;
         Debug.Log("◎●SiteA_charaNametext: " + SiteA_charaNametext);
-        Debug.Log("◎●NowActiveCharaNameText: " + NowActiveCharaNameText);
+//        Debug.Log("◎●NowActiveCharaNameText: " + NowActiveCharaNameText);
 
+    }
+
+
+    public void CheckPreventChara() // 【ゲーム開始後】巻物に現在手番のキャラを表示させる（やくわりチェック）
+    {
+        switch (SiteMSC.NowActiveSiteN)
+        {
+            case 1:
+                PreventCharaFace.sprite = SiteA_charaF.sprite;
+                CharaNameText.GetComponent<Text>().text = SiteA_charaNametext;
+                break;
+            case 2:
+                PreventCharaFace.sprite = SiteB_charaF.sprite;
+                CharaNameText.GetComponent<Text>().text = SiteB_charaNametext;
+                break;
+            case 3:
+                PreventCharaFace.sprite = SiteC_charaF.sprite;
+                CharaNameText.GetComponent<Text>().text = SiteC_charaNametext;
+                break;
+            case 4:
+                PreventCharaFace.sprite = SiteD_charaF.sprite;
+                CharaNameText.GetComponent<Text>().text = SiteD_charaNametext;
+                break;
+            case 5:
+                PreventCharaFace.sprite = SiteE_charaF.sprite;
+                CharaNameText.GetComponent<Text>().text = SiteE_charaNametext;
+                break;
+            case 6:
+                PreventCharaFace.sprite = SiteF_charaF.sprite;
+                CharaNameText.GetComponent<Text>().text = SiteF_charaNametext;
+                break;
+            case 7:
+                PreventCharaFace.sprite = SiteG_charaF.sprite;
+                CharaNameText.GetComponent<Text>().text = SiteG_charaNametext;
+                break;
+            case 8:
+                PreventCharaFace.sprite = SiteH_charaF.sprite;
+                CharaNameText.GetComponent<Text>().text = SiteH_charaNametext;
+                break;
+            default:
+                // 処理３
+                break;
+        }
     }
 
     //#################################################################################

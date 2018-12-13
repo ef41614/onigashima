@@ -34,6 +34,15 @@ public class YakuManager : MonoBehaviour {
     public Image SiteH_rollF;
     public Image SiteTrash_rollF;
 
+    string SiteA_roleNametext;
+    string SiteB_roleNametext;
+    string SiteC_roleNametext;
+    string SiteD_roleNametext;
+    string SiteE_roleNametext;
+    string SiteF_roleNametext;
+    string SiteG_roleNametext;
+    string SiteH_roleNametext;
+
     public Image PreventRollFace;
     public GameObject RollNameText;
     public int countX = 1;
@@ -46,19 +55,20 @@ public class YakuManager : MonoBehaviour {
         SiteMSC = SiteManager.GetComponent<SiteManager>();
         image = this.GetComponent<Image>();
 
-        RollFaceSet(SiteA_rollF, 1);
-        RollFaceSet(SiteB_rollF, 2);
-        RollFaceSet(SiteC_rollF, 3);
-        RollFaceSet(SiteD_rollF, 4);
-        RollFaceSet(SiteE_rollF, 5);
-        RollFaceSet(SiteF_rollF, 6);
-        RollFaceSet(SiteG_rollF, 7);
-        RollFaceSet(SiteH_rollF, 8);
-        RollFaceSet(SiteTrash_rollF, 8);
+        SiteA_roleNametext = RollFaceSet(SiteA_rollF, 1, SiteA_roleNametext);
+        SiteB_roleNametext = RollFaceSet(SiteB_rollF, 2, SiteB_roleNametext);
+        SiteC_roleNametext = RollFaceSet(SiteC_rollF, 3, SiteC_roleNametext);
+        SiteD_roleNametext = RollFaceSet(SiteD_rollF, 4, SiteD_roleNametext);
+        SiteE_roleNametext = RollFaceSet(SiteE_rollF, 5, SiteE_roleNametext);
+        SiteF_roleNametext = RollFaceSet(SiteF_rollF, 6, SiteF_roleNametext);
+        SiteG_roleNametext = RollFaceSet(SiteG_rollF, 7, SiteG_roleNametext);
+        SiteH_roleNametext = RollFaceSet(SiteH_rollF, 8, SiteH_roleNametext);
+
+        //        RollFaceSet(SiteTrash_rollF, 8);
 
 
         //this.gameObject.GetComponent<Image>().sprite = Yaku_icon1;
-        AppearPreventRoll();
+        AppearPreventRoll(); //【初回時】巻物に現在手番の役職を表示させる（やくわりチェック）
 
     }
 
@@ -73,43 +83,52 @@ public class YakuManager : MonoBehaviour {
 
     //####################################  other  ####################################
 
-    public void RollFaceSet(Image RollFace, int x)
+    public String RollFaceSet(Image RollFace, int x, string RoleName)
     {
         switch (SiteMSC.rollF[x])
         {
             case 1:
                 RollFace.sprite = Yaku_icon1;
+                RoleName = "ももたろう";
                 break;
             case 2:
                 RollFace.sprite = Yaku_icon2;
+                RoleName = "いぬ";
                 break;
             case 3:
                 RollFace.sprite = Yaku_icon3;
+                RoleName = "さる";
                 break;
             case 4:
                 RollFace.sprite = Yaku_icon4;
+                RoleName = "きじ";
                 break;
             case 5:
                 RollFace.sprite = Yaku_icon5;
+                RoleName = "オニのおやぶん";
                 break;
             case 6:
                 RollFace.sprite = Yaku_icon6;
+                RoleName = "こオニ";
                 break;
             case 7:
                 RollFace.sprite = Yaku_icon7;
+                RoleName = "こオニ";
                 break;
             case 8:
                 RollFace.sprite = Yaku_icon8;
+                RoleName = "こオニ";
                 break;
             default:
                 // 処理３
                 break;
         }
+        return RoleName;
         image = RollFace;
         image.SetNativeSize();
     }
 
-    public void AppearPreventRoll()
+    public void AppearPreventRoll() //【初回時】巻物に現在手番の役職を表示させる（やくわりチェック）
     {
         if (countX <= SiteMSC.human_num)
         {
@@ -160,6 +179,52 @@ public class YakuManager : MonoBehaviour {
         //      image = PreventRollFace;
 
     }
+
+
+    public void CheckPreventRole() // 【ゲーム開始後】巻物に現在手番の役職を表示させる（やくわりチェック）
+    {
+        switch (SiteMSC.NowActiveSiteN)
+        {
+            case 1:
+                PreventRollFace.sprite = SiteA_rollF.sprite;
+                RollNameText.GetComponent<Text>().text = SiteA_roleNametext;
+                break;
+            case 2:
+                PreventRollFace.sprite = SiteB_rollF.sprite;
+                RollNameText.GetComponent<Text>().text = SiteB_roleNametext;
+                break;
+            case 3:
+                PreventRollFace.sprite = SiteC_rollF.sprite;
+                RollNameText.GetComponent<Text>().text = SiteC_roleNametext;
+                break;
+            case 4:
+                PreventRollFace.sprite = SiteD_rollF.sprite;
+                RollNameText.GetComponent<Text>().text = SiteD_roleNametext;
+                break;
+            case 5:
+                PreventRollFace.sprite = SiteE_rollF.sprite;
+                RollNameText.GetComponent<Text>().text = SiteE_roleNametext;
+                break;
+            case 6:
+                PreventRollFace.sprite = SiteF_rollF.sprite;
+                RollNameText.GetComponent<Text>().text = SiteF_roleNametext;
+                break;
+            case 7:
+                PreventRollFace.sprite = SiteG_rollF.sprite;
+                RollNameText.GetComponent<Text>().text = SiteG_roleNametext;
+                break;
+            case 8:
+                PreventRollFace.sprite = SiteH_rollF.sprite;
+                RollNameText.GetComponent<Text>().text = SiteH_roleNametext;
+                break;
+            default:
+                // 処理３
+                break;
+        }
+        image = PreventRollFace;
+        image.SetNativeSize();
+    }
+
 
     //#################################################################################
 

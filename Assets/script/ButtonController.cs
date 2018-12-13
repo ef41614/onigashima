@@ -12,12 +12,16 @@ public class ButtonController : MonoBehaviour {
     public GameObject Text_Attack;
     public GameObject Text_Scroll;
 
+    public GameObject SiteManager;
+    SiteManager SiteMSC;
+
 
     //☆################☆################  Start  ################☆################☆
 
     void Start()
     {
         CloseBrownBox();
+        SiteMSC = SiteManager.GetComponent<SiteManager>();
     }
 
 
@@ -116,6 +120,11 @@ public class ButtonController : MonoBehaviour {
     public void CloseScroll()
     {
         Text_Scroll.SetActive(false);
+    }
+
+    public void selectTimeStart()
+    {
+        SiteMSC.selectTimeActive = true;
     }
 
     //#################################################################################

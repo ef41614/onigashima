@@ -10,6 +10,8 @@ public class SiteManager : MonoBehaviour
 {
     public GameObject CharaManager;
     CharaManager CharaMSC;
+    public GameObject SEManager;
+    SEManager SEMSC;
 
     public GameObject PanelHandToNext;
     public GameObject RollInfo;
@@ -52,6 +54,19 @@ public class SiteManager : MonoBehaviour
     public int TurnChip_G = 0;
     public int TurnChip_H = 0;
 
+    public bool selectTimeActive = false;
+    public GameObject selevtBottonA;
+    public GameObject selevtBottonB;
+    public GameObject selevtBottonC;
+    public GameObject selevtBottonD;
+    public GameObject selevtBottonE;
+    public GameObject selevtBottonF;
+    public GameObject selevtBottonG;
+    public GameObject selevtBottonH;
+
+    public bool FirstTimeCheck;
+
+
     private void Awake()
     {
         shakeTurnMark();
@@ -68,6 +83,7 @@ public class SiteManager : MonoBehaviour
         AppearCanvasRollCheck();
         CloseCanvasPlayPlace();
         CharaMSC = CharaManager.GetComponent<CharaManager>();
+        SEMSC = SEManager.GetComponent<SEManager>();
     }
 
 
@@ -75,7 +91,28 @@ public class SiteManager : MonoBehaviour
 
     void Update()
     {
-
+        if(selectTimeActive)
+        {
+            selevtBottonA.SetActive(true);
+            selevtBottonB.SetActive(true);
+            selevtBottonC.SetActive(true);
+            selevtBottonD.SetActive(true);
+            selevtBottonE.SetActive(true);
+            selevtBottonF.SetActive(true);
+            selevtBottonG.SetActive(true);
+            selevtBottonH.SetActive(true);
+        }
+        else if (selectTimeActive == false)
+        {
+            selevtBottonA.SetActive(false);
+            selevtBottonB.SetActive(false);
+            selevtBottonC.SetActive(false);
+            selevtBottonD.SetActive(false);
+            selevtBottonE.SetActive(false);
+            selevtBottonF.SetActive(false);
+            selevtBottonG.SetActive(false);
+            selevtBottonH.SetActive(false);
+        }
 
     }
 
@@ -140,13 +177,19 @@ public class SiteManager : MonoBehaviour
             sequence.InsertCallback(1.5f, () => ClosePanelHandToNext());
             HandOfTime--;
         }
-        else if (HandOfTime <= 0)
+        else if (HandOfTime == 0)
         {
             var sequence = DOTween.Sequence();
             sequence.InsertCallback(0.1f, () => AppearPanelCheckEnd());
             sequence.InsertCallback(3.5f, () => AppearCanvasPlayPlace());
             sequence.InsertCallback(3.8f, () => CheckYourTurn());
             sequence.InsertCallback(3.7f, () => CloseCanvasRollCheck());
+            HandOfTime--;
+        }
+        else
+        {
+            CheckYourTurn();
+            CloseCanvasRollCheck();
         }
     }
 
@@ -173,6 +216,7 @@ public class SiteManager : MonoBehaviour
     public void AppearPanelCheckEnd()
     {
         PanelCheckEnd.SetActive(true);
+        FirstTimeCheck = false;
 //        CheckYourTurn();
 
     }
@@ -239,9 +283,32 @@ public class SiteManager : MonoBehaviour
         }
         Debug.Log("今アクティブなサイトは" + NowActiveSiteN);
         CharaMSC.AppearNowActiveSite();
-        preventTurnNum++;
+        if(FirstTimeCheck)
+        {
+            preventTurnNum++;
+        }
         Debug.Log("次のターンは" + preventTurnNum);
     }
+
+    #region  Site_Aimed
+    public void SiteA_Aimed()
+    {
+        if (NowActiveSiteN != 1)
+        {
+            TargetSiteNum = 1;
+            SEMSC.cursor_SE();
+        }else
+        {
+            SEMSC.cancel_SE();
+        }
+    }
+
+    public void SiteB_Aimed()
+    {
+        TargetSiteNum = 2;
+    }
+
+    #endregion
 
     //#################################################################################
 

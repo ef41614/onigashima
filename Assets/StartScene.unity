@@ -5829,7 +5829,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.78431374}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -11575,6 +11575,7 @@ MonoBehaviour:
   cancelSE: {fileID: 8300000, guid: 5fa60e20ad137d74299ae15c2ce36142, type: 3}
   cursorSE: {fileID: 8300000, guid: 3ae78986690755c4f95564973fe655c0, type: 3}
   bridge10: {fileID: 0}
+  select01: {fileID: 0}
 --- !u!4 &1832516946
 Transform:
   m_ObjectHideFlags: 0

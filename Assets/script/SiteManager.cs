@@ -55,17 +55,24 @@ public class SiteManager : MonoBehaviour
     public int TurnChip_H = 0;
 
     public bool selectTimeActive = false;
-    public GameObject selevtBottonA;
-    public GameObject selevtBottonB;
-    public GameObject selevtBottonC;
-    public GameObject selevtBottonD;
-    public GameObject selevtBottonE;
-    public GameObject selevtBottonF;
-    public GameObject selevtBottonG;
-    public GameObject selevtBottonH;
+    public GameObject selectBottonA;
+    public GameObject selectBottonB;
+    public GameObject selectBottonC;
+    public GameObject selectBottonD;
+    public GameObject selectBottonE;
+    public GameObject selectBottonF;
+    public GameObject selectBottonG;
+    public GameObject selectBottonH;
 
     public bool FirstTimeCheck;
+    public int MenuButtonMode = 0;
 
+    public GameObject PanelBattleFieldBox;
+    public GameObject QuestionMode;
+    public GameObject BeforeQuestion;
+    public GameObject AfterQuestion;
+
+    public GameObject AnswerSerifText;
 
     private void Awake()
     {
@@ -93,25 +100,25 @@ public class SiteManager : MonoBehaviour
     {
         if(selectTimeActive)
         {
-            selevtBottonA.SetActive(true);
-            selevtBottonB.SetActive(true);
-            selevtBottonC.SetActive(true);
-            selevtBottonD.SetActive(true);
-            selevtBottonE.SetActive(true);
-            selevtBottonF.SetActive(true);
-            selevtBottonG.SetActive(true);
-            selevtBottonH.SetActive(true);
+            selectBottonA.SetActive(true);
+            selectBottonB.SetActive(true);
+            selectBottonC.SetActive(true);
+            selectBottonD.SetActive(true);
+            selectBottonE.SetActive(true);
+            selectBottonF.SetActive(true);
+            selectBottonG.SetActive(true);
+            selectBottonH.SetActive(true);
         }
         else if (selectTimeActive == false)
         {
-            selevtBottonA.SetActive(false);
-            selevtBottonB.SetActive(false);
-            selevtBottonC.SetActive(false);
-            selevtBottonD.SetActive(false);
-            selevtBottonE.SetActive(false);
-            selevtBottonF.SetActive(false);
-            selevtBottonG.SetActive(false);
-            selevtBottonH.SetActive(false);
+            selectBottonA.SetActive(false);
+            selectBottonB.SetActive(false);
+            selectBottonC.SetActive(false);
+            selectBottonD.SetActive(false);
+            selectBottonE.SetActive(false);
+            selectBottonF.SetActive(false);
+            selectBottonG.SetActive(false);
+            selectBottonH.SetActive(false);
         }
 
     }
@@ -297,7 +304,10 @@ public class SiteManager : MonoBehaviour
         {
             TargetSiteNum = 1;
             SEMSC.cursor_SE();
-        }else
+            TurnActMode();
+            OpenPanelBattleFieldBox();
+        }
+        else
         {
             SEMSC.cancel_SE();
         }
@@ -310,6 +320,98 @@ public class SiteManager : MonoBehaviour
 
     #endregion
 
+    public void selectTimeEnd()
+    {
+        selectTimeActive = false;
+    }
+
+    public void MenuButtonModeQuestion()
+    {
+        MenuButtonMode = 1;
+    }
+
+    public void MenuButtonModeUnmask()
+    {
+        MenuButtonMode = 2;
+    }
+
+    public void MenuButtonModeAttack()
+    {
+        MenuButtonMode = 3;
+    }
+
+    public void TurnActMode()
+    {
+        switch (MenuButtonMode)
+        {
+            case 1: // 食事をしつもんする
+                QuestionMode.SetActive(true);
+                BeforeQuestion.SetActive(true);
+                break;
+            case 2: // 役わりをあてる
+
+                break;
+            case 3: // こうげきする
+
+                break;
+            default:
+                // 処理３
+                break;
+        }
+    }
+
+    public void CloseBeforeQuestion()
+    {
+        BeforeQuestion.SetActive(false);
+    }
+
+    public void CloseQuestionMode()
+    {
+        QuestionMode.SetActive(false);
+    }
+
+    public void AppearAfterQuestion()
+    {
+        AfterQuestion.SetActive(true);
+    }
+
+    public void CloseAfterQuestion()
+    {
+        AfterQuestion.SetActive(false);
+    }
+    
+    public void OpenPanelBattleFieldBox()
+    {
+        PanelBattleFieldBox.SetActive(true);
+    }
+
+    public void ClosePanelBattleFieldBox()
+    {
+        PanelBattleFieldBox.SetActive(false);
+    }
+
+    public void SerifDependOnRole()
+    {
+        for (int s = 0; s < 8; s++)
+        {
+            if (rollF[s + 1] == 1) // ももたろう
+            {
+                AnswerSerifText.GetComponent<Text>().text = "おばあさんの おみそしるが たべたい";
+            }
+            else if(rollF[s + 1] >= 2 && rollF[s + 1] <=4) // いぬ、さる、きじ
+            {
+                AnswerSerifText.GetComponent<Text>().text = "カレーが たべたいな";
+            }
+            else if (rollF[s + 1] == 5) // おにのおやぶん
+            {
+                AnswerSerifText.GetComponent<Text>().text = "ママの いうことを きかない わるい子だ！";
+            }
+            else if (rollF[s + 1] >= 6 && rollF[s + 1] <= 8) // こオニたち
+            {
+                AnswerSerifText.GetComponent<Text>().text = "カレーが たべたいな";
+            }
+        }
+    }
     //#################################################################################
 
 }

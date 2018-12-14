@@ -51,7 +51,13 @@ public class CharaManager : MonoBehaviour {
     public int countX = 1;
 
     public Image NowActiveCharaFace;
+    public Image NowActiveCharaFace2;
     public GameObject NowActiveCharaNameText;
+    public GameObject NowActiveCharaNameText2;
+    public GameObject PanelYourTurn;
+
+    public Image AimedCharaFace;
+    public GameObject AimedCharaNameText;
 //    public GameObject NowActiveCharaNameText;
 
 
@@ -230,35 +236,51 @@ public class CharaManager : MonoBehaviour {
         {
             case 1:
                 NowActiveCharaFace.sprite = SiteA_charaF.sprite;
+                NowActiveCharaFace2.sprite = SiteA_charaF.sprite;
                 NowActiveCharaNameText.GetComponent<Text>().text = SiteA_charaNametext;
+                NowActiveCharaNameText2.GetComponent<Text>().text = SiteA_charaNametext;
                 break;
             case 2:
                 NowActiveCharaFace.sprite = SiteB_charaF.sprite;
+                NowActiveCharaFace2.sprite = SiteB_charaF.sprite;
                 NowActiveCharaNameText.GetComponent<Text>().text = SiteB_charaNametext;
+                NowActiveCharaNameText2.GetComponent<Text>().text = SiteB_charaNametext;
                 break;
             case 3:
                 NowActiveCharaFace.sprite = SiteC_charaF.sprite;
+                NowActiveCharaFace2.sprite = SiteC_charaF.sprite;
                 NowActiveCharaNameText.GetComponent<Text>().text = SiteC_charaNametext;
+                NowActiveCharaNameText2.GetComponent<Text>().text = SiteC_charaNametext;
                 break;
             case 4:
                 NowActiveCharaFace.sprite = SiteD_charaF.sprite;
+                NowActiveCharaFace2.sprite = SiteD_charaF.sprite;
                 NowActiveCharaNameText.GetComponent<Text>().text = SiteD_charaNametext;
+                NowActiveCharaNameText2.GetComponent<Text>().text = SiteD_charaNametext;
                 break;
             case 5:
                 NowActiveCharaFace.sprite = SiteE_charaF.sprite;
+                NowActiveCharaFace2.sprite = SiteE_charaF.sprite;
                 NowActiveCharaNameText.GetComponent<Text>().text = SiteE_charaNametext;
+                NowActiveCharaNameText2.GetComponent<Text>().text = SiteE_charaNametext;
                 break;
             case 6:
                 NowActiveCharaFace.sprite = SiteF_charaF.sprite;
+                NowActiveCharaFace2.sprite = SiteF_charaF.sprite;
                 NowActiveCharaNameText.GetComponent<Text>().text = SiteF_charaNametext;
+                NowActiveCharaNameText2.GetComponent<Text>().text = SiteF_charaNametext;
                 break;
             case 7:
                 NowActiveCharaFace.sprite = SiteG_charaF.sprite;
+                NowActiveCharaFace2.sprite = SiteG_charaF.sprite;
                 NowActiveCharaNameText.GetComponent<Text>().text = SiteG_charaNametext;
+                NowActiveCharaNameText2.GetComponent<Text>().text = SiteG_charaNametext;
                 break;
             case 8:
                 NowActiveCharaFace.sprite = SiteH_charaF.sprite;
+                NowActiveCharaFace2.sprite = SiteH_charaF.sprite;
                 NowActiveCharaNameText.GetComponent<Text>().text = SiteH_charaNametext;
+                NowActiveCharaNameText2.GetComponent<Text>().text = SiteH_charaNametext;
                 break;
             default:
                 // 処理３
@@ -267,9 +289,17 @@ public class CharaManager : MonoBehaviour {
         image = NowActiveCharaFace;
         Debug.Log("◎●SiteA_charaNametext: " + SiteA_charaNametext);
 //        Debug.Log("◎●NowActiveCharaNameText: " + NowActiveCharaNameText);
-
     }
 
+    public void OpenPanelYourTurn()
+    {
+        PanelYourTurn.SetActive(true);
+    }
+
+    public void ClosePanelYourTurn()
+    {
+        PanelYourTurn.SetActive(false);
+    }
 
     public void CheckPreventChara() // 【ゲーム開始後】巻物に現在手番のキャラを表示させる（やくわりチェック）
     {
@@ -312,6 +342,14 @@ public class CharaManager : MonoBehaviour {
                 break;
         }
     }
+
+    #region  ShowSite_Aimed
+    public void ShowSiteA_Aimed()
+    {
+        AimedCharaFace.sprite = SiteA_charaF.sprite;
+        AimedCharaNameText.GetComponent<Text>().text = SiteA_charaNametext;
+    }
+    #endregion
 
     //#################################################################################
 

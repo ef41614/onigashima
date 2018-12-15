@@ -34,7 +34,7 @@ public class SiteManager : MonoBehaviour
     public int human_num = 1;
     int HandOfTime = 0;    // 「つぎの人に渡してね」のメッセージを表示させる
     int preventTurnNum = 1;
-    int TargetSiteNum = 0;
+    public int TargetSiteNum = 0;
     int preventPlayerOrderNum = 1; // 今このターンで何人目か？
 
     public bool aliveSiteA;

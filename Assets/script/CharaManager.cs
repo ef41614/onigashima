@@ -293,7 +293,9 @@ public class CharaManager : MonoBehaviour {
 
     public void OpenPanelYourTurn()
     {
-        PanelYourTurn.SetActive(true);
+        //       PanelYourTurn.SetActive(true);
+        var sequence = DOTween.Sequence();
+        sequence.InsertCallback(1.1f, () => PanelYourTurn.SetActive(true));
     }
 
     public void ClosePanelYourTurn()

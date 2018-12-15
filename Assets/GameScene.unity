@@ -5284,6 +5284,28 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1970236658}
+        m_MethodName: askedQuestionSite_active
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1970236658}
+        m_MethodName: AppearKifudaWait
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &212570693
@@ -9058,8 +9080,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -43.7, y: -137.1}
-  m_SizeDelta: {x: 30, y: 30}
+  m_AnchoredPosition: {x: -43.7, y: -140.9}
+  m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &402545930
 MonoBehaviour:
@@ -26390,7 +26412,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 115.3, y: -149.4}
+  m_AnchoredPosition: {x: 115.3, y: -152.4}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1250022207
@@ -32631,6 +32653,8 @@ GameObject:
   - component: {fileID: 1503113996}
   - component: {fileID: 1503114002}
   - component: {fileID: 1503114003}
+  - component: {fileID: 1503114005}
+  - component: {fileID: 1503114004}
   m_Layer: 0
   m_Name: SEManager
   m_TagString: Untagged
@@ -32654,7 +32678,9 @@ MonoBehaviour:
   cancelSE: {fileID: 8300000, guid: 5fa60e20ad137d74299ae15c2ce36142, type: 3}
   cursorSE: {fileID: 8300000, guid: 3ae78986690755c4f95564973fe655c0, type: 3}
   bridge10: {fileID: 8300000, guid: ff38002ba6c5c0e41a514a9b6f4fc6c0, type: 3}
-  select01: {fileID: 0}
+  select01: {fileID: 8300000, guid: 69cfba05131d35e429b2de0b96e7c2cb, type: 3}
+  pon01: {fileID: 8300000, guid: dca1f040321d1ff4495ec5aa19d84c1e, type: 3}
+  WoodPut: {fileID: 8300000, guid: bc438c0e3023a2f47848fc6e1740d1e3, type: 3}
 --- !u!82 &1503113997
 AudioSource:
   m_ObjectHideFlags: 0
@@ -33153,6 +33179,196 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 69cfba05131d35e429b2de0b96e7c2cb, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!82 &1503114004
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1503113995}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: bc438c0e3023a2f47848fc6e1740d1e3, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!82 &1503114005
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1503113995}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: dca1f040321d1ff4495ec5aa19d84c1e, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -44348,6 +44564,7 @@ MonoBehaviour:
   FudaIconOniMomo: {fileID: 21300000, guid: 07255ed821ca4c1498bd66c6186e0f2f, type: 3}
   FudaIconMomo: {fileID: 21300000, guid: 446b88ad7ef4b15428df9b029ca00a03, type: 3}
   SiteManager: {fileID: 2013157664}
+  SEManager: {fileID: 0}
   SiteA_FudaIcon: {fileID: 1332614489}
   SiteB_FudaIcon: {fileID: 1407309105}
   SiteC_FudaIcon: {fileID: 1274299236}
@@ -44364,6 +44581,22 @@ MonoBehaviour:
   kifuda_F: 1
   kifuda_G: 1
   kifuda_H: 1
+  askedQuestionA: 0
+  askedQuestionB: 0
+  askedQuestionC: 0
+  askedQuestionD: 0
+  askedQuestionE: 0
+  askedQuestionF: 0
+  askedQuestionG: 0
+  askedQuestionH: 0
+  SiteA_Kifuda: {fileID: 323384508}
+  SiteB_Kifuda: {fileID: 2040390395}
+  SiteC_Kifuda: {fileID: 1936242099}
+  SiteD_Kifuda: {fileID: 131399607}
+  SiteE_Kifuda: {fileID: 829403260}
+  SiteF_Kifuda: {fileID: 1024397723}
+  SiteG_Kifuda: {fileID: 1171981502}
+  SiteH_Kifuda: {fileID: 983672669}
 --- !u!4 &1970236659
 Transform:
   m_ObjectHideFlags: 0
@@ -45565,7 +45798,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.3, y: -149.4}
+  m_AnchoredPosition: {x: 0.3, y: -152.4}
   m_SizeDelta: {x: 80, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2009703452
@@ -45654,6 +45887,7 @@ MonoBehaviour:
   charaN: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   rollF: 000000000000000000000000000000000000000000000000000000000000000000000000
   human_num: 1
+  TargetSiteNum: 0
   aliveSiteA: 0
   aliveSiteB: 0
   aliveSiteC: 0

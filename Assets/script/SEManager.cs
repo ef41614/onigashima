@@ -15,7 +15,8 @@ public class SEManager : MonoBehaviour {
     public AudioClip cursorSE;
     public AudioClip bridge10;
     public AudioClip select01;
-
+    public AudioClip pon01;
+    public AudioClip WoodPut;
 
     //☆################☆################  Start  ################☆################☆
 
@@ -64,6 +65,16 @@ public class SEManager : MonoBehaviour {
     public void select01_SE()
     {
         audioSource.PlayOneShot(select01);
+    }
+
+    public void pon01_SE()
+    {
+        audioSource.PlayOneShot(pon01);
+    }
+
+    public void WoodPut_SE()
+    {
+        audioSource.PlayOneShot(WoodPut);
     }
 
     //#################################################################################

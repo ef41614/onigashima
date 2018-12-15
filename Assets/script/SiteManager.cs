@@ -35,6 +35,7 @@ public class SiteManager : MonoBehaviour
     int HandOfTime = 0;    // 「つぎの人に渡してね」のメッセージを表示させる
     int preventTurnNum = 1;
     int TargetSiteNum = 0;
+    int preventPlayerOrderNum = 1; // 今このターンで何人目か？
 
     public bool aliveSiteA;
     public bool aliveSiteB;
@@ -255,36 +256,36 @@ public class SiteManager : MonoBehaviour
 
     public void CheckYourTurn()
     {
-        Debug.Log("今のターンは"+preventTurnNum);
-        if (TurnChip_A == preventTurnNum)
+        Debug.Log("今このターンで何人目か？" + preventPlayerOrderNum);
+        if (TurnChip_A == preventPlayerOrderNum)
         {
             NowActiveSiteN = 1;
         }
-        else if (TurnChip_B == preventTurnNum)
+        else if (TurnChip_B == preventPlayerOrderNum)
         {
             NowActiveSiteN = 2;
         }
-        else if (TurnChip_C == preventTurnNum)
+        else if (TurnChip_C == preventPlayerOrderNum)
         {
             NowActiveSiteN = 3;
         }
-        else if (TurnChip_D == preventTurnNum)
+        else if (TurnChip_D == preventPlayerOrderNum)
         {
             NowActiveSiteN = 4;
         }
-        else if (TurnChip_E == preventTurnNum)
+        else if (TurnChip_E == preventPlayerOrderNum)
         {
             NowActiveSiteN = 5;
         }
-        else if (TurnChip_F == preventTurnNum)
+        else if (TurnChip_F == preventPlayerOrderNum)
         {
             NowActiveSiteN = 6;
         }
-        else if (TurnChip_G == preventTurnNum)
+        else if (TurnChip_G == preventPlayerOrderNum)
         {
             NowActiveSiteN = 7;
         }
-        else if (TurnChip_H == preventTurnNum)
+        else if (TurnChip_H == preventPlayerOrderNum)
         {
             NowActiveSiteN = 8;
         }
@@ -292,9 +293,9 @@ public class SiteManager : MonoBehaviour
         CharaMSC.AppearNowActiveSite();
         if(FirstTimeCheck)
         {
-            preventTurnNum++;
+            preventPlayerOrderNum++;
         }
-        Debug.Log("次のターンは" + preventTurnNum);
+//        Debug.Log("次このターンで何人目か？" + preventPlayerOrderNum);
     }
 
     #region  Site_Aimed
@@ -303,9 +304,7 @@ public class SiteManager : MonoBehaviour
         if (NowActiveSiteN != 1)
         {
             TargetSiteNum = 1;
-            SEMSC.cursor_SE();
-            TurnActMode();
-            OpenPanelBattleFieldBox();
+            CommonAimedOK();
         }
         else
         {
@@ -315,9 +314,101 @@ public class SiteManager : MonoBehaviour
 
     public void SiteB_Aimed()
     {
-        TargetSiteNum = 2;
+        if (NowActiveSiteN != 2)
+        {
+            TargetSiteNum = 2;
+            CommonAimedOK();
+        }
+        else
+        {
+            SEMSC.cancel_SE();
+        }
     }
 
+    public void SiteC_Aimed()
+    {
+        if (NowActiveSiteN != 3)
+        {
+            TargetSiteNum = 3;
+            CommonAimedOK();
+        }
+        else
+        {
+            SEMSC.cancel_SE();
+        }
+    }
+
+    public void SiteD_Aimed()
+    {
+        if (NowActiveSiteN != 4)
+        {
+            TargetSiteNum = 4;
+            CommonAimedOK();
+        }
+        else
+        {
+            SEMSC.cancel_SE();
+        }
+    }
+
+    public void SiteE_Aimed()
+    {
+        if (NowActiveSiteN != 5)
+        {
+            TargetSiteNum = 5;
+            CommonAimedOK();
+        }
+        else
+        {
+            SEMSC.cancel_SE();
+        }
+    }
+
+    public void SiteF_Aimed()
+    {
+        if (NowActiveSiteN != 6)
+        {
+            TargetSiteNum = 6;
+            CommonAimedOK();
+        }
+        else
+        {
+            SEMSC.cancel_SE();
+        }
+    }
+
+    public void SiteG_Aimed()
+    {
+        if (NowActiveSiteN != 7)
+        {
+            TargetSiteNum = 7;
+            CommonAimedOK();
+        }
+        else
+        {
+            SEMSC.cancel_SE();
+        }
+    }
+
+    public void SiteH_Aimed()
+    {
+        if (NowActiveSiteN != 8)
+        {
+            TargetSiteNum = 8;
+            CommonAimedOK();
+        }
+        else
+        {
+            SEMSC.cancel_SE();
+        }
+    }
+
+    public void CommonAimedOK()
+    {
+        SEMSC.cursor_SE();
+        TurnActMode();
+        OpenPanelBattleFieldBox();
+    }
     #endregion
 
     public void selectTimeEnd()
@@ -392,25 +483,29 @@ public class SiteManager : MonoBehaviour
 
     public void SerifDependOnRole()
     {
-        for (int s = 0; s < 8; s++)
+
+        if (rollF[TargetSiteNum] == 1) // ももたろう
         {
-            if (rollF[s + 1] == 1) // ももたろう
-            {
-                AnswerSerifText.GetComponent<Text>().text = "おばあさんの おみそしるが たべたい";
-            }
-            else if(rollF[s + 1] >= 2 && rollF[s + 1] <=4) // いぬ、さる、きじ
-            {
-                AnswerSerifText.GetComponent<Text>().text = "カレーが たべたいな";
-            }
-            else if (rollF[s + 1] == 5) // おにのおやぶん
-            {
-                AnswerSerifText.GetComponent<Text>().text = "ママの いうことを きかない わるい子だ！";
-            }
-            else if (rollF[s + 1] >= 6 && rollF[s + 1] <= 8) // こオニたち
-            {
-                AnswerSerifText.GetComponent<Text>().text = "カレーが たべたいな";
-            }
+            AnswerSerifText.GetComponent<Text>().text = "おばあさんの おみそしるが たべたい";
         }
+        else if (rollF[TargetSiteNum] >= 2 && rollF[TargetSiteNum] <= 4) // いぬ、さる、きじ
+        {
+            AnswerSerifText.GetComponent<Text>().text = "カレーかきびだんごが たべたいな";
+        }
+        else if (rollF[TargetSiteNum] == 5) // おにのおやぶん
+        {
+            AnswerSerifText.GetComponent<Text>().text = "ママの いうことを きかない わるい子だ！";
+        }
+        else if (rollF[TargetSiteNum] >= 6 && rollF[TargetSiteNum] <= 8) // こオニたち
+        {
+            AnswerSerifText.GetComponent<Text>().text = "カレーが たべたいなオニ";
+        }
+    }
+
+
+    public void AddplayerOrderNum()
+    {
+        preventPlayerOrderNum++;
     }
     //#################################################################################
 

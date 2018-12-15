@@ -229,7 +229,7 @@ public class CharaManager : MonoBehaviour {
 
     }
 
-    public void AppearNowActiveSite() // 下のスクロール欄に現在手番のキャラを表示させる
+    public void AppearNowActiveSite() // 下のスクロール欄と画面中央に現在手番のキャラを表示させる
     {
         Debug.Log("◎●SiteMSC.NowActiveSiteN: " + SiteMSC.NowActiveSiteN);
         switch (SiteMSC.NowActiveSiteN)
@@ -349,6 +349,49 @@ public class CharaManager : MonoBehaviour {
         AimedCharaFace.sprite = SiteA_charaF.sprite;
         AimedCharaNameText.GetComponent<Text>().text = SiteA_charaNametext;
     }
+
+    public void ShowSiteB_Aimed()
+    {
+        AimedCharaFace.sprite = SiteB_charaF.sprite;
+        AimedCharaNameText.GetComponent<Text>().text = SiteB_charaNametext;
+    }
+
+    public void ShowSiteC_Aimed()
+    {
+        AimedCharaFace.sprite = SiteC_charaF.sprite;
+        AimedCharaNameText.GetComponent<Text>().text = SiteC_charaNametext;
+    }
+
+    public void ShowSiteD_Aimed()
+    {
+        AimedCharaFace.sprite = SiteD_charaF.sprite;
+        AimedCharaNameText.GetComponent<Text>().text = SiteD_charaNametext;
+    }
+
+    public void ShowSiteE_Aimed()
+    {
+        AimedCharaFace.sprite = SiteE_charaF.sprite;
+        AimedCharaNameText.GetComponent<Text>().text = SiteE_charaNametext;
+    }
+
+    public void ShowSiteF_Aimed()
+    {
+        AimedCharaFace.sprite = SiteF_charaF.sprite;
+        AimedCharaNameText.GetComponent<Text>().text = SiteF_charaNametext;
+    }
+
+    public void ShowSiteG_Aimed()
+    {
+        AimedCharaFace.sprite = SiteG_charaF.sprite;
+        AimedCharaNameText.GetComponent<Text>().text = SiteG_charaNametext;
+    }
+
+    public void ShowSiteH_Aimed()
+    {
+        AimedCharaFace.sprite = SiteH_charaF.sprite;
+        AimedCharaNameText.GetComponent<Text>().text = SiteH_charaNametext;
+    }
+
     #endregion
 
     //#################################################################################

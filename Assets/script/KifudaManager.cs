@@ -62,7 +62,7 @@ public class KifudaManager : MonoBehaviour {
     void Start()
     {
         SiteMSC = SiteManager.GetComponent<SiteManager>();
-        SEMSC = SiteManager.GetComponent<SEManager>();
+        SEMSC = SEManager.GetComponent<SEManager>();
         image = this.GetComponent<Image>();
 
         FudaIconSet();
@@ -214,6 +214,7 @@ public class KifudaManager : MonoBehaviour {
 
     public void CloseKifuda()
     {
+        Debug.Log("木札を隠します");
         SiteA_Kifuda.SetActive(false);
         SiteB_Kifuda.SetActive(false);
         SiteC_Kifuda.SetActive(false);

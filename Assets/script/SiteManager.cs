@@ -73,7 +73,17 @@ public class SiteManager : MonoBehaviour
     public GameObject BeforeQuestion;
     public GameObject AfterQuestion;
 
+    public GameObject UnmaskMode;
+    public GameObject BeforeUnmask;
+    public GameObject AfterUnmask;
+
+    public GameObject AttackMode;
+    public GameObject BeforeAttack;
+    public GameObject AfterAttack;
+
     public GameObject AnswerSerifText;
+    public GameObject JudgeAnswerText;
+
 
     private void Awake()
     {
@@ -440,10 +450,12 @@ public class SiteManager : MonoBehaviour
                 BeforeQuestion.SetActive(true);
                 break;
             case 2: // 役わりをあてる
-
+                UnmaskMode.SetActive(true);
+                BeforeUnmask.SetActive(true);
                 break;
             case 3: // こうげきする
-
+                AttackMode.SetActive(true);
+                BeforeAttack.SetActive(true);
                 break;
             default:
                 // 処理３
@@ -451,6 +463,7 @@ public class SiteManager : MonoBehaviour
         }
     }
 
+    #region Question
     public void CloseBeforeQuestion()
     {
         BeforeQuestion.SetActive(false);
@@ -470,7 +483,53 @@ public class SiteManager : MonoBehaviour
     {
         AfterQuestion.SetActive(false);
     }
-    
+    #endregion
+
+
+    #region Unmask
+    public void CloseBeforeUnmask()
+    {
+        BeforeUnmask.SetActive(false);
+    }
+
+    public void CloseUnmaskMode()
+    {
+        UnmaskMode.SetActive(false);
+    }
+
+    public void AppearAfterUnmask()
+    {
+        AfterUnmask.SetActive(true);
+    }
+
+    public void CloseAfterUnmask()
+    {
+        AfterUnmask.SetActive(false);
+    }
+    #endregion
+
+    #region Attack
+    public void CloseBeforeAttack()
+    {
+        BeforeAttack.SetActive(false);
+    }
+
+    public void CloseAttackMode()
+    {
+        AttackMode.SetActive(false);
+    }
+
+    public void AppearAfterAttack()
+    {
+        AfterAttack.SetActive(true);
+    }
+
+    public void CloseAfterAttack()
+    {
+        AfterAttack.SetActive(false);
+    }
+    #endregion
+
     public void OpenPanelBattleFieldBox()
     {
         PanelBattleFieldBox.SetActive(true);
@@ -483,7 +542,6 @@ public class SiteManager : MonoBehaviour
 
     public void SerifDependOnRole()
     {
-
         if (rollF[TargetSiteNum] == 1) // ももたろう
         {
             AnswerSerifText.GetComponent<Text>().text = "おばあさんの おみそしるが たべたい";
@@ -501,6 +559,57 @@ public class SiteManager : MonoBehaviour
             AnswerSerifText.GetComponent<Text>().text = "カレーが たべたいなオニ";
         }
     }
+
+
+    public void YosouMomotaro()
+    {
+        if (rollF[TargetSiteNum] == 1) // ももたろう
+        {
+            JudgeAnswerText.GetComponent<Text>().text = "はい、そうです";
+        }
+        else if (rollF[TargetSiteNum] != 1) // ももたろう以外
+        {
+            JudgeAnswerText.GetComponent<Text>().text = "いいえ、"+"\n"+"ちがいます";
+        }
+    }
+    
+    public void YosouMomomates()
+    {
+        if (rollF[TargetSiteNum] >= 2 && rollF[TargetSiteNum] <= 4) // いぬ、さる、きじ
+        {
+            JudgeAnswerText.GetComponent<Text>().text = "はい、そうです";
+        }
+        else if (rollF[TargetSiteNum] < 2 && rollF[TargetSiteNum] > 4) // いぬ、さる、きじ以外
+        {
+            JudgeAnswerText.GetComponent<Text>().text = "いいえ、"+"\n"+"ちがいます";
+        }
+    }
+
+    public void YosouOyabun()
+    {
+        if (rollF[TargetSiteNum] == 5) // オニのおやぶん
+        {
+            JudgeAnswerText.GetComponent<Text>().text = "はい、そうです";
+        }
+        else if (rollF[TargetSiteNum] != 5) // オニのおやぶん以外
+        {
+            JudgeAnswerText.GetComponent<Text>().text = "いいえ、"+"\n"+"ちがいます";
+        }
+    }
+
+    public void YosouKooni()
+    {
+        if (rollF[TargetSiteNum] >= 6 && rollF[TargetSiteNum] <= 8) // こオニたち
+        {
+            JudgeAnswerText.GetComponent<Text>().text = "はい、そうです";
+        }
+        else if (rollF[TargetSiteNum] < 6 && rollF[TargetSiteNum] > 8) // こオニたち以外
+        {
+            JudgeAnswerText.GetComponent<Text>().text = "いいえ、"+"\n"+"ちがいます";
+        }
+    }
+
+
 
 
     public void AddplayerOrderNum()

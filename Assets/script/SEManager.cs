@@ -9,6 +9,7 @@ using System;
 public class SEManager : MonoBehaviour {
 
     AudioSource audioSource;
+    AudioSource audioSource2;
     public AudioClip OK_SE;
     public AudioClip OK2_SE;
     public AudioClip cancelSE;
@@ -16,13 +17,14 @@ public class SEManager : MonoBehaviour {
     public AudioClip bridge10;
     public AudioClip select01;
     public AudioClip pon01;
-    public AudioClip WoodPut;
+    public AudioClip WoodPut2;
 
     //☆################☆################  Start  ################☆################☆
 
     void Start()
     {
         audioSource = this.gameObject.GetComponent<AudioSource>();
+        audioSource2 = this.gameObject.GetComponent<AudioSource>();
 
     }
 
@@ -74,7 +76,7 @@ public class SEManager : MonoBehaviour {
 
     public void WoodPut_SE()
     {
-        audioSource.PlayOneShot(WoodPut);
+        audioSource2.PlayOneShot(WoodPut2);
     }
 
     //#################################################################################

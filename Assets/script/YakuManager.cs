@@ -43,9 +43,21 @@ public class YakuManager : MonoBehaviour {
     string SiteG_roleNametext;
     string SiteH_roleNametext;
 
+    public GameObject YakuCardA;
+    public GameObject YakuCardB;
+    public GameObject YakuCardC;
+    public GameObject YakuCardD;
+    public GameObject YakuCardE;
+    public GameObject YakuCardF;
+    public GameObject YakuCardG;
+    public GameObject YakuCardH;
+    public GameObject YakuCardTrash;
+
     public Image PreventRollFace;
     public GameObject RollNameText;
     public int countX = 1;
+
+    public Image AimedRollFace;
 
 
     //☆################☆################  Start  ################☆################☆
@@ -65,11 +77,17 @@ public class YakuManager : MonoBehaviour {
         SiteH_roleNametext = RollFaceSet(SiteH_rollF, 8, SiteH_roleNametext);
 
         //        RollFaceSet(SiteTrash_rollF, 8);
-
-
         //this.gameObject.GetComponent<Image>().sprite = Yaku_icon1;
         AppearPreventRoll(); //【初回時】巻物に現在手番の役職を表示させる（やくわりチェック）
 
+        HideYakuCardA();
+        HideYakuCardB();
+        HideYakuCardC();
+        HideYakuCardD();
+        HideYakuCardE();
+        HideYakuCardF();
+        HideYakuCardG();
+        HideYakuCardH();
     }
 
 
@@ -123,9 +141,10 @@ public class YakuManager : MonoBehaviour {
                 // 処理３
                 break;
         }
-        return RoleName;
+//        return RoleName;
         image = RollFace;
         image.SetNativeSize();
+        return RoleName;
     }
 
     public void AppearPreventRoll() //【初回時】巻物に現在手番の役職を表示させる（やくわりチェック）
@@ -225,6 +244,135 @@ public class YakuManager : MonoBehaviour {
         image.SetNativeSize();
     }
 
+    public void CheckAimedRole() // 【役わり名予想フェーズ】画面中央に役わり名を当てられた人の役職を表示させる
+    {
+        switch (SiteMSC.rollF[SiteMSC.TargetSiteNum])
+        {
+            case 1:
+                AimedRollFace.sprite = Yaku_icon1;
+                break;
+            case 2:
+                AimedRollFace.sprite = Yaku_icon2;
+                break;
+            case 3:
+                AimedRollFace.sprite = Yaku_icon3;
+                break;
+            case 4:
+                AimedRollFace.sprite = Yaku_icon4;
+                break;
+            case 5:
+                AimedRollFace.sprite = Yaku_icon5;
+                break;
+            case 6:
+                AimedRollFace.sprite = Yaku_icon6;
+                break;
+            case 7:
+                AimedRollFace.sprite = Yaku_icon7;
+                break;
+            case 8:
+                AimedRollFace.sprite = Yaku_icon8;
+                break;
+            default:
+                // 処理３
+                break;
+        }
+        image = AimedRollFace;
+        image.SetNativeSize();
+    }
+
+    #region HideYakuCards
+    public void HideYakuCardA()
+    {
+        YakuCardA.SetActive(false);
+    }
+
+    public void HideYakuCardB()
+    {
+        YakuCardB.SetActive(false);
+    }
+
+    public void HideYakuCardC()
+    {
+        YakuCardC.SetActive(false);
+    }
+
+    public void HideYakuCardD()
+    {
+        YakuCardD.SetActive(false);
+    }
+
+    public void HideYakuCardE()
+    {
+        YakuCardE.SetActive(false);
+    }
+
+    public void HideYakuCardF()
+    {
+        YakuCardF.SetActive(false);
+    }
+
+    public void HideYakuCardG()
+    {
+        YakuCardG.SetActive(false);
+    }
+
+    public void HideYakuCardH()
+    {
+        YakuCardH.SetActive(false);
+    }
+
+    public void HideYakuCardTrash()
+    {
+        YakuCardTrash.SetActive(false);
+    }
+    #endregion
+
+    #region OpenYakuCards
+    public void OpenYakuCardA()
+    {
+        YakuCardA.SetActive(true);
+    }
+
+    public void OpenYakuCardB()
+    {
+        YakuCardB.SetActive(true);
+    }
+
+    public void OpenYakuCardC()
+    {
+        YakuCardC.SetActive(true);
+    }
+
+    public void OpenYakuCardD()
+    {
+        YakuCardD.SetActive(true);
+    }
+
+    public void OpenYakuCardE()
+    {
+        YakuCardE.SetActive(true);
+    }
+
+    public void OpenYakuCardF()
+    {
+        YakuCardF.SetActive(true);
+    }
+
+    public void OpenYakuCardG()
+    {
+        YakuCardG.SetActive(true);
+    }
+
+    public void OpenYakuCardH()
+    {
+        YakuCardH.SetActive(true);
+    }
+
+    public void OpenYakuCardTrash()
+    {
+        YakuCardTrash.SetActive(true);
+    }
+    #endregion
 
     //#################################################################################
 

@@ -31,20 +31,21 @@ public class SiteManager : MonoBehaviour
     public int[] turnM = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };    //順番マーク
     public int[] charaN = { 0, 1, 2, 3, 4, 5, 6, 7, 8,9,10,11,12};    //VTuberのキャラネーム
     public int[] rollF = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };    //役わり顔
+    public int[] StatusSite = { 0, 1, 2, 3, 4, };    //役わり顔
     public int human_num = 1;
     int HandOfTime = 0;    // 「つぎの人に渡してね」のメッセージを表示させる
     int preventTurnNum = 1;
     public int TargetSiteNum = 0;
     int preventPlayerOrderNum = 1; // 今このターンで何人目か？
 
-    public bool aliveSiteA;
-    public bool aliveSiteB;
-    public bool aliveSiteC;
-    public bool aliveSiteD;
-    public bool aliveSiteE;
-    public bool aliveSiteF;
-    public bool aliveSiteG;
-    public bool aliveSiteH;
+    public int StatusSiteA = 1;
+    public int StatusSiteB = 1;
+    public int StatusSiteC = 1;
+    public int StatusSiteD = 1;
+    public int StatusSiteE = 1;
+    public int StatusSiteF = 1;
+    public int StatusSiteG = 1;
+    public int StatusSiteH = 1;
 
     public int TurnChip_A = 0;
     public int TurnChip_B = 0;
@@ -83,7 +84,12 @@ public class SiteManager : MonoBehaviour
 
     public GameObject AnswerSerifText;
     public GameObject JudgeAnswerText;
+    public GameObject RollNameText;
 
+    public GameObject CardReverse;
+    CardReverse CardReverseScr;
+    public GameObject YakuManager;
+    YakuManager YakuMSC;
 
     private void Awake()
     {
@@ -102,6 +108,8 @@ public class SiteManager : MonoBehaviour
         CloseCanvasPlayPlace();
         CharaMSC = CharaManager.GetComponent<CharaManager>();
         SEMSC = SEManager.GetComponent<SEManager>();
+        CardReverseScr = CardReverse.GetComponent<CardReverse>();
+        YakuMSC = YakuManager.GetComponent<YakuManager>();
     }
 
 
@@ -563,11 +571,16 @@ public class SiteManager : MonoBehaviour
 
     public void YosouMomotaro()
     {
+        Debug.Log("TargetSiteNum：" + TargetSiteNum);
+        Debug.Log("rollF[TargetSiteNum]：" + rollF[TargetSiteNum]);
+        CardReverseScr.ImageReset();
+        RollNameText.GetComponent<Text>().text = "「ももたろう」";
         if (rollF[TargetSiteNum] == 1) // ももたろう
         {
-            JudgeAnswerText.GetComponent<Text>().text = "はい、そうです";
+            YosouYes();
+            // ももたろうの画像オープン
         }
-        else if (rollF[TargetSiteNum] != 1) // ももたろう以外
+        else // ももたろう以外
         {
             JudgeAnswerText.GetComponent<Text>().text = "いいえ、"+"\n"+"ちがいます";
         }
@@ -575,11 +588,16 @@ public class SiteManager : MonoBehaviour
     
     public void YosouMomomates()
     {
+        Debug.Log("TargetSiteNum：" + TargetSiteNum);
+        Debug.Log("rollF[TargetSiteNum]：" + rollF[TargetSiteNum]);
+        CardReverseScr.ImageReset();
+        RollNameText.GetComponent<Text>().text = "「ももたろうの なかま」";
         if (rollF[TargetSiteNum] >= 2 && rollF[TargetSiteNum] <= 4) // いぬ、さる、きじ
         {
-            JudgeAnswerText.GetComponent<Text>().text = "はい、そうです";
+            YosouYes();
+            // いぬ、さる、きじの画像オープン
         }
-        else if (rollF[TargetSiteNum] < 2 && rollF[TargetSiteNum] > 4) // いぬ、さる、きじ以外
+        else // いぬ、さる、きじ以外
         {
             JudgeAnswerText.GetComponent<Text>().text = "いいえ、"+"\n"+"ちがいます";
         }
@@ -587,11 +605,16 @@ public class SiteManager : MonoBehaviour
 
     public void YosouOyabun()
     {
+        Debug.Log("TargetSiteNum：" + TargetSiteNum);
+        Debug.Log("rollF[TargetSiteNum]：" + rollF[TargetSiteNum]);
+        CardReverseScr.ImageReset();
+        RollNameText.GetComponent<Text>().text = "「オニのおやぶん」";
         if (rollF[TargetSiteNum] == 5) // オニのおやぶん
         {
-            JudgeAnswerText.GetComponent<Text>().text = "はい、そうです";
+            YosouYes();
+            // オニのおやぶんの画像オープン
         }
-        else if (rollF[TargetSiteNum] != 5) // オニのおやぶん以外
+        else // オニのおやぶん以外
         {
             JudgeAnswerText.GetComponent<Text>().text = "いいえ、"+"\n"+"ちがいます";
         }
@@ -599,18 +622,73 @@ public class SiteManager : MonoBehaviour
 
     public void YosouKooni()
     {
+        Debug.Log("TargetSiteNum：" + TargetSiteNum);
+        Debug.Log("rollF[TargetSiteNum]：" + rollF[TargetSiteNum]);
+        CardReverseScr.ImageReset();
+        RollNameText.GetComponent<Text>().text = "「こオニ」";
         if (rollF[TargetSiteNum] >= 6 && rollF[TargetSiteNum] <= 8) // こオニたち
         {
-            JudgeAnswerText.GetComponent<Text>().text = "はい、そうです";
+            YosouYes();
+            // 小鬼の画像オープン
         }
-        else if (rollF[TargetSiteNum] < 6 && rollF[TargetSiteNum] > 8) // こオニたち以外
+        else // こオニたち以外
         {
             JudgeAnswerText.GetComponent<Text>().text = "いいえ、"+"\n"+"ちがいます";
         }
     }
 
+    public void YosouYes()
+    {
+        JudgeAnswerText.GetComponent<Text>().text = "はい、そうです";
+        var sequence = DOTween.Sequence();
+        sequence.InsertCallback(1.0f, () => YosouYes2());
+        sequence.InsertCallback(5.0f, () => CardReverseScr.ImageReset());
+    }
 
+    public void YosouYes2()
+    {
+        // 当てられた相手の画像オープン
+        CardReverseScr.ImageSet();
+        YakuMSC.CheckAimedRole();
+        StartCoroutine(CardReverseScr.CardOpen());
+        CheckOpenYakuCard();
+    }
 
+    public void CheckOpenYakuCard()
+    {
+       if(TargetSiteNum == 1)
+        {
+            YakuMSC.OpenYakuCardA();
+        }
+        else if (TargetSiteNum == 2)
+        {
+            YakuMSC.OpenYakuCardB();
+        }
+        else if (TargetSiteNum == 3)
+        {
+            YakuMSC.OpenYakuCardC();
+        }
+        else if (TargetSiteNum == 4)
+        {
+            YakuMSC.OpenYakuCardD();
+        }
+        else if (TargetSiteNum == 5)
+        {
+            YakuMSC.OpenYakuCardE();
+        }
+        else if (TargetSiteNum == 6)
+        {
+            YakuMSC.OpenYakuCardF();
+        }
+        else if (TargetSiteNum == 7)
+        {
+            YakuMSC.OpenYakuCardG();
+        }
+        else if (TargetSiteNum == 8)
+        {
+            YakuMSC.OpenYakuCardH();
+        }
+    }
 
     public void AddplayerOrderNum()
     {

@@ -46,6 +46,15 @@ public class CharaManager : MonoBehaviour {
     string SiteG_charaNametext;
     string SiteH_charaNametext;
 
+    public Image SiteA_charaF_Copy;
+    public Image SiteB_charaF_Copy;
+    public Image SiteC_charaF_Copy;
+    public Image SiteD_charaF_Copy;
+    public Image SiteE_charaF_Copy;
+    public Image SiteF_charaF_Copy;
+    public Image SiteG_charaF_Copy;
+    public Image SiteH_charaF_Copy;
+
     public Image PreventCharaFace;
     public GameObject CharaNameText;
     public int countX = 1;
@@ -85,6 +94,8 @@ public class CharaManager : MonoBehaviour {
         //this.gameObject.GetComponent<Image>().sprite = VTuber_icon1;
         AppearPreventChara();  // 【初回時】巻物に現在手番のキャラを表示させる（やくわりチェック）
         AppearNowActiveSite(); // 下のスクロール欄に現在手番のキャラを表示させる
+
+        CopyCharaFace(); // 役わりカードの上にキャラ顔を小さく表示させる
     }
 
 
@@ -395,6 +406,18 @@ public class CharaManager : MonoBehaviour {
     }
 
     #endregion
+
+    public void CopyCharaFace()
+    {
+        SiteA_charaF_Copy.sprite = SiteA_charaF.sprite;
+        SiteB_charaF_Copy.sprite = SiteB_charaF.sprite;
+        SiteC_charaF_Copy.sprite = SiteC_charaF.sprite;
+        SiteD_charaF_Copy.sprite = SiteD_charaF.sprite;
+        SiteE_charaF_Copy.sprite = SiteE_charaF.sprite;
+        SiteF_charaF_Copy.sprite = SiteF_charaF.sprite;
+        SiteG_charaF_Copy.sprite = SiteG_charaF.sprite;
+        SiteH_charaF_Copy.sprite = SiteH_charaF.sprite;
+    }
 
     //#################################################################################
 

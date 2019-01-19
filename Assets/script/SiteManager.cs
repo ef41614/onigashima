@@ -582,7 +582,7 @@ public class SiteManager : MonoBehaviour
         }
         else // ももたろう以外
         {
-            JudgeAnswerText.GetComponent<Text>().text = "いいえ、"+"\n"+"ちがいます";
+            YosouNo();
         }
     }
     
@@ -599,7 +599,7 @@ public class SiteManager : MonoBehaviour
         }
         else // いぬ、さる、きじ以外
         {
-            JudgeAnswerText.GetComponent<Text>().text = "いいえ、"+"\n"+"ちがいます";
+            YosouNo();
         }
     }
 
@@ -616,7 +616,7 @@ public class SiteManager : MonoBehaviour
         }
         else // オニのおやぶん以外
         {
-            JudgeAnswerText.GetComponent<Text>().text = "いいえ、"+"\n"+"ちがいます";
+            YosouNo();
         }
     }
 
@@ -633,7 +633,7 @@ public class SiteManager : MonoBehaviour
         }
         else // こオニたち以外
         {
-            JudgeAnswerText.GetComponent<Text>().text = "いいえ、"+"\n"+"ちがいます";
+            YosouNo();
         }
     }
 
@@ -641,8 +641,8 @@ public class SiteManager : MonoBehaviour
     {
         JudgeAnswerText.GetComponent<Text>().text = "はい、そうです";
         var sequence = DOTween.Sequence();
-        sequence.InsertCallback(1.0f, () => YosouYes2());
-        sequence.InsertCallback(5.0f, () => CardReverseScr.ImageReset());
+        sequence.InsertCallback(0.5f, () => YosouYes2());
+        sequence.InsertCallback(3.0f, () => CardReverseScr.ImageReset());
     }
 
     public void YosouYes2()
@@ -689,6 +689,66 @@ public class SiteManager : MonoBehaviour
             YakuMSC.OpenYakuCardH();
         }
     }
+
+
+    public void YosouNo()
+    {
+        JudgeAnswerText.GetComponent<Text>().text = "いいえ、" + "\n" + "ちがいます";
+        // 間違えた質問者の画像オープン
+        PenaltyOpenYakuCard();
+    }
+
+    public void PenaltyOpenYakuCard()
+    {
+        var sequence = DOTween.Sequence();
+        sequence.InsertCallback(0.0f, () => PenaltyOpenYakuCard02());
+    }
+
+    public void PenaltyOpenYakuCard02()
+    {
+        Debug.Log("◆◎NowActiveSiteN：" + NowActiveSiteN);
+        if (NowActiveSiteN == 1)
+        {
+            StatusSiteA = 3;
+            YakuMSC.OpenYakuCardA();
+        }
+        else if (NowActiveSiteN == 2)
+        {
+            StatusSiteB = 3;
+            YakuMSC.OpenYakuCardB();
+        }
+        else if (NowActiveSiteN == 3)
+        {
+            StatusSiteC = 3;
+            YakuMSC.OpenYakuCardC();
+        }
+        else if (NowActiveSiteN == 4)
+        {
+            StatusSiteD = 3;
+            YakuMSC.OpenYakuCardD();
+        }
+        else if (NowActiveSiteN == 5)
+        {
+            StatusSiteE = 3;
+            YakuMSC.OpenYakuCardE();
+        }
+        else if (NowActiveSiteN == 6)
+        {
+            StatusSiteF = 3;
+            YakuMSC.OpenYakuCardF();
+        }
+        else if (NowActiveSiteN == 7)
+        {
+            StatusSiteG = 3;
+            YakuMSC.OpenYakuCardG();
+        }
+        else if (NowActiveSiteN == 8)
+        {
+            StatusSiteH = 3;
+            YakuMSC.OpenYakuCardH();
+        }
+    }
+
 
     public void AddplayerOrderNum()
     {

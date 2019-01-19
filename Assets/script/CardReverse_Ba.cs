@@ -1,16 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using DG.Tweening;
-using System.Linq;
-using System;
 
-public class CardReverse : MonoBehaviour {
+public class CardReverse_Ba : MonoBehaviour {
 
-    public CanvasGroup ReversedFace_CanvasGroup;
+
     public GameObject YakuCard;
-    public GameObject ImageCardUra;
+    public int cardOpenedstep = 0;
 
 
     //☆################☆################  Start  ################☆################☆
@@ -18,6 +14,7 @@ public class CardReverse : MonoBehaviour {
     void Start()
     {
 
+        Debug.Log("this.transform.localRotation.y :" + this.transform.localRotation.y);
 
     }
 
@@ -36,18 +33,23 @@ public class CardReverse : MonoBehaviour {
     public void ImageReset()
     {
         YakuCard.SetActive(false);
-        ImageCardUra.SetActive(false);
     }
 
     public void ImageSet()
     {
         YakuCard.SetActive(true);
-        ImageCardUra.SetActive(true);
     }
 
     public void StartCardOpen()
     {
-        StartCoroutine(CardOpen());
+        //        ImageSet();
+        if (this.transform.localRotation.y >= 0.7f)
+        {
+            StartCoroutine(CardOpen());
+            cardOpenedstep = 2;
+        }
+        else
+        { }
     }
 
     //カードのGameObjectにアタッチしたScriptに記述
@@ -57,10 +59,9 @@ public class CardReverse : MonoBehaviour {
         //カードを予め-180度回転させ裏面用の画像を表示する
         //裏面表示はコルーチン外で行っても良い
         //CanvasGroupでなくspriteのalpha値を操作しても良い
-        transform.eulerAngles = new Vector3(0, 180, 0);
-        ReversedFace_CanvasGroup.alpha = 1f;
+        transform.eulerAngles = new Vector3(0, 90, 0);
 
-        float angle = -180f;
+        float angle = -90f;
         float Speed = 100f;
 
         //-90度を超えるまで回転
@@ -70,9 +71,6 @@ public class CardReverse : MonoBehaviour {
             transform.eulerAngles = new Vector3(0, angle, 0);
             yield return null;
         }
-
-        //裏面用の画像を非表示(表面が表示される)
-        ReversedFace_CanvasGroup.alpha = 0f;
 
         //0度まで回転
         while (angle < 0f)

@@ -68,6 +68,15 @@ public class HPManager : MonoBehaviour {
         SiteMSC = SiteManager.GetComponent<SiteManager>();
         image = this.GetComponent<Image>();
 
+        HP_A = Yaku_HP_set(1);
+        HP_B = Yaku_HP_set(2);
+        HP_C = Yaku_HP_set(3);
+        HP_D = Yaku_HP_set(4);
+        HP_E = Yaku_HP_set(5);
+        HP_F = Yaku_HP_set(6);
+        HP_G = Yaku_HP_set(7);
+        HP_H = Yaku_HP_set(8);
+
         HP_check();
 
     }
@@ -82,6 +91,42 @@ public class HPManager : MonoBehaviour {
     }
 
     //####################################  other  ####################################
+
+    public int Yaku_HP_set(int x)
+    {
+        int HP = 0;
+        switch (SiteMSC.rollF[x])
+        {
+            case 1: // ももたろう
+                HP = 2;
+                break;
+            case 2:
+                HP = 1;
+                break;
+            case 3:
+                HP = 1;
+                break;
+            case 4:
+                HP = 1;
+                break;
+            case 5: // おにのおやぶん 
+                HP = 3;
+                break;
+            case 6: // こおに
+                HP = 1;
+                break;
+            case 7:// こおに
+                HP = 1;
+                break;
+            case 8:// こおに
+                HP = 1;
+                break;
+            default:
+                // 処理３
+                break;
+        }
+        return HP;
+    }
 
     public void HP_check()
     {

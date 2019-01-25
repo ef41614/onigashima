@@ -20,6 +20,7 @@ public class SEManager : MonoBehaviour {
     public AudioClip WoodPut2;
     public AudioClip punch;
     public AudioClip suka;
+    public AudioClip kizetu;
 
     //☆################☆################  Start  ################☆################☆
 
@@ -89,6 +90,11 @@ public class SEManager : MonoBehaviour {
     public void suka_SE()
     {
         audioSource2.PlayOneShot(suka);
+    }
+
+    public void kizetu_SE()
+    {
+        audioSource2.PlayOneShot(kizetu);
     }
 
     //#################################################################################

@@ -304,9 +304,19 @@ public class CharaManager : MonoBehaviour {
 
     public void OpenPanelYourTurn()
     {
-        //       PanelYourTurn.SetActive(true);
-        var sequence = DOTween.Sequence();
-        sequence.InsertCallback(1.1f, () => PanelYourTurn.SetActive(true));
+        if (SiteMSC.faintingOccured) // ステータス「気絶した瞬間」のプレイヤーがいる
+        {
+            SiteMSC.KizetuPhase();
+            var sequence = DOTween.Sequence();
+            sequence.InsertCallback(3.1f, () => PanelYourTurn.SetActive(true));
+        }
+        else
+        {
+            //       PanelYourTurn.SetActive(true);
+            var sequence = DOTween.Sequence();
+            sequence.InsertCallback(1.1f, () => PanelYourTurn.SetActive(true));
+        }
+        SiteMSC.CheckFainting();
     }
 
     public void ClosePanelYourTurn()

@@ -32,7 +32,7 @@ public class SiteManager : MonoBehaviour
     public int[] charaN = { 0, 1, 2, 3, 4, 5, 6, 7, 8,9,10,11,12};    //VTuberのキャラネーム
     public int[] rollF = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };    //役わり顔
 //    public int[] StatusSite = { 1,1,1,1,1,1,1,1,1 };    //ステータス
-    public int[] StatusSite = Enumerable.Repeat<int>(1, 9).ToArray();
+//    public int[] StatusSite = Enumerable.Repeat<int>(1, 9).ToArray();
     //public int[] StatusSite = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };    //ステータス
     //    public int[] DEX = { 0, 1, 2, 3, 4, 5, 6 };    //命中力
     public int DEX = 0; //命中力
@@ -90,10 +90,23 @@ public class SiteManager : MonoBehaviour
     public GameObject JudgeAnswerText;
     public GameObject RollNameText;
 
+    public GameObject KizetuA;
+    public GameObject KizetuB;
+    public GameObject KizetuC;
+    public GameObject KizetuD;
+    public GameObject KizetuE;
+    public GameObject KizetuF;
+    public GameObject KizetuG;
+    public GameObject KizetuH;
+
     public GameObject CardReverse;
     CardReverse CardReverseScr;
     public GameObject YakuManager;
     YakuManager YakuMSC;
+    public GameObject HPManager;
+    HPManager HPMSC;
+
+    public bool faintingOccured = false;
 
     private void Awake()
     {
@@ -115,7 +128,8 @@ public class SiteManager : MonoBehaviour
         SEMSC = SEManager.GetComponent<SEManager>();
         CardReverseScr = CardReverse.GetComponent<CardReverse>();
         YakuMSC = YakuManager.GetComponent<YakuManager>();
-//        statusReset(); // ステータスをすべて1にする
+        HPMSC = HPManager.GetComponent<HPManager>();
+        //        statusReset(); // ステータスをすべて1にする
     }
 
 
@@ -320,19 +334,6 @@ public class SiteManager : MonoBehaviour
             preventPlayerOrderNum++;
         }
 //        Debug.Log("次このターンで何人目か？" + preventPlayerOrderNum);
-    }
-
-    public void statusReset()
-    {
-        StatusSite[0] = 1;
-        StatusSite[1] = 1;
-        StatusSite[2] = 1;
-        StatusSite[3] = 1;
-        StatusSite[4] = 1;
-        StatusSite[5] = 1;
-        StatusSite[6] = 1;
-        StatusSite[7] = 1;
-        StatusSite[8] = 1;
     }
 
     #region  Site_Aimed
@@ -671,49 +672,41 @@ public class SiteManager : MonoBehaviour
         {
             YakuMSC.OpenYakuCardA();
             StatusSiteA = 4;
-            StatusSite[1] = 4;
         }
         else if (TargetSiteNum == 2)
         {
             YakuMSC.OpenYakuCardB();
             StatusSiteB = 4;
-            StatusSite[2] = 4;
         }
         else if (TargetSiteNum == 3)
         {
             YakuMSC.OpenYakuCardC();
             StatusSiteC = 4;
-            StatusSite[3] = 4;
         }
         else if (TargetSiteNum == 4)
         {
             YakuMSC.OpenYakuCardD();
             StatusSiteD = 4;
-            StatusSite[4] = 4;
         }
         else if (TargetSiteNum == 5)
         {
             YakuMSC.OpenYakuCardE();
             StatusSiteE = 4;
-            StatusSite[5] = 4;
         }
         else if (TargetSiteNum == 6)
         {
             YakuMSC.OpenYakuCardF();
             StatusSiteF = 4;
-            StatusSite[6] = 4;
         }
         else if (TargetSiteNum == 7)
         {
             YakuMSC.OpenYakuCardG();
             StatusSiteG = 4;
-            StatusSite[7] = 4;
         }
         else if (TargetSiteNum == 8)
         {
             YakuMSC.OpenYakuCardH();
             StatusSiteH = 4;
-            StatusSite[8] = 4;
         }
     }
 
@@ -737,49 +730,41 @@ public class SiteManager : MonoBehaviour
         if (NowActiveSiteN == 1)
         {
             StatusSiteA = 4;
-            StatusSite[1] = 4;
             YakuMSC.OpenYakuCardA();
         }
         else if (NowActiveSiteN == 2)
         {
             StatusSiteB = 4;
-            StatusSite[2] = 4;
             YakuMSC.OpenYakuCardB();
         }
         else if (NowActiveSiteN == 3)
         {
             StatusSiteC = 4;
-            StatusSite[3] = 4;
             YakuMSC.OpenYakuCardC();
         }
         else if (NowActiveSiteN == 4)
         {
             StatusSiteD = 4;
-            StatusSite[4] = 4;
             YakuMSC.OpenYakuCardD();
         }
         else if (NowActiveSiteN == 5)
         {
             StatusSiteE = 4;
-            StatusSite[5] = 4;
             YakuMSC.OpenYakuCardE();
         }
         else if (NowActiveSiteN == 6)
         {
             StatusSiteF = 4;
-            StatusSite[6] = 4;
             YakuMSC.OpenYakuCardF();
         }
         else if (NowActiveSiteN == 7)
         {
             StatusSiteG = 4;
-            StatusSite[7] = 4;
             YakuMSC.OpenYakuCardG();
         }
         else if (NowActiveSiteN == 8)
         {
             StatusSiteH = 4;
-            StatusSite[8] = 4;
             YakuMSC.OpenYakuCardH();
         }
     }
@@ -806,18 +791,154 @@ public class SiteManager : MonoBehaviour
 
     public void JudgeHitting()
     {
+        Debug.Log("◆◎DEX：" + DEX);
         int accuracy = UnityEngine.Random.Range(1,7);
 
         if (1 <= accuracy && accuracy <= DEX)
         {
             // 攻撃成功
             SEMSC.punch_SE();
+            DecreaseHP();
+            HPMSC.HP_check();
         }
         else if (DEX <= accuracy && accuracy <= 7)
         {
             // 攻撃失敗
             SEMSC.suka_SE();
         }
+    }
+
+    public void DecreaseHP()
+    {
+        if (TargetSiteNum == 1)
+        {
+            HPMSC.HP_A--;
+            if(HPMSC.HP_A<=0)
+            {
+                StatusSiteA = 5;
+            }
+        }
+        else if (TargetSiteNum == 2)
+        {
+            HPMSC.HP_B--;
+            if (HPMSC.HP_B <= 0)
+            {
+                StatusSiteB = 5;
+            }
+        }
+        else if (TargetSiteNum == 3)
+        {
+            HPMSC.HP_C--;
+            if (HPMSC.HP_C <= 0)
+            {
+                StatusSiteC = 5;
+            }
+        }
+        else if (TargetSiteNum == 4)
+        {
+            HPMSC.HP_D--;
+            if (HPMSC.HP_D <= 0)
+            {
+                StatusSiteD = 5;
+            }
+        }
+        else if (TargetSiteNum == 5)
+        {
+            HPMSC.HP_E--;
+            if (HPMSC.HP_E <= 0)
+            {
+                StatusSiteE = 5;
+            }
+        }
+        else if (TargetSiteNum == 6)
+        {
+            HPMSC.HP_F--;
+            if (HPMSC.HP_F <= 0)
+            {
+                StatusSiteF = 5;
+            }
+        }
+        else if (TargetSiteNum == 7)
+        {
+            HPMSC.HP_G--;
+            if (HPMSC.HP_G <= 0)
+            {
+                StatusSiteG = 5;
+            }
+        }
+        else if (TargetSiteNum == 8)
+        {
+            HPMSC.HP_H--;
+            if (HPMSC.HP_H <= 0)
+            {
+                StatusSiteH = 5;
+            }
+        }
+        CheckFainting();
+    }
+
+    public void CheckFainting()
+    {
+        if(StatusSiteA ==5 || StatusSiteB == 5 || StatusSiteC == 5 || StatusSiteD == 5 || StatusSiteE == 5 || StatusSiteF == 5 || StatusSiteG == 5 || StatusSiteH == 5)
+        {
+            faintingOccured = true;  // ステータス「気絶した瞬間」のプレイヤーがいる
+        }
+        else
+        {
+            faintingOccured = false;
+        }
+    }
+
+    public void KizetuPhase()
+    {
+        var sequence = DOTween.Sequence();
+        sequence.InsertCallback(1f, () => SEMSC.kizetu_SE());
+        sequence.InsertCallback(1f, () => KizetuMarkAppear());
+    }
+
+    public void KizetuMarkAppear()
+    {
+        if (StatusSiteA == 5)
+        {
+            KizetuA.SetActive(true);
+            StatusSiteA = 6;
+        }
+        if (StatusSiteB == 5)
+        {
+            KizetuB.SetActive(true);
+            StatusSiteB = 6;
+        }
+        if (StatusSiteC == 5)
+        {
+            KizetuC.SetActive(true);
+            StatusSiteC = 6;
+        }
+        if (StatusSiteD == 5)
+        {
+            KizetuD.SetActive(true);
+            StatusSiteD = 6;
+        }
+        if (StatusSiteE == 5)
+        {
+            KizetuE.SetActive(true);
+            StatusSiteE = 6;
+        }
+        if (StatusSiteF == 5)
+        {
+            KizetuF.SetActive(true);
+            StatusSiteF = 6;
+        }
+        if (StatusSiteG == 5)
+        {
+            KizetuG.SetActive(true);
+            StatusSiteG = 6;
+        }
+        if (StatusSiteH == 5)
+        {
+            KizetuH.SetActive(true);
+            StatusSiteH = 6;
+        }
+        faintingOccured = false; // すべての処理が終わったところで、ステータスを「気絶後」に変更する
     }
 
     public void AddplayerOrderNum()

@@ -139,41 +139,49 @@ public class KifudaManager : MonoBehaviour {
         if (askedQuestionA)
         {
             SiteA_Kifuda.SetActive(true);
+            SiteMSC.StatusSiteA = 2;  // ステータス木札ON
         }
 
         if (askedQuestionB)
         {
             SiteB_Kifuda.SetActive(true);
+            SiteMSC.StatusSiteB = 2;  // ステータス木札ON
         }
 
         if (askedQuestionC)
         {
             SiteC_Kifuda.SetActive(true);
+            SiteMSC.StatusSiteC = 2;  // ステータス木札ON
         }
 
         if (askedQuestionD)
         {
             SiteD_Kifuda.SetActive(true);
+            SiteMSC.StatusSiteD = 2;  // ステータス木札ON
         }
 
         if (askedQuestionE)
         {
             SiteE_Kifuda.SetActive(true);
+            SiteMSC.StatusSiteE = 2;  // ステータス木札ON
         }
 
         if (askedQuestionF)
         {
             SiteF_Kifuda.SetActive(true);
+            SiteMSC.StatusSiteF = 2;  // ステータス木札ON
         }
 
         if (askedQuestionG)
         {
             SiteG_Kifuda.SetActive(true);
+            SiteMSC.StatusSiteG = 2;  // ステータス木札ON
         }
 
         if (askedQuestionH)
         {
             SiteH_Kifuda.SetActive(true);
+            SiteMSC.StatusSiteH = 2;  // ステータス木札ON
         }
         SEMSC.WoodPut_SE();
     }

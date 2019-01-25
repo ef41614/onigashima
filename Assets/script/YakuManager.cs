@@ -58,6 +58,7 @@ public class YakuManager : MonoBehaviour {
     public int countX = 1;
 
     public Image AimedRollFace;
+    public Image AttackedRollFace;
 
 
     //☆################☆################  Start  ################☆################☆
@@ -277,6 +278,42 @@ public class YakuManager : MonoBehaviour {
                 break;
         }
         image = AimedRollFace;
+        image.SetNativeSize();
+    }
+
+    public void CheckAttackedRole() // 【攻撃フェーズ】画面中央に攻撃を狙われている人の役職を表示させる
+    {
+        switch (SiteMSC.rollF[SiteMSC.TargetSiteNum])
+        {
+            case 1:
+                AttackedRollFace.sprite = Yaku_icon1;
+                break;
+            case 2:
+                AttackedRollFace.sprite = Yaku_icon2;
+                break;
+            case 3:
+                AttackedRollFace.sprite = Yaku_icon3;
+                break;
+            case 4:
+                AttackedRollFace.sprite = Yaku_icon4;
+                break;
+            case 5:
+                AttackedRollFace.sprite = Yaku_icon5;
+                break;
+            case 6:
+                AttackedRollFace.sprite = Yaku_icon6;
+                break;
+            case 7:
+                AttackedRollFace.sprite = Yaku_icon7;
+                break;
+            case 8:
+                AttackedRollFace.sprite = Yaku_icon8;
+                break;
+            default:
+                // 処理３
+                break;
+        }
+        image = AttackedRollFace;
         image.SetNativeSize();
     }
 

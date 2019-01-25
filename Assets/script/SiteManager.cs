@@ -31,7 +31,11 @@ public class SiteManager : MonoBehaviour
     public int[] turnM = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };    //順番マーク
     public int[] charaN = { 0, 1, 2, 3, 4, 5, 6, 7, 8,9,10,11,12};    //VTuberのキャラネーム
     public int[] rollF = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };    //役わり顔
-    public int[] StatusSite = { 0, 1, 2, 3, 4, };    //役わり顔
+//    public int[] StatusSite = { 1,1,1,1,1,1,1,1,1 };    //ステータス
+    public int[] StatusSite = Enumerable.Repeat<int>(1, 9).ToArray();
+    //public int[] StatusSite = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };    //ステータス
+    //    public int[] DEX = { 0, 1, 2, 3, 4, 5, 6 };    //命中力
+    public int DEX = 0; //命中力
     public int human_num = 1;
     int HandOfTime = 0;    // 「つぎの人に渡してね」のメッセージを表示させる
     int preventTurnNum = 1;
@@ -93,6 +97,7 @@ public class SiteManager : MonoBehaviour
 
     private void Awake()
     {
+
         shakeTurnMark();
         //       shakeCharaN();
         convertSiteInfo();
@@ -110,6 +115,7 @@ public class SiteManager : MonoBehaviour
         SEMSC = SEManager.GetComponent<SEManager>();
         CardReverseScr = CardReverse.GetComponent<CardReverse>();
         YakuMSC = YakuManager.GetComponent<YakuManager>();
+//        statusReset(); // ステータスをすべて1にする
     }
 
 
@@ -316,112 +322,116 @@ public class SiteManager : MonoBehaviour
 //        Debug.Log("次このターンで何人目か？" + preventPlayerOrderNum);
     }
 
-    #region  Site_Aimed
-    public void SiteA_Aimed()
+    public void statusReset()
     {
-        if (NowActiveSiteN != 1)
+        StatusSite[0] = 1;
+        StatusSite[1] = 1;
+        StatusSite[2] = 1;
+        StatusSite[3] = 1;
+        StatusSite[4] = 1;
+        StatusSite[5] = 1;
+        StatusSite[6] = 1;
+        StatusSite[7] = 1;
+        StatusSite[8] = 1;
+    }
+
+    #region  Site_Aimed
+    public void SiteAimedHantei(int x, int y)
+    {
+        Debug.Log("int x: " + x);
+        Debug.Log("int y: " + y);
+        if (NowActiveSiteN != x) // もし自分以外の相手をちゃんと選んでいたら
         {
-            TargetSiteNum = 1;
-            CommonAimedOK();
+            if (MenuButtonMode == 1) // 質問の時
+            {
+                if (y == 1) //ステータスがデフォルト（木札ON前）であるなら
+                {
+                    TargetSiteNum = x;
+                    CommonAimedOK();
+                }
+                else
+                {
+                    SEMSC.cancel_SE();
+                }
+            }
+            else if (MenuButtonMode == 2) // 役割当ての時
+            {
+                if (y < 4) //ステータスがデフォルトか木札ONであるなら
+                {
+                    TargetSiteNum = x;
+                    CommonAimedOK();
+                }
+                else
+                {
+                    SEMSC.cancel_SE();
+                }
+            }
+            else if (MenuButtonMode == 3) // 攻撃の時
+            {
+                if (y == 4) //ステータスが役割当てられた後であるなら
+                {
+                    TargetSiteNum = x;
+                    CommonAimedOK();
+                }
+                else
+                {
+                    SEMSC.cancel_SE();
+                }
+            }
         }
-        else
+        else // もし自分を選んでいたら
         {
             SEMSC.cancel_SE();
         }
+    }
+
+    public void SiteA_Aimed()
+    {
+        SiteAimedHantei(1, StatusSiteA);
     }
 
     public void SiteB_Aimed()
     {
-        if (NowActiveSiteN != 2)
-        {
-            TargetSiteNum = 2;
-            CommonAimedOK();
-        }
-        else
-        {
-            SEMSC.cancel_SE();
-        }
+        SiteAimedHantei(2, StatusSiteB);
     }
 
     public void SiteC_Aimed()
     {
-        if (NowActiveSiteN != 3)
-        {
-            TargetSiteNum = 3;
-            CommonAimedOK();
-        }
-        else
-        {
-            SEMSC.cancel_SE();
-        }
+        SiteAimedHantei(3, StatusSiteC);
     }
 
     public void SiteD_Aimed()
     {
-        if (NowActiveSiteN != 4)
-        {
-            TargetSiteNum = 4;
-            CommonAimedOK();
-        }
-        else
-        {
-            SEMSC.cancel_SE();
-        }
+        SiteAimedHantei(4, StatusSiteD);
     }
 
     public void SiteE_Aimed()
     {
-        if (NowActiveSiteN != 5)
-        {
-            TargetSiteNum = 5;
-            CommonAimedOK();
-        }
-        else
-        {
-            SEMSC.cancel_SE();
-        }
+        SiteAimedHantei(5, StatusSiteE);
     }
 
     public void SiteF_Aimed()
     {
-        if (NowActiveSiteN != 6)
-        {
-            TargetSiteNum = 6;
-            CommonAimedOK();
-        }
-        else
-        {
-            SEMSC.cancel_SE();
-        }
+        SiteAimedHantei(6, StatusSiteF);
     }
 
     public void SiteG_Aimed()
     {
-        if (NowActiveSiteN != 7)
-        {
-            TargetSiteNum = 7;
-            CommonAimedOK();
-        }
-        else
-        {
-            SEMSC.cancel_SE();
-        }
+        SiteAimedHantei(7, StatusSiteG);
     }
 
     public void SiteH_Aimed()
     {
-        if (NowActiveSiteN != 8)
-        {
-            TargetSiteNum = 8;
-            CommonAimedOK();
-        }
-        else
-        {
-            SEMSC.cancel_SE();
-        }
+        SiteAimedHantei(8, StatusSiteH);
     }
 
-    public void CommonAimedOK()
+    public void SiteAimedHanteiGo(int x)
+    {
+        TargetSiteNum = x;
+        CommonAimedOK();
+    }
+
+        public void CommonAimedOK()
     {
         SEMSC.cursor_SE();
         TurnActMode();
@@ -464,6 +474,7 @@ public class SiteManager : MonoBehaviour
             case 3: // こうげきする
                 AttackMode.SetActive(true);
                 BeforeAttack.SetActive(true);
+                YakuMSC.CheckAttackedRole();
                 break;
             default:
                 // 処理３
@@ -659,34 +670,50 @@ public class SiteManager : MonoBehaviour
        if(TargetSiteNum == 1)
         {
             YakuMSC.OpenYakuCardA();
+            StatusSiteA = 4;
+            StatusSite[1] = 4;
         }
         else if (TargetSiteNum == 2)
         {
             YakuMSC.OpenYakuCardB();
+            StatusSiteB = 4;
+            StatusSite[2] = 4;
         }
         else if (TargetSiteNum == 3)
         {
             YakuMSC.OpenYakuCardC();
+            StatusSiteC = 4;
+            StatusSite[3] = 4;
         }
         else if (TargetSiteNum == 4)
         {
             YakuMSC.OpenYakuCardD();
+            StatusSiteD = 4;
+            StatusSite[4] = 4;
         }
         else if (TargetSiteNum == 5)
         {
             YakuMSC.OpenYakuCardE();
+            StatusSiteE = 4;
+            StatusSite[5] = 4;
         }
         else if (TargetSiteNum == 6)
         {
             YakuMSC.OpenYakuCardF();
+            StatusSiteF = 4;
+            StatusSite[6] = 4;
         }
         else if (TargetSiteNum == 7)
         {
             YakuMSC.OpenYakuCardG();
+            StatusSiteG = 4;
+            StatusSite[7] = 4;
         }
         else if (TargetSiteNum == 8)
         {
             YakuMSC.OpenYakuCardH();
+            StatusSiteH = 4;
+            StatusSite[8] = 4;
         }
     }
 
@@ -709,46 +736,89 @@ public class SiteManager : MonoBehaviour
         Debug.Log("◆◎NowActiveSiteN：" + NowActiveSiteN);
         if (NowActiveSiteN == 1)
         {
-            StatusSiteA = 3;
+            StatusSiteA = 4;
+            StatusSite[1] = 4;
             YakuMSC.OpenYakuCardA();
         }
         else if (NowActiveSiteN == 2)
         {
-            StatusSiteB = 3;
+            StatusSiteB = 4;
+            StatusSite[2] = 4;
             YakuMSC.OpenYakuCardB();
         }
         else if (NowActiveSiteN == 3)
         {
-            StatusSiteC = 3;
+            StatusSiteC = 4;
+            StatusSite[3] = 4;
             YakuMSC.OpenYakuCardC();
         }
         else if (NowActiveSiteN == 4)
         {
-            StatusSiteD = 3;
+            StatusSiteD = 4;
+            StatusSite[4] = 4;
             YakuMSC.OpenYakuCardD();
         }
         else if (NowActiveSiteN == 5)
         {
-            StatusSiteE = 3;
+            StatusSiteE = 4;
+            StatusSite[5] = 4;
             YakuMSC.OpenYakuCardE();
         }
         else if (NowActiveSiteN == 6)
         {
-            StatusSiteF = 3;
+            StatusSiteF = 4;
+            StatusSite[6] = 4;
             YakuMSC.OpenYakuCardF();
         }
         else if (NowActiveSiteN == 7)
         {
-            StatusSiteG = 3;
+            StatusSiteG = 4;
+            StatusSite[7] = 4;
             YakuMSC.OpenYakuCardG();
         }
         else if (NowActiveSiteN == 8)
         {
-            StatusSiteH = 3;
+            StatusSiteH = 4;
+            StatusSite[8] = 4;
             YakuMSC.OpenYakuCardH();
         }
     }
 
+    public void checkDEX() //命中率チェック
+    {
+        if (rollF[NowActiveSiteN] == 1) // ももたろう
+        {
+            DEX = 5;
+        }
+        else if (rollF[NowActiveSiteN] >= 2 && rollF[NowActiveSiteN] <= 4) // いぬ、さる、きじ
+        {
+            DEX = 3;
+        }
+        else if (rollF[NowActiveSiteN] == 5) // おにのおやぶん
+        {
+            DEX = 4;
+        }
+        else if (rollF[NowActiveSiteN] >= 6 && rollF[NowActiveSiteN] <= 8) // こオニたち
+        {
+            DEX = 1;
+        }
+    }
+
+    public void JudgeHitting()
+    {
+        int accuracy = UnityEngine.Random.Range(1,7);
+
+        if (1 <= accuracy && accuracy <= DEX)
+        {
+            // 攻撃成功
+            SEMSC.punch_SE();
+        }
+        else if (DEX <= accuracy && accuracy <= 7)
+        {
+            // 攻撃失敗
+            SEMSC.suka_SE();
+        }
+    }
 
     public void AddplayerOrderNum()
     {

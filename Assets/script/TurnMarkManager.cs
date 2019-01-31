@@ -20,7 +20,7 @@ public class TurnMarkManager : MonoBehaviour {
     public GameObject SiteManager;
     SiteManager SiteMSC;
 
-    Image image;
+//    Image image;
 
     //public Sprite SiteA_turn;
     //    public GameObject SiteA_turn;
@@ -32,14 +32,25 @@ public class TurnMarkManager : MonoBehaviour {
     public Image SiteF_turn;
     public Image SiteG_turn;
     public Image SiteH_turn;
-    
+
+    public GameObject Turn_back_redA;
+    public GameObject Turn_back_redB;
+    public GameObject Turn_back_redC;
+    public GameObject Turn_back_redD;
+    public GameObject Turn_back_redE;
+    public GameObject Turn_back_redF;
+    public GameObject Turn_back_redG;
+    public GameObject Turn_back_redH;
+
+    public float span = 3f;
+    float currentTime = 0f;
 
     //☆################☆################  Start  ################☆################☆
 
     void Start()
     {
         SiteMSC = SiteManager.GetComponent<SiteManager>();
-        image = this.GetComponent<Image>();
+//        image = this.GetComponent<Image>();
 
         SiteMSC.TurnChip_A = TurnMarkSet(SiteA_turn, 1);
         SiteMSC.TurnChip_B = TurnMarkSet(SiteB_turn, 2);
@@ -52,7 +63,7 @@ public class TurnMarkManager : MonoBehaviour {
 
 
         //this.gameObject.GetComponent<Image>().sprite = Turn_num_icon1;
-
+        ResetTurnMarkRedBack();
     }
 
 
@@ -60,8 +71,44 @@ public class TurnMarkManager : MonoBehaviour {
 
     void Update()
     {
+        switch (SiteMSC.NowActiveSiteN)
+        {
+            case 1:
+                Turn_back_redA.SetActive(true);
+                break;
+            case 2:
+                Turn_back_redB.SetActive(true);
+                break;
+            case 3:
+                Turn_back_redC.SetActive(true);
+                break;
+            case 4:
+                Turn_back_redD.SetActive(true);
+                break;
+            case 5:
+                Turn_back_redE.SetActive(true);
+                break;
+            case 6:
+                Turn_back_redF.SetActive(true);
+                break;
+            case 7:
+                Turn_back_redG.SetActive(true);
+                break;
+            case 8:
+                Turn_back_redH.SetActive(true);
+                break;
+            default:
+                // 処理３
+                break;
+        }
 
+        currentTime += Time.deltaTime;
 
+        if (currentTime > span)
+        {
+            //ResetTurnMarkRedBack(); // (数秒に一回、)ターンマークレッドを非表示にする
+            currentTime = 0f;
+        }
     }
 
     //####################################  other  ####################################
@@ -99,7 +146,19 @@ public class TurnMarkManager : MonoBehaviour {
                 break;
         }
         return SiteMSC.turnM[x];
-        image = turnMark;
+//        image = turnMark;
+    }
+
+    public void ResetTurnMarkRedBack()
+    {
+        Turn_back_redA.SetActive(false);
+        Turn_back_redB.SetActive(false);
+        Turn_back_redC.SetActive(false);
+        Turn_back_redD.SetActive(false);
+        Turn_back_redE.SetActive(false);
+        Turn_back_redF.SetActive(false);
+        Turn_back_redG.SetActive(false);
+        Turn_back_redH.SetActive(false);
     }
 
     //#################################################################################

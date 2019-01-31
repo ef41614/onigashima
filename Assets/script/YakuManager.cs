@@ -21,6 +21,9 @@ public class YakuManager : MonoBehaviour {
     SiteManager SiteMSC;
 
     Image image;
+    Image imageTen;
+    float speed = 5f;   // デフォルトは 1.0
+    float time;
 
     //public Sprite SiteA_turn;
     //    public GameObject SiteA_turn;
@@ -60,6 +63,10 @@ public class YakuManager : MonoBehaviour {
     public Image AimedRollFace;
     public Image AttackedRollFace;
 
+     bool isDamaged = false; // 攻撃が当たったか
+    public GameObject AttackedRollFaceObj;
+//    SpriteRenderer renderer;
+
 
     //☆################☆################  Start  ################☆################☆
 
@@ -89,6 +96,10 @@ public class YakuManager : MonoBehaviour {
         HideYakuCardF();
         HideYakuCardG();
         HideYakuCardH();
+
+        //点滅処理の為に呼び出しておく
+//        renderer = AttackedRollFaceObj.gameObject.GetComponent<SpriteRenderer>();
+        imageTen = AttackedRollFaceObj.gameObject.GetComponent<Image>();
     }
 
 
@@ -100,7 +111,35 @@ public class YakuManager : MonoBehaviour {
 
     }
 
+    // ----------------------------------------------------------
+
+    void FixedUpdate()
+    {
+        //ダメージを受けた時の処理
+        if (isDamaged)
+        {
+            Debug.Log("◆ダメージを受けた時の処理ON・・・点滅");
+//            float level = Mathf.Abs(Mathf.Sin(Time.time * 10));
+            //            AttackedRollFaceObj.gameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, level);
+//            renderer.color = new Color(1f, 1f, 1f, level);
+
+            //オブジェクトのAlpha値を更新
+            imageTen.color = GetAlphaColor(image.color);
+        }
+    }
+
+    // ----------------------------------------------------------
+
     //####################################  other  ####################################
+
+    //Alpha値を更新してColorを返す
+    Color GetAlphaColor(Color color)
+    {
+        time += Time.deltaTime * 5.0f * speed;
+        color.a = Mathf.Sin(time) * 0.5f + 0.5f;
+
+        return color;
+    }
 
     public String RollFaceSet(Image RollFace, int x, string RoleName)
     {
@@ -432,6 +471,24 @@ public class YakuManager : MonoBehaviour {
         YakuCardTrash.SetActive(true);
     }
     #endregion
+
+
+    public void DamageTenmetu()
+    {
+        isDamaged = true;
+
+        var sequence = DOTween.Sequence();
+        sequence.InsertCallback(1f, () => TenmetuFlgOff());  // 数秒後に点滅終了（通常に戻る）
+    }
+
+
+    public void TenmetuFlgOff()
+    {
+        isDamaged = false;
+        Debug.Log("◎てんめつ おわり◎");
+        //オブジェクトのAlpha値を更新
+        imageTen.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+    }
 
     //#################################################################################
 

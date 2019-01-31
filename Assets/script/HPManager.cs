@@ -14,7 +14,7 @@ public class HPManager : MonoBehaviour {
     public GameObject SiteManager;
     SiteManager SiteMSC;
 
-    Image image;
+//    Image image;
 
     public Image SiteA_HP3;
     public Image SiteA_HP2;
@@ -66,7 +66,7 @@ public class HPManager : MonoBehaviour {
     {
 
         SiteMSC = SiteManager.GetComponent<SiteManager>();
-        image = this.GetComponent<Image>();
+//        image = this.GetComponent<Image>();
 
         HP_A = Yaku_HP_set(1);
         HP_B = Yaku_HP_set(2);

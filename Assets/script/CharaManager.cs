@@ -23,8 +23,10 @@ public class CharaManager : MonoBehaviour {
 
     public GameObject SiteManager;
     SiteManager SiteMSC;
+    public GameObject TurnMarkManager;
+    TurnMarkManager TurnMarkMSC;
 
-    Image image;
+    //    Image image;
     String str;
 //    public Sprite SiteA_charaF;
 //    public GameObject SiteA_charaF;
@@ -76,7 +78,8 @@ public class CharaManager : MonoBehaviour {
     {
         //countX = SiteMSC.human_num;
         SiteMSC = SiteManager.GetComponent<SiteManager>();
-        image = this.GetComponent<Image>();
+        TurnMarkMSC = TurnMarkManager.GetComponent<TurnMarkManager>();
+        //        image = this.GetComponent<Image>();
         //str = this.GetComponent<string>();
 
         SiteA_charaNametext = CharaFaceSet(SiteA_charaF, 1, SiteA_charaNametext);
@@ -168,8 +171,8 @@ public class CharaManager : MonoBehaviour {
         return CharaName;
 //        image = charaFace;
 //        str = CharaName;
-        Debug.Log("★CharaName: "+ CharaName);
-        Debug.Log("★SiteA_charaNametext はじめの: " + SiteA_charaNametext);
+//        Debug.Log("★CharaName: "+ CharaName);
+//        Debug.Log("★SiteA_charaNametext はじめの: " + SiteA_charaNametext);
         //        PreventCharaFace = image;
     }
 
@@ -233,7 +236,7 @@ public class CharaManager : MonoBehaviour {
             }
         }
         countX++;
-        image = PreventCharaFace;
+//        image = PreventCharaFace;
 
  //       PreventCharaFace.sprite = VTuber_icon1;
  //      image = PreventCharaFace;
@@ -297,14 +300,14 @@ public class CharaManager : MonoBehaviour {
                 // 処理３
                 break;
         }
-        image = NowActiveCharaFace;
+//        image = NowActiveCharaFace;
         Debug.Log("◎●SiteA_charaNametext: " + SiteA_charaNametext);
 //        Debug.Log("◎●NowActiveCharaNameText: " + NowActiveCharaNameText);
     }
 
     public void OpenPanelYourTurn()
     {
-        if (SiteMSC.faintingOccured) // ステータス「気絶した瞬間」のプレイヤーがいる
+        if (SiteMSC.faintingOccured) // ステータス「気絶した瞬間」のプレイヤーがいる → 気絶処理後に次のターンへ行く
         {
             SiteMSC.KizetuPhase();
             var sequence = DOTween.Sequence();
@@ -317,6 +320,7 @@ public class CharaManager : MonoBehaviour {
             sequence.InsertCallback(1.1f, () => PanelYourTurn.SetActive(true));
         }
         SiteMSC.CheckFainting();
+        TurnMarkMSC.ResetTurnMarkRedBack();
     }
 
     public void ClosePanelYourTurn()

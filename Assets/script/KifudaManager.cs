@@ -17,7 +17,7 @@ public class KifudaManager : MonoBehaviour {
     public GameObject SEManager;
     SEManager SEMSC;
 
-    Image image;
+//    Image image;
 
     //public Sprite SiteA_turn;
     //    public GameObject SiteA_turn;
@@ -63,7 +63,7 @@ public class KifudaManager : MonoBehaviour {
     {
         SiteMSC = SiteManager.GetComponent<SiteManager>();
         SEMSC = SEManager.GetComponent<SEManager>();
-        image = this.GetComponent<Image>();
+//        image = this.GetComponent<Image>();
 
         FudaIconSet();
         CloseKifuda();

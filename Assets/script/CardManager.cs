@@ -16,7 +16,7 @@ public class CardManager : MonoBehaviour {
     public GameObject SiteManager;
     SiteManager SiteMSC;
 
-    Image image;
+//    Image image;
 
     //public Sprite SiteA_turn;
     //    public GameObject SiteA_turn;
@@ -36,7 +36,7 @@ public class CardManager : MonoBehaviour {
     void Start()
     {
         SiteMSC = SiteManager.GetComponent<SiteManager>();
-        image = this.GetComponent<Image>();
+//        image = this.GetComponent<Image>();
 
         CardColorSet(SiteA_CardColor, 1);
         CardColorSet(SiteB_CardColor, 2);
@@ -101,7 +101,7 @@ public class CardManager : MonoBehaviour {
                 // 処理３
                 break;
         }
-        image = CardColor;
+//        image = CardColor;
     }
 
     //#################################################################################

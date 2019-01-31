@@ -106,6 +106,9 @@ public class SiteManager : MonoBehaviour
     public GameObject HPManager;
     HPManager HPMSC;
 
+    public GameObject AttackMissText;    // 「Miss」と書かれたテキスト文（攻撃失敗時に出す）
+    public GameObject AttakedAfterText;   // 攻撃後のセリフ（当たった時、外れた時、共に）
+
     public bool faintingOccured = false;
 
     private void Awake()
@@ -572,7 +575,7 @@ public class SiteManager : MonoBehaviour
         }
         else if (rollF[TargetSiteNum] == 5) // おにのおやぶん
         {
-            AnswerSerifText.GetComponent<Text>().text = "ママの いうことを きかない わるい子だ！";
+            AnswerSerifText.GetComponent<Text>().text = "おさけだ！ おさけ もってこい！";
         }
         else if (rollF[TargetSiteNum] >= 6 && rollF[TargetSiteNum] <= 8) // こオニたち
         {
@@ -791,22 +794,84 @@ public class SiteManager : MonoBehaviour
 
     public void JudgeHitting()
     {
-        Debug.Log("◆◎DEX：" + DEX);
-        int accuracy = UnityEngine.Random.Range(1,7);
+        Debug.Log("◆◎DEX：" + DEX);   // この値以下なら、攻撃成功
+        int accuracy = UnityEngine.Random.Range(1, 7); // 攻撃が当たるかどうかのランダム数値
 
         if (1 <= accuracy && accuracy <= DEX)
         {
             // 攻撃成功
             SEMSC.punch_SE();
+            AttackHitSerif();
             DecreaseHP();
             HPMSC.HP_check();
+            YakuMSC.DamageTenmetu();      // ← ☆ NEW ☆  役職カードを点滅させる
         }
         else if (DEX <= accuracy && accuracy <= 7)
         {
             // 攻撃失敗
             SEMSC.suka_SE();
+            AttackMissSerif();
+            AttackMissText.SetActive(true);  // 「Miss」と書かれたテキスト文を表示させる
+            var sequence = DOTween.Sequence();
+            //sequence.InsertCallback(2f, () => AttackMissText.SetActive(false));  // Miss を非表示にする
+            sequence.InsertCallback(2f, () => CloseMissText());  // Miss を非表示にする
         }
     }
+
+    public void CloseMissText()
+    {
+        AttackMissText.SetActive(false);
+    }
+
+
+    public void AttackHitSerif()  // 攻撃後のセリフ（当たった時）
+    {
+        int AttackedSerif = UnityEngine.Random.Range(1, 5);
+        switch (AttackedSerif)
+        {
+            case 1: //
+                AttakedAfterText.GetComponent<Text>().text = "ぐはぁ！";
+                break;
+            case 2: //
+                AttakedAfterText.GetComponent<Text>().text = "やーらーれーたぁー";
+                break;
+            case 3: //
+                AttakedAfterText.GetComponent<Text>().text = "いたたぁ";
+                break;
+            case 4: //
+                AttakedAfterText.GetComponent<Text>().text = "うわーん";
+                break;
+            default:
+                // その他処理
+                break;
+        }
+    }
+
+
+    public void AttackMissSerif()  // 攻撃後のセリフ（外れた時）
+    {
+        int AttackedSerif = UnityEngine.Random.Range(1, 5);
+        switch (AttackedSerif)
+        {
+            case 1: //
+                AttakedAfterText.GetComponent<Text>().text = "ふぅ、セーフ";
+                break;
+            case 2: //
+                AttakedAfterText.GetComponent<Text>().text = "あぶない、あぶない";
+                break;
+            case 3: //
+                AttakedAfterText.GetComponent<Text>().text = "よかった、はずれたー";
+                break;
+            case 4: //
+                AttakedAfterText.GetComponent<Text>().text = "みきった！";
+                break;
+            default:
+                // その他処理
+                break;
+        }
+    }
+
+
 
     public void DecreaseHP()
     {

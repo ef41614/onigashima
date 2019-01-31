@@ -53,7 +53,7 @@ public class SelectManager : MonoBehaviour
     public static int siteH = 0;
 
     int charaNum = 0;
-    Image image;
+//    Image image;
 
     public static int hito_num = 1;
     public int robo_num = 0;
@@ -95,7 +95,7 @@ public class SelectManager : MonoBehaviour
         KesuCover_11();
         KesuCover_12();
 
-        image = this.GetComponent<Image>();
+//        image = this.GetComponent<Image>();
         Check_numberOfPersons();
     }
 
@@ -229,7 +229,7 @@ public class SelectManager : MonoBehaviour
     {
         charaNum = 1;
         CharaFace.sprite = VTuber_icon1;
-        image = CharaFace;
+//        image = CharaFace;
         CharaNameText.GetComponent<Text>().text = "アイ";
     }
 
@@ -237,7 +237,7 @@ public class SelectManager : MonoBehaviour
     {
         charaNum = 2;
         CharaFace.sprite = VTuber_icon2;
-        image = CharaFace;
+//        image = CharaFace;
         CharaNameText.GetComponent<Text>().text = "アカリ";
     }
 
@@ -245,7 +245,7 @@ public class SelectManager : MonoBehaviour
     {
         charaNum = 3;
         CharaFace.sprite = VTuber_icon3;
-        image = CharaFace;
+//        image = CharaFace;
         CharaNameText.GetComponent<Text>().text = "あおい";
     }
 
@@ -253,7 +253,7 @@ public class SelectManager : MonoBehaviour
     {
         charaNum = 4;
         CharaFace.sprite = VTuber_icon4;
-        image = CharaFace;
+//        image = CharaFace;
         CharaNameText.GetComponent<Text>().text = "ひなた";
     }
 
@@ -261,7 +261,7 @@ public class SelectManager : MonoBehaviour
     {
         charaNum = 5;
         CharaFace.sprite = VTuber_icon5;
-        image = CharaFace;
+//        image = CharaFace;
         CharaNameText.GetComponent<Text>().text = "かえで";
     }
 
@@ -269,7 +269,7 @@ public class SelectManager : MonoBehaviour
     {
         charaNum = 6;
         CharaFace.sprite = VTuber_icon6;
-        image = CharaFace;
+//        image = CharaFace;
         CharaNameText.GetComponent<Text>().text = "ルナ";
     }
 
@@ -277,7 +277,7 @@ public class SelectManager : MonoBehaviour
     {
         charaNum = 7;
         CharaFace.sprite = VTuber_icon7;
-        image = CharaFace;
+//        image = CharaFace;
         CharaNameText.GetComponent<Text>().text = "みと";
     }
 
@@ -285,7 +285,7 @@ public class SelectManager : MonoBehaviour
     {
         charaNum = 8;
         CharaFace.sprite = VTuber_icon8;
-        image = CharaFace;
+//        image = CharaFace;
         CharaNameText.GetComponent<Text>().text = "ねこます";
     }
 
@@ -293,8 +293,8 @@ public class SelectManager : MonoBehaviour
     {
         charaNum = 9;
         CharaFace.sprite = VTuber_icon9;
-        image = CharaFace;
-        image = CharaFace;
+//        image = CharaFace;
+//        image = CharaFace;
         CharaNameText.GetComponent<Text>().text = "のら";
     }
 
@@ -302,7 +302,7 @@ public class SelectManager : MonoBehaviour
     {
         charaNum = 10;
         CharaFace.sprite = VTuber_icon10;
-        image = CharaFace;
+//        image = CharaFace;
         CharaNameText.GetComponent<Text>().text = "りん";
     }
 
@@ -310,7 +310,7 @@ public class SelectManager : MonoBehaviour
     {
         charaNum = 11;
         CharaFace.sprite = VTuber_icon11;
-        image = CharaFace;
+//        image = CharaFace;
         CharaNameText.GetComponent<Text>().text = "シロ";
     }
 
@@ -318,7 +318,7 @@ public class SelectManager : MonoBehaviour
     {
         charaNum = 12;
         CharaFace.sprite = VTuber_icon12;
-        image = CharaFace;
+//        image = CharaFace;
         CharaNameText.GetComponent<Text>().text = "そら";
     }
     

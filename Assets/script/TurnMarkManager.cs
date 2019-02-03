@@ -50,17 +50,9 @@ public class TurnMarkManager : MonoBehaviour {
     void Start()
     {
         SiteMSC = SiteManager.GetComponent<SiteManager>();
-//        image = this.GetComponent<Image>();
+        //        image = this.GetComponent<Image>();
 
-        SiteMSC.TurnChip_A = TurnMarkSet(SiteA_turn, 1);
-        SiteMSC.TurnChip_B = TurnMarkSet(SiteB_turn, 2);
-        SiteMSC.TurnChip_C = TurnMarkSet(SiteC_turn, 3);
-        SiteMSC.TurnChip_D = TurnMarkSet(SiteD_turn, 4);
-        SiteMSC.TurnChip_E = TurnMarkSet(SiteE_turn, 5);
-        SiteMSC.TurnChip_F = TurnMarkSet(SiteF_turn, 6);
-        SiteMSC.TurnChip_G = TurnMarkSet(SiteG_turn, 7);
-        SiteMSC.TurnChip_H = TurnMarkSet(SiteH_turn, 8);
-
+        TurnMarkSetStart();   // 順番マーカーを8人分セットする
 
         //this.gameObject.GetComponent<Image>().sprite = Turn_num_icon1;
         ResetTurnMarkRedBack();
@@ -112,6 +104,20 @@ public class TurnMarkManager : MonoBehaviour {
     }
 
     //####################################  other  ####################################
+
+    public void TurnMarkSetStart()      // 順番マーカーを8人分セットする
+    {
+        SiteMSC.TurnChip_A = TurnMarkSet(SiteA_turn, 1);
+        SiteMSC.TurnChip_B = TurnMarkSet(SiteB_turn, 2);
+        SiteMSC.TurnChip_C = TurnMarkSet(SiteC_turn, 3);
+        SiteMSC.TurnChip_D = TurnMarkSet(SiteD_turn, 4);
+        SiteMSC.TurnChip_E = TurnMarkSet(SiteE_turn, 5);
+        SiteMSC.TurnChip_F = TurnMarkSet(SiteF_turn, 6);
+        SiteMSC.TurnChip_G = TurnMarkSet(SiteG_turn, 7);
+        SiteMSC.TurnChip_H = TurnMarkSet(SiteH_turn, 8);
+    }
+
+
 
     public int TurnMarkSet(Image turnMark, int x)
     {

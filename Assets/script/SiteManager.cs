@@ -38,7 +38,7 @@ public class SiteManager : MonoBehaviour
     public int DEX = 0; //命中力
     public int human_num = 1;
     int HandOfTime = 0;    // 「つぎの人に渡してね」のメッセージを表示させる
-    int preventTurnNum = 1;
+    public int preventTurnNum = 1;
     public int TargetSiteNum = 0;
     int preventPlayerOrderNum = 1; // 今このターンで何人目か？
 
@@ -51,7 +51,7 @@ public class SiteManager : MonoBehaviour
     public int StatusSiteG = 1;
     public int StatusSiteH = 1;
 
-    public int TurnChip_A = 0;
+    public int TurnChip_A = 0;  // 順番マーカーのナンバー
     public int TurnChip_B = 0;
     public int TurnChip_C = 0;
     public int TurnChip_D = 0;
@@ -105,11 +105,17 @@ public class SiteManager : MonoBehaviour
     YakuManager YakuMSC;
     public GameObject HPManager;
     HPManager HPMSC;
+    public GameObject TurnMarkManager;
+    TurnMarkManager TurnMarkMSC;
 
     public GameObject AttackMissText;    // 「Miss」と書かれたテキスト文（攻撃失敗時に出す）
     public GameObject AttakedAfterText;   // 攻撃後のセリフ（当たった時、外れた時、共に）
 
     public bool faintingOccured = false;
+
+    public GameObject PanelTurnNumber;
+    public GameObject TurnNumNami;    // ターン開始時に中央に表示する
+    public GameObject TurnNumUe;    // 何ターン目かを画面上に表示する
 
     private void Awake()
     {
@@ -132,6 +138,9 @@ public class SiteManager : MonoBehaviour
         CardReverseScr = CardReverse.GetComponent<CardReverse>();
         YakuMSC = YakuManager.GetComponent<YakuManager>();
         HPMSC = HPManager.GetComponent<HPManager>();
+        TurnMarkMSC = TurnMarkManager.GetComponent<TurnMarkManager>();
+        StartTurnNum();
+        ReloadTurnNumUe();
         //        statusReset(); // ステータスをすべて1にする
     }
 
@@ -1006,10 +1015,64 @@ public class SiteManager : MonoBehaviour
         faintingOccured = false; // すべての処理が終わったところで、ステータスを「気絶後」に変更する
     }
 
-    public void AddplayerOrderNum()
+    public void AddplayerOrderNum()  // その人のプレイ終わった後に、プレイヤー番号をプラスする
     {
-        preventPlayerOrderNum++;
+        Debug.Log("今プレイした人はpreventPlayerOrderNum :::" + preventPlayerOrderNum);
+        if (preventPlayerOrderNum < 8) // 1～8人目のターンの時
+        {
+            preventPlayerOrderNum++;
+        }
+        else if (preventPlayerOrderNum >= 8)  // そのターンがすべて終わり、次のターンに行く
+        {
+            preventPlayerOrderNum = 1;
+            shakeTurnMark();
+            TurnMarkMSC.TurnMarkSetStart();
+            PanelTurnNumberAppear();
+        }
+        Debug.Log("これからプレイする人はpreventPlayerOrderNum :::" + preventPlayerOrderNum);
+
     }
+
+    public void PanelTurnNumberAppear() // ●「〇ターンめです」 を表示させる 
+    {
+        PanelTurnNumber.SetActive(true);
+        AddpreventTurnNum();
+        StartTurnNum();
+        ReloadTurnNumUe();
+//        var sequence = DOTween.Sequence();
+//        sequence.InsertCallback(1.5f, () => PanelTurnNumberClose());
+    }
+
+    public void PanelTurnNumberClose() // ●非表示にする
+    {
+        PanelTurnNumber.SetActive(false);
+    }
+
+    public void StartTurnNum()  //ターン開始時に画面中央に「〇ターンめです」 を表示させる 
+    {
+        TurnNumNami.GetComponent<Text>().text = (preventTurnNum).ToString();
+    }
+
+    public void ReloadTurnNumUe()  //ターン開始時に画面中央に「〇ターンめです」 を表示させる 
+    {
+        TurnNumUe.GetComponent<Text>().text = (preventTurnNum).ToString();
+    }
+
+    public void AddpreventTurnNum()  // ターン番号をプラスする
+    {
+        Debug.Log("今のターンはpreventTurnNumでした :::" + preventTurnNum);
+        if (preventTurnNum < 5) // 1～8人目のターンの時
+        {
+            preventTurnNum++;
+        }
+        else if (preventTurnNum >= 5)  // そのターンがすべて終わり、次のターンに行く
+        {
+            preventTurnNum = 1;
+        }
+        Debug.Log("これからのターンはpreventTurnNum です:::" + preventTurnNum);
+
+    }
+
     //#################################################################################
 
 }

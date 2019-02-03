@@ -65,7 +65,11 @@ public class YakuManager : MonoBehaviour {
 
      bool isDamaged = false; // 攻撃が当たったか
     public GameObject AttackedRollFaceObj;
-//    SpriteRenderer renderer;
+
+    public GameObject DamageEffectP;
+    public GameObject DamageEffect01;
+    public GameObject DamageStar02;
+    //    SpriteRenderer renderer;
 
 
     //☆################☆################  Start  ################☆################☆
@@ -476,11 +480,20 @@ public class YakuManager : MonoBehaviour {
     public void DamageTenmetu()
     {
         isDamaged = true;
+        //パーティクルを再生（追加）
+        DamageEffectP.GetComponent<ParticleSystem>().Play();
+        DamageStar02.GetComponent<ParticleSystem>().Play();
+        DamageEffect01.SetActive(true);
 
         var sequence = DOTween.Sequence();
+        sequence.InsertCallback(0.5f, () => DamageEffectOff());
         sequence.InsertCallback(1f, () => TenmetuFlgOff());  // 数秒後に点滅終了（通常に戻る）
     }
 
+    public void DamageEffectOff()
+    {
+        DamageEffect01.SetActive(false);
+    }
 
     public void TenmetuFlgOff()
     {

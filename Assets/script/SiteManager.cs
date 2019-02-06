@@ -51,6 +51,15 @@ public class SiteManager : MonoBehaviour
     public int StatusSiteG = 1;
     public int StatusSiteH = 1;
 
+    public int teamSiteA = 0;  // 所属チーム :デフォルト「0」null
+    public int teamSiteB = 0;
+    public int teamSiteC = 0;
+    public int teamSiteD = 0;
+    public int teamSiteE = 0;
+    public int teamSiteF = 0;
+    public int teamSiteG = 0;
+    public int teamSiteH = 0;
+
     public int TurnChip_A = 0;  // 順番マーカーのナンバー
     public int TurnChip_B = 0;
     public int TurnChip_C = 0;
@@ -107,6 +116,8 @@ public class SiteManager : MonoBehaviour
     HPManager HPMSC;
     public GameObject TurnMarkManager;
     TurnMarkManager TurnMarkMSC;
+    public GameObject KifudaManager;
+    KifudaManager KifudaMSC;
 
     public GameObject AttackMissText;    // 「Miss」と書かれたテキスト文（攻撃失敗時に出す）
     public GameObject AttakedAfterText;   // 攻撃後のセリフ（当たった時、外れた時、共に）
@@ -139,6 +150,7 @@ public class SiteManager : MonoBehaviour
         YakuMSC = YakuManager.GetComponent<YakuManager>();
         HPMSC = HPManager.GetComponent<HPManager>();
         TurnMarkMSC = TurnMarkManager.GetComponent<TurnMarkManager>();
+        KifudaMSC = KifudaManager.GetComponent<KifudaManager>();
         StartTurnNum();
         ReloadTurnNumUe();
         //        statusReset(); // ステータスをすべて1にする
@@ -306,6 +318,8 @@ public class SiteManager : MonoBehaviour
 
     public void CheckYourTurn()
     {
+        TeamHanteiByKihuda();
+        TeamHanteiByOpen01();
         Debug.Log("今このターンで何人目か？" + preventPlayerOrderNum);
         if (TurnChip_A == preventPlayerOrderNum)
         {
@@ -345,11 +359,81 @@ public class SiteManager : MonoBehaviour
         {
             preventPlayerOrderNum++;
         }
+        KizetuSkipTurn();
 //        Debug.Log("次このターンで何人目か？" + preventPlayerOrderNum);
     }
 
-    #region  Site_Aimed
-    public void SiteAimedHantei(int x, int y)
+    public void KizetuSkipTurn()
+    {
+        Debug.Log("◆◎NowActiveSiteN：" + NowActiveSiteN);
+        if (NowActiveSiteN == 1)
+        {
+            if (StatusSiteA == 6 || StatusSiteA == 5)  // もしアクティブキャラが気ぜつしていたら
+            {
+                SkipTurnPhase();
+            }
+        }
+        else if (NowActiveSiteN == 2)
+        {
+            if (StatusSiteB == 6 || StatusSiteB == 5)  // もしアクティブキャラが気ぜつしていたら
+            {
+                SkipTurnPhase();
+            }
+        }
+        else if (NowActiveSiteN == 3)
+        {
+            if (StatusSiteC == 6 || StatusSiteC == 5)  // もしアクティブキャラが気ぜつしていたら
+            {
+                SkipTurnPhase();
+            }
+        }
+        else if (NowActiveSiteN == 4)
+        {
+            if (StatusSiteD == 6 || StatusSiteD == 5)  // もしアクティブキャラが気ぜつしていたら
+            {
+                SkipTurnPhase();
+            }
+        }
+        else if (NowActiveSiteN == 5)
+        {
+            if (StatusSiteE == 6 || StatusSiteE == 5)  // もしアクティブキャラが気ぜつしていたら
+            {
+                SkipTurnPhase();
+            }
+        }
+        else if (NowActiveSiteN == 6)
+        {
+            if (StatusSiteF == 6 || StatusSiteF == 5)  // もしアクティブキャラが気ぜつしていたら
+            {
+                SkipTurnPhase();
+            }
+        }
+        else if (NowActiveSiteN == 7)
+        {
+            if (StatusSiteG == 6 || StatusSiteG == 5)  // もしアクティブキャラが気ぜつしていたら
+            {
+                SkipTurnPhase();
+            }
+        }
+        else if (NowActiveSiteN == 8)
+        {
+            if (StatusSiteH == 6 || StatusSiteH == 5)  // もしアクティブキャラが気ぜつしていたら
+            {
+                SkipTurnPhase();
+            }
+        }
+    }
+
+    public void SkipTurnPhase() // もしアクティブキャラが気ぜつしていたら、スキップする
+    {
+        Debug.Log("◆アクティブキャラが気ぜつしているので、スキップする");
+        AddplayerOrderNum();
+        CharaMSC.AppearNowActiveSite();
+        CheckYourTurn();
+    }
+
+        #region  Site_Aimed
+        public void SiteAimedHantei(int x, int y)
     {
         Debug.Log("int x: " + x);
         Debug.Log("int y: " + y);
@@ -678,7 +762,7 @@ public class SiteManager : MonoBehaviour
         CheckOpenYakuCard();
     }
 
-    public void CheckOpenYakuCard()
+    public void CheckOpenYakuCard()   // 当てられた相手の画像オープン
     {
        if(TargetSiteNum == 1)
         {
@@ -730,7 +814,7 @@ public class SiteManager : MonoBehaviour
         PenaltyOpenYakuCard();
     }
 
-    public void PenaltyOpenYakuCard()
+    public void PenaltyOpenYakuCard()    // 間違えた質問者の画像オープン
     {
         var sequence = DOTween.Sequence();
         sequence.InsertCallback(0.0f, () => PenaltyOpenYakuCard02());
@@ -882,7 +966,7 @@ public class SiteManager : MonoBehaviour
 
 
 
-    public void DecreaseHP()
+    public void DecreaseHP()  // 攻撃を受けたキャラの体力を1減らし、0になったらステータスを「5（気ぜつ直後）」にする。
     {
         if (TargetSiteNum == 1)
         {
@@ -1024,13 +1108,17 @@ public class SiteManager : MonoBehaviour
         }
         else if (preventPlayerOrderNum >= 8)  // そのターンがすべて終わり、次のターンに行く
         {
-            preventPlayerOrderNum = 1;
-            shakeTurnMark();
-            TurnMarkMSC.TurnMarkSetStart();
-            PanelTurnNumberAppear();
+            GoToNextTurn();
         }
         Debug.Log("これからプレイする人はpreventPlayerOrderNum :::" + preventPlayerOrderNum);
+    }
 
+    public void GoToNextTurn()  // そのターンがすべて終わり、次のターンに行く
+    {
+        preventPlayerOrderNum = 1;
+        shakeTurnMark();
+        TurnMarkMSC.TurnMarkSetStart();
+        PanelTurnNumberAppear();
     }
 
     public void PanelTurnNumberAppear() // ●「〇ターンめです」 を表示させる 
@@ -1071,6 +1159,136 @@ public class SiteManager : MonoBehaviour
         }
         Debug.Log("これからのターンはpreventTurnNum です:::" + preventTurnNum);
 
+    }
+
+    public void TeamHanteiByKihuda()  // 特定の木札が載っていたら所属チームの判定を行う
+    {
+        if (KifudaMSC.kifuda_A == 1)  // もしオニ木札が載っていたら
+        {
+            teamSiteA = 1;   // オニチーム所属である
+        }
+        if (KifudaMSC.kifuda_A == 3)  // もし桃木札が載っていたら
+        {
+            teamSiteA = 3;   // 桃チーム所属である
+        }
+
+        if (KifudaMSC.kifuda_B == 1)  // もしオニ木札が載っていたら
+        {
+            teamSiteB = 1;   // オニチーム所属である
+        }
+        if (KifudaMSC.kifuda_B == 3)  // もし桃木札が載っていたら
+        {
+            teamSiteB = 3;   // 桃チーム所属である
+        }
+
+        if (KifudaMSC.kifuda_C == 1)  // もしオニ木札が載っていたら
+        {
+            teamSiteC = 1;   // オニチーム所属である
+        }
+        if (KifudaMSC.kifuda_C == 3)  // もし桃木札が載っていたら
+        {
+            teamSiteC = 3;   // 桃チーム所属である
+        }
+
+        if (KifudaMSC.kifuda_D == 1)  // もしオニ木札が載っていたら
+        {
+            teamSiteD = 1;   // オニチーム所属である
+        }
+        if (KifudaMSC.kifuda_D == 3)  // もし桃木札が載っていたら
+        {
+            teamSiteD = 3;   // 桃チーム所属である
+        }
+
+        if (KifudaMSC.kifuda_E == 1)  // もしオニ木札が載っていたら
+        {
+            teamSiteE = 1;   // オニチーム所属である
+        }
+        if (KifudaMSC.kifuda_E == 3)  // もし桃木札が載っていたら
+        {
+            teamSiteE = 3;   // 桃チーム所属である
+        }
+
+        if (KifudaMSC.kifuda_F == 1)  // もしオニ木札が載っていたら
+        {
+            teamSiteF = 1;   // オニチーム所属である
+        }
+        if (KifudaMSC.kifuda_F == 3)  // もし桃木札が載っていたら
+        {
+            teamSiteF = 3;   // 桃チーム所属である
+        }
+
+        if (KifudaMSC.kifuda_G == 1)  // もしオニ木札が載っていたら
+        {
+            teamSiteG = 1;   // オニチーム所属である
+        }
+        if (KifudaMSC.kifuda_G == 3)  // もし桃木札が載っていたら
+        {
+            teamSiteG = 3;   // 桃チーム所属である
+        }
+
+        if (KifudaMSC.kifuda_H == 1)  // もしオニ木札が載っていたら
+        {
+            teamSiteH = 1;   // オニチーム所属である
+        }
+        if (KifudaMSC.kifuda_H == 3)  // もし桃木札が載っていたら
+        {
+            teamSiteH = 3;   // 桃チーム所属である
+        }
+    }
+
+    public void TeamHanteiByOpen01()  // 役割カードがオープンしていたら所属チームの判定を行う
+    {
+        if (StatusSiteA >= 3)  //  役割カードがオープンしていたら
+        {
+            teamSiteA = TeamHanteiByOpen02(1);   // 所属チームを明らかにする
+        }
+        if (StatusSiteB >= 3)  //  役割カードがオープンしていたら
+        {
+            teamSiteB = TeamHanteiByOpen02(2);   // 所属チームを明らかにする
+        }
+        if (StatusSiteC >= 3)  //  役割カードがオープンしていたら
+        {
+            teamSiteC = TeamHanteiByOpen02(3);   // 所属チームを明らかにする
+        }
+        if (StatusSiteD >= 3)  //  役割カードがオープンしていたら
+        {
+            teamSiteD = TeamHanteiByOpen02(4);   // 所属チームを明らかにする
+        }
+
+        if (StatusSiteE >= 3)  //  役割カードがオープンしていたら
+        {
+            teamSiteE = TeamHanteiByOpen02(5);   // 所属チームを明らかにする
+        }
+        if (StatusSiteF >= 3)  //  役割カードがオープンしていたら
+        {
+            teamSiteF = TeamHanteiByOpen02(6);   // 所属チームを明らかにする
+        }
+        if (StatusSiteG >= 3)  //  役割カードがオープンしていたら
+        {
+            teamSiteG = TeamHanteiByOpen02(7);   // 所属チームを明らかにする
+        }
+        if (StatusSiteH >= 3)  //  役割カードがオープンしていたら
+        {
+            teamSiteH = TeamHanteiByOpen02(8);   // 所属チームを明らかにする
+        }
+    }
+
+    public int TeamHanteiByOpen02(int x)  // 所属チームを明らかにする
+    {
+        if (rollF[x] >= 1 && rollF[x] <= 4) // 役わりカードが ももたろう、いぬ、さる、きじ
+        {
+            return 3;   // 桃チーム所属である
+        }
+
+        else if (rollF[x] >= 5 && rollF[x] <= 8) // 役わりカードが おにのおやぶん、こオニたち
+        {
+            return 1;   // 桃チーム所属である
+        }
+
+        else
+        {
+            return 0;
+        }
     }
 
     //#################################################################################

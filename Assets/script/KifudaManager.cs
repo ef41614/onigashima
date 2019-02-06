@@ -30,14 +30,14 @@ public class KifudaManager : MonoBehaviour {
     public Image SiteG_FudaIcon;
     public Image SiteH_FudaIcon;
 
-    public int kifuda_A = 1;
-    public int kifuda_B = 1;
-    public int kifuda_C = 1;
-    public int kifuda_D = 1;
-    public int kifuda_E = 1;
-    public int kifuda_F = 1;
-    public int kifuda_G = 1;
-    public int kifuda_H = 1;
+    public int kifuda_A = 0;
+    public int kifuda_B = 0;
+    public int kifuda_C = 0;
+    public int kifuda_D = 0;
+    public int kifuda_E = 0;
+    public int kifuda_F = 0;
+    public int kifuda_G = 0;
+    public int kifuda_H = 0;
 
     public bool askedQuestionA = false;
     public bool askedQuestionB = false;
@@ -84,43 +84,51 @@ public class KifudaManager : MonoBehaviour {
 
     public void FudaIconSet()
     {
-        FudaIconSet(SiteA_FudaIcon, 1);
-        FudaIconSet(SiteB_FudaIcon, 2);
-        FudaIconSet(SiteC_FudaIcon, 3);
-        FudaIconSet(SiteD_FudaIcon, 4);
-        FudaIconSet(SiteE_FudaIcon, 5);
-        FudaIconSet(SiteF_FudaIcon, 6);
-        FudaIconSet(SiteG_FudaIcon, 7);
-        FudaIconSet(SiteH_FudaIcon, 8);
+        FudaIconSet(SiteA_FudaIcon, 1, kifuda_A);
+        FudaIconSet(SiteB_FudaIcon, 2, kifuda_B);
+        FudaIconSet(SiteC_FudaIcon, 3, kifuda_C);
+        FudaIconSet(SiteD_FudaIcon, 4, kifuda_D);
+        FudaIconSet(SiteE_FudaIcon, 5, kifuda_E);
+        FudaIconSet(SiteF_FudaIcon, 6, kifuda_F);
+        FudaIconSet(SiteG_FudaIcon, 7, kifuda_G);
+        FudaIconSet(SiteH_FudaIcon, 8, kifuda_H);
     }
 
-    public void FudaIconSet(Image FudaIcon, int x)
+    public void FudaIconSet(Image FudaIcon, int x, int y)
     {
         switch (SiteMSC.rollF[x])
         {
             case 1: // ももたろう
                 FudaIcon.sprite = FudaIconMomo;
+                y = 3;
                 break;
             case 2:
                 FudaIcon.sprite = FudaIconOniMomo;
+                y = 2;
                 break;
             case 3:
                 FudaIcon.sprite = FudaIconOniMomo;
+                y = 2;
                 break;
             case 4:
                 FudaIcon.sprite = FudaIconOniMomo;
+                y = 2;
                 break;
             case 5: // おにのおやぶん
                 FudaIcon.sprite = FudaIconOni;
+                y = 1;
                 break;
             case 6:
                 FudaIcon.sprite = FudaIconOniMomo;
+                y = 2;
                 break;
             case 7:
                 FudaIcon.sprite = FudaIconOniMomo;
+                y = 2;
                 break;
             case 8:
                 FudaIcon.sprite = FudaIconOniMomo;
+                y = 2;
                 break;
             default:
                 // 処理３

@@ -41,6 +41,7 @@ public class SiteManager : MonoBehaviour
     public int preventTurnNum = 1;
     public int TargetSiteNum = 0;
     int preventPlayerOrderNum = 1; // 今このターンで何人目か？
+    public int MomoMakePoint = 0;  // 桃チームの負けポイント：一定以上で鬼チームの勝利
 
     public int StatusSiteA = 1;
     public int StatusSiteB = 1;
@@ -128,6 +129,11 @@ public class SiteManager : MonoBehaviour
     public GameObject TurnNumNami;    // ターン開始時に中央に表示する
     public GameObject TurnNumUe;    // 何ターン目かを画面上に表示する
 
+    public GameObject PanelWinner;  // 〇〇チームの勝利 を表示する
+    public GameObject WinMomo;
+    public GameObject WinOni;
+    public GameObject ImageWinBack02;
+
     private void Awake()
     {
 
@@ -153,6 +159,7 @@ public class SiteManager : MonoBehaviour
         KifudaMSC = KifudaManager.GetComponent<KifudaManager>();
         StartTurnNum();
         ReloadTurnNumUe();
+        ClosePanelWinner();
         //        statusReset(); // ステータスをすべて1にする
     }
 
@@ -318,6 +325,7 @@ public class SiteManager : MonoBehaviour
 
     public void CheckYourTurn()
     {
+        WinHantei01();  // 勝ち負けの判定を行う
         TeamHanteiByKihuda();
         TeamHanteiByOpen01();
         Debug.Log("今このターンで何人目か？" + preventPlayerOrderNum);
@@ -1141,7 +1149,7 @@ public class SiteManager : MonoBehaviour
         TurnNumNami.GetComponent<Text>().text = (preventTurnNum).ToString();
     }
 
-    public void ReloadTurnNumUe()  //ターン開始時に画面中央に「〇ターンめです」 を表示させる 
+    public void ReloadTurnNumUe()  //ターン開始時に画面上に「〇ターンめです」 を表示させる 
     {
         TurnNumUe.GetComponent<Text>().text = (preventTurnNum).ToString();
     }
@@ -1282,13 +1290,119 @@ public class SiteManager : MonoBehaviour
 
         else if (rollF[x] >= 5 && rollF[x] <= 8) // 役わりカードが おにのおやぶん、こオニたち
         {
-            return 1;   // 桃チーム所属である
+            return 1;   // おにチーム所属である
         }
 
         else
         {
             return 0;
         }
+    }
+
+    public void WinHantei01()  // 勝ち負けの判定を行う
+    {
+        MomoMakePoint = 0;   // 桃チームの負けポイント初期化
+        if (StatusSiteA >= 5)  //  ステータスが気絶していたら
+        {
+            WinHantei02(1);   // 勝ち負けの判定を行う
+        }
+        if (StatusSiteB >= 5)  //  ステータスが気絶していたら
+        {
+            WinHantei02(2);   // 勝ち負けの判定を行う
+        }
+        if (StatusSiteC >= 5)  //  ステータスが気絶していたら
+        {
+            WinHantei02(3);   // 勝ち負けの判定を行う
+        }
+        if (StatusSiteD >= 5)  //  ステータスが気絶していたら
+        {
+            WinHantei02(4);   // 勝ち負けの判定を行う
+        }
+
+        if (StatusSiteE >= 5)  //  ステータスが気絶していたら
+        {
+            WinHantei02(5);   // 勝ち負けの判定を行う
+        }
+        if (StatusSiteF >= 5)  //  ステータスが気絶していたら
+        {
+            WinHantei02(6);   // 勝ち負けの判定を行う
+        }
+        if (StatusSiteG >= 5)  //  ステータスが気絶していたら
+        {
+            WinHantei02(7);   // 勝ち負けの判定を行う
+        }
+        if (StatusSiteH >= 5)  //  ステータスが気絶していたら
+        {
+            WinHantei02(8);   // 勝ち負けの判定を行う
+        }
+        if (MomoMakePoint >= 13)  // 桃チームのメンバーが全員きぜつしていたら
+        {
+            // 鬼チームの勝利である
+            StartWinPhase();
+            ApperWinOni();
+        }
+    }
+
+    public void WinHantei02(int x)  // 勝ち負けの判定を行う
+    {
+        if (rollF[x] == 1) // 役わりカードが ももたろう
+        {
+            MomoMakePoint = MomoMakePoint + 10;  // 桃チームの負けポイントに +10
+        }
+
+        else if (rollF[x] >= 2 && rollF[x] <= 4) // 役わりカードが いぬ、さる、きじ
+        {
+            MomoMakePoint++;  // 桃チームの負けポイントに +1
+        }
+
+        else if (rollF[x] == 5) // 役わりカードが おにのおやぶん
+        {
+            // 桃チームの勝利である
+            StartWinPhase();
+            ApperWinMomo();
+        }
+
+        else  // 役わりカードが こおに → 何もおきない（勝ち負けに影響しない）
+        {
+
+        }
+    }
+
+    public void StartWinPhase()  // 勝ち負けが決まったら、まず初めに動き出すフェーズ
+    {
+        ApperPanelWinner();
+        CloseWinMomo();
+        CloseWinOni();
+    }
+
+    public void ApperPanelWinner()
+    {
+        PanelWinner.SetActive(true);
+    }
+
+    public void ClosePanelWinner()
+    {
+        PanelWinner.SetActive(false);
+    }
+
+    public void ApperWinMomo()
+    {
+        WinMomo.SetActive(true);
+    }
+
+    public void CloseWinMomo()
+    {
+        WinMomo.SetActive(false);
+    }
+
+    public void ApperWinOni()
+    {
+        WinOni.SetActive(true);
+    }
+
+    public void CloseWinOni()
+    {
+        WinOni.SetActive(false);
     }
 
     //#################################################################################

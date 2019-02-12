@@ -25,8 +25,10 @@ public class CharaManager : MonoBehaviour {
     SiteManager SiteMSC;
     public GameObject TurnMarkManager;
     TurnMarkManager TurnMarkMSC;
+    public GameObject YakuManager;
+    YakuManager YakuMSC;
 
-    //    Image image;
+    Image image;
     String str;
 //    public Sprite SiteA_charaF;
 //    public GameObject SiteA_charaF;
@@ -69,7 +71,18 @@ public class CharaManager : MonoBehaviour {
 
     public Image AimedCharaFace;
     public GameObject AimedCharaNameText;
-//    public GameObject NowActiveCharaNameText;
+    //    public GameObject NowActiveCharaNameText;
+
+    public Image Winner01;  // 結果画面に勝利者を表示
+    public Image Winner02;
+    public Image Winner03;
+    public Image Winner04;
+
+    public int Win01AppearFlg = 0; // Win01がまだ表示されていない
+    public int Win02AppearFlg = 0;
+    public int Win03AppearFlg = 0;
+    public int Win04AppearFlg = 0;
+
 
 
     //☆################☆################  Start  ################☆################☆
@@ -79,6 +92,7 @@ public class CharaManager : MonoBehaviour {
         //countX = SiteMSC.human_num;
         SiteMSC = SiteManager.GetComponent<SiteManager>();
         TurnMarkMSC = TurnMarkManager.GetComponent<TurnMarkManager>();
+        YakuMSC = YakuManager.GetComponent<YakuManager>();
         //        image = this.GetComponent<Image>();
         //str = this.GetComponent<string>();
 
@@ -99,6 +113,7 @@ public class CharaManager : MonoBehaviour {
         AppearNowActiveSite(); // 下のスクロール欄に現在手番のキャラを表示させる
 
         CopyCharaFace(); // 役わりカードの上にキャラ顔を小さく表示させる
+        ResetWinAppearFlg();  // 勝利者表示フラグのリセット
     }
 
 
@@ -433,7 +448,74 @@ public class CharaManager : MonoBehaviour {
         SiteH_charaF_Copy.sprite = SiteH_charaF.sprite;
     }
 
-    //#################################################################################
+    
+    public void AppearWinTeam(int TeamNum, int x, int y, Image img, Image imgRole) // 【ゲーム終了後】勝ったチームのキャラを表示させる
+    {
+        if (x == TeamNum)  // そのキャラが[3]桃チーム/[1]おにチームであるならば、
+        {
+            if (y == 0)  // そのSite（キャラ）がまだ表示されていなければ、
+            {
+                if (Win01AppearFlg == 0)  // Win01がまだ表示されていなければ、
+                {
+                    Winner01.sprite = img.sprite;
+                    YakuMSC.WinRole01.sprite = imgRole.sprite;
+                    image = YakuMSC.WinRole01;
+                    image.SetNativeSize();
+                    y = 1;
+                    Win01AppearFlg = 1;
+                }
+            }
 
-}
+            if (y == 0)  // そのSite（キャラ）がまだ表示されていなければ、
+            {
+                if (Win02AppearFlg == 0)
+                {
+                    Winner02.sprite = img.sprite;
+                    YakuMSC.WinRole02.sprite = imgRole.sprite;
+                    image = YakuMSC.WinRole02;
+                    image.SetNativeSize();
+                    y = 1;
+                    Win02AppearFlg = 1;
+                }
+            }
+
+            if (y == 0)  // そのSite（キャラ）がまだ表示されていなければ、
+            {
+                if (Win03AppearFlg == 0)
+                {
+                    Winner03.sprite = img.sprite;
+                    YakuMSC.WinRole03.sprite = imgRole.sprite;
+                    image = YakuMSC.WinRole03;
+                    image.SetNativeSize();
+                    y = 1;
+                    Win03AppearFlg = 1;
+                }
+            }
+
+            if (y == 0)  // そのSite（キャラ）がまだ表示されていなければ、
+            {
+                if (Win04AppearFlg == 0)
+                {
+                    Winner04.sprite = img.sprite;
+                    YakuMSC.WinRole04.sprite = imgRole.sprite;
+                    image = YakuMSC.WinRole04;
+                    image.SetNativeSize();
+                    y = 1;
+                    Win04AppearFlg = 1;
+                }
+            }
+        }
+    }
+
+    public void ResetWinAppearFlg() // 勝利者表示フラグのリセット
+    {
+        Win01AppearFlg = 0;
+        Win02AppearFlg = 0;
+        Win03AppearFlg = 0;
+        Win04AppearFlg = 0;
+    }
+
+        //#################################################################################
+
+    }
 // End

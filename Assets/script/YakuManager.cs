@@ -71,6 +71,11 @@ public class YakuManager : MonoBehaviour {
     public GameObject DamageStar02;
     //    SpriteRenderer renderer;
 
+    public Image WinRole01;  // 結果画面に勝利者の役割を表示
+    public Image WinRole02;
+    public Image WinRole03;
+    public Image WinRole04;
+
 
     //☆################☆################  Start  ################☆################☆
 

@@ -23,18 +23,18 @@ public class SiteManager : MonoBehaviour
     public int NowActiveSiteN = 1;
     public int siteN = 0;   //サイト
     public int charaF = 0;  //キャラ顔
-//    public int charaN = 0;  //キャラname
+                            //    public int charaN = 0;  //キャラname
     public int huda = 0;    //キャラ判別木札
     public int rollC = 0;   //役わりカード
     public int HP = 0;      //体力
     public int ATK = 0;     //攻撃力
     public int[] turnM = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };    //順番マーク
-    public int[] charaN = { 0, 1, 2, 3, 4, 5, 6, 7, 8,9,10,11,12};    //VTuberのキャラネーム
+    public int[] charaN = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };    //VTuberのキャラネーム
     public int[] rollF = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };    //役わり顔
-//    public int[] StatusSite = { 1,1,1,1,1,1,1,1,1 };    //ステータス
-//    public int[] StatusSite = Enumerable.Repeat<int>(1, 9).ToArray();
-    //public int[] StatusSite = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };    //ステータス
-    //    public int[] DEX = { 0, 1, 2, 3, 4, 5, 6 };    //命中力
+                                                           //    public int[] StatusSite = { 1,1,1,1,1,1,1,1,1 };    //ステータス
+                                                           //    public int[] StatusSite = Enumerable.Repeat<int>(1, 9).ToArray();
+                                                           //public int[] StatusSite = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };    //ステータス
+                                                           //    public int[] DEX = { 0, 1, 2, 3, 4, 5, 6 };    //命中力
     public int DEX = 0; //命中力
     public int human_num = 1;
     int HandOfTime = 0;    // 「つぎの人に渡してね」のメッセージを表示させる
@@ -52,7 +52,7 @@ public class SiteManager : MonoBehaviour
     public int StatusSiteG = 1;
     public int StatusSiteH = 1;
 
-    public int teamSiteA = 0;  // 所属チーム :デフォルト「0」null
+    public int teamSiteA = 0;  // 所属チーム :デフォルト「0」null 、おにチーム「1」、桃チーム「3」
     public int teamSiteB = 0;
     public int teamSiteC = 0;
     public int teamSiteD = 0;
@@ -134,6 +134,15 @@ public class SiteManager : MonoBehaviour
     public GameObject WinOni;
     public GameObject ImageWinBack02;
 
+    public int SiteAWinAppearFlg = 0; // SiteAがまだ表示されていない
+    public int SiteBWinAppearFlg = 0; // SiteBがまだ表示されていない
+    public int SiteCWinAppearFlg = 0;
+    public int SiteDWinAppearFlg = 0;
+    public int SiteEWinAppearFlg = 0;
+    public int SiteFWinAppearFlg = 0;
+    public int SiteGWinAppearFlg = 0;
+    public int SiteHWinAppearFlg = 0;
+
     private void Awake()
     {
 
@@ -160,6 +169,7 @@ public class SiteManager : MonoBehaviour
         StartTurnNum();
         ReloadTurnNumUe();
         ClosePanelWinner();
+        ResetSiteWinAppearFlg();
         //        statusReset(); // ステータスをすべて1にする
     }
 
@@ -168,7 +178,7 @@ public class SiteManager : MonoBehaviour
 
     void Update()
     {
-        if(selectTimeActive)
+        if (selectTimeActive)
         {
             selectBottonA.SetActive(true);
             selectBottonB.SetActive(true);
@@ -294,7 +304,7 @@ public class SiteManager : MonoBehaviour
     {
         PanelCheckEnd.SetActive(true);
         FirstTimeCheck = false;
-//        CheckYourTurn();
+        //        CheckYourTurn();
 
     }
 
@@ -325,7 +335,6 @@ public class SiteManager : MonoBehaviour
 
     public void CheckYourTurn()
     {
-        WinHantei01();  // 勝ち負けの判定を行う
         TeamHanteiByKihuda();
         TeamHanteiByOpen01();
         Debug.Log("今このターンで何人目か？" + preventPlayerOrderNum);
@@ -363,12 +372,12 @@ public class SiteManager : MonoBehaviour
         }
         Debug.Log("今アクティブなサイトは" + NowActiveSiteN);
         CharaMSC.AppearNowActiveSite();
-        if(FirstTimeCheck)
+        if (FirstTimeCheck)
         {
             preventPlayerOrderNum++;
         }
         KizetuSkipTurn();
-//        Debug.Log("次このターンで何人目か？" + preventPlayerOrderNum);
+        //        Debug.Log("次このターンで何人目か？" + preventPlayerOrderNum);
     }
 
     public void KizetuSkipTurn()
@@ -440,8 +449,8 @@ public class SiteManager : MonoBehaviour
         CheckYourTurn();
     }
 
-        #region  Site_Aimed
-        public void SiteAimedHantei(int x, int y)
+    #region  Site_Aimed
+    public void SiteAimedHantei(int x, int y)
     {
         Debug.Log("int x: " + x);
         Debug.Log("int y: " + y);
@@ -536,7 +545,7 @@ public class SiteManager : MonoBehaviour
         CommonAimedOK();
     }
 
-        public void CommonAimedOK()
+    public void CommonAimedOK()
     {
         SEMSC.cursor_SE();
         TurnActMode();
@@ -701,7 +710,7 @@ public class SiteManager : MonoBehaviour
             YosouNo();
         }
     }
-    
+
     public void YosouMomomates()
     {
         Debug.Log("TargetSiteNum：" + TargetSiteNum);
@@ -772,7 +781,7 @@ public class SiteManager : MonoBehaviour
 
     public void CheckOpenYakuCard()   // 当てられた相手の画像オープン
     {
-       if(TargetSiteNum == 1)
+        if (TargetSiteNum == 1)
         {
             YakuMSC.OpenYakuCardA();
             StatusSiteA = 4;
@@ -979,7 +988,7 @@ public class SiteManager : MonoBehaviour
         if (TargetSiteNum == 1)
         {
             HPMSC.HP_A--;
-            if(HPMSC.HP_A<=0)
+            if (HPMSC.HP_A <= 0)
             {
                 StatusSiteA = 5;
             }
@@ -1045,7 +1054,7 @@ public class SiteManager : MonoBehaviour
 
     public void CheckFainting()
     {
-        if(StatusSiteA ==5 || StatusSiteB == 5 || StatusSiteC == 5 || StatusSiteD == 5 || StatusSiteE == 5 || StatusSiteF == 5 || StatusSiteG == 5 || StatusSiteH == 5)
+        if (StatusSiteA == 5 || StatusSiteB == 5 || StatusSiteC == 5 || StatusSiteD == 5 || StatusSiteE == 5 || StatusSiteF == 5 || StatusSiteG == 5 || StatusSiteH == 5)
         {
             faintingOccured = true;  // ステータス「気絶した瞬間」のプレイヤーがいる
         }
@@ -1060,6 +1069,7 @@ public class SiteManager : MonoBehaviour
         var sequence = DOTween.Sequence();
         sequence.InsertCallback(1f, () => SEMSC.kizetu_SE());
         sequence.InsertCallback(1f, () => KizetuMarkAppear());
+        sequence.InsertCallback(1.2f, () => WinHantei01());   // 勝ち負けの判定を行う
     }
 
     public void KizetuMarkAppear()
@@ -1135,8 +1145,8 @@ public class SiteManager : MonoBehaviour
         AddpreventTurnNum();
         StartTurnNum();
         ReloadTurnNumUe();
-//        var sequence = DOTween.Sequence();
-//        sequence.InsertCallback(1.5f, () => PanelTurnNumberClose());
+        //        var sequence = DOTween.Sequence();
+        //        sequence.InsertCallback(1.5f, () => PanelTurnNumberClose());
     }
 
     public void PanelTurnNumberClose() // ●非表示にする
@@ -1244,6 +1254,18 @@ public class SiteManager : MonoBehaviour
         }
     }
 
+    public void TeamHanteiAll()  // （強制的に）全員の所属チームの判定を行う
+    {
+        teamSiteA = TeamHanteiByOpen02(1);   // 所属チームを明らかにする
+        teamSiteB = TeamHanteiByOpen02(2);   // 所属チームを明らかにする
+        teamSiteC = TeamHanteiByOpen02(3);   // 所属チームを明らかにする
+        teamSiteD = TeamHanteiByOpen02(4);   // 所属チームを明らかにする
+        teamSiteE = TeamHanteiByOpen02(5);   // 所属チームを明らかにする
+        teamSiteF = TeamHanteiByOpen02(6);   // 所属チームを明らかにする
+        teamSiteG = TeamHanteiByOpen02(7);   // 所属チームを明らかにする
+        teamSiteH = TeamHanteiByOpen02(8);   // 所属チームを明らかにする
+    }
+
     public void TeamHanteiByOpen01()  // 役割カードがオープンしていたら所属チームの判定を行う
     {
         if (StatusSiteA >= 3)  //  役割カードがオープンしていたら
@@ -1299,6 +1321,8 @@ public class SiteManager : MonoBehaviour
         }
     }
 
+
+
     public void WinHantei01()  // 勝ち負けの判定を行う
     {
         MomoMakePoint = 0;   // 桃チームの負けポイント初期化
@@ -1339,6 +1363,8 @@ public class SiteManager : MonoBehaviour
         {
             // 鬼チームの勝利である
             StartWinPhase();
+            TeamHanteiAll();
+            CheckWinTeam(1); // チームナンバー： 1（おにチーム）
             ApperWinOni();
         }
     }
@@ -1359,6 +1385,8 @@ public class SiteManager : MonoBehaviour
         {
             // 桃チームの勝利である
             StartWinPhase();
+            TeamHanteiAll();
+            CheckWinTeam(3); // チームナンバー： 3（桃チーム）
             ApperWinMomo();
         }
 
@@ -1403,6 +1431,31 @@ public class SiteManager : MonoBehaviour
     public void CloseWinOni()
     {
         WinOni.SetActive(false);
+    }
+
+
+    public void ResetSiteWinAppearFlg()
+    {
+        SiteAWinAppearFlg = 0;
+        SiteBWinAppearFlg = 0;
+        SiteCWinAppearFlg = 0;
+        SiteDWinAppearFlg = 0;
+        SiteEWinAppearFlg = 0;
+        SiteFWinAppearFlg = 0;
+        SiteGWinAppearFlg = 0;
+        SiteHWinAppearFlg = 0;
+    }
+
+    public void CheckWinTeam(int T)  // ゲームの勝利確定時、勝ったチームのキャラを表示させる
+    {
+        CharaMSC.AppearWinTeam(T, teamSiteA, SiteAWinAppearFlg, CharaMSC.SiteA_charaF, YakuMSC.SiteA_rollF);
+        CharaMSC.AppearWinTeam(T, teamSiteB, SiteBWinAppearFlg, CharaMSC.SiteB_charaF, YakuMSC.SiteB_rollF);
+        CharaMSC.AppearWinTeam(T, teamSiteC, SiteCWinAppearFlg, CharaMSC.SiteC_charaF, YakuMSC.SiteC_rollF);
+        CharaMSC.AppearWinTeam(T, teamSiteD, SiteDWinAppearFlg, CharaMSC.SiteD_charaF, YakuMSC.SiteD_rollF);
+        CharaMSC.AppearWinTeam(T, teamSiteE, SiteEWinAppearFlg, CharaMSC.SiteE_charaF, YakuMSC.SiteE_rollF);
+        CharaMSC.AppearWinTeam(T, teamSiteF, SiteFWinAppearFlg, CharaMSC.SiteF_charaF, YakuMSC.SiteF_rollF);
+        CharaMSC.AppearWinTeam(T, teamSiteG, SiteGWinAppearFlg, CharaMSC.SiteG_charaF, YakuMSC.SiteG_rollF);
+        CharaMSC.AppearWinTeam(T, teamSiteH, SiteHWinAppearFlg, CharaMSC.SiteH_charaF, YakuMSC.SiteH_rollF);
     }
 
     //#################################################################################

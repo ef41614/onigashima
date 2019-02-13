@@ -7,7 +7,7 @@ public class Blink : MonoBehaviour
 {
 
     //public
-     float speed = 1.0f;   // デフォルトは 1.0
+    public float speed = 1.0f;   // デフォルトは 1.0
 
     //private
     private Text text;

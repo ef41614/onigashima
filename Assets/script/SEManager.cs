@@ -22,7 +22,9 @@ public class SEManager : MonoBehaviour {
     public AudioClip suka;
     public AudioClip kizetu;
     public AudioClip hyoushigi1;
+    public AudioClip hyoushigi2_long;
     public AudioClip kotsudumi1;
+    public AudioClip taiko1;
 
 
     //☆################☆################  Start  ################☆################☆
@@ -104,12 +106,21 @@ public class SEManager : MonoBehaviour {
     {
         audioSource2.PlayOneShot(hyoushigi1);
     }
+       
+    public void hyoushigi2_long_SE()
+    {
+        audioSource2.PlayOneShot(hyoushigi2_long);
+    }
 
     public void kotsudumi1_SE()
     {
         audioSource2.PlayOneShot(kotsudumi1);
     }
-    
+
+    public void taiko1_SE()
+    {
+        audioSource2.PlayOneShot(taiko1);
+    }
 
     //#################################################################################
 

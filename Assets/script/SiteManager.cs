@@ -18,6 +18,7 @@ public class SiteManager : MonoBehaviour
     public GameObject PanelCheckEnd;
     public GameObject CanvasRollCheck;
     public GameObject CanvasPlayPlace;
+    public GameObject PanelRollCheck;
 
     public int TotalSurvivalSiteN = 8;
     public int NowActiveSiteN = 1;
@@ -128,6 +129,10 @@ public class SiteManager : MonoBehaviour
     public GameObject PanelTurnNumber;
     public GameObject TurnNumNami;    // ターン開始時に中央に表示する
     public GameObject TurnNumUe;    // 何ターン目かを画面上に表示する
+    public float NextTurnWait = 0.1f;  // 「〇ターンめ」の画面を表示するまで待つ時間
+
+    public GameObject PanelMAKU;  // 定式幕
+    public int MakuMoveMode = 0;  // 0:停止, 1:右（オープン）, 2:左（）クローズ
 
     public GameObject PanelWinner;  // 〇〇チームの勝利 を表示する
     public GameObject WinMomo;
@@ -170,6 +175,8 @@ public class SiteManager : MonoBehaviour
         ReloadTurnNumUe();
         ClosePanelWinner();
         ResetSiteWinAppearFlg();
+        AppearPanelRollCheck();
+        AppearPanelMAKU();
         //        statusReset(); // ステータスをすべて1にする
     }
 
@@ -200,6 +207,19 @@ public class SiteManager : MonoBehaviour
             selectBottonG.SetActive(false);
             selectBottonH.SetActive(false);
         }
+
+
+        Vector2 Position = PanelMAKU.gameObject.transform.position;
+//        Debug.Log("Position.x : "+ Position.x);
+        if (Position.x <= 550 && MakuMoveMode == 1)
+        {
+            Position.x += 2.0f;  // 右に幕を移動（開ける）
+        }
+        if (Position.x >= 100 && MakuMoveMode == 2)
+        {
+            Position.x -= 2.0f;  // 左に幕を移動（とじる）
+        }
+        PanelMAKU.gameObject.transform.position = Position;
 
     }
 
@@ -266,11 +286,14 @@ public class SiteManager : MonoBehaviour
         }
         else if (HandOfTime == 0)
         {
+            SEMSC.hyoushigi2_long_SE();
             var sequence = DOTween.Sequence();
             sequence.InsertCallback(0.1f, () => AppearPanelCheckEnd());
-            sequence.InsertCallback(3.5f, () => AppearCanvasPlayPlace());
+            sequence.InsertCallback(0.2f, () => ClosePanelRollCheck());
+            sequence.InsertCallback(1.5f, () => SwitchMakuMoveMode1());
+            sequence.InsertCallback(1.5f, () => AppearCanvasPlayPlace());
             sequence.InsertCallback(3.8f, () => CheckYourTurn());
-            sequence.InsertCallback(3.7f, () => CloseCanvasRollCheck());
+            sequence.InsertCallback(4.5f, () => CloseCanvasRollCheck());
             HandOfTime--;
         }
         else
@@ -278,6 +301,26 @@ public class SiteManager : MonoBehaviour
             CheckYourTurn();
             CloseCanvasRollCheck();
         }
+    }
+
+    public void SwitchMakuMoveMode0()
+    {
+        MakuMoveMode = 0;
+    }
+
+    public void SwitchMakuMoveMode1()  // 幕を右へオープン
+    {
+        MakuMoveMode = 1;
+    }
+
+    public void SwitchMakuMoveMode2()  // 幕を左へクローズ
+    {
+        MakuMoveMode = 2;
+    }
+       
+    public void AppearPanelMAKU()
+    {
+        PanelMAKU.SetActive(true);
     }
 
     public void AppearPanelHandToNext()
@@ -305,12 +348,21 @@ public class SiteManager : MonoBehaviour
         PanelCheckEnd.SetActive(true);
         FirstTimeCheck = false;
         //        CheckYourTurn();
-
     }
 
     public void ClosePanelCheckEnd()
     {
         PanelCheckEnd.SetActive(false);
+    }
+
+    public void AppearPanelRollCheck()
+    {
+        PanelRollCheck.SetActive(true);
+    }
+
+    public void ClosePanelRollCheck()
+    {
+        PanelRollCheck.SetActive(false);
     }
 
     public void AppearCanvasRollCheck()
@@ -1057,6 +1109,7 @@ public class SiteManager : MonoBehaviour
         if (StatusSiteA == 5 || StatusSiteB == 5 || StatusSiteC == 5 || StatusSiteD == 5 || StatusSiteE == 5 || StatusSiteF == 5 || StatusSiteG == 5 || StatusSiteH == 5)
         {
             faintingOccured = true;  // ステータス「気絶した瞬間」のプレイヤーがいる
+            NextTurnWait = 2.5f;
         }
         else
         {
@@ -1136,7 +1189,10 @@ public class SiteManager : MonoBehaviour
         preventPlayerOrderNum = 1;
         shakeTurnMark();
         TurnMarkMSC.TurnMarkSetStart();
-        PanelTurnNumberAppear();
+
+        var sequence = DOTween.Sequence();
+        sequence.InsertCallback(NextTurnWait, () => PanelTurnNumberAppear());
+//        PanelTurnNumberAppear();
     }
 
     public void PanelTurnNumberAppear() // ●「〇ターンめです」 を表示させる 
@@ -1145,6 +1201,7 @@ public class SiteManager : MonoBehaviour
         AddpreventTurnNum();
         StartTurnNum();
         ReloadTurnNumUe();
+        NextTurnWait = 0.1f;
         //        var sequence = DOTween.Sequence();
         //        sequence.InsertCallback(1.5f, () => PanelTurnNumberClose());
     }
@@ -1392,16 +1449,29 @@ public class SiteManager : MonoBehaviour
 
         else  // 役わりカードが こおに → 何もおきない（勝ち負けに影響しない）
         {
-
         }
     }
 
     public void StartWinPhase()  // 勝ち負けが決まったら、まず初めに動き出すフェーズ
     {
-        ApperPanelWinner();
-        CloseWinMomo();
-        CloseWinOni();
+        var sequence = DOTween.Sequence();
+        CloseWinMomo();  // 勝ちマーク クローズ（初期化）
+        CloseWinOni();   // 勝ちマーク クローズ（初期化）
+        SwitchMakuMoveMode2();  // 幕を左へクローズ
+        SEMSC.hyoushigi2_long_SE();
+        sequence.InsertCallback(5.8f, () => ApperPanelWinner());  // 数秒後、win画面表示
     }
+
+    public void AppearImageWinBack02()
+    {
+        ImageWinBack02.SetActive(true);
+    }
+
+    public void CloseImageWinBack02()
+    {
+        ImageWinBack02.SetActive(false);
+    }
+
 
     public void ApperPanelWinner()
     {

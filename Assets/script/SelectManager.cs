@@ -168,6 +168,12 @@ public class SelectManager : MonoBehaviour
     public void CloseWindow3()
     {
         PanelNextToScene.SetActive(false);
+        var sequence = DOTween.Sequence();
+        sequence.InsertCallback(0.5f, () => StartGameScene());
+    }
+
+    public void StartGameScene()
+    {
         SceneManager.LoadScene("GameScene");
     }
 

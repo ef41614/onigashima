@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using System.Linq;
 using System;
+using UnityEngine.SceneManagement;
 
 public class MainFlow : MonoBehaviour {
 
@@ -36,6 +37,20 @@ public class MainFlow : MonoBehaviour {
     }
 
     //####################################  other  ####################################
+
+    public void LoadGameScene()
+    {
+        var sequence = DOTween.Sequence();
+        sequence.InsertCallback(0.5f, () => LoadGameScene2());  // 数秒後、ロード開始
+
+    }
+
+    public void LoadGameScene2()
+    {
+        SceneManager.LoadScene("GameScene");
+    }
+
+
     //#################################################################################
 
 }

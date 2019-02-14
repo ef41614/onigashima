@@ -130,6 +130,16 @@ public class SiteManager : MonoBehaviour
     public GameObject TurnNumNami;    // ターン開始時に中央に表示する
     public GameObject TurnNumUe;    // 何ターン目かを画面上に表示する
     public float NextTurnWait = 0.1f;  // 「〇ターンめ」の画面を表示するまで待つ時間
+    public Image Eyecatch;  // ターン開始時にアイキャッチ画像を中央に表示する
+
+    public Sprite EyecatchImage01;
+    public Sprite EyecatchImage02;
+    public Sprite EyecatchImage03;
+    public Sprite EyecatchImage04;
+    public Sprite EyecatchImage05;
+    public Sprite EyecatchImage06;
+    public Sprite EyecatchImage07;
+    public Sprite EyecatchImage08;
 
     public GameObject PanelMAKU;  // 定式幕
     public int MakuMoveMode = 0;  // 0:停止, 1:右（オープン）, 2:左（）クローズ
@@ -148,6 +158,10 @@ public class SiteManager : MonoBehaviour
     public int SiteGWinAppearFlg = 0;
     public int SiteHWinAppearFlg = 0;
 
+    public GameObject CheckBoxes;
+
+        
+    // --------------------------------------------
     private void Awake()
     {
 
@@ -177,6 +191,8 @@ public class SiteManager : MonoBehaviour
         ResetSiteWinAppearFlg();
         AppearPanelRollCheck();
         AppearPanelMAKU();
+        preventTurnNum = 1;
+        AppearEyecatch();
         //        statusReset(); // ステータスをすべて1にする
     }
 
@@ -737,7 +753,7 @@ public class SiteManager : MonoBehaviour
         }
         else if (rollF[TargetSiteNum] == 5) // おにのおやぶん
         {
-            AnswerSerifText.GetComponent<Text>().text = "おさけだ！ おさけ もってこい！";
+            AnswerSerifText.GetComponent<Text>().text = "おさけだ！ おさけ もってこーい！";
         }
         else if (rollF[TargetSiteNum] >= 6 && rollF[TargetSiteNum] <= 8) // こオニたち
         {
@@ -816,6 +832,7 @@ public class SiteManager : MonoBehaviour
 
     public void YosouYes()
     {
+        NextTurnWait = 1.0f;  // 次のターンに行くまでの待機時間
         JudgeAnswerText.GetComponent<Text>().text = "はい、そうです";
         var sequence = DOTween.Sequence();
         sequence.InsertCallback(0.5f, () => YosouYes2());
@@ -1197,6 +1214,7 @@ public class SiteManager : MonoBehaviour
 
     public void PanelTurnNumberAppear() // ●「〇ターンめです」 を表示させる 
     {
+        AppearEyecatch();
         PanelTurnNumber.SetActive(true);
         AddpreventTurnNum();
         StartTurnNum();
@@ -1204,6 +1222,47 @@ public class SiteManager : MonoBehaviour
         NextTurnWait = 0.1f;
         //        var sequence = DOTween.Sequence();
         //        sequence.InsertCallback(1.5f, () => PanelTurnNumberClose());
+    }
+
+    public void AppearEyecatch()
+    {
+        int eyecatchNum = UnityEngine.Random.Range(1, 9);
+        Debug.Log("これからAppearEyecatch :::" + eyecatchNum);
+        switch (eyecatchNum)
+        {
+            case 1: //
+                Eyecatch.sprite = EyecatchImage01;
+                break;
+            case 2: //
+                Eyecatch.sprite = EyecatchImage02;
+                break;
+            case 3: //
+                Eyecatch.sprite = EyecatchImage03;
+                break;
+            case 4: //
+                Eyecatch.sprite = EyecatchImage04;
+                break;
+            case 5: //
+                Eyecatch.sprite = EyecatchImage05;
+                break;
+            case 6: //
+                Eyecatch.sprite = EyecatchImage06;
+                break;
+            case 7: //
+                Eyecatch.sprite = EyecatchImage07;
+                break;
+            case 8: //
+                Eyecatch.sprite = EyecatchImage08;
+                break;
+            default:
+                // その他処理
+                break;
+        }
+    }
+
+    public void ResetWaitTime()
+    {
+        NextTurnWait = 0.1f;
     }
 
     public void PanelTurnNumberClose() // ●非表示にする
@@ -1460,6 +1519,7 @@ public class SiteManager : MonoBehaviour
         SwitchMakuMoveMode2();  // 幕を左へクローズ
         SEMSC.hyoushigi2_long_SE();
         sequence.InsertCallback(5.8f, () => ApperPanelWinner());  // 数秒後、win画面表示
+        CloseCheckBoxes();
     }
 
     public void AppearImageWinBack02()
@@ -1503,6 +1563,15 @@ public class SiteManager : MonoBehaviour
         WinOni.SetActive(false);
     }
 
+    public void AppearCheckBoxes()
+    {
+        CheckBoxes.SetActive(true);
+    }
+
+    public void CloseCheckBoxes()
+    {
+        CheckBoxes.SetActive(false);
+    }
 
     public void ResetSiteWinAppearFlg()
     {

@@ -160,7 +160,13 @@ public class SiteManager : MonoBehaviour
 
     public GameObject CheckBoxes;
 
-        
+    public int OniLevel;  // SelectM で選択した「おにの強さ」を引き継いだもの
+    public bool KabauFlg = false;  // 「かばう」の発動フラグ
+    int OyabunHP = 3;
+    int ActiveKooni = 0;
+    public GameObject KabaiKooni;
+    Vector2 KabaiKooniPositon;
+
     // --------------------------------------------
     private void Awake()
     {
@@ -194,6 +200,8 @@ public class SiteManager : MonoBehaviour
         preventTurnNum = 1;
         AppearEyecatch();
         //        statusReset(); // ステータスをすべて1にする
+        OniLevel = SelectManager.getOniStrong(); // ゲッター関数を呼び出し、値を引き継ぐ
+        KabaiKooniPositon = KabaiKooni.transform.position;  // かばいこおにの現在位置をPositionに代入
     }
 
 
@@ -255,7 +263,7 @@ public class SiteManager : MonoBehaviour
 
     public void convertSiteInfo()
     {
-        charaN[1] = SelectManager.getSiteAInfo(); // siteAの情報が charaN[1] に1～12の数値として代入される
+        charaN[1] = SelectManager.getSiteAInfo(); // SelectManagerで決めたsiteAの情報が charaN[1] に1～12の数値として代入される
         charaN[2] = SelectManager.getSiteBInfo();
         charaN[3] = SelectManager.getSiteCInfo();
         charaN[4] = SelectManager.getSiteDInfo();
@@ -908,6 +916,7 @@ public class SiteManager : MonoBehaviour
 
     public void PenaltyOpenYakuCard02()
     {
+        Debug.Log("◆◎ペナルティーでオープンします");
         Debug.Log("◆◎NowActiveSiteN：" + NowActiveSiteN);
         if (NowActiveSiteN == 1)
         {
@@ -971,19 +980,24 @@ public class SiteManager : MonoBehaviour
         }
     }
 
-    public void JudgeHitting()
+    public void JudgeHitting()   // ★更新
     {
         Debug.Log("◆◎DEX：" + DEX);   // この値以下なら、攻撃成功
         int accuracy = UnityEngine.Random.Range(1, 7); // 攻撃が当たるかどうかのランダム数値
 
         if (1 <= accuracy && accuracy <= DEX)
         {
-            // 攻撃成功
-            SEMSC.punch_SE();
-            AttackHitSerif();
-            DecreaseHP();
-            HPMSC.HP_check();
-            YakuMSC.DamageTenmetu();      // ← ☆ NEW ☆  役職カードを点滅させる
+            CheckKabau();  // 「かばう」発動条件に合致しているか確認
+
+            if (KabauFlg)  // 合致している → 「かばう」発動！
+            {
+                ProtectOyabun();
+            }
+            else          // 合致していない → 無事攻撃成功！
+            {
+                SuccessHitting();
+            }
+            KabauFlg = false; // かばうフラグを初期化
         }
         else if (DEX <= accuracy && accuracy <= 7)
         {
@@ -996,6 +1010,184 @@ public class SiteManager : MonoBehaviour
             sequence.InsertCallback(2f, () => CloseMissText());  // Miss を非表示にする
         }
     }
+
+    public void SuccessHitting()   // 攻撃成功   ★別枠にして新規追加
+    {
+        SEMSC.punch_SE();
+        AttackHitSerif();
+        DecreaseHP();
+        HPMSC.HP_check();
+        YakuMSC.DamageTenmetu();      // 役職カードを点滅させる
+    }
+
+    public void CheckKabau()  // 「かばう」発動条件の確認 ★新規追加
+    {
+        Debug.Log("◆◎OniLevel：" + OniLevel);   // この値が1以下なら、「かばう」発動しない
+        if (OniLevel >= 2)
+        {
+            if (rollF[TargetSiteNum] == 5)       // 狙われた人の役割が「オニのおやぶんである」
+            {
+                CheckOyabunHP();
+                if (OyabunHP == 1)                // おやぶんの残り体力が「1」である
+                {
+                    CheckActiveKooni();
+                    if(ActiveKooni >= 1)// 元気な こオニが1人以上いる
+                    {
+                        int accuracy = UnityEngine.Random.Range(1, 7); // かばうが成功するかどうかのランダム数値  
+                        if (1 <= accuracy && accuracy <= 7)   // ★一時的に7
+                        {
+                            KabauFlg = true;  // かばう条件を満たしている →かばうフラグをON → 「かばう」発動！
+                        }
+                    }
+                        
+                }
+            }
+        }
+    }
+
+    public void CheckOyabunHP()  // おやぶんの残り体力を確認する
+    {
+        if (TargetSiteNum == 1)
+        {
+            OyabunHP = HPMSC.HP_A;
+        }
+        else if (TargetSiteNum == 2)
+        {
+            OyabunHP = HPMSC.HP_B;
+        }
+        else if (TargetSiteNum == 3)
+        {
+            OyabunHP = HPMSC.HP_C;
+        }
+        else if (TargetSiteNum == 4)
+        {
+            OyabunHP = HPMSC.HP_D;
+        }
+        else if (TargetSiteNum == 5)
+        {
+            OyabunHP = HPMSC.HP_E;
+        }
+        else if (TargetSiteNum == 6)
+        {
+            OyabunHP = HPMSC.HP_F;
+        }
+        else if (TargetSiteNum == 7)
+        {
+            OyabunHP = HPMSC.HP_G;
+        }
+        else if (TargetSiteNum == 8)
+        {
+            OyabunHP = HPMSC.HP_H;
+        }
+    }
+
+    public void CheckActiveKooni()  // 元気なこオニの人数を確認
+    {
+        ActiveKooni = 0;  // 確認開始時に初期化する
+
+        if (rollF[1] >= 6 && rollF[1] <= 8) // 役割が こオニ である
+        {
+            if (StatusSiteA <= 4)  //  状態（ステータス）が元気である
+            {
+                ActiveKooni++;
+            }
+        }
+        if (rollF[2] >= 6 && rollF[2] <= 8) // 役割が こオニ である
+        {
+            if (StatusSiteB <= 4)  //  状態（ステータス）が元気である
+            {
+                ActiveKooni++;
+            }
+        }
+        if (rollF[3] >= 6 && rollF[3] <= 8) // 役割が こオニ である
+        {
+            if (StatusSiteC <= 4)  //  状態（ステータス）が元気である
+            {
+                ActiveKooni++;
+            }
+        }
+        if (rollF[4] >= 6 && rollF[4] <= 8) // 役割が こオニ である
+        {
+            if (StatusSiteD <= 4)  //  状態（ステータス）が元気である
+            {
+                ActiveKooni++;
+            }
+        }
+        if (rollF[5] >= 6 && rollF[5] <= 8) // 役割が こオニ である
+        {
+            if (StatusSiteE <= 4)  //  状態（ステータス）が元気である
+            {
+                ActiveKooni++;
+            }
+        }
+        if (rollF[6] >= 6 && rollF[6] <= 8) // 役割が こオニ である
+        {
+            if (StatusSiteF <= 4)  //  状態（ステータス）が元気である
+            {
+                ActiveKooni++;
+            }
+        }
+        if (rollF[7] >= 6 && rollF[7] <= 8) // 役割が こオニ である
+        {
+            if (StatusSiteG <= 4)  //  状態（ステータス）が元気である
+            {
+                ActiveKooni++;
+            }
+        }
+        if (rollF[8] >= 6 && rollF[8] <= 8) // 役割が こオニ である
+        {
+            if (StatusSiteH <= 4)  //  状態（ステータス）が元気である
+            {
+                ActiveKooni++;
+            }
+        }
+    }
+
+
+    #region ProtectOyabunGroup    おやぶんをかばう動作の本丸フェーズ
+    public void ProtectOyabun()  // かばう条件を満たしている → 「かばう」発動！
+    {
+        var sequence = DOTween.Sequence();
+        Debug.Log("◆◎「かばう」発動！");
+        SetPositionKabaiKooni();  // こおにの位置を初期化
+        AppearKabaiKooni();       // こおにが、おやぶんの横位置に現れる
+        SlideKabaiKooni();        // こおにが 横に移動する
+        // こおに のセリフ
+        // こおに にダメージ当たる
+        // かばった のメッセージ表示
+        sequence.InsertCallback(2f, () => CloseKabaiKooni()); // こおにを非表示にする
+        // こおに のHPを減らす（おやぶんの体力はそのまま）
+    }
+
+    public void SetPositionKabaiKooni()  // こおにの位置を初期化
+    {
+        KabaiKooni.transform.position = KabaiKooniPositon;
+        Debug.Log("◆こおにの位置を初期化");
+    }
+
+    public void AppearKabaiKooni()  // こおにが、おやぶんの横位置に現れる
+    {
+        KabaiKooni.SetActive(true);
+        Debug.Log("◆こおにが、おやぶんの横位置に現れる");
+    }
+
+    public void SlideKabaiKooni()  // こおにが 横に移動する
+    {
+        //       KabaiKooni.transform.DOMove(endValue: new Vector2(-5.0f, 0), duration: 0.5f);
+        //        KabaiKooni.transform.DOLocalMove(endValue: new Vector2(5.0f, 0), duration: 0.5f);
+         KabaiKooni.transform.DOLocalMoveX(-30.5f, 0.5f);
+        // KabaiKooni.transform.DOMoveX(-1f, 0.5f);
+
+        Debug.Log("◆こおにが 横に移動する");
+    }
+
+    public void CloseKabaiKooni()
+    {
+        KabaiKooni.SetActive(false);
+        Debug.Log("◆こおにを非表示にする");
+    }
+
+    #endregion
 
     public void CloseMissText()
     {
@@ -1283,13 +1475,14 @@ public class SiteManager : MonoBehaviour
     public void AddpreventTurnNum()  // ターン番号をプラスする
     {
         Debug.Log("今のターンはpreventTurnNumでした :::" + preventTurnNum);
-        if (preventTurnNum < 5) // 1～8人目のターンの時
+        if (preventTurnNum < 4) // 1～8人目のターンの時
         {
             preventTurnNum++;
         }
-        else if (preventTurnNum >= 5)  // そのターンがすべて終わり、次のターンに行く
+        if (preventTurnNum >= 4)  // そのターンがすべて終わり、次のターンに行く
         {
-            preventTurnNum = 1;
+            Debug.Log("3ターン経過。これでおにチームの勝ち確定:::" + preventTurnNum);
+            WinOniTeam();   // 鬼チームの勝利である
         }
         Debug.Log("これからのターンはpreventTurnNum です:::" + preventTurnNum);
 
@@ -1478,10 +1671,7 @@ public class SiteManager : MonoBehaviour
         if (MomoMakePoint >= 13)  // 桃チームのメンバーが全員きぜつしていたら
         {
             // 鬼チームの勝利である
-            StartWinPhase();
-            TeamHanteiAll();
-            CheckWinTeam(1); // チームナンバー： 1（おにチーム）
-            ApperWinOni();
+            WinOniTeam();
         }
     }
 
@@ -1500,15 +1690,28 @@ public class SiteManager : MonoBehaviour
         else if (rollF[x] == 5) // 役わりカードが おにのおやぶん
         {
             // 桃チームの勝利である
-            StartWinPhase();
-            TeamHanteiAll();
-            CheckWinTeam(3); // チームナンバー： 3（桃チーム）
-            ApperWinMomo();
+            WinMomoTeam();
         }
 
         else  // 役わりカードが こおに → 何もおきない（勝ち負けに影響しない）
         {
         }
+    }
+
+    public void WinMomoTeam() // ももチーム勝利判定時の処理
+    {
+        StartWinPhase();
+        TeamHanteiAll();
+        CheckWinTeam(3); // チームナンバー： 3（桃チーム）
+        ApperWinMomo();
+    }
+
+    public void WinOniTeam() // 鬼チーム勝利判定時の処理
+    {
+        StartWinPhase();
+        TeamHanteiAll();
+        CheckWinTeam(1); // チームナンバー： 1（おにチーム）
+        ApperWinOni();
     }
 
     public void StartWinPhase()  // 勝ち負けが決まったら、まず初めに動き出すフェーズ

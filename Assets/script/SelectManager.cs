@@ -75,6 +75,18 @@ public class SelectManager : MonoBehaviour
     bool InputOKFlg = false;  // 各サイトにキャラ番号情報（数値）を入力できるフラグ
     public int[] charaN = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 }; //VTuberのキャラネーム
 
+    public static int OniStrong = 2;  // 鬼チームの強さ： 2（デフォルト）が「ふつう」
+
+    bool SelectedFlgOni01 = false;  // よわい
+    bool SelectedFlgOni02 = false;  // ふつう
+    bool SelectedFlgOni03 = false;  // つよい
+    bool SelectedFlgOni04 = false;  // ちょつよ
+
+    public GameObject ImageOniStr01;
+    public GameObject ImageOniStr02;
+    public GameObject ImageOniStr03;
+    public GameObject ImageOniStr04;
+
     //☆################☆################  Start  ################☆################☆
 
     void Start()
@@ -97,6 +109,10 @@ public class SelectManager : MonoBehaviour
 
 //        image = this.GetComponent<Image>();
         Check_numberOfPersons();
+        ResetSelectOniStrong();  // おにチームの強さを一旦リセットする
+        SelectOnistr02();   // 初期設定「ふつう」にする
+        CheckSelectedOniStr();  // 選択されている強さをアピールする（黄色背景点滅）
+
     }
 
 
@@ -104,7 +120,7 @@ public class SelectManager : MonoBehaviour
 
     void Update()
     {
-
+        Debug.Log("OniStrong == " + OniStrong);
 
     }
 
@@ -784,6 +800,77 @@ public class SelectManager : MonoBehaviour
         return hito_num;
     }
     #endregion
+
+    public void ResetSelectOniStrong()  // フラグをすべてfalseにする（あくまでフラグのみ。これだけでは非表示にならない）
+    {
+        SelectedFlgOni01 = false;
+        SelectedFlgOni02 = false;
+        SelectedFlgOni03 = false;
+        SelectedFlgOni04 = false;
+    }
+
+    public void SelectOnistr01()
+    {
+        SelectedFlgOni01 = true;
+    }
+
+    public void SelectOnistr02()
+    {
+        SelectedFlgOni02 = true;
+    }
+
+    public void SelectOnistr03()
+    {
+        SelectedFlgOni03 = true;
+    }
+
+    public void SelectOnistr04()
+    {
+        SelectedFlgOni04 = true;
+    }
+
+    public void CheckSelectedOniStr()
+    {
+        CloseSelectedOniStr();  // まず、全部消す
+        AppearSelectedOniStr();  // 次に、条件にあった物のみ表示させる
+    }
+
+    public void AppearSelectedOniStr()
+    {
+        if (SelectedFlgOni01)
+        {
+            ImageOniStr01.SetActive(true);
+            OniStrong = 1;
+        }
+        if (SelectedFlgOni02)
+        {
+            ImageOniStr02.SetActive(true);
+            OniStrong = 2;
+        }
+        if (SelectedFlgOni03)
+        {
+            ImageOniStr03.SetActive(true);
+            OniStrong = 3;
+        }
+        if (SelectedFlgOni04)
+        {
+            ImageOniStr04.SetActive(true);
+            OniStrong = 4;
+        }
+    }
+
+    public void CloseSelectedOniStr()
+    {
+        ImageOniStr01.SetActive(false);
+        ImageOniStr02.SetActive(false);
+        ImageOniStr03.SetActive(false);
+        ImageOniStr04.SetActive(false);
+    }
+
+    public static int getOniStrong()  // ゲッターの関数
+    { 
+        return OniStrong;
+    }
 
     //#################################################################################
 

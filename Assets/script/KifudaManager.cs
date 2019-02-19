@@ -144,49 +144,49 @@ public class KifudaManager : MonoBehaviour {
 
     public void AppearKifuda()
     {
-        if (askedQuestionA)
+        if (SiteMSC.StatusSiteA == 1 && askedQuestionA)
         {
             SiteA_Kifuda.SetActive(true);
             SiteMSC.StatusSiteA = 2;  // ステータス木札ON
         }
 
-        if (askedQuestionB)
+        if (SiteMSC.StatusSiteB == 1 && askedQuestionB)
         {
             SiteB_Kifuda.SetActive(true);
             SiteMSC.StatusSiteB = 2;  // ステータス木札ON
         }
 
-        if (askedQuestionC)
+        if (SiteMSC.StatusSiteC == 1 && askedQuestionC)
         {
             SiteC_Kifuda.SetActive(true);
             SiteMSC.StatusSiteC = 2;  // ステータス木札ON
         }
 
-        if (askedQuestionD)
+        if (SiteMSC.StatusSiteD == 1 && askedQuestionD)
         {
             SiteD_Kifuda.SetActive(true);
             SiteMSC.StatusSiteD = 2;  // ステータス木札ON
         }
 
-        if (askedQuestionE)
+        if (SiteMSC.StatusSiteE == 1 && askedQuestionE)
         {
             SiteE_Kifuda.SetActive(true);
             SiteMSC.StatusSiteE = 2;  // ステータス木札ON
         }
 
-        if (askedQuestionF)
+        if (SiteMSC.StatusSiteF == 1 && askedQuestionF)
         {
             SiteF_Kifuda.SetActive(true);
             SiteMSC.StatusSiteF = 2;  // ステータス木札ON
         }
 
-        if (askedQuestionG)
+        if (SiteMSC.StatusSiteG == 1 && askedQuestionG)
         {
             SiteG_Kifuda.SetActive(true);
             SiteMSC.StatusSiteG = 2;  // ステータス木札ON
         }
 
-        if (askedQuestionH)
+        if (SiteMSC.StatusSiteH == 1 && askedQuestionH)
         {
             SiteH_Kifuda.SetActive(true);
             SiteMSC.StatusSiteH = 2;  // ステータス木札ON

@@ -120,7 +120,7 @@ public class SelectManager : MonoBehaviour
 
     void Update()
     {
-        Debug.Log("OniStrong == " + OniStrong);
+ //       Debug.Log("OniStrong == " + OniStrong);
 
     }
 

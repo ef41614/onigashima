@@ -8,6 +8,7 @@ using System;
 
 public class SiteManager : MonoBehaviour
 {
+    #region Parameters
     public GameObject CharaManager;
     CharaManager CharaMSC;
     public GameObject SEManager;
@@ -123,6 +124,7 @@ public class SiteManager : MonoBehaviour
 
     public GameObject AttackMissText;    // 「Miss」と書かれたテキスト文（攻撃失敗時に出す）
     public GameObject AttakedAfterText;   // 攻撃後のセリフ（当たった時、外れた時、共に）
+    public GameObject KabaiSerif;
 
     public bool faintingOccured = false;
 
@@ -166,6 +168,8 @@ public class SiteManager : MonoBehaviour
     int ActiveKooni = 0;
     public GameObject KabaiKooni;
     Vector2 KabaiKooniPositon;
+
+    #endregion
 
     // --------------------------------------------
     private void Awake()
@@ -851,7 +855,7 @@ public class SiteManager : MonoBehaviour
     {
         // 当てられた相手の画像オープン
         CardReverseScr.ImageSet();
-        YakuMSC.CheckAimedRole();
+        YakuMSC.CheckAimedRole();   // 【役わり名予想フェーズ】画面中央に役わり名を当てられた人の役職を表示させる
         StartCoroutine(CardReverseScr.CardOpen());
         CheckOpenYakuCard();
     }
@@ -1149,14 +1153,16 @@ public class SiteManager : MonoBehaviour
     {
         var sequence = DOTween.Sequence();
         Debug.Log("◆◎「かばう」発動！");
+        SEMSC.Kabai_SE();
         SetPositionKabaiKooni();  // こおにの位置を初期化
         AppearKabaiKooni();       // こおにが、おやぶんの横位置に現れる
         SlideKabaiKooni();        // こおにが 横に移動する
-        // こおに のセリフ
-        // こおに にダメージ当たる
-        // かばった のメッセージ表示
-        sequence.InsertCallback(2f, () => CloseKabaiKooni()); // こおにを非表示にする
-        // こおに のHPを減らす（おやぶんの体力はそのまま）
+        KabaiKooniSerif();        // こおに のセリフ
+        KabawareSerif();          // かばわれた人のメッセージ表示 「！！」
+        sequence.InsertCallback(0.5f, () => YakuMSC.KabaiKooniTenmetu());      // かばいこおにを点滅させる（こおに にダメージ当たる）
+        sequence.InsertCallback(0.5f, () => SEMSC.punch_SE());
+        sequence.InsertCallback(3f, () => CloseKabaiKooni()); // こおにを非表示にする
+        DecreaseKabaiKooniHP();  // こおに のHPを減らす（おやぶんの体力はそのまま）
     }
 
     public void SetPositionKabaiKooni()  // こおにの位置を初期化
@@ -1173,11 +1179,7 @@ public class SiteManager : MonoBehaviour
 
     public void SlideKabaiKooni()  // こおにが 横に移動する
     {
-        //       KabaiKooni.transform.DOMove(endValue: new Vector2(-5.0f, 0), duration: 0.5f);
-        //        KabaiKooni.transform.DOLocalMove(endValue: new Vector2(5.0f, 0), duration: 0.5f);
-         KabaiKooni.transform.DOLocalMoveX(-30.5f, 0.5f);
-        // KabaiKooni.transform.DOMoveX(-1f, 0.5f);
-
+        KabaiKooni.transform.DOLocalMoveX(-30.5f, 0.5f);
         Debug.Log("◆こおにが 横に移動する");
     }
 
@@ -1185,6 +1187,108 @@ public class SiteManager : MonoBehaviour
     {
         KabaiKooni.SetActive(false);
         Debug.Log("◆こおにを非表示にする");
+    }
+
+    public void DecreaseKabaiKooniHP()  // こおに のHPを減らす（おやぶんの体力はそのまま）
+    {
+        WhoIsKabaiKooni();  // 「TargetSiteNum 」を こおに のサイト番号に上書きする
+        CheckOpenYakuCard();   // 役割カード画像オープン
+        DecreaseHP();
+    }
+
+    public void WhoIsKabaiKooni()
+    {
+        for (int TN = 1; TN < 9; TN++)
+        {
+            if (TurnChip_A == TN)
+            {
+                if (rollF[1] >= 6 && rollF[1] <= 8) // 役割がこオニである
+                {
+                    if (StatusSiteA <= 4)  // ステータスがまだ気絶していない
+                    {
+                        TargetSiteNum = 1;
+                        TN = 10;
+                    }
+                }
+            }
+            else if (TurnChip_B == TN)
+            {
+                if (rollF[2] >= 6 && rollF[2] <= 8) // 役割がこオニである
+                {
+                    if (StatusSiteB <= 4)
+                    {
+                        TargetSiteNum = 2;
+                        TN = 10;
+                    }
+                }
+            }
+            else if (TurnChip_C == TN)
+            {
+                if (rollF[3] >= 6 && rollF[3] <= 8) // 役割がこオニである
+                {
+                    if (StatusSiteC <= 4)
+                    {
+                        TargetSiteNum = 3;
+                        TN = 10;
+                    }
+                }
+            }
+            else if (TurnChip_D == TN)
+            {
+                if (rollF[4] >= 6 && rollF[4] <= 8) // 役割がこオニである
+                {
+                    if (StatusSiteD <= 4)
+                    {
+                        TargetSiteNum = 4;
+                        TN = 10;
+                    }
+                }
+            }
+            else if (TurnChip_E == TN)
+            {
+                if (rollF[5] >= 6 && rollF[5] <= 8) // 役割がこオニである
+                {
+                    if (StatusSiteE <= 4)
+                    {
+                        TargetSiteNum = 5;
+                        TN = 10;
+                    }
+                }
+            }
+            else if (TurnChip_F == TN)
+            {
+                if (rollF[6] >= 6 && rollF[6] <= 8) // 役割がこオニである
+                {
+                    if (StatusSiteF <= 4)
+                    {
+                        TargetSiteNum = 6;
+                        TN = 10;
+                    }
+                }
+            }
+            else if (TurnChip_G == TN)
+            {
+                if (rollF[7] >= 6 && rollF[7] <= 8) // 役割がこオニである
+                {
+                    if (StatusSiteG <= 4)
+                    {
+                        TargetSiteNum = 7;
+                        TN = 10;
+                    }
+                }
+            }
+            else if (TurnChip_H == TN)
+            {
+                if (rollF[8] >= 6 && rollF[8] <= 8) // 役割がこオニである
+                {
+                    if (StatusSiteH <= 4)
+                    {
+                        TargetSiteNum = 8;
+                        TN = 10;
+                    }
+                }
+            }
+        }
     }
 
     #endregion
@@ -1235,6 +1339,34 @@ public class SiteManager : MonoBehaviour
                 break;
             case 4: //
                 AttakedAfterText.GetComponent<Text>().text = "みきった！";
+                break;
+            default:
+                // その他処理
+                break;
+        }
+    }
+
+    public void KabawareSerif()  // かばわれた時のセリフ
+    {
+        AttakedAfterText.GetComponent<Text>().text = "！！";
+    }
+
+    public void KabaiKooniSerif()  // かばいこおに のセリフ
+    {
+        int AttackedSerif = UnityEngine.Random.Range(1, 5);
+        switch (AttackedSerif)
+        {
+            case 1: //
+                KabaiSerif.GetComponent<Text>().text = "あぶなーい！";
+                break;
+            case 2: //
+                KabaiSerif.GetComponent<Text>().text = "させないよ！";
+                break;
+            case 3: //
+                KabaiSerif.GetComponent<Text>().text = "とりゃ！";
+                break;
+            case 4: //
+                KabaiSerif.GetComponent<Text>().text = "えーい！";
                 break;
             default:
                 // その他処理

@@ -22,6 +22,8 @@ public class YakuManager : MonoBehaviour {
 
     Image image;
     Image imageTen;
+    Image imageKabaiKooniTen;
+
     float speed = 5f;   // デフォルトは 1.0
     float time;
 
@@ -64,7 +66,9 @@ public class YakuManager : MonoBehaviour {
     public Image AttackedRollFace;
 
      bool isDamaged = false; // 攻撃が当たったか
+    bool isKabaied = false;  // かばうが成功したか
     public GameObject AttackedRollFaceObj;
+    public GameObject KabaiKooniObj;
 
     public GameObject DamageEffectP;
     public GameObject DamageEffect01;
@@ -109,6 +113,7 @@ public class YakuManager : MonoBehaviour {
         //点滅処理の為に呼び出しておく
 //        renderer = AttackedRollFaceObj.gameObject.GetComponent<SpriteRenderer>();
         imageTen = AttackedRollFaceObj.gameObject.GetComponent<Image>();
+        imageKabaiKooniTen = KabaiKooniObj.gameObject.GetComponent<Image>();
     }
 
 
@@ -134,6 +139,14 @@ public class YakuManager : MonoBehaviour {
 
             //オブジェクトのAlpha値を更新
             imageTen.color = GetAlphaColor(image.color);
+        }
+
+        //かばう成功時の処理
+        if (isKabaied)
+        {
+            Debug.Log("◆かばう成功時の処理ON・・・点滅");
+            //オブジェクトのAlpha値を更新
+            imageKabaiKooniTen.color = GetAlphaColor(image.color);
         }
     }
 
@@ -485,6 +498,17 @@ public class YakuManager : MonoBehaviour {
     public void DamageTenmetu()
     {
         isDamaged = true;
+        TenmetuCommonPhase();
+    }
+
+    public void KabaiKooniTenmetu()
+    {
+        isKabaied = true;
+        TenmetuCommonPhase();
+    }
+
+    public void TenmetuCommonPhase()
+    {
         //パーティクルを再生（追加）
         DamageEffectP.GetComponent<ParticleSystem>().Play();
         DamageStar02.GetComponent<ParticleSystem>().Play();
@@ -506,6 +530,11 @@ public class YakuManager : MonoBehaviour {
         Debug.Log("◎てんめつ おわり◎");
         //オブジェクトのAlpha値を更新
         imageTen.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+
+        isKabaied = false;
+        Debug.Log("◎てんめつ おわり◎");
+        //オブジェクトのAlpha値を更新
+        imageKabaiKooniTen.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
     //#################################################################################

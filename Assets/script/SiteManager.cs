@@ -755,22 +755,35 @@ public class SiteManager : MonoBehaviour
 
     public void SerifDependOnRole()
     {
+        int UkkariSerif = UnityEngine.Random.Range(1, 7);
         if (rollF[TargetSiteNum] == 1) // ももたろう
         {
-            AnswerSerifText.GetComponent<Text>().text = "おばあさんの おみそしるが たべたい";
+            AnswerSerifText.GetComponent<Text>().text = "おばあさんの おみそしるを たべたい";
         }
         else if (rollF[TargetSiteNum] >= 2 && rollF[TargetSiteNum] <= 4) // いぬ、さる、きじ
         {
-            AnswerSerifText.GetComponent<Text>().text = "カレーかきびだんごが たべたいな";
+            if (UkkariSerif == 1)
+            {
+                AnswerSerifText.GetComponent<Text>().text = "きびだん・・、 カレー たべたいなー";
+            }
+            else
+            {
+                AnswerSerifText.GetComponent<Text>().text = "カレー たべたいな";
+            }
         }
         else if (rollF[TargetSiteNum] == 5) // おにのおやぶん
         {
             AnswerSerifText.GetComponent<Text>().text = "おさけだ！ おさけ もってこーい！";
         }
         else if (rollF[TargetSiteNum] >= 6 && rollF[TargetSiteNum] <= 8) // こオニたち
-        {
-            AnswerSerifText.GetComponent<Text>().text = "カレーが たべたいなオニ";
-        }
+            if (UkkariSerif == 1)
+            {
+                AnswerSerifText.GetComponent<Text>().text = "カレー たべたいな オニ";
+            }
+            else
+            {
+                AnswerSerifText.GetComponent<Text>().text = "カレー たべたいな";
+            }
     }
 
 
@@ -1015,7 +1028,7 @@ public class SiteManager : MonoBehaviour
         }
     }
 
-    public void SuccessHitting()   // 攻撃成功   ★別枠にして新規追加
+    public void SuccessHitting()   // 攻撃成功   
     {
         SEMSC.punch_SE();
         AttackHitSerif();
@@ -1024,7 +1037,7 @@ public class SiteManager : MonoBehaviour
         YakuMSC.DamageTenmetu();      // 役職カードを点滅させる
     }
 
-    public void CheckKabau()  // 「かばう」発動条件の確認 ★新規追加
+    public void CheckKabau()  // 「かばう」発動条件の確認
     {
         Debug.Log("◆◎OniLevel：" + OniLevel);   // この値が1以下なら、「かばう」発動しない
         if (OniLevel >= 2)
@@ -1038,7 +1051,7 @@ public class SiteManager : MonoBehaviour
                     if(ActiveKooni >= 1)// 元気な こオニが1人以上いる
                     {
                         int accuracy = UnityEngine.Random.Range(1, 7); // かばうが成功するかどうかのランダム数値  
-                        if (1 <= accuracy && accuracy <= 7)   // ★一時的に7
+                        if (1 <= accuracy && accuracy <= 3)   // ★7だと100％かばう成功
                         {
                             KabauFlg = true;  // かばう条件を満たしている →かばうフラグをON → 「かばう」発動！
                         }
@@ -1163,6 +1176,7 @@ public class SiteManager : MonoBehaviour
         sequence.InsertCallback(0.5f, () => SEMSC.punch_SE());
         sequence.InsertCallback(3f, () => CloseKabaiKooni()); // こおにを非表示にする
         DecreaseKabaiKooniHP();  // こおに のHPを減らす（おやぶんの体力はそのまま）
+        HPMSC.HP_check();
     }
 
     public void SetPositionKabaiKooni()  // こおにの位置を初期化
@@ -1192,8 +1206,10 @@ public class SiteManager : MonoBehaviour
     public void DecreaseKabaiKooniHP()  // こおに のHPを減らす（おやぶんの体力はそのまま）
     {
         WhoIsKabaiKooni();  // 「TargetSiteNum 」を こおに のサイト番号に上書きする
-        CheckOpenYakuCard();   // 役割カード画像オープン
+        YosouYes2();
+//        CheckOpenYakuCard();   // 役割カード画像オープン
         DecreaseHP();
+ //       HPMSC.HP_check();
     }
 
     public void WhoIsKabaiKooni()

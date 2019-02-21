@@ -429,63 +429,73 @@ public class YakuManager : MonoBehaviour {
     public void OpenYakuCardA()
     {
         YakuCardA.SetActive(true);
-        YakuCardA.transform.eulerAngles = new Vector3(0, 90, 0);
-        Debug.Log("YakuCardA.transform.localRotation.x :" + YakuCardA.transform.localRotation.x);
-        Debug.Log("YakuCardA.transform.localRotation.y :" + YakuCardA.transform.localRotation.y);
-        Debug.Log("YakuCardA.transform.localRotation.z :" + YakuCardA.transform.localRotation.z);
-        Quaternion rotation = YakuCardA.transform.localRotation;
-        Vector3 rotationAngles = rotation.eulerAngles;
-        Debug.Log("rotationAngles.x :" + rotationAngles.x);
-        Debug.Log("rotationAngles.y :" + rotationAngles.y);
-        Debug.Log("rotationAngles.z :" + rotationAngles.z);
+        if (SiteMSC.KabauFlg == false)
+        {
+            YakuCardA.transform.eulerAngles = new Vector3(0, 90, 0);
+        }
     }
 
     public void OpenYakuCardB()
     {
         YakuCardB.SetActive(true);
-        YakuCardB.transform.eulerAngles = new Vector3(0, 90, 0);
-        Quaternion rotation = YakuCardB.transform.localRotation;
-        Vector3 rotationAngles = rotation.eulerAngles;
+        if (SiteMSC.KabauFlg == false)
+        {
+            YakuCardB.transform.eulerAngles = new Vector3(0, 90, 0);
+        }
     }
 
     public void OpenYakuCardC()
     {
         YakuCardC.SetActive(true);
-        YakuCardC.transform.eulerAngles = new Vector3(0, 90, 0);
-        Quaternion rotation = YakuCardC.transform.localRotation;
-        Vector3 rotationAngles = rotation.eulerAngles;
+        if (SiteMSC.KabauFlg == false)
+        {
+            YakuCardC.transform.eulerAngles = new Vector3(0, 90, 0);
+        }
     }
 
     public void OpenYakuCardD()
     {
         YakuCardD.SetActive(true);
-        YakuCardD.transform.eulerAngles = new Vector3(0, 90, 0);
-        Quaternion rotation = YakuCardD.transform.localRotation;
-        Vector3 rotationAngles = rotation.eulerAngles;
+        if (SiteMSC.KabauFlg == false)
+        {
+            YakuCardD.transform.eulerAngles = new Vector3(0, 90, 0);
+        }
     }
 
     public void OpenYakuCardE()
     {
         YakuCardE.SetActive(true);
-        YakuCardE.transform.eulerAngles = new Vector3(0, 90, 0);
+        if (SiteMSC.KabauFlg == false)
+        {
+            YakuCardE.transform.eulerAngles = new Vector3(0, 90, 0);
+        }
     }
 
     public void OpenYakuCardF()
     {
         YakuCardF.SetActive(true);
-        YakuCardF.transform.eulerAngles = new Vector3(0, 90, 0);
+        if (SiteMSC.KabauFlg == false)
+        {
+            YakuCardF.transform.eulerAngles = new Vector3(0, 90, 0);
+        }
     }
 
     public void OpenYakuCardG()
     {
         YakuCardG.SetActive(true);
-        YakuCardG.transform.eulerAngles = new Vector3(0, 90, 0);
+        if (SiteMSC.KabauFlg == false)
+        {
+            YakuCardG.transform.eulerAngles = new Vector3(0, 90, 0);
+        }
     }
 
     public void OpenYakuCardH()
     {
         YakuCardH.SetActive(true);
-        YakuCardH.transform.eulerAngles = new Vector3(0, 90, 0);
+        if (SiteMSC.KabauFlg == false)
+        {
+            YakuCardH.transform.eulerAngles = new Vector3(0, 90, 0);
+        }
     }
 
     public void OpenYakuCardTrash()

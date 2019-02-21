@@ -9,22 +9,19 @@ using UnityEngine.SceneManagement;
 
 public class MainFlow : MonoBehaviour {
 
-    //******* 定数  *******
-    int TURN_MAX = 5; //最大ターン数
-
-    //******* 変数  *******
-    bool turnLoopFlg = true; //ターンループフラグ
-
-    int nowTurnNum = 0; //現在ターン番号
-
+    public static int preventShiaiNum = 1;  // 現在、第〇試合目 のナンバー
+    public GameObject ShiaiNumUe;    // 現在、第〇試合目かを画面上に表示する
+    public GameObject ShiaiNumCenter;    // 現在、第〇試合目かを画面中央に表示する
+    public GameObject CanvasShiaiNum;
 
 
     //☆################☆################  Start  ################☆################☆
 
     void Start()
     {
-
-
+        SetShiaiNumUe();  //ターン開始時に画面上部に「現在、第〇試合目か」 を表示させる 
+        SetShiaiNumCenter();
+        AppearCanvasShiaiNum();
     }
 
 
@@ -42,7 +39,6 @@ public class MainFlow : MonoBehaviour {
     {
         var sequence = DOTween.Sequence();
         sequence.InsertCallback(0.5f, () => LoadGameScene2());  // 数秒後、ロード開始
-
     }
 
     public void LoadGameScene2()
@@ -50,6 +46,35 @@ public class MainFlow : MonoBehaviour {
         SceneManager.LoadScene("GameScene");
     }
 
+    public void SetShiaiNumUe()  //ターン開始時に画面上部に「現在、第〇試合目か」 を表示させる 
+    {
+        ShiaiNumUe.GetComponent<Text>().text = "だい" + preventShiaiNum.ToString() + "しあい";
+    }
+
+    public void SetShiaiNumCenter()  //ターン開始時に画面中央に「現在、第〇試合目か」 を表示させる 
+    {
+        ShiaiNumCenter.GetComponent<Text>().text = "だ\nい\n"+ preventShiaiNum.ToString() + "\nし\nあ\nい";
+    }
+
+    public void AddShiaiNum()  // 試合ナンバーをプラス1する
+    {
+        preventShiaiNum++;
+    }
+
+    public void ResetShiaiNum()  // 試合ナンバーをリセットし、1に戻す
+    {
+        preventShiaiNum = 1;
+    }
+
+    public void AppearCanvasShiaiNum()
+    {
+        CanvasShiaiNum.SetActive(true);
+    }
+
+    public void CloseCanvasShiaiNum()
+    {
+        CanvasShiaiNum.SetActive(false);
+    }
 
     //#################################################################################
 

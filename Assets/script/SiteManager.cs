@@ -113,6 +113,8 @@ public class SiteManager : MonoBehaviour
 
     public GameObject CardReverse;
     CardReverse CardReverseScr;
+    public GameObject CardReverseCounter;
+    CardReverseCounter CardReverseCounterScr;
     public GameObject YakuManager;
     YakuManager YakuMSC;
     public GameObject HPManager;
@@ -123,6 +125,7 @@ public class SiteManager : MonoBehaviour
     KifudaManager KifudaMSC;
 
     public GameObject AttackMissText;    // 「Miss」と書かれたテキスト文（攻撃失敗時に出す）
+    public GameObject TextCounterHit;    // 「カウンターだ」と書かれたテキスト文（カウンター発動時に出す）
     public GameObject AttakedAfterText;   // 攻撃後のセリフ（当たった時、外れた時、共に）
     public GameObject KabaiSerif;
 
@@ -169,6 +172,8 @@ public class SiteManager : MonoBehaviour
     public GameObject KabaiKooni;
     Vector2 KabaiKooniPositon;
 
+    public bool CounterFlg = false;  // 「カウンター」の発動フラグ
+
     #endregion
 
     // --------------------------------------------
@@ -191,6 +196,7 @@ public class SiteManager : MonoBehaviour
         CharaMSC = CharaManager.GetComponent<CharaManager>();
         SEMSC = SEManager.GetComponent<SEManager>();
         CardReverseScr = CardReverse.GetComponent<CardReverse>();
+        CardReverseCounterScr = CardReverseCounter.GetComponent<CardReverseCounter>();
         YakuMSC = YakuManager.GetComponent<YakuManager>();
         HPMSC = HPManager.GetComponent<HPManager>();
         TurnMarkMSC = TurnMarkManager.GetComponent<TurnMarkManager>();
@@ -1001,8 +1007,10 @@ public class SiteManager : MonoBehaviour
     {
         Debug.Log("◆◎DEX：" + DEX);   // この値以下なら、攻撃成功
         int accuracy = UnityEngine.Random.Range(1, 7); // 攻撃が当たるかどうかのランダム数値
+        Debug.Log("◆◎accuracy：" + accuracy);
+        CardReverseCounterScr.ImageReset();
 
-        if (1 <= accuracy && accuracy <= DEX)
+        if (1 <= accuracy && accuracy <= DEX)  // 命中するよ
         {
             CheckKabau();  // 「かばう」発動条件に合致しているか確認
 
@@ -1016,15 +1024,19 @@ public class SiteManager : MonoBehaviour
             }
             KabauFlg = false; // かばうフラグを初期化
         }
-        else if (DEX <= accuracy && accuracy <= 7)
+        else if (DEX < accuracy && accuracy <= 7)  // 命中しないよ
         {
-            // 攻撃失敗
-            SEMSC.suka_SE();
-            AttackMissSerif();
-            AttackMissText.SetActive(true);  // 「Miss」と書かれたテキスト文を表示させる
-            var sequence = DOTween.Sequence();
-            //sequence.InsertCallback(2f, () => AttackMissText.SetActive(false));  // Miss を非表示にする
-            sequence.InsertCallback(2f, () => CloseMissText());  // Miss を非表示にする
+            CheckCounter();  // 「カウンター」発動条件の確認
+
+            if (CounterFlg)  // 合致している → 「カウンター」発動！
+            {
+                CounterAttack();
+            }
+            else          // 合致していない → そのまま攻撃はずれる
+            {
+                FailureHitting();   // 攻撃失敗
+            }
+            CounterFlg = false; // カウンターフラグを初期化
         }
     }
 
@@ -1035,6 +1047,16 @@ public class SiteManager : MonoBehaviour
         DecreaseHP();
         HPMSC.HP_check();
         YakuMSC.DamageTenmetu();      // 役職カードを点滅させる
+    }
+
+    public void FailureHitting()   // 攻撃失敗
+    {
+        SEMSC.suka_SE();
+        AttackMissSerif();
+        AttackMissText.SetActive(true);  // 「Miss」と書かれたテキスト文を表示させる
+        var sequence = DOTween.Sequence();
+        //sequence.InsertCallback(2f, () => AttackMissText.SetActive(false));  // Miss を非表示にする
+        sequence.InsertCallback(2f, () => CloseMissText());  // Miss を非表示にする
     }
 
     public void CheckKabau()  // 「かばう」発動条件の確認
@@ -1051,7 +1073,7 @@ public class SiteManager : MonoBehaviour
                     if(ActiveKooni >= 1)// 元気な こオニが1人以上いる
                     {
                         int accuracy = UnityEngine.Random.Range(1, 7); // かばうが成功するかどうかのランダム数値  
-                        if (1 <= accuracy && accuracy <= 3)   // ★7だと100％かばう成功
+                        if (1 <= accuracy && accuracy <= 7)   // ★7だと100％かばう成功
                         {
                             KabauFlg = true;  // かばう条件を満たしている →かばうフラグをON → 「かばう」発動！
                         }
@@ -1174,6 +1196,7 @@ public class SiteManager : MonoBehaviour
         KabawareSerif();          // かばわれた人のメッセージ表示 「！！」
         sequence.InsertCallback(0.5f, () => YakuMSC.KabaiKooniTenmetu());      // かばいこおにを点滅させる（こおに にダメージ当たる）
         sequence.InsertCallback(0.5f, () => SEMSC.punch_SE());
+        sequence.InsertCallback(1f, () => ResetKabaiKooniSerif());
         sequence.InsertCallback(3f, () => CloseKabaiKooni()); // こおにを非表示にする
         DecreaseKabaiKooniHP();  // こおに のHPを減らす（おやぶんの体力はそのまま）
         HPMSC.HP_check();
@@ -1309,11 +1332,68 @@ public class SiteManager : MonoBehaviour
 
     #endregion
 
+    public void CheckCounter()  // 「カウンター」発動条件の確認
+    {
+        Debug.Log("◆◎OniLevel：" + OniLevel);   // この値が3以上なら、「かばう」発動する
+        if (OniLevel >= 3)
+        {
+            if (rollF[TargetSiteNum] == 5)       // 狙われた人の役割が「オニのおやぶんである」
+            {
+                int accuracy = UnityEngine.Random.Range(1, 7); // カウンターが成功するかどうかのランダム数値  
+                if (1 <= accuracy && accuracy <= 7)   // ★7だと100％カウンター成功
+                {
+                    CounterFlg = true;  // カウンター条件を満たしている →カウンターフラグをON → 「カウンター」発動！
+                }
+            }
+
+        }
+    }
+
+    #region CounterAttackGroup    「カウンター」発動動作の本丸フェーズ
+    public void CounterAttack()  // 「カウンター」発動条件に合致している → 「カウンター」発動！
+    {
+        var sequence = DOTween.Sequence();
+        Debug.Log("◆◎「カウンター」発動！");
+        SEMSC.jidai_SE();
+        CounterSerif();  // カウンター攻撃時のセリフ
+        AttackMissText.SetActive(true);  // 「Miss」と書かれたテキスト文を表示させる
+        TextCounterHit.SetActive(true);  // 「カウンターだ」と書かれたテキスト文を表示させる
+        sequence.InsertCallback(1f, () => CloseMissText());  // Miss を非表示にする
+        sequence.InsertCallback(3f, () => CloseCounteText());  // カウンター を非表示にする
+        OpenKurunCounter();    // 攻撃してきたキャラをクルンと回して表示する
+        sequence.InsertCallback(1.5f, () => YakuMSC.CounteredCharaTenmetu());  // 攻撃してきたキャラを点滅させる（攻撃してきたキャラ にダメージ当たる）
+        sequence.InsertCallback(1.5f, () => SEMSC.punch_SE());
+        // 攻撃してきたキャラ のHPを減らす（おやぶんの体力はそのまま）
+    }
+
+    public void OpenKurunCounter()  // 攻撃してきたキャラをクルンと回して表示する
+    {
+ //       CardReverseCounterScr.ImageReset();
+        NextTurnWait = 1.0f;  // 次のターンに行くまでの待機時間
+        var sequence = DOTween.Sequence();
+        sequence.InsertCallback(0.4f, () => OpenKurunCounter2());
+//        sequence.InsertCallback(3.0f, () => CardReverseCounterScr.ImageReset());
+    }
+
+    public void OpenKurunCounter2()
+    {
+        // 攻撃してきたキャラの画像オープン
+        CardReverseCounterScr.ImageSet();
+        YakuMSC.OpenCounteredRole();   // 【カウンター発動時、反撃フェーズ】画面中央にカウンターを当てられた人の役職を表示させる
+        StartCoroutine(CardReverseCounterScr.CardOpen());
+    }
+
+    #endregion
+
     public void CloseMissText()
     {
         AttackMissText.SetActive(false);
     }
 
+    public void CloseCounteText()
+    {
+        TextCounterHit.SetActive(false);
+    }
 
     public void AttackHitSerif()  // 攻撃後のセリフ（当たった時）
     {
@@ -1390,6 +1470,34 @@ public class SiteManager : MonoBehaviour
         }
     }
 
+    public void ResetKabaiKooniSerif()  // かばいこおに のセリフを消す
+    {
+        KabaiSerif.GetComponent<Text>().text = "";
+    }
+
+    public void CounterSerif()  // カウンター攻撃時のセリフ
+    {
+        int AttackedSerif = UnityEngine.Random.Range(1, 5);
+        switch (AttackedSerif)
+        {
+            case 1: //
+                AttakedAfterText.GetComponent<Text>().text = "カウンターだ！！";
+                break;
+            case 2: //
+                AttakedAfterText.GetComponent<Text>().text = "あまいっ！！";
+                break;
+            case 3: //
+                AttakedAfterText.GetComponent<Text>().text = "そこだ！！";
+                break;
+            case 4: //
+                AttakedAfterText.GetComponent<Text>().text = "みきった！！";
+                break;
+            default:
+                // その他処理
+                break;
+        }
+
+    }
 
 
     public void DecreaseHP()  // 攻撃を受けたキャラの体力を1減らし、0になったらステータスを「5（気ぜつ直後）」にする。

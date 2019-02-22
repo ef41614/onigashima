@@ -26,7 +26,7 @@ public class SEManager : MonoBehaviour {
     public AudioClip kotsudumi1;
     public AudioClip taiko1;
     public AudioClip Kabai;
-
+    public AudioClip jidai;
 
     //☆################☆################  Start  ################☆################☆
 
@@ -127,6 +127,13 @@ public class SEManager : MonoBehaviour {
     {
         audioSource.PlayOneShot(Kabai);
     }
+
+    public void jidai_SE()
+    {
+        audioSource.PlayOneShot(jidai);
+    }
+
+    
 
     //#################################################################################
 

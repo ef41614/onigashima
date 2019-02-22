@@ -23,6 +23,7 @@ public class YakuManager : MonoBehaviour {
     Image image;
     Image imageTen;
     Image imageKabaiKooniTen;
+    Image imageCounteredCharaTen;
 
     float speed = 5f;   // デフォルトは 1.0
     float time;
@@ -63,12 +64,15 @@ public class YakuManager : MonoBehaviour {
     public int countX = 1;
 
     public Image AimedRollFace;
+    public Image CounteredRollFace;
     public Image AttackedRollFace;
 
      bool isDamaged = false; // 攻撃が当たったか
     bool isKabaied = false;  // かばうが成功したか
+    bool isCountered = false;  // カウンターが発動したか
     public GameObject AttackedRollFaceObj;
     public GameObject KabaiKooniObj;
+    public GameObject CounteredCharaObj;
 
     public GameObject DamageEffectP;
     public GameObject DamageEffect01;
@@ -114,6 +118,7 @@ public class YakuManager : MonoBehaviour {
 //        renderer = AttackedRollFaceObj.gameObject.GetComponent<SpriteRenderer>();
         imageTen = AttackedRollFaceObj.gameObject.GetComponent<Image>();
         imageKabaiKooniTen = KabaiKooniObj.gameObject.GetComponent<Image>();
+        imageCounteredCharaTen = CounteredCharaObj.gameObject.GetComponent<Image>();
     }
 
 
@@ -147,6 +152,14 @@ public class YakuManager : MonoBehaviour {
             Debug.Log("◆かばう成功時の処理ON・・・点滅");
             //オブジェクトのAlpha値を更新
             imageKabaiKooniTen.color = GetAlphaColor(image.color);
+        }
+
+        //かばう成功時の処理
+        if (isCountered)
+        {
+            Debug.Log("◆カウンター発動時の処理ON・・・点滅");
+            //オブジェクトのAlpha値を更新
+            imageCounteredCharaTen.color = GetAlphaColor(image.color);
         }
     }
 
@@ -342,6 +355,42 @@ public class YakuManager : MonoBehaviour {
         image.SetNativeSize();
     }
 
+    public void OpenCounteredRole() // 【カウンター発動時、反撃フェーズ】画面中央にカウンターを当てられた人の役職を表示させる
+    {
+        switch (SiteMSC.rollF[SiteMSC.NowActiveSiteN])
+        {
+            case 1:
+                CounteredRollFace.sprite = Yaku_icon1;
+                break;
+            case 2:
+                CounteredRollFace.sprite = Yaku_icon2;
+                break;
+            case 3:
+                CounteredRollFace.sprite = Yaku_icon3;
+                break;
+            case 4:
+                CounteredRollFace.sprite = Yaku_icon4;
+                break;
+            case 5:
+                CounteredRollFace.sprite = Yaku_icon5;
+                break;
+            case 6:
+                CounteredRollFace.sprite = Yaku_icon6;
+                break;
+            case 7:
+                CounteredRollFace.sprite = Yaku_icon7;
+                break;
+            case 8:
+                CounteredRollFace.sprite = Yaku_icon8;
+                break;
+            default:
+                // 処理３
+                break;
+        }
+        image = CounteredRollFace;
+        image.SetNativeSize();
+    }
+
     public void CheckAttackedRole() // 【攻撃フェーズ】画面中央に攻撃を狙われている人の役職を表示させる
     {
         switch (SiteMSC.rollF[SiteMSC.TargetSiteNum])
@@ -517,6 +566,12 @@ public class YakuManager : MonoBehaviour {
         TenmetuCommonPhase();
     }
 
+    public void CounteredCharaTenmetu()
+    {
+        isCountered = true;
+        TenmetuCommonPhase();
+    }
+
     public void TenmetuCommonPhase()
     {
         //パーティクルを再生（追加）
@@ -536,15 +591,19 @@ public class YakuManager : MonoBehaviour {
 
     public void TenmetuFlgOff()
     {
-        isDamaged = false;
         Debug.Log("◎てんめつ おわり◎");
+
+        isDamaged = false;
         //オブジェクトのAlpha値を更新
         imageTen.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
 
         isKabaied = false;
-        Debug.Log("◎てんめつ おわり◎");
         //オブジェクトのAlpha値を更新
         imageKabaiKooniTen.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+
+        isCountered = false;
+        //オブジェクトのAlpha値を更新
+        imageCounteredCharaTen.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
     //#################################################################################

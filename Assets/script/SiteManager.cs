@@ -244,7 +244,7 @@ public class SiteManager : MonoBehaviour
 
 
         Vector2 Position = PanelMAKU.gameObject.transform.position;
-//        Debug.Log("Position.x : "+ Position.x);
+        //        Debug.Log("Position.x : "+ Position.x);
         if (Position.x <= 550 && MakuMoveMode == 1)
         {
             Position.x += 2.0f;  // 右に幕を移動（開ける）
@@ -351,7 +351,7 @@ public class SiteManager : MonoBehaviour
     {
         MakuMoveMode = 2;
     }
-       
+
     public void AppearPanelMAKU()
     {
         PanelMAKU.SetActive(true);
@@ -943,42 +943,66 @@ public class SiteManager : MonoBehaviour
         Debug.Log("◆◎NowActiveSiteN：" + NowActiveSiteN);
         if (NowActiveSiteN == 1)
         {
-            StatusSiteA = 4;
+            if (MenuButtonMode == 2)
+            {
+                StatusSiteA = 4;
+            }
             YakuMSC.OpenYakuCardA();
         }
         else if (NowActiveSiteN == 2)
         {
-            StatusSiteB = 4;
+            if (MenuButtonMode == 2)
+            {
+                StatusSiteB = 4;
+            }
             YakuMSC.OpenYakuCardB();
         }
         else if (NowActiveSiteN == 3)
         {
-            StatusSiteC = 4;
+            if (MenuButtonMode == 2)
+            {
+                StatusSiteC = 4;
+            }
             YakuMSC.OpenYakuCardC();
         }
         else if (NowActiveSiteN == 4)
         {
-            StatusSiteD = 4;
+            if (MenuButtonMode == 2)
+            {
+                StatusSiteD = 4;
+            }
             YakuMSC.OpenYakuCardD();
         }
         else if (NowActiveSiteN == 5)
         {
-            StatusSiteE = 4;
+            if (MenuButtonMode == 2)
+            {
+                StatusSiteE = 4;
+            }
             YakuMSC.OpenYakuCardE();
         }
         else if (NowActiveSiteN == 6)
         {
-            StatusSiteF = 4;
+            if (MenuButtonMode == 2)
+            {
+                StatusSiteF = 4;
+            }
             YakuMSC.OpenYakuCardF();
         }
         else if (NowActiveSiteN == 7)
         {
-            StatusSiteG = 4;
+            if (MenuButtonMode == 2)
+            {
+                StatusSiteG = 4;
+            }
             YakuMSC.OpenYakuCardG();
         }
         else if (NowActiveSiteN == 8)
         {
-            StatusSiteH = 4;
+            if (MenuButtonMode == 2)
+            {
+                StatusSiteH = 4;
+            }
             YakuMSC.OpenYakuCardH();
         }
     }
@@ -1038,6 +1062,7 @@ public class SiteManager : MonoBehaviour
             }
             CounterFlg = false; // カウンターフラグを初期化
         }
+        HPMSC.HP_check();  // HPの残りに応じて、プレイ画面を更新
     }
 
     public void SuccessHitting()   // 攻撃成功   
@@ -1070,15 +1095,15 @@ public class SiteManager : MonoBehaviour
                 if (OyabunHP == 1)                // おやぶんの残り体力が「1」である
                 {
                     CheckActiveKooni();
-                    if(ActiveKooni >= 1)// 元気な こオニが1人以上いる
+                    if (ActiveKooni >= 1)// 元気な こオニが1人以上いる
                     {
                         int accuracy = UnityEngine.Random.Range(1, 7); // かばうが成功するかどうかのランダム数値  
-                        if (1 <= accuracy && accuracy <= 7)   // ★7だと100％かばう成功
+                        if (1 <= accuracy && accuracy <= 3)   // ★7だと100％かばう成功
                         {
                             KabauFlg = true;  // かばう条件を満たしている →かばうフラグをON → 「かばう」発動！
                         }
                     }
-                        
+
                 }
             }
         }
@@ -1199,7 +1224,7 @@ public class SiteManager : MonoBehaviour
         sequence.InsertCallback(1f, () => ResetKabaiKooniSerif());
         sequence.InsertCallback(3f, () => CloseKabaiKooni()); // こおにを非表示にする
         DecreaseKabaiKooniHP();  // こおに のHPを減らす（おやぶんの体力はそのまま）
-        HPMSC.HP_check();
+        HPMSC.HP_check();  // HPの残りに応じて、プレイ画面を更新
     }
 
     public void SetPositionKabaiKooni()  // こおにの位置を初期化
@@ -1230,9 +1255,7 @@ public class SiteManager : MonoBehaviour
     {
         WhoIsKabaiKooni();  // 「TargetSiteNum 」を こおに のサイト番号に上書きする
         YosouYes2();
-//        CheckOpenYakuCard();   // 役割カード画像オープン
         DecreaseHP();
- //       HPMSC.HP_check();
     }
 
     public void WhoIsKabaiKooni()
@@ -1340,7 +1363,7 @@ public class SiteManager : MonoBehaviour
             if (rollF[TargetSiteNum] == 5)       // 狙われた人の役割が「オニのおやぶんである」
             {
                 int accuracy = UnityEngine.Random.Range(1, 7); // カウンターが成功するかどうかのランダム数値  
-                if (1 <= accuracy && accuracy <= 7)   // ★7だと100％カウンター成功
+                if (1 <= accuracy && accuracy <= 2)   // ★7だと100％カウンター成功
                 {
                     CounterFlg = true;  // カウンター条件を満たしている →カウンターフラグをON → 「カウンター」発動！
                 }
@@ -1363,16 +1386,17 @@ public class SiteManager : MonoBehaviour
         OpenKurunCounter();    // 攻撃してきたキャラをクルンと回して表示する
         sequence.InsertCallback(1.5f, () => YakuMSC.CounteredCharaTenmetu());  // 攻撃してきたキャラを点滅させる（攻撃してきたキャラ にダメージ当たる）
         sequence.InsertCallback(1.5f, () => SEMSC.punch_SE());
-        // 攻撃してきたキャラ のHPを減らす（おやぶんの体力はそのまま）
+        DecreaseCounteredCharaHP();  // 攻撃してきたキャラ のHPを減らす（おやぶんの体力はそのまま）
+        HPMSC.HP_check();  // HPの残りに応じて、プレイ画面を更新
     }
 
     public void OpenKurunCounter()  // 攻撃してきたキャラをクルンと回して表示する
     {
- //       CardReverseCounterScr.ImageReset();
+        //       CardReverseCounterScr.ImageReset();
         NextTurnWait = 1.0f;  // 次のターンに行くまでの待機時間
         var sequence = DOTween.Sequence();
         sequence.InsertCallback(0.4f, () => OpenKurunCounter2());
-//        sequence.InsertCallback(3.0f, () => CardReverseCounterScr.ImageReset());
+        //        sequence.InsertCallback(3.0f, () => CardReverseCounterScr.ImageReset());
     }
 
     public void OpenKurunCounter2()
@@ -1381,6 +1405,14 @@ public class SiteManager : MonoBehaviour
         CardReverseCounterScr.ImageSet();
         YakuMSC.OpenCounteredRole();   // 【カウンター発動時、反撃フェーズ】画面中央にカウンターを当てられた人の役職を表示させる
         StartCoroutine(CardReverseCounterScr.CardOpen());
+    }
+
+    public void DecreaseCounteredCharaHP()  // カウンターをくらったキャラ のHPを減らす（おやぶんの体力はそのまま）
+    {
+        TargetSiteNum = NowActiveSiteN;     // 今攻撃してきたキャラを TargetSiteNum に上書きする
+//        YosouYes2();
+        PenaltyOpenYakuCard();    // 今攻撃してきたキャラの画像オープン
+        DecreaseHP();
     }
 
     #endregion
@@ -1470,7 +1502,7 @@ public class SiteManager : MonoBehaviour
         }
     }
 
-    public void ResetKabaiKooniSerif()  // かばいこおに のセリフを消す
+    public void ResetKabaiKooniSerif()  // かばいこおに のセリフを消す (実際には半角スペースを入れて、あたかも消えているように見える)
     {
         KabaiSerif.GetComponent<Text>().text = "";
     }

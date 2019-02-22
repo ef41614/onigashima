@@ -480,7 +480,10 @@ public class YakuManager : MonoBehaviour {
         YakuCardA.SetActive(true);
         if (SiteMSC.KabauFlg == false)
         {
-            YakuCardA.transform.eulerAngles = new Vector3(0, 90, 0);
+            if (SiteMSC.MenuButtonMode == 2)  // モードが役割当てだったなら
+            {
+                YakuCardA.transform.eulerAngles = new Vector3(0, 90, 0);
+            }
         }
     }
 
@@ -489,7 +492,10 @@ public class YakuManager : MonoBehaviour {
         YakuCardB.SetActive(true);
         if (SiteMSC.KabauFlg == false)
         {
-            YakuCardB.transform.eulerAngles = new Vector3(0, 90, 0);
+            if (SiteMSC.MenuButtonMode == 2)
+            {
+                YakuCardB.transform.eulerAngles = new Vector3(0, 90, 0);
+            }
         }
     }
 
@@ -498,7 +504,10 @@ public class YakuManager : MonoBehaviour {
         YakuCardC.SetActive(true);
         if (SiteMSC.KabauFlg == false)
         {
-            YakuCardC.transform.eulerAngles = new Vector3(0, 90, 0);
+            if (SiteMSC.MenuButtonMode == 2)
+            {
+                YakuCardC.transform.eulerAngles = new Vector3(0, 90, 0);
+            }
         }
     }
 
@@ -507,7 +516,10 @@ public class YakuManager : MonoBehaviour {
         YakuCardD.SetActive(true);
         if (SiteMSC.KabauFlg == false)
         {
-            YakuCardD.transform.eulerAngles = new Vector3(0, 90, 0);
+            if (SiteMSC.MenuButtonMode == 2)
+            {
+                YakuCardD.transform.eulerAngles = new Vector3(0, 90, 0);
+            }
         }
     }
 
@@ -516,7 +528,10 @@ public class YakuManager : MonoBehaviour {
         YakuCardE.SetActive(true);
         if (SiteMSC.KabauFlg == false)
         {
-            YakuCardE.transform.eulerAngles = new Vector3(0, 90, 0);
+            if (SiteMSC.MenuButtonMode == 2)
+            {
+                YakuCardE.transform.eulerAngles = new Vector3(0, 90, 0);
+            }
         }
     }
 
@@ -525,7 +540,10 @@ public class YakuManager : MonoBehaviour {
         YakuCardF.SetActive(true);
         if (SiteMSC.KabauFlg == false)
         {
-            YakuCardF.transform.eulerAngles = new Vector3(0, 90, 0);
+            if (SiteMSC.MenuButtonMode == 2)
+            {
+                YakuCardF.transform.eulerAngles = new Vector3(0, 90, 0);
+            }
         }
     }
 
@@ -534,7 +552,10 @@ public class YakuManager : MonoBehaviour {
         YakuCardG.SetActive(true);
         if (SiteMSC.KabauFlg == false)
         {
-            YakuCardG.transform.eulerAngles = new Vector3(0, 90, 0);
+            if (SiteMSC.MenuButtonMode == 2)
+            {
+                YakuCardG.transform.eulerAngles = new Vector3(0, 90, 0);
+            }
         }
     }
 
@@ -543,7 +564,10 @@ public class YakuManager : MonoBehaviour {
         YakuCardH.SetActive(true);
         if (SiteMSC.KabauFlg == false)
         {
-            YakuCardH.transform.eulerAngles = new Vector3(0, 90, 0);
+            if (SiteMSC.MenuButtonMode == 2)
+            {
+                YakuCardH.transform.eulerAngles = new Vector3(0, 90, 0);
+            }
         }
     }
 
@@ -552,7 +576,6 @@ public class YakuManager : MonoBehaviour {
         YakuCardTrash.SetActive(true);
     }
     #endregion
-
 
     public void DamageTenmetu()
     {

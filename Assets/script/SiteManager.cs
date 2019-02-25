@@ -123,6 +123,8 @@ public class SiteManager : MonoBehaviour
     TurnMarkManager TurnMarkMSC;
     public GameObject KifudaManager;
     KifudaManager KifudaMSC;
+    public GameObject ButtonController;
+    ButtonController ButtonCscr;
 
     public GameObject AttackMissText;    // 「Miss」と書かれたテキスト文（攻撃失敗時に出す）
     public GameObject TextCounterHit;    // 「カウンターだ」と書かれたテキスト文（カウンター発動時に出す）
@@ -174,6 +176,8 @@ public class SiteManager : MonoBehaviour
 
     public bool CounterFlg = false;  // 「カウンター」の発動フラグ
 
+    public int GuideLevel;  // 1 でガイド文 ON
+
     #endregion
 
     // --------------------------------------------
@@ -201,6 +205,7 @@ public class SiteManager : MonoBehaviour
         HPMSC = HPManager.GetComponent<HPManager>();
         TurnMarkMSC = TurnMarkManager.GetComponent<TurnMarkManager>();
         KifudaMSC = KifudaManager.GetComponent<KifudaManager>();
+        ButtonCscr = ButtonController.GetComponent<ButtonController>();
         StartTurnNum();
         ReloadTurnNumUe();
         ClosePanelWinner();
@@ -212,6 +217,9 @@ public class SiteManager : MonoBehaviour
         //        statusReset(); // ステータスをすべて1にする
         OniLevel = SelectManager.getOniStrong(); // ゲッター関数を呼び出し、値を引き継ぐ
         KabaiKooniPositon = KabaiKooni.transform.position;  // かばいこおにの現在位置をPositionに代入
+        GuideLevel = SelectManager.getGuideMode(); // ゲッター関数を呼び出し、値を引き継ぐ
+
+        ButtonCscr.ResetGuideText();
     }
 
 
@@ -463,6 +471,7 @@ public class SiteManager : MonoBehaviour
             preventPlayerOrderNum++;
         }
         KizetuSkipTurn();
+        ButtonCscr.ResetGuideText();  // 毎回キャラの順番が進むごとにリセット ★既存の「CheckYourTurn()」に追記
         //        Debug.Log("次このターンで何人目か？" + preventPlayerOrderNum);
     }
 

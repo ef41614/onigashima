@@ -9,6 +9,8 @@ using UnityEngine.SceneManagement;
 
 public class SelectManager : MonoBehaviour
 {
+    public GameObject SEManager;
+    SEManager SEMSC;
 
     public GameObject PanelCheck;
     public GameObject PanelCheck_numberOfPersons;
@@ -87,12 +89,16 @@ public class SelectManager : MonoBehaviour
     public GameObject ImageOniStr03;
     public GameObject ImageOniStr04;
 
+    public GameObject GuideCheckMark; // チェックマーク。初期値は表示（チェック入り）にしておく（ゲーム毎にはしない）
+    public static int GuideMode = 1;  // 1 でガイド文 ON
+
     //☆################☆################  Start  ################☆################☆
 
     void Start()
     {
- //       CloseWindow();
- //       CloseWindow2();
+        SEMSC = SEManager.GetComponent<SEManager>();
+        //       CloseWindow();
+        //       CloseWindow2();
         KesuCover_01();
         KesuCover_02();
         KesuCover_03();
@@ -871,6 +877,51 @@ public class SelectManager : MonoBehaviour
     { 
         return OniStrong;
     }
+
+
+    public void SwitchGuideMode()
+    {
+        if (GuideMode == 1)  // 現在 「GuideMode == 1」だったなら、
+        {
+            GuideMode0();  // 「GuideMode == 0」の状態に切り替える
+        }
+        else
+        {
+            GuideMode1();
+        }
+    }
+
+    public void GuideMode0()  // チェック無し（＝0 でガイド文 OFF）
+    {
+        GuideMode = 0;
+        CloseGuideCheckMark();  // チェックマークを非表示にする
+        SEMSC.checkOFF_SE();    // SEも入れる（キャンセル音）
+    }
+
+
+    public void GuideMode1()  // チェック入り（＝1 でガイド文ON）
+    {
+        GuideMode = 1;
+        AppearGuideCheckMark(); // チェックマークを表示する
+        SEMSC.checkON_SE();     // SEも入れる （決定音、押下音）
+    }
+
+    public static int getGuideMode()
+    { // ゲッターの関数
+        return GuideMode;
+    }
+
+
+    public void AppearGuideCheckMark()  // チェック入り（＝1 でガイド文ON）
+    {
+        GuideCheckMark.SetActive(true);
+    }
+
+    public void CloseGuideCheckMark()
+    {
+        GuideCheckMark.SetActive(false);
+    }
+
 
     //#################################################################################
 

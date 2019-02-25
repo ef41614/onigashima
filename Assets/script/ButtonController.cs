@@ -14,6 +14,10 @@ public class ButtonController : MonoBehaviour {
 
     public GameObject SiteManager;
     SiteManager SiteMSC;
+    public GameObject SEManager;
+    SEManager SEMSC;
+
+    public Text GuideText;  // 行動ボタンの真上に、現在の行動モードに応じてテキストを表示させる
 
 
     //☆################☆################  Start  ################☆################☆
@@ -22,6 +26,8 @@ public class ButtonController : MonoBehaviour {
     {
         CloseBrownBox();
         SiteMSC = SiteManager.GetComponent<SiteManager>();
+        SEMSC = SEManager.GetComponent<SEManager>();
+        ResetGuideText();
     }
 
 
@@ -107,7 +113,7 @@ public class ButtonController : MonoBehaviour {
     }
 
 
-    public void OpenScroll()
+    public void OpenScroll()  // ← 画面後ろに隠れてしまうので、はじめから実質無意味
     {
         if (brown_box != null)
         {
@@ -115,6 +121,7 @@ public class ButtonController : MonoBehaviour {
             OpenBrownBox();
         }
         Text_Scroll.SetActive(true);
+        ResetGuideText();
     }
 
     public void CloseScroll()
@@ -126,6 +133,73 @@ public class ButtonController : MonoBehaviour {
     {
         SiteMSC.selectTimeActive = true;
     }
+
+
+    public void ResetGuideText()  // ★ 各キャラの順番開始時に、SiteManager経由で毎回呼び出すようにする
+    {
+        GuideText.text = "ボタンを おしてね";
+    }
+
+    public void PushActButtonCommon()  // 行動ボタン共通処理
+    {
+        OpenBrownBox();
+        SEMSC.Kettei_SE(); // SEも入れる（ピピン）
+        SiteMSC.selectTimeEnd();
+    }
+
+    public void PushActButtonGideTextOFFCommon()
+    {
+        selectTimeStart();
+        SEMSC.Kettei2_SE();  // SEも入れる（チュイーン）
+    }
+
+    public void BranchOpenQuestion()
+    {
+        GuideText.text = "しつもん モード";
+        if (SiteMSC.GuideLevel == 1)  // 1 でガイド文ON
+        {
+            PushActButtonCommon();  // 行動ボタン共通処理
+            OpenQuestion();
+        }
+        else    // ガイド文OFFで いきなりキャラ選択へ進む（説明文スキップ）
+        {       // （→ MenuButtonMode が 1 で、selectTimeActive = true になる）
+            PushActButtonGideTextOFFCommon();
+        }
+        SiteMSC.MenuButtonModeQuestion();
+    }
+
+
+    public void BranchOpenUnmask()
+    {
+        GuideText.text = "やくわりあて モード";
+        if (SiteMSC.GuideLevel == 1)  // 1 でガイド文ON
+        {
+            PushActButtonCommon();  // 行動ボタン共通処理
+            OpenUnmask();
+        }
+        else
+        {
+            PushActButtonGideTextOFFCommon();
+        }
+        SiteMSC.MenuButtonModeUnmask();
+    }
+
+
+    public void BranchOpenAttack()
+    {
+        GuideText.text = "こうげき モード";
+        if (SiteMSC.GuideLevel == 1)  // 1 でガイド文ON
+        {
+            PushActButtonCommon();  // 行動ボタン共通処理
+            OpenAttack();
+        }
+        else
+        {
+            PushActButtonGideTextOFFCommon();
+        }
+        SiteMSC.MenuButtonModeAttack();
+    }
+
 
     //#################################################################################
 

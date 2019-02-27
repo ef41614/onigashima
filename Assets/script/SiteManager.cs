@@ -152,6 +152,10 @@ public class SiteManager : MonoBehaviour
 
     public GameObject PanelMAKU;  // 定式幕
     public int MakuMoveMode = 0;  // 0:停止, 1:右（オープン）, 2:左（）クローズ
+    public GameObject ImagePole_Right;
+    public GameObject ImagePole_Left;
+    Vector2 PoleRightPos;
+    Vector2 PoleLeftPos;
 
     public GameObject PanelWinner;  // 〇〇チームの勝利 を表示する
     public GameObject WinMomo;
@@ -236,6 +240,9 @@ public class SiteManager : MonoBehaviour
         WinFlgON = 0;  // // 0で勝利フラグ初期化
         CloseHomeButton_Box();
         CloseHaguruma_Box();
+
+        PoleRightPos = ImagePole_Right.gameObject.transform.position;
+        PoleLeftPos = ImagePole_Left.gameObject.transform.position;
     }
 
 
@@ -269,11 +276,13 @@ public class SiteManager : MonoBehaviour
 
         Vector2 Position = PanelMAKU.gameObject.transform.position;
         //        Debug.Log("Position.x : "+ Position.x);
-        if (Position.x <= 550 && MakuMoveMode == 1)
+
+
+        if (Position.x <= PoleRightPos.x && MakuMoveMode == 1)
         {
             Position.x += 2.0f;  // 右に幕を移動（開ける）
         }
-        if (Position.x >= 100 && MakuMoveMode == 2)
+        if (Position.x >= PoleLeftPos.x && MakuMoveMode == 2)
         {
             Position.x -= 2.0f;  // 左に幕を移動（とじる）
         }

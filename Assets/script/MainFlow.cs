@@ -76,6 +76,17 @@ public class MainFlow : MonoBehaviour {
         CanvasShiaiNum.SetActive(false);
     }
 
+    public void LoadStartScene()
+    {
+        var sequence = DOTween.Sequence();
+        sequence.InsertCallback(0.5f, () => LoadStartScene2());  // 数秒後、ロード開始
+    }
+
+    public void LoadStartScene2()
+    {
+        SceneManager.LoadScene("StartScene");
+    }
+
     //#################################################################################
 
 }

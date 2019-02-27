@@ -125,6 +125,8 @@ public class SiteManager : MonoBehaviour
     KifudaManager KifudaMSC;
     public GameObject ButtonController;
     ButtonController ButtonCscr;
+    public GameObject MainFlow;
+    MainFlow MainFlowScr;
 
     public GameObject AttackMissText;    // 「Miss」と書かれたテキスト文（攻撃失敗時に出す）
     public GameObject TextCounterHit;    // 「カウンターだ」と書かれたテキスト文（カウンター発動時に出す）
@@ -178,6 +180,15 @@ public class SiteManager : MonoBehaviour
 
     public int GuideLevel;  // 1 でガイド文 ON
 
+    public GameObject Haguruma_Box;
+    public GameObject GuideCheckBox2;
+    public GameObject GuideCheckMark2; // チェックマーク2。
+    public GameObject HomeButton_Box;
+
+
+
+    public int WinFlgON = 0;  // 0で勝利フラグまだ立っていない
+
     #endregion
 
     // --------------------------------------------
@@ -220,6 +231,11 @@ public class SiteManager : MonoBehaviour
         GuideLevel = SelectManager.getGuideMode(); // ゲッター関数を呼び出し、値を引き継ぐ
 
         ButtonCscr.ResetGuideText();
+        MainFlowScr = MainFlow.GetComponent<MainFlow>();
+        FirstCheckGuideLevel();
+        WinFlgON = 0;  // // 0で勝利フラグ初期化
+        CloseHomeButton_Box();
+        CloseHaguruma_Box();
     }
 
 
@@ -2005,10 +2021,14 @@ public class SiteManager : MonoBehaviour
 
     public void WinOniTeam() // 鬼チーム勝利判定時の処理
     {
-        StartWinPhase();
-        TeamHanteiAll();
-        CheckWinTeam(1); // チームナンバー： 1（おにチーム）
-        ApperWinOni();
+        if (WinFlgON == 0)
+        {
+            WinFlgON = 1;  // 1で勝利フラグが立った （勝利時演出のダブり防止策）
+            StartWinPhase();
+            TeamHanteiAll();
+            CheckWinTeam(1); // チームナンバー： 1（おにチーム）
+            ApperWinOni();
+        }
     }
 
     public void StartWinPhase()  // 勝ち負けが決まったら、まず初めに動き出すフェーズ
@@ -2096,6 +2116,93 @@ public class SiteManager : MonoBehaviour
         CharaMSC.AppearWinTeam(T, teamSiteG, SiteGWinAppearFlg, CharaMSC.SiteG_charaF, YakuMSC.SiteG_rollF);
         CharaMSC.AppearWinTeam(T, teamSiteH, SiteHWinAppearFlg, CharaMSC.SiteH_charaF, YakuMSC.SiteH_rollF);
     }
+
+
+    public void OpenHaguruma_Box()
+    {
+        Haguruma_Box.SetActive(true);
+    }
+
+    public void CloseHaguruma_Box()
+    {
+        Haguruma_Box.SetActive(false);
+    }
+
+
+    public void FirstCheckGuideLevel()  // GameScene が読み込まれた時点での状態確認
+    {
+        if (GuideLevel == 1)  // 現在 「GuideLevel == 1」だったなら、
+        {
+            AppearGuideCheckMark2();
+        }
+        else
+        {
+            CloseGuideCheckMark2();
+        }
+    }
+
+
+    public void SwitchGuideLevel()  // チェックボックスを押すたびにオンオフ切り替え
+    {
+        if (GuideLevel == 1)  // 現在 「GuideLevel == 1」だったなら、
+        {
+            GuideLevel0();  // 「GuideLevel == 0」の状態に切り替える
+        }
+        else
+        {
+            GuideLevel1();
+        }
+    }
+
+
+    public void GuideLevel0()  // チェック無し（＝0 でガイド文 OFF）
+    {
+        GuideLevel = 0;
+        CloseGuideCheckMark2();  // チェックマークを非表示にする
+        SEMSC.checkOFF_SE();    // SE（キャンセル音）
+    }
+
+
+    public void GuideLevel1()  // チェック入り（＝1 でガイド文ON）
+    {
+        GuideLevel = 1;
+        AppearGuideCheckMark2(); // チェックマークを表示する
+        SEMSC.checkON_SE();     // SE（決定音、押下音）
+    }
+
+
+
+    public void AppearGuideCheckMark2()  // チェック入り（＝1 でガイド文ON）
+    {
+        GuideCheckMark2.SetActive(true);
+    }
+
+    public void CloseGuideCheckMark2()
+    {
+        GuideCheckMark2.SetActive(false);
+    }
+
+
+
+    public void OpenHomeButton_Box()
+    {
+        HomeButton_Box.SetActive(true);
+    }
+
+    public void CloseHomeButton_Box()
+    {
+        HomeButton_Box.SetActive(false);
+    }
+
+
+    public void GoToHome()
+    {
+        MainFlowScr.LoadStartScene();  // スタートシーンに遷移する
+    }
+
+
+
+
 
     //#################################################################################
 

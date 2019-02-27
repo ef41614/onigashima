@@ -19,6 +19,10 @@ public class ButtonController : MonoBehaviour {
 
     public Text GuideText;  // 行動ボタンの真上に、現在の行動モードに応じてテキストを表示させる
 
+    public GameObject Question_Ten;  // 選択中に点滅する
+    public GameObject Unmask_Ten;
+    public GameObject Attack_Ten;
+    public GameObject Scroll_Ten;
 
     //☆################☆################  Start  ################☆################☆
 
@@ -28,6 +32,7 @@ public class ButtonController : MonoBehaviour {
         SiteMSC = SiteManager.GetComponent<SiteManager>();
         SEMSC = SEManager.GetComponent<SEManager>();
         ResetGuideText();
+        ResetActButtonTen();  // 一旦、すべての行動ボタンの点滅を解除
     }
 
 
@@ -113,8 +118,10 @@ public class ButtonController : MonoBehaviour {
     }
 
 
-    public void OpenScroll()  // ← 画面後ろに隠れてしまうので、はじめから実質無意味
+    public void OpenScroll()  // 自身の役割チェック ← 画面後ろに隠れてしまうので、はじめから実質無意味
     {
+        ResetActButtonTen();  // 点滅解除
+        Scroll_Ten.SetActive(true);
         if (brown_box != null)
         {
             CloseBrownBox();
@@ -138,6 +145,7 @@ public class ButtonController : MonoBehaviour {
     public void ResetGuideText()  // ★ 各キャラの順番開始時に、SiteManager経由で毎回呼び出すようにする
     {
         GuideText.text = "ボタンを おしてね";
+        ResetActButtonTen();  // 点滅解除
     }
 
     public void PushActButtonCommon()  // 行動ボタン共通処理
@@ -153,8 +161,10 @@ public class ButtonController : MonoBehaviour {
         SEMSC.Kettei2_SE();  // SEも入れる（チュイーン）
     }
 
-    public void BranchOpenQuestion()
+    public void BranchOpenQuestion()  // しつもん
     {
+        ResetActButtonTen();  // 点滅解除
+        Question_Ten.SetActive(true);
         GuideText.text = "しつもん モード";
         if (SiteMSC.GuideLevel == 1)  // 1 でガイド文ON
         {
@@ -169,8 +179,10 @@ public class ButtonController : MonoBehaviour {
     }
 
 
-    public void BranchOpenUnmask()
+    public void BranchOpenUnmask()  // やくわりあて
     {
+        ResetActButtonTen();  // 点滅解除
+        Unmask_Ten.SetActive(true);
         GuideText.text = "やくわりあて モード";
         if (SiteMSC.GuideLevel == 1)  // 1 でガイド文ON
         {
@@ -185,8 +197,10 @@ public class ButtonController : MonoBehaviour {
     }
 
 
-    public void BranchOpenAttack()
+    public void BranchOpenAttack()  // こうげき
     {
+        ResetActButtonTen();  // 点滅解除
+        Attack_Ten.SetActive(true);
         GuideText.text = "こうげき モード";
         if (SiteMSC.GuideLevel == 1)  // 1 でガイド文ON
         {
@@ -198,6 +212,14 @@ public class ButtonController : MonoBehaviour {
             PushActButtonGideTextOFFCommon();
         }
         SiteMSC.MenuButtonModeAttack();
+    }
+
+    public void ResetActButtonTen()  // 一旦、すべての行動ボタンの点滅を解除（どれも選択されていない状態にする）
+    {
+        Question_Ten.SetActive(false);
+        Unmask_Ten.SetActive(false);
+        Attack_Ten.SetActive(false);
+        Scroll_Ten.SetActive(false);
     }
 
 

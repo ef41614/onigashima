@@ -189,9 +189,23 @@ public class SiteManager : MonoBehaviour
     public GameObject GuideCheckMark2; // チェックマーク2。
     public GameObject HomeButton_Box;
 
-
-
     public int WinFlgON = 0;  // 0で勝利フラグまだ立っていない
+
+    public GameObject PanelInfoCPU;  // CPUが今操作中であるかのメッセージ表示
+    public GameObject Next_InfoCPUWillOperate;  //  CPUがこれから操作する旨をメッセージ表示
+
+    public bool SiteAisCPU = false;  // CPUであるかどうかのフラグ（falseで人）
+    public bool SiteBisCPU = false;
+    public bool SiteCisCPU = false;
+    public bool SiteDisCPU = false;
+    public bool SiteEisCPU = false;
+    public bool SiteFisCPU = false;
+    public bool SiteGisCPU = false;
+    public bool SiteHisCPU = false;
+
+    public bool NowActiveSite_isCPU = false;  // 今アクティブなサイトがCPUか
+    public bool GoStartCPU_Flg = false;        // CPU操作を開始するタイミングかどうかのフラグ
+    public float WaitCPU = 1.0f;
 
     #endregion
 
@@ -209,6 +223,7 @@ public class SiteManager : MonoBehaviour
 
     void Start()
     {
+        GoStartCPU_Flg = false;
         HandOfTime = human_num - 1;
         AppearCanvasRollCheck();
         CloseCanvasPlayPlace();
@@ -240,9 +255,11 @@ public class SiteManager : MonoBehaviour
         WinFlgON = 0;  // // 0で勝利フラグ初期化
         CloseHomeButton_Box();
         CloseHaguruma_Box();
+        CloseInfoCPU();
 
         PoleRightPos = ImagePole_Right.gameObject.transform.position;
         PoleLeftPos = ImagePole_Left.gameObject.transform.position;
+        FirstCheckCPU_Operation();  // 各サイトがCPUであるかどうかのチェック（初回のみ一回確認）
     }
 
 
@@ -496,8 +513,15 @@ public class SiteManager : MonoBehaviour
             preventPlayerOrderNum++;
         }
         KizetuSkipTurn();
-        ButtonCscr.ResetGuideText();  // 毎回キャラの順番が進むごとにリセット ★既存の「CheckYourTurn()」に追記
+        ButtonCscr.ResetGuideText();  // 毎回キャラの順番が進むごとにリセット 
+        var sequence2 = DOTween.Sequence();
+        sequence2.InsertCallback(1.0f, () => CheckNowActiveSite_isCPU());
+//        sequence2.InsertCallback(1.1f, () => GoStartCPU_ON());
+//        sequence2.InsertCallback(1.2f, () => CheckWakeUpCPU());
+        //       CheckNowActiveSite_isCPU();  // 今アクティブなサイトがCPUか確認（順番毎に）
+        //       CheckWakeUpCPU();            // 今アクティブなサイトがCPUなら、CPU操作開始
         //        Debug.Log("次このターンで何人目か？" + preventPlayerOrderNum);
+
     }
 
     public void KizetuSkipTurn()
@@ -2208,6 +2232,167 @@ public class SiteManager : MonoBehaviour
     {
         MainFlowScr.LoadStartScene();  // スタートシーンに遷移する
     }
+
+
+
+    #region(CPU_OperationSection)
+
+    public void FirstCheckCPU_Operation()  // 各サイトがCPUであるかどうかのチェック（初回のみ一回確認）
+    {
+        CPUFlgAllSiteON();   // 一旦、すべてのサイトのCPUフラグをON
+        SiteAisCPU = false;  // SiteA は必ず「人」
+        if (human_num >= 2)
+        {
+            SiteBisCPU = false;  // SiteB は「人」である
+        }
+        if (human_num >= 3)
+        {
+            SiteCisCPU = false;  // SiteC は「人」である
+        }
+        if (human_num >= 4)
+        {
+            SiteDisCPU = false;  // SiteD は「人」である
+        }
+        if (human_num >= 5)
+        {
+            SiteEisCPU = false;  // SiteE は「人」である
+        }
+        if (human_num >= 6)
+        {
+            SiteFisCPU = false;  // SiteF は「人」である
+        }
+        if (human_num >= 7)
+        {
+            SiteGisCPU = false;  // SiteG は「人」である
+        }
+        if (human_num >= 8)
+        {
+            SiteHisCPU = false;  // SiteH は「人」である
+        }
+    }
+
+
+    public void CPUFlgAllSiteON()  // 一旦、すべてのサイトのCPUフラグをON（true）にする
+    {
+        SiteAisCPU = true;  // CPUであるかどうかのフラグ（trueでCPU）
+        SiteBisCPU = true;
+        SiteCisCPU = true;
+        SiteDisCPU = true;
+        SiteEisCPU = true;
+        SiteFisCPU = true;
+        SiteGisCPU = true;
+        SiteHisCPU = true;
+    }
+
+
+
+    public void CheckNowActiveSite_isCPU()  // 今アクティブなサイトがCPUか確認（順番毎に）
+    {
+        Debug.Log("★今アクティブなサイトがCPUか確認時の NowActiveSiteN：" + NowActiveSiteN);
+        if (NowActiveSiteN == 1)
+        {
+            NowActiveSite_isCPU = false;  // 今アクティブなサイトは CPU ではない（＝「人」である）【SiteAの場合、必然】
+        }
+        else if (NowActiveSiteN == 2)
+        {
+            NowActiveSite_isCPU = SiteBisCPU;  // 今アクティブなサイトが CPU であるかは、SiteBの CPUフラグを見よ
+        }
+        else if (NowActiveSiteN == 3)
+        {
+            NowActiveSite_isCPU = SiteCisCPU;  // 今アクティブなサイトが CPU であるかは、SiteCの CPUフラグを見よ
+        }
+        else if (NowActiveSiteN == 4)
+        {
+            NowActiveSite_isCPU = SiteDisCPU;  // 今アクティブなサイトが CPU であるかは、SiteDの CPUフラグを見よ
+        }
+        else if (NowActiveSiteN == 5)
+        {
+            NowActiveSite_isCPU = SiteEisCPU;  // 今アクティブなサイトが CPU であるかは、SiteEの CPUフラグを見よ
+        }
+        else if (NowActiveSiteN == 6)
+        {
+            NowActiveSite_isCPU = SiteFisCPU;  // 今アクティブなサイトが CPU であるかは、SiteFの CPUフラグを見よ
+        }
+        else if (NowActiveSiteN == 7)
+        {
+            NowActiveSite_isCPU = SiteGisCPU;  // 今アクティブなサイトが CPU であるかは、SiteGの CPUフラグを見よ
+        }
+        else if (NowActiveSiteN == 8)
+        {
+            NowActiveSite_isCPU = SiteHisCPU;  // 今アクティブなサイトが CPU であるかは、SiteHの CPUフラグを見よ
+        }
+
+        if (NowActiveSite_isCPU)
+        {
+            AppearNext_InfoCPUWillOperate();  //  CPUがこれから操作する旨を画面中央にメッセージ表示
+        }
+    }
+
+
+    public void CheckWakeUpCPU()  // 今アクティブなサイトがCPUなら、CPU操作開始
+    {
+        Debug.Log("◎今アクティブなサイトがCPU時の NowActiveSiteN：" + NowActiveSiteN);
+        if (NowActiveSite_isCPU)
+        {
+ //           AppearNext_InfoCPUWillOperate();  //  CPUがこれから操作する旨をメッセージ表示
+ //           if (GoStartCPU_Flg)   // CPU操作を開始するタイミングであるならば
+ //           {
+                Debug.Log("このターンで何人目か？" + preventPlayerOrderNum);
+                Debug.Log("CPU操作開始");
+                var sequence = DOTween.Sequence();
+                StartCPU_Operation();   // CPU操作開始
+                sequence.InsertCallback(3f, () => FinishCPU_Operation());  // CPU操作終了
+                GoStartCPU_Flg = false;
+ //           }
+        }
+    }
+
+    public void GoStartCPU_ON()
+    {
+        GoStartCPU_Flg = true;
+    }
+
+
+    public void StartCPU_Operation()  // CPU操作開始
+    {
+        AppearInfoCPU();  // 「CPU そうさ中」のメッセージを表示（ON）
+                          // ○○のターンBox 閉じる
+                          // 行動ボタン、いずれか押下
+                          // 行動ボタンBoxひらいて、Box内の操作
+                          // 行動ボタンBox 閉じる
+                          // （CPU操作 ここまで）
+                          // （適宜、SEも）
+    }
+
+    public void FinishCPU_Operation()  // CPU操作終了
+    {
+        CloseInfoCPU();  // 「CPU そうさ中」のメッセージを非表示（OFF）
+                         //  ターン終わり（何か処理あれば）
+        NowActiveSite_isCPU = true;
+//        CloseNext_InfoCPUWillOperate();
+    }
+
+    public void AppearInfoCPU()
+    {
+        PanelInfoCPU.SetActive(true);
+    }
+
+    public void CloseInfoCPU()
+    {
+        PanelInfoCPU.SetActive(false);
+    }
+
+    public void AppearNext_InfoCPUWillOperate()
+    {
+        Next_InfoCPUWillOperate.SetActive(true);
+    }
+
+    public void CloseNext_InfoCPUWillOperate()
+    {
+        Next_InfoCPUWillOperate.SetActive(false);
+    }
+
+    #endregion
 
 
 

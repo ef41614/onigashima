@@ -336,13 +336,6 @@ public class CharaManager : MonoBehaviour {
         }
         SiteMSC.CheckFainting();
         TurnMarkMSC.ResetTurnMarkRedBack();
-        var sequence2 = DOTween.Sequence();
-//        sequence2.InsertCallback(1.0f, () => SiteMSC.CheckNowActiveSite_isCPU());
-  //      sequence2.InsertCallback(1.0f, () => SiteMSC.GoStartCPU_ON());
-    //    sequence2.InsertCallback(1.0f, () => SiteMSC.CheckWakeUpCPU());
-//        SiteMSC.CheckNowActiveSite_isCPU();  // 今アクティブなサイトがCPUか確認（順番毎に）
-//        SiteMSC.GoStartCPU_ON();  // CPU操作を開始するタイミングかどうかのフラグをONにする
-     //   SiteMSC.CheckWakeUpCPU();
     }
 
     public void ClosePanelYourTurn()

@@ -24,6 +24,11 @@ public class ButtonController : MonoBehaviour {
     public GameObject Attack_Ten;
     public GameObject Scroll_Ten;
 
+    public GameObject PanelCannotSelect;
+    public Image ImageP_CannotSelect;
+    public Sprite ImageP_cry;
+    public Sprite ImageP_gakkari;
+
     //☆################☆################  Start  ################☆################☆
 
     void Start()
@@ -33,6 +38,7 @@ public class ButtonController : MonoBehaviour {
         SEMSC = SEManager.GetComponent<SEManager>();
         ResetGuideText();
         ResetActButtonTen();  // 一旦、すべての行動ボタンの点滅を解除
+        ClosePanelCannotSelect();
     }
 
 
@@ -120,7 +126,7 @@ public class ButtonController : MonoBehaviour {
 
     public void OpenScroll()  // 自身の役割チェック ← 画面後ろに隠れてしまうので、はじめから実質無意味
     {
-        ResetActButtonTen();  // 点滅解除
+        ResetActButtonTen();  // 点灯解除
         Scroll_Ten.SetActive(true);
         if (brown_box != null)
         {
@@ -139,33 +145,109 @@ public class ButtonController : MonoBehaviour {
     public void selectTimeStart()
     {
         SiteMSC.selectTimeActive = true;
+        SEMSC.Kettei2_SE();  // SEも入れる（チュイーン）
     }
 
+    public void JudgeGoSelectTime()
+    {
+        SiteMSC.CheckCanPushMenuButtons();
+        if (SiteMSC.MenuButtonMode == 1) // 質問の時
+        {
+            if (SiteMSC.CanPush_Question)  // しつもんボタン 押せる状態であるなら
+            {
+                selectTimeStart();
+            }
+            else   // しつもんボタン 押せないよ
+            {
+                CannotSelectInform();
+            }
+        }
+        else if (SiteMSC.MenuButtonMode == 2) // 役割当ての時
+        {
+            if (SiteMSC.CanPush_Unmask)  // 役割当てボタン 押せる状態であるなら
+            {
+                selectTimeStart();
+            }
+            else   // 役割当てボタン 押せないよ
+            {
+                CannotSelectInform();
+            }
+        }
+        else if (SiteMSC.MenuButtonMode == 3) // 攻撃の時
+        {
+            if (SiteMSC.CanPush_Attack)  // 攻撃ボタン 押せる状態であるなら
+            {
+                selectTimeStart();
+            }
+            else   // 攻撃ボタン 押せないよ  
+            {
+                CannotSelectInform();
+            }
+        }
+    }
+
+    public void CannotSelectInform()  // 行動ボタンを押しても、セレクトできない旨を表示する
+    {
+        SEMSC.NoSelect_SE();  // カッキッコン
+        AppearP_image();
+        OpenPanelCannotSelect();
+        SiteMSC.selectTimeEnd();
+        ResetGuideText();
+    }
+
+    public void OpenPanelCannotSelect()
+    {
+        PanelCannotSelect.SetActive(true);
+    }
+
+    public void ClosePanelCannotSelect()
+    {
+        PanelCannotSelect.SetActive(false);
+    }
+
+    public void AppearP_image()
+    {
+        int rndP = UnityEngine.Random.Range(1, 3);
+        switch (rndP)
+        {
+            case 1: //
+                ImageP_CannotSelect.sprite = ImageP_cry;
+                break;
+            case 2: //
+                ImageP_CannotSelect.sprite = ImageP_gakkari;
+                break;
+            default:
+                // その他処理
+                break;
+        }
+    }
 
     public void ResetGuideText()  // ★ 各キャラの順番開始時に、SiteManager経由で毎回呼び出すようにする
     {
         GuideText.text = "ボタンを おしてね";
-        ResetActButtonTen();  // 点滅解除
+        ResetActButtonTen();  // 点灯解除
     }
 
-    public void PushActButtonCommon()  // 行動ボタン共通処理
+    public void PushActButtonCommon()  // 行動ボタン共通処理（ガイド文ONの時）
     {
         OpenBrownBox();
         SEMSC.Kettei_SE(); // SEも入れる（ピピン）
         SiteMSC.selectTimeEnd();
     }
 
-    public void PushActButtonGideTextOFFCommon()
+    public void PushActButtonGideTextOFFCommon()  // 行動ボタン共通処理（ガイド文OFFの時）
     {
-        selectTimeStart();
-        SEMSC.Kettei2_SE();  // SEも入れる（チュイーン）
+        // selectTimeStart();
+        JudgeGoSelectTime();
     }
 
     public void BranchOpenQuestion()  // しつもん
     {
-        ResetActButtonTen();  // 点滅解除
+        SiteMSC.CheckCanPushMenuButtons();
+        ResetActButtonTen();  // 点灯解除
         Question_Ten.SetActive(true);
         GuideText.text = "しつもん モード";
+        SiteMSC.MenuButtonModeQuestion();
         if (SiteMSC.GuideLevel == 1)  // 1 でガイド文ON
         {
             PushActButtonCommon();  // 行動ボタン共通処理
@@ -175,15 +257,16 @@ public class ButtonController : MonoBehaviour {
         {       // （→ MenuButtonMode が 1 で、selectTimeActive = true になる）
             PushActButtonGideTextOFFCommon();
         }
-        SiteMSC.MenuButtonModeQuestion();
     }
 
 
     public void BranchOpenUnmask()  // やくわりあて
     {
-        ResetActButtonTen();  // 点滅解除
+        SiteMSC.CheckCanPushMenuButtons();
+        ResetActButtonTen();  // 点灯解除
         Unmask_Ten.SetActive(true);
         GuideText.text = "やくわりあて モード";
+        SiteMSC.MenuButtonModeUnmask();
         if (SiteMSC.GuideLevel == 1)  // 1 でガイド文ON
         {
             PushActButtonCommon();  // 行動ボタン共通処理
@@ -193,15 +276,16 @@ public class ButtonController : MonoBehaviour {
         {
             PushActButtonGideTextOFFCommon();
         }
-        SiteMSC.MenuButtonModeUnmask();
     }
 
 
     public void BranchOpenAttack()  // こうげき
     {
-        ResetActButtonTen();  // 点滅解除
+        SiteMSC.CheckCanPushMenuButtons();
+        ResetActButtonTen();  // 点灯解除
         Attack_Ten.SetActive(true);
         GuideText.text = "こうげき モード";
+        SiteMSC.MenuButtonModeAttack();
         if (SiteMSC.GuideLevel == 1)  // 1 でガイド文ON
         {
             PushActButtonCommon();  // 行動ボタン共通処理
@@ -211,7 +295,6 @@ public class ButtonController : MonoBehaviour {
         {
             PushActButtonGideTextOFFCommon();
         }
-        SiteMSC.MenuButtonModeAttack();
     }
 
     public void ResetActButtonTen()  // 一旦、すべての行動ボタンの点滅を解除（どれも選択されていない状態にする）

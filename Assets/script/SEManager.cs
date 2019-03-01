@@ -29,6 +29,7 @@ public class SEManager : MonoBehaviour {
     public AudioClip jidai;
     public AudioClip checkON;
     public AudioClip checkOFF;
+    public AudioClip NoSelect;
 
     //☆################☆################  Start  ################☆################☆
 
@@ -145,6 +146,10 @@ public class SEManager : MonoBehaviour {
         audioSource.PlayOneShot(checkOFF);
     }
 
+    public void NoSelect_SE()
+    {
+        audioSource.PlayOneShot(NoSelect);
+    }
 
     //#################################################################################
 

@@ -204,8 +204,11 @@ public class SiteManager : MonoBehaviour
     public bool SiteHisCPU = false;
 
     public bool NowActiveSite_isCPU = false;  // 今アクティブなサイトがCPUか
-    public bool GoStartCPU_Flg = false;        // CPU操作を開始するタイミングかどうかのフラグ
     public float WaitCPU = 1.0f;
+
+    public bool CanPush_Question = true;
+    public bool CanPush_Unmask = true;
+    public bool CanPush_Attack = false;
 
     #endregion
 
@@ -223,7 +226,7 @@ public class SiteManager : MonoBehaviour
 
     void Start()
     {
-        GoStartCPU_Flg = false;
+        ResetCanPushAcButtons();
         HandOfTime = human_num - 1;
         AppearCanvasRollCheck();
         CloseCanvasPlayPlace();
@@ -267,6 +270,8 @@ public class SiteManager : MonoBehaviour
 
     void Update()
     {
+        Debug.Log("MenuButtonMode？ " + MenuButtonMode);
+               
         if (selectTimeActive)
         {
             selectBottonA.SetActive(true);
@@ -514,14 +519,9 @@ public class SiteManager : MonoBehaviour
         }
         KizetuSkipTurn();
         ButtonCscr.ResetGuideText();  // 毎回キャラの順番が進むごとにリセット 
+        CheckCanPushMenuButtons();  // 各行動ボタンを押せるかどうかの確認をする
         var sequence2 = DOTween.Sequence();
         sequence2.InsertCallback(1.0f, () => CheckNowActiveSite_isCPU());
-//        sequence2.InsertCallback(1.1f, () => GoStartCPU_ON());
-//        sequence2.InsertCallback(1.2f, () => CheckWakeUpCPU());
-        //       CheckNowActiveSite_isCPU();  // 今アクティブなサイトがCPUか確認（順番毎に）
-        //       CheckWakeUpCPU();            // 今アクティブなサイトがCPUなら、CPU操作開始
-        //        Debug.Log("次このターンで何人目か？" + preventPlayerOrderNum);
-
     }
 
     public void KizetuSkipTurn()
@@ -704,17 +704,62 @@ public class SiteManager : MonoBehaviour
 
     public void MenuButtonModeQuestion()
     {
-        MenuButtonMode = 1;
+        MenuButtonMode = 1;  // 質問モ―ド
     }
 
     public void MenuButtonModeUnmask()
     {
-        MenuButtonMode = 2;
+        MenuButtonMode = 2;  // 役割当てモ―ド
     }
 
     public void MenuButtonModeAttack()
     {
-        MenuButtonMode = 3;
+        MenuButtonMode = 3;  // 攻撃モード
+    }
+
+    public void CheckCanPushMenuButtons()  // 各行動ボタンを押せるかどうかの確認をする
+    {
+        CheckCanPushQuestion();
+        CheckCanPushUnmask();
+        CheckCanPushAttack();
+    }
+
+    public void CheckCanPushQuestion()
+    {
+        Debug.Log("■CheckCanPushQuestion");
+
+        if (StatusSiteA < 2 || StatusSiteB < 2 || StatusSiteC < 2 || StatusSiteD < 2 || StatusSiteE < 2 || StatusSiteF < 2 || StatusSiteG < 2 || StatusSiteH < 2)
+        {   // もしまだ木札がONになっていないキャラが一人以上いるならば
+            CanPush_Question = true;  // しつもんモードボタンは押せる
+        }
+        else
+        {
+            CanPush_Question = false;  // しつもんモードボタンは押せない
+        }
+    }
+
+    public void CheckCanPushUnmask()
+    {
+        if (StatusSiteA < 4 || StatusSiteB < 4 || StatusSiteC < 4 || StatusSiteD < 4 || StatusSiteE < 4 || StatusSiteF < 4 || StatusSiteG < 4 || StatusSiteH < 4)
+        {   // もしまだ役割が当てられていないキャラが一人以上いるならば
+            CanPush_Unmask = true;  // 役割当てモードボタンは押せる
+        }
+        else
+        {
+            CanPush_Unmask = false;  // 役割当てモードボタンは押せない
+        }
+    }
+
+    public void CheckCanPushAttack()
+    {
+        if (StatusSiteA == 4 || StatusSiteB == 4 || StatusSiteC == 4 || StatusSiteD == 4 || StatusSiteE == 4 || StatusSiteF == 4 || StatusSiteG == 4 || StatusSiteH == 4)
+        {   // もし役割が当てられており、かつ元気なキャラが一人以上いるならば
+            CanPush_Attack = true;  // 攻撃モードボタンは押せる
+        }
+        else
+        {
+            CanPush_Attack = false;  // 攻撃モードボタンは押せない
+        }
     }
 
     public void TurnActMode()
@@ -2233,6 +2278,12 @@ public class SiteManager : MonoBehaviour
         MainFlowScr.LoadStartScene();  // スタートシーンに遷移する
     }
 
+    public void ResetCanPushAcButtons()
+    {
+        CanPush_Question = true;
+        CanPush_Unmask = true;
+        CanPush_Attack = false;
+    }
 
 
     #region(CPU_OperationSection)
@@ -2274,7 +2325,7 @@ public class SiteManager : MonoBehaviour
 
     public void CPUFlgAllSiteON()  // 一旦、すべてのサイトのCPUフラグをON（true）にする
     {
-        SiteAisCPU = true;  // CPUであるかどうかのフラグ（trueでCPU）
+ //       SiteAisCPU = true;  // CPUであるかどうかのフラグ（trueでCPU）
         SiteBisCPU = true;
         SiteCisCPU = true;
         SiteDisCPU = true;
@@ -2326,6 +2377,10 @@ public class SiteManager : MonoBehaviour
         {
             AppearNext_InfoCPUWillOperate();  //  CPUがこれから操作する旨を画面中央にメッセージ表示
         }
+        else
+        {
+            CloseNext_InfoCPUWillOperate();
+        }
     }
 
 
@@ -2334,29 +2389,17 @@ public class SiteManager : MonoBehaviour
         Debug.Log("◎今アクティブなサイトがCPU時の NowActiveSiteN：" + NowActiveSiteN);
         if (NowActiveSite_isCPU)
         {
- //           AppearNext_InfoCPUWillOperate();  //  CPUがこれから操作する旨をメッセージ表示
- //           if (GoStartCPU_Flg)   // CPU操作を開始するタイミングであるならば
- //           {
                 Debug.Log("このターンで何人目か？" + preventPlayerOrderNum);
                 Debug.Log("CPU操作開始");
                 var sequence = DOTween.Sequence();
                 StartCPU_Operation();   // CPU操作開始
                 sequence.InsertCallback(3f, () => FinishCPU_Operation());  // CPU操作終了
-                GoStartCPU_Flg = false;
- //           }
         }
     }
-
-    public void GoStartCPU_ON()
-    {
-        GoStartCPU_Flg = true;
-    }
-
 
     public void StartCPU_Operation()  // CPU操作開始
     {
         AppearInfoCPU();  // 「CPU そうさ中」のメッセージを表示（ON）
-                          // ○○のターンBox 閉じる
                           // 行動ボタン、いずれか押下
                           // 行動ボタンBoxひらいて、Box内の操作
                           // 行動ボタンBox 閉じる
@@ -2369,7 +2412,6 @@ public class SiteManager : MonoBehaviour
         CloseInfoCPU();  // 「CPU そうさ中」のメッセージを非表示（OFF）
                          //  ターン終わり（何か処理あれば）
         NowActiveSite_isCPU = true;
-//        CloseNext_InfoCPUWillOperate();
     }
 
     public void AppearInfoCPU()

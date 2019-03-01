@@ -190,6 +190,9 @@ public class SiteManager : MonoBehaviour
     public GameObject HomeButton_Box;
 
     public int WinFlgON = 0;  // 0で勝利フラグまだ立っていない
+    public Image ImageP_WinMessage;
+    public Sprite ImageP_happy;
+    public Sprite ImageP_smile;
 
     public GameObject PanelInfoCPU;  // CPUが今操作中であるかのメッセージ表示
     public GameObject Next_InfoCPUWillOperate;  //  CPUがこれから操作する旨をメッセージ表示
@@ -270,7 +273,7 @@ public class SiteManager : MonoBehaviour
 
     void Update()
     {
-        Debug.Log("MenuButtonMode？ " + MenuButtonMode);
+//        Debug.Log("MenuButtonMode？ " + MenuButtonMode);
                
         if (selectTimeActive)
         {
@@ -2099,7 +2102,7 @@ public class SiteManager : MonoBehaviour
 
     public void WinOniTeam() // 鬼チーム勝利判定時の処理
     {
-        if (WinFlgON == 0)
+        if (WinFlgON == 0)  // 勝利時演出のダブり防止策用（0ならば、まだ勝利演出これから開始）
         {
             WinFlgON = 1;  // 1で勝利フラグが立った （勝利時演出のダブり防止策）
             StartWinPhase();
@@ -2118,6 +2121,24 @@ public class SiteManager : MonoBehaviour
         SEMSC.hyoushigi2_long_SE();
         sequence.InsertCallback(5.8f, () => ApperPanelWinner());  // 数秒後、win画面表示
         CloseCheckBoxes();
+        AppearP_WINimage();
+    }
+
+    public void AppearP_WINimage()
+    {
+        int rndP = UnityEngine.Random.Range(1, 3);
+        switch (rndP)
+        {
+            case 1: //
+                ImageP_WinMessage.sprite = ImageP_happy;
+                break;
+            case 2: //
+                ImageP_WinMessage.sprite = ImageP_smile;
+                break;
+            default:
+                // その他処理
+                break;
+        }
     }
 
     public void AppearImageWinBack02()

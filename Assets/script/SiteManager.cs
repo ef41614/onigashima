@@ -729,11 +729,15 @@ public class SiteManager : MonoBehaviour
 
     public void CheckCanPushQuestion()
     {
+//        CanPush_Question = true;  // しつもんモードボタンは押せる(一旦状態リセット)
         Debug.Log("■CheckCanPushQuestion");
+        Debug.Log("◆◎NowActiveSiteN：" + NowActiveSiteN);
 
         if (StatusSiteA < 2 || StatusSiteB < 2 || StatusSiteC < 2 || StatusSiteD < 2 || StatusSiteE < 2 || StatusSiteF < 2 || StatusSiteG < 2 || StatusSiteH < 2)
         {   // もしまだ木札がONになっていないキャラが一人以上いるならば
-            CanPush_Question = true;  // しつもんモードボタンは押せる
+            // フリーなのが自分だけしか残っていない場合 → 選択できないようにする
+            // フリーなのが自分以外である → 行動ボタンは押せる
+            CanPush_Question = CheckCanPushButton_Common(2, CanPush_Question);
         }
         else
         {
@@ -763,6 +767,103 @@ public class SiteManager : MonoBehaviour
         {
             CanPush_Attack = false;  // 攻撃モードボタンは押せない
         }
+    }
+
+    public bool CheckCanPushButton_Common(int statusNum, bool CanPush_ActButton) // フリーなのが自分だけ → 選択できない || フリーなのが自分以外 → 行動ボタンは押せる
+    {
+        if (NowActiveSiteN == 1)  // 今のアクティブサイトがサイトA
+        {
+            if (StatusSiteA < statusNum && StatusSiteB >= statusNum && StatusSiteC >= statusNum && StatusSiteD >= statusNum && StatusSiteE >= statusNum && StatusSiteF >= statusNum && StatusSiteG >= statusNum && StatusSiteH >= statusNum)
+            {  // フリーなのが自分だけしか残っていない
+                CanPush_ActButton = false;  // 今選んでいる行動ボタンは押せない
+            }
+            else  // フリーなのが自分以外である
+            {
+                CanPush_ActButton = true;  // 今選んでいる行動ボタンは押せる
+            }
+        }
+        else if (NowActiveSiteN == 2)  // 今のアクティブサイトがサイトB
+        {
+            if (StatusSiteA >= statusNum && StatusSiteB < statusNum && StatusSiteC >= statusNum && StatusSiteD >= statusNum && StatusSiteE >= statusNum && StatusSiteF >= statusNum && StatusSiteG >= statusNum && StatusSiteH >= statusNum)
+            {  // フリーなのが自分だけしか残っていない
+                CanPush_ActButton = false;  // 今選んでいる行動ボタンは押せない
+            }
+            else
+            {
+                CanPush_ActButton = true;  // 今選んでいる行動ボタンは押せる
+            }
+        }
+        else if (NowActiveSiteN == 3)  // 今のアクティブサイトがサイトC
+        {
+            if (StatusSiteA >= statusNum && StatusSiteB >= statusNum && StatusSiteC < statusNum && StatusSiteD >= statusNum && StatusSiteE >= statusNum && StatusSiteF >= statusNum && StatusSiteG >= statusNum && StatusSiteH >= statusNum)
+            {  // フリーなのが自分だけしか残っていない
+                CanPush_ActButton = false;  // 今選んでいる行動ボタンは押せない
+            }
+            else
+            {
+                CanPush_ActButton = true;  // 今選んでいる行動ボタンは押せる
+            }
+        }
+        else if (NowActiveSiteN == 4)  // 今のアクティブサイトがサイトD
+        {
+            if (StatusSiteA >= statusNum && StatusSiteB >= statusNum && StatusSiteC >= statusNum && StatusSiteD < statusNum && StatusSiteE >= statusNum && StatusSiteF >= statusNum && StatusSiteG >= statusNum && StatusSiteH >= statusNum)
+            {  // フリーなのが自分だけしか残っていない
+                CanPush_ActButton = false;  // 今選んでいる行動ボタンは押せない
+            }
+            else
+            {
+                CanPush_ActButton = true;  // 今選んでいる行動ボタンは押せる
+            }
+        }
+        else if (NowActiveSiteN == 5)  // 今のアクティブサイトがサイトE
+        {
+            if (StatusSiteA >= statusNum && StatusSiteB >= statusNum && StatusSiteC >= statusNum && StatusSiteD >= statusNum && StatusSiteE < statusNum && StatusSiteF >= statusNum && StatusSiteG >= statusNum && StatusSiteH >= statusNum)
+            {  // フリーなのが自分だけしか残っていない
+                CanPush_ActButton = false;  // 今選んでいる行動ボタンは押せない
+            }
+            else
+            {
+                CanPush_ActButton = true;  // 今選んでいる行動ボタンは押せる
+            }
+        }
+        else if (NowActiveSiteN == 6)  // 今のアクティブサイトがサイトF
+        {
+            if (StatusSiteA >= statusNum && StatusSiteB >= statusNum && StatusSiteC >= statusNum && StatusSiteD >= statusNum && StatusSiteE >= statusNum && StatusSiteF < statusNum && StatusSiteG >= statusNum && StatusSiteH >= statusNum)
+            {  // フリーなのが自分だけしか残っていない
+                CanPush_ActButton = false;  // 今選んでいる行動ボタンは押せない
+            }
+            else
+            {
+                CanPush_ActButton = true;  // 今選んでいる行動ボタンは押せる
+            }
+        }
+        else if (NowActiveSiteN == 7)  // 今のアクティブサイトがサイトG
+        {
+            if (StatusSiteA >= statusNum && StatusSiteB >= statusNum && StatusSiteC >= statusNum && StatusSiteD >= statusNum && StatusSiteE >= statusNum && StatusSiteF >= statusNum && StatusSiteG < statusNum && StatusSiteH >= statusNum)
+            {  // フリーなのが自分だけしか残っていない
+                CanPush_ActButton = false;  // 今選んでいる行動ボタンは押せない
+            }
+            else
+            {
+                CanPush_ActButton = true;  // 今選んでいる行動ボタンは押せる
+            }
+        }
+        else if (NowActiveSiteN == 8)  // 今のアクティブサイトがサイトH
+        {
+            if (StatusSiteA >= statusNum && StatusSiteB >= statusNum && StatusSiteC >= statusNum && StatusSiteD >= statusNum && StatusSiteE >= statusNum && StatusSiteF >= statusNum && StatusSiteG >= statusNum && StatusSiteH < statusNum)
+            {  // フリーなのが自分だけしか残っていない
+                CanPush_ActButton = false;  // 今選んでいる行動ボタンは押せない
+            }
+            else
+            {
+                CanPush_ActButton = true;  // 今選んでいる行動ボタンは押せる
+            }
+        }
+        else
+        {
+            CanPush_ActButton = true;  // 今選んでいる行動ボタンは押せる
+        }
+        return CanPush_ActButton;  // 選択できるか否かの結果を、bool型で返す
     }
 
     public void TurnActMode()
@@ -2307,7 +2408,7 @@ public class SiteManager : MonoBehaviour
     }
 
 
-    #region(CPU_OperationSection)
+    #region(CPU_OperationSection)  // CPU操作のフェーズ
 
     public void FirstCheckCPU_Operation()  // 各サイトがCPUであるかどうかのチェック（初回のみ一回確認）
     {

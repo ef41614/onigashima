@@ -749,7 +749,7 @@ public class SiteManager : MonoBehaviour
     {
         if (StatusSiteA < 4 || StatusSiteB < 4 || StatusSiteC < 4 || StatusSiteD < 4 || StatusSiteE < 4 || StatusSiteF < 4 || StatusSiteG < 4 || StatusSiteH < 4)
         {   // もしまだ役割が当てられていないキャラが一人以上いるならば
-            CanPush_Unmask = true;  // 役割当てモードボタンは押せる
+            CanPush_Unmask = CheckCanPushButton_Common(4, CanPush_Unmask);
         }
         else
         {
@@ -760,10 +760,103 @@ public class SiteManager : MonoBehaviour
     public void CheckCanPushAttack()
     {
         if (StatusSiteA == 4 || StatusSiteB == 4 || StatusSiteC == 4 || StatusSiteD == 4 || StatusSiteE == 4 || StatusSiteF == 4 || StatusSiteG == 4 || StatusSiteH == 4)
-        {   // もし役割が当てられており、かつ元気なキャラが一人以上いるならば
-            CanPush_Attack = true;  // 攻撃モードボタンは押せる
+        {   // もし役割が当てられており、かつ元気(==ステータス4)なキャラが一人以上いるならば
+            int statusNum = 4;
+            if (NowActiveSiteN == 1)  // 今のアクティブサイトがサイトA
+            {
+                if (StatusSiteA == statusNum && StatusSiteB != statusNum && StatusSiteC != statusNum && StatusSiteD != statusNum && StatusSiteE != statusNum && StatusSiteF != statusNum && StatusSiteG != statusNum && StatusSiteH != statusNum)
+                {  // 役割オープン後(ステータス4)なのが自分だけ
+                    CanPush_Attack = false;  // 攻撃ボタンは押せない
+                }
+                else  // 役割オープン後(ステータス4)なのが自分以外である
+                {
+                    CanPush_Attack = true;  // 攻撃ボタンは押せる
+                }
+            }
+            else if (NowActiveSiteN == 2)  // 今のアクティブサイトがサイトB
+            {
+                if (StatusSiteA != statusNum && StatusSiteB == statusNum && StatusSiteC != statusNum && StatusSiteD != statusNum && StatusSiteE != statusNum && StatusSiteF != statusNum && StatusSiteG != statusNum && StatusSiteH != statusNum)
+                {  // 役割オープン後(ステータス4)なのが自分だけ
+                    CanPush_Attack = false;  // 攻撃ボタンは押せない
+                }
+                else
+                {
+                    CanPush_Attack = true;  // 攻撃ボタンは押せる
+                }
+            }
+            else if (NowActiveSiteN == 3)  // 今のアクティブサイトがサイトC
+            {
+                if (StatusSiteA != statusNum && StatusSiteB != statusNum && StatusSiteC == statusNum && StatusSiteD != statusNum && StatusSiteE != statusNum && StatusSiteF != statusNum && StatusSiteG != statusNum && StatusSiteH != statusNum)
+                {  // 役割オープン後(ステータス4)なのが自分だけ
+                    CanPush_Attack = false;  // 攻撃ボタンは押せない
+                }
+                else
+                {
+                    CanPush_Attack = true;  // 攻撃ボタンは押せる
+                }
+            }
+            else if (NowActiveSiteN == 4)  // 今のアクティブサイトがサイトD
+            {
+                if (StatusSiteA != statusNum && StatusSiteB != statusNum && StatusSiteC != statusNum && StatusSiteD == statusNum && StatusSiteE != statusNum && StatusSiteF != statusNum && StatusSiteG != statusNum && StatusSiteH != statusNum)
+                {  // 役割オープン後(ステータス4)なのが自分だけ
+                    CanPush_Attack = false;  // 攻撃ボタンは押せない
+                }
+                else
+                {
+                    CanPush_Attack = true;  // 攻撃ボタンは押せる
+                }
+            }
+
+            else if (NowActiveSiteN == 5)  // 今のアクティブサイトがサイトE
+            {
+                if (StatusSiteA != statusNum && StatusSiteB != statusNum && StatusSiteC != statusNum && StatusSiteD != statusNum && StatusSiteE == statusNum && StatusSiteF != statusNum && StatusSiteG != statusNum && StatusSiteH != statusNum)
+                {  // 役割オープン後(ステータス4)なのが自分だけ
+                    CanPush_Attack = false;  // 攻撃ボタンは押せない
+                }
+                else
+                {
+                    CanPush_Attack = true;  // 攻撃ボタンは押せる
+                }
+            }
+            else if (NowActiveSiteN == 6)  // 今のアクティブサイトがサイトF
+            {
+                if (StatusSiteA != statusNum && StatusSiteB != statusNum && StatusSiteC != statusNum && StatusSiteD != statusNum && StatusSiteE != statusNum && StatusSiteF == statusNum && StatusSiteG != statusNum && StatusSiteH != statusNum)
+                {  // 役割オープン後(ステータス4)なのが自分だけ
+                    CanPush_Attack = false;  // 攻撃ボタンは押せない
+                }
+                else
+                {
+                    CanPush_Attack = true;  // 攻撃ボタンは押せる
+                }
+            }
+            else if (NowActiveSiteN == 7)  // 今のアクティブサイトがサイトG
+            {
+                if (StatusSiteA != statusNum && StatusSiteB != statusNum && StatusSiteC != statusNum && StatusSiteD != statusNum && StatusSiteE != statusNum && StatusSiteF != statusNum && StatusSiteG == statusNum && StatusSiteH != statusNum)
+                {  // 役割オープン後(ステータス4)なのが自分だけ
+                    CanPush_Attack = false;  // 攻撃ボタンは押せない
+                }
+                else
+                {
+                    CanPush_Attack = true;  // 攻撃ボタンは押せる
+                }
+            }
+            else if (NowActiveSiteN == 8)  // 今のアクティブサイトがサイトH
+            {
+                if (StatusSiteA != statusNum && StatusSiteB != statusNum && StatusSiteC != statusNum && StatusSiteD != statusNum && StatusSiteE != statusNum && StatusSiteF != statusNum && StatusSiteG != statusNum && StatusSiteH == statusNum)
+                {  // 役割オープン後(ステータス4)なのが自分だけ
+                    CanPush_Attack = false;  // 攻撃ボタンは押せない
+                }
+                else
+                {
+                    CanPush_Attack = true;  // 攻撃ボタンは押せる
+                }
+            }
+            else
+            {
+                CanPush_Attack = true;  // 攻撃ボタンは押せる
+            }
         }
-        else
+        else  // ステータス4のキャラが一人もいないならば
         {
             CanPush_Attack = false;  // 攻撃モードボタンは押せない
         }

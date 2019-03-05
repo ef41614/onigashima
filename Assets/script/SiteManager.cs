@@ -128,6 +128,8 @@ public class SiteManager : MonoBehaviour
     ButtonController ButtonCscr;
     public GameObject MainFlow;
     MainFlow MainFlowScr;
+    public GameObject StableAspect;
+    StableAspect StableASC;
 
     public GameObject AttackMissText;    // 「Miss」と書かれたテキスト文（攻撃失敗時に出す）
     public GameObject TextCounterHit;    // 「カウンターだ」と書かれたテキスト文（カウンター発動時に出す）
@@ -157,6 +159,7 @@ public class SiteManager : MonoBehaviour
     public GameObject ImagePole_Left;
     Vector2 PoleRightPos;
     Vector2 PoleLeftPos;
+    public float MakuSpeed = 2.0f;
 
     public GameObject PanelWinner;  // 〇〇チームの勝利 を表示する
     public GameObject WinMomo;
@@ -243,6 +246,7 @@ public class SiteManager : MonoBehaviour
         TurnMarkMSC = TurnMarkManager.GetComponent<TurnMarkManager>();
         KifudaMSC = KifudaManager.GetComponent<KifudaManager>();
         ButtonCscr = ButtonController.GetComponent<ButtonController>();
+        StableASC = StableAspect.GetComponent<StableAspect>();
         StartTurnNum();
         ReloadTurnNumUe();
         ClosePanelWinner();
@@ -268,6 +272,7 @@ public class SiteManager : MonoBehaviour
         PoleRightPos = ImagePole_Right.gameObject.transform.position;
         PoleLeftPos = ImagePole_Left.gameObject.transform.position;
         FirstCheckCPU_Operation();  // 各サイトがCPUであるかどうかのチェック（初回のみ一回確認）
+        MakuSpeed = StableASC.OriginalMakuSpeed;
     }
 
 
@@ -309,11 +314,11 @@ public class SiteManager : MonoBehaviour
 
         if (Position.x <= PoleRightPos.x && MakuMoveMode == 1)
         {
-            Position.x += 2.0f;  // 右に幕を移動（開ける）
+            Position.x += MakuSpeed;  // 右に幕を移動（開ける）
         }
         if (Position.x >= PoleLeftPos.x && MakuMoveMode == 2)
         {
-            Position.x -= 2.0f;  // 左に幕を移動（とじる）
+            Position.x -= MakuSpeed;  // 左に幕を移動（とじる）
         }
         PanelMAKU.gameObject.transform.position = Position;
 

@@ -53,6 +53,7 @@ public class SiteManager : MonoBehaviour
     public int StatusSiteF = 1;
     public int StatusSiteG = 1;
     public int StatusSiteH = 1;
+    public int NowOyabunStatus = 1;  // 現在の おやぶんの ステータス
 
     public int teamSiteA = 0;  // 所属チーム :デフォルト「0」null 、おにチーム「1」、桃チーム「3」
     public int teamSiteB = 0;
@@ -251,6 +252,7 @@ public class SiteManager : MonoBehaviour
         preventTurnNum = 1;
         AppearEyecatch();
         //        statusReset(); // ステータスをすべて1にする
+        NowOyabunStatus = 1;  // 現在の おやぶんの ステータスをリセット
         OniLevel = SelectManager.getOniStrong(); // ゲッター関数を呼び出し、値を引き継ぐ
         KabaiKooniPositon = KabaiKooni.transform.position;  // かばいこおにの現在位置をPositionに代入
         GuideLevel = SelectManager.getGuideMode(); // ゲッター関数を呼び出し、値を引き継ぐ
@@ -273,8 +275,10 @@ public class SiteManager : MonoBehaviour
 
     void Update()
     {
-//        Debug.Log("MenuButtonMode？ " + MenuButtonMode);
-               
+        //        Debug.Log("MenuButtonMode？ " + MenuButtonMode);
+        Debug.Log("◆◎NowOyabunStatus：" + NowOyabunStatus);
+
+
         if (selectTimeActive)
         {
             selectBottonA.SetActive(true);
@@ -692,10 +696,10 @@ public class SiteManager : MonoBehaviour
         CommonAimedOK();
     }
 
-    public void CommonAimedOK()
+    public void CommonAimedOK()  // 各行動ボタンのねらいが正常に作動した時
     {
         SEMSC.cursor_SE();
-        TurnActMode();
+        TurnActMode();           // 行動ボタンに応じて、該当のボックスを表示させる
         OpenPanelBattleFieldBox();
     }
     #endregion
@@ -959,7 +963,7 @@ public class SiteManager : MonoBehaviour
         return CanPush_ActButton;  // 選択できるか否かの結果を、bool型で返す
     }
 
-    public void TurnActMode()
+    public void TurnActMode()   // 行動ボタンに応じて、該当のボックスを表示させる
     {
         switch (MenuButtonMode)
         {
@@ -1221,6 +1225,7 @@ public class SiteManager : MonoBehaviour
             YakuMSC.OpenYakuCardH();
             StatusSiteH = 4;
         }
+        CheckNowOyabunStatus();  // おやぶんのステータス確認
     }
 
 
@@ -1305,6 +1310,7 @@ public class SiteManager : MonoBehaviour
             }
             YakuMSC.OpenYakuCardH();
         }
+        CheckNowOyabunStatus();  // おやぶんのステータス確認
     }
 
     public void checkDEX() //命中率チェック
@@ -1442,6 +1448,42 @@ public class SiteManager : MonoBehaviour
         else if (TargetSiteNum == 8)
         {
             OyabunHP = HPMSC.HP_H;
+        }
+    }
+
+    public void CheckNowOyabunStatus()  // おやぶんのステータス確認
+    {
+        if (rollF[1] == 5) // 役割が おにのおやぶん
+        {
+            NowOyabunStatus = StatusSiteA;  // おやぶんのステータス 上書き
+        }
+        else if (rollF[2] == 5) // 役割が おにのおやぶん
+        {
+            NowOyabunStatus = StatusSiteB;  // おやぶんのステータス 上書き
+        }
+        else if (rollF[3] == 5) // 役割が おにのおやぶん
+        {
+            NowOyabunStatus = StatusSiteC;  // おやぶんのステータス 上書き
+        }
+        else if (rollF[4] == 5) // 役割が おにのおやぶん
+        {
+            NowOyabunStatus = StatusSiteD;  // おやぶんのステータス 上書き
+        }
+        else if (rollF[5] == 5) // 役割が おにのおやぶん
+        {
+            NowOyabunStatus = StatusSiteE;  // おやぶんのステータス 上書き
+        }
+        else if (rollF[6] == 5) // 役割が おにのおやぶん
+        {
+            NowOyabunStatus = StatusSiteF;  // おやぶんのステータス 上書き
+        }
+        else if (rollF[7] == 5) // 役割が おにのおやぶん
+        {
+            NowOyabunStatus = StatusSiteG;  // おやぶんのステータス 上書き
+        }
+        else if (rollF[8] == 5) // 役割が おにのおやぶん
+        {
+            NowOyabunStatus = StatusSiteH;  // おやぶんのステータス 上書き
         }
     }
 
@@ -1898,6 +1940,7 @@ public class SiteManager : MonoBehaviour
                 StatusSiteH = 5;
             }
         }
+        CheckNowOyabunStatus();  // おやぶんのステータス確認
         CheckFainting();
     }
 
@@ -1964,6 +2007,7 @@ public class SiteManager : MonoBehaviour
             KizetuH.SetActive(true);
             StatusSiteH = 6;
         }
+        CheckNowOyabunStatus();  // おやぶんのステータス確認
         faintingOccured = false; // すべての処理が終わったところで、ステータスを「気絶後」に変更する
     }
 
@@ -2298,11 +2342,14 @@ public class SiteManager : MonoBehaviour
     {
         if (WinFlgON == 0)  // 勝利時演出のダブり防止策用（0ならば、まだ勝利演出これから開始）
         {
-            WinFlgON = 1;  // 1で勝利フラグが立った （勝利時演出のダブり防止策）
-            StartWinPhase();
-            TeamHanteiAll();
-            CheckWinTeam(1); // チームナンバー： 1（おにチーム）
-            ApperWinOni();
+            if (NowOyabunStatus < 5)  // おやぶんが気絶していなければ
+            {
+                WinFlgON = 1;  // 1で勝利フラグが立った （勝利時演出のダブり防止策）
+                StartWinPhase();
+                TeamHanteiAll();
+                CheckWinTeam(1); // チームナンバー： 1（おにチーム）
+                ApperWinOni();
+            }
         }
     }
 
@@ -2590,7 +2637,7 @@ public class SiteManager : MonoBehaviour
 
         if (NowActiveSite_isCPU)
         {
-            AppearNext_InfoCPUWillOperate();  //  CPUがこれから操作する旨を画面中央にメッセージ表示
+            AppearNext_InfoCPUWillOperate();  //  CPUがこれから操作する旨を画面中央にメッセージ表示（予告）
         }
         else
         {
@@ -2614,8 +2661,8 @@ public class SiteManager : MonoBehaviour
 
     public void StartCPU_Operation()  // CPU操作開始
     {
-        AppearInfoCPU();  // 「CPU そうさ中」のメッセージを表示（ON）
-                          // 行動ボタン、いずれか押下
+        AppearInfoCPU();         // 「CPU そうさ中」のメッセージを画面下に表示（ON）
+        PushActButton_byCPU();   // 行動ボタン、いずれか押下
                           // 行動ボタンBoxひらいて、Box内の操作
                           // 行動ボタンBox 閉じる
                           // （CPU操作 ここまで）
@@ -2629,7 +2676,7 @@ public class SiteManager : MonoBehaviour
         NowActiveSite_isCPU = true;
     }
 
-    public void AppearInfoCPU()
+    public void AppearInfoCPU()  // 「CPU そうさ中」のメッセージを画面下に表示（ON）
     {
         PanelInfoCPU.SetActive(true);
     }
@@ -2639,7 +2686,14 @@ public class SiteManager : MonoBehaviour
         PanelInfoCPU.SetActive(false);
     }
 
-    public void AppearNext_InfoCPUWillOperate()
+    public void PushActButton_byCPU()
+    {
+        // アクティブサイトが桃チームか おにチームか判定
+        // 桃チームの時の処理
+        // おにチームの時の処理
+    }
+
+    public void AppearNext_InfoCPUWillOperate()  //  CPUがこれから操作する旨を画面中央にメッセージ表示（予告）
     {
         Next_InfoCPUWillOperate.SetActive(true);
     }

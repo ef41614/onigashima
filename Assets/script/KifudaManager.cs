@@ -192,6 +192,7 @@ public class KifudaManager : MonoBehaviour {
             SiteMSC.StatusSiteH = 2;  // ステータス木札ON
         }
         SEMSC.WoodPut_SE();
+        SiteMSC.CheckNowOyabunStatus();  // おやぶんのステータス確認
     }
 
     public void askedQuestionSite_active()

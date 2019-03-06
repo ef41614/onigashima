@@ -21,7 +21,7 @@ public class UICanvas : MonoBehaviour
         CanvasScaler cs = GetComponent<CanvasScaler>();
 
         float mwh = cs.matchWidthOrHeight;
-        float Hiritsu = 1.777777f;   // 16÷9 の値
+ //       float Hiritsu = 1.777777f;   // 16÷9 の値
 
         Rect rect = rectTransform.rect;
         float width = rect.width;

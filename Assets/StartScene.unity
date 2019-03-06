@@ -2256,6 +2256,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7621833641fc228458b2f209982d70ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AdjustSize: 0.9
+  StableAspect: {fileID: 1100160225}
 --- !u!1 &184926567
 GameObject:
   m_ObjectHideFlags: 0
@@ -9415,6 +9417,7 @@ GameObject:
   - component: {fileID: 1100160227}
   - component: {fileID: 1100160226}
   - component: {fileID: 1100160229}
+  - component: {fileID: 1100160230}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -9500,6 +9503,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultWidth: 9
   defaultHeight: 16
+--- !u!114 &1100160230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1100160225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef7fc0e732c4c3d4ebad850a28632947, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  matchWidthOrHeight: 0
+  GamenSize: 0
+  OriginalMakuSpeed: 2
 --- !u!1 &1130039129
 GameObject:
   m_ObjectHideFlags: 0

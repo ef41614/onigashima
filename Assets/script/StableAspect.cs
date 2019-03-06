@@ -62,7 +62,7 @@ public class StableAspect : MonoBehaviour
             Debug.Log("画面が たて に広い bgAcpect" + bgAcpect);
             Debug.Log("画面が たて に広い aspect " + aspect);
             GamenSize = 1;  // 1：XR（たて型）
-            OriginalMakuSpeed = 15.0f;
+            OriginalMakuSpeed = 10.0f;
         }
     }
 }

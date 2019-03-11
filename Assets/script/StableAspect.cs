@@ -20,7 +20,6 @@ public class StableAspect : MonoBehaviour
     public float matchWidthOrHeight;
 
     public int GamenSize = 0;  // 0：「16:9」、1：XR（たて型）
-    public float OriginalMakuSpeed = 2.0f;
 
 
     void Awake()
@@ -46,7 +45,6 @@ public class StableAspect : MonoBehaviour
             Debug.Log("画面が横に広い bgAcpect" + bgAcpect);
             Debug.Log("画面が横に広い aspect " + aspect);
             GamenSize = 0; // 0：「16:9」
-            OriginalMakuSpeed = 2.0f;
         }
         else
         {
@@ -62,7 +60,6 @@ public class StableAspect : MonoBehaviour
             Debug.Log("画面が たて に広い bgAcpect" + bgAcpect);
             Debug.Log("画面が たて に広い aspect " + aspect);
             GamenSize = 1;  // 1：XR（たて型）
-            OriginalMakuSpeed = 10.0f;
         }
     }
 }

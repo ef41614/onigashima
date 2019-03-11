@@ -154,12 +154,12 @@ public class SiteManager : MonoBehaviour
     public Sprite EyecatchImage08;
 
     public GameObject PanelMAKU;  // 定式幕
-    public int MakuMoveMode = 0;  // 0:停止, 1:右（オープン）, 2:左（）クローズ
     public GameObject ImagePole_Right;
     public GameObject ImagePole_Left;
     Vector2 PoleRightPos;
     Vector2 PoleLeftPos;
-    public float MakuSpeed = 2.0f;
+    Vector2 PanelMAKUPositon;
+     float MakuMoveTime = 10.0f;        // 何秒間かけて幕が移動するか
 
     public GameObject PanelWinner;  // 〇〇チームの勝利 を表示する
     public GameObject WinMomo;
@@ -272,7 +272,8 @@ public class SiteManager : MonoBehaviour
         PoleRightPos = ImagePole_Right.gameObject.transform.position;
         PoleLeftPos = ImagePole_Left.gameObject.transform.position;
         FirstCheckCPU_Operation();  // 各サイトがCPUであるかどうかのチェック（初回のみ一回確認）
-        MakuSpeed = StableASC.OriginalMakuSpeed;
+        PanelMAKUPositon = PanelMAKU.transform.position;  // 幕の現在位置(初期位置)をPositionに代入
+        SetPositionPanelMAKU();  // 幕の位置を初期化
     }
 
 
@@ -308,19 +309,6 @@ public class SiteManager : MonoBehaviour
         }
 
 
-        Vector2 Position = PanelMAKU.gameObject.transform.position;
-        //        Debug.Log("Position.x : "+ Position.x);
-
-
-        if (Position.x <= PoleRightPos.x && MakuMoveMode == 1)
-        {
-            Position.x += MakuSpeed;  // 右に幕を移動（開ける）
-        }
-        if (Position.x >= PoleLeftPos.x && MakuMoveMode == 2)
-        {
-            Position.x -= MakuSpeed;  // 左に幕を移動（とじる）
-        }
-        PanelMAKU.gameObject.transform.position = Position;
 
     }
 
@@ -391,7 +379,7 @@ public class SiteManager : MonoBehaviour
             var sequence = DOTween.Sequence();
             sequence.InsertCallback(0.1f, () => AppearPanelCheckEnd());
             sequence.InsertCallback(0.2f, () => ClosePanelRollCheck());
-            sequence.InsertCallback(1.5f, () => SwitchMakuMoveMode1());
+            sequence.InsertCallback(1.5f, () => SlideRightPanelMAKU());  // 幕を右へオープン
             sequence.InsertCallback(1.5f, () => AppearCanvasPlayPlace());
             sequence.InsertCallback(3.8f, () => CheckYourTurn());
             sequence.InsertCallback(4.5f, () => CloseCanvasRollCheck());
@@ -404,25 +392,34 @@ public class SiteManager : MonoBehaviour
         }
     }
 
-    public void SwitchMakuMoveMode0()
-    {
-        MakuMoveMode = 0;
-    }
 
-    public void SwitchMakuMoveMode1()  // 幕を右へオープン
-    {
-        MakuMoveMode = 1;
-    }
-
-    public void SwitchMakuMoveMode2()  // 幕を左へクローズ
-    {
-        MakuMoveMode = 2;
-    }
 
     public void AppearPanelMAKU()
     {
         PanelMAKU.SetActive(true);
     }
+
+    public void SlideRightPanelMAKU()  // 幕が みぎ に移動する（ひらく）
+    {
+        Debug.Log("◆幕が ひら～く");
+        PanelMAKU.transform.DOLocalMoveX(PoleRightPos.x, MakuMoveTime);
+    }
+
+    public void SlideLeftPanelMAKU()  // 幕が ひだり に移動する（とじる）
+    {
+        Debug.Log("◆幕が とじ～る");
+        PanelMAKU.transform.DOLocalMoveX(PoleLeftPos.x, MakuMoveTime * 0.5f);
+    }
+
+
+    public void SetPositionPanelMAKU()  // 幕の位置を初期化
+    {
+        PanelMAKU.transform.position = PanelMAKUPositon;
+        Debug.Log("◆幕の位置を初期化");
+    }
+
+
+
 
     public void AppearPanelHandToNext()
     {
@@ -2363,7 +2360,7 @@ public class SiteManager : MonoBehaviour
         var sequence = DOTween.Sequence();
         CloseWinMomo();  // 勝ちマーク クローズ（初期化）
         CloseWinOni();   // 勝ちマーク クローズ（初期化）
-        SwitchMakuMoveMode2();  // 幕を左へクローズ
+        SlideLeftPanelMAKU();  // 幕を左へクローズ
         SEMSC.hyoushigi2_long_SE();
         sequence.InsertCallback(5.8f, () => ApperPanelWinner());  // 数秒後、win画面表示
         CloseCheckBoxes();

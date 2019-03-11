@@ -73,7 +73,6 @@ public class SiteManager : MonoBehaviour
     public int TurnChip_G = 0;
     public int TurnChip_H = 0;
 
-    public bool selectTimeActive = false;
     public GameObject selectBottonA;
     public GameObject selectBottonB;
     public GameObject selectBottonC;
@@ -128,8 +127,6 @@ public class SiteManager : MonoBehaviour
     ButtonController ButtonCscr;
     public GameObject MainFlow;
     MainFlow MainFlowScr;
-    public GameObject StableAspect;
-    StableAspect StableASC;
 
     public GameObject AttackMissText;    // 「Miss」と書かれたテキスト文（攻撃失敗時に出す）
     public GameObject TextCounterHit;    // 「カウンターだ」と書かれたテキスト文（カウンター発動時に出す）
@@ -246,7 +243,6 @@ public class SiteManager : MonoBehaviour
         TurnMarkMSC = TurnMarkManager.GetComponent<TurnMarkManager>();
         KifudaMSC = KifudaManager.GetComponent<KifudaManager>();
         ButtonCscr = ButtonController.GetComponent<ButtonController>();
-        StableASC = StableAspect.GetComponent<StableAspect>();
         StartTurnNum();
         ReloadTurnNumUe();
         ClosePanelWinner();
@@ -274,6 +270,7 @@ public class SiteManager : MonoBehaviour
         FirstCheckCPU_Operation();  // 各サイトがCPUであるかどうかのチェック（初回のみ一回確認）
         PanelMAKUPositon = PanelMAKU.transform.position;  // 幕の現在位置(初期位置)をPositionに代入
         SetPositionPanelMAKU();  // 幕の位置を初期化
+        selectTimeEnd();  //  キャラセレクトボタン初期化（ボタン消灯）
     }
 
 
@@ -283,33 +280,7 @@ public class SiteManager : MonoBehaviour
     {
         //        Debug.Log("MenuButtonMode？ " + MenuButtonMode);
         Debug.Log("◆◎NowOyabunStatus：" + NowOyabunStatus);
-
-
-        if (selectTimeActive)
-        {
-            selectBottonA.SetActive(true);
-            selectBottonB.SetActive(true);
-            selectBottonC.SetActive(true);
-            selectBottonD.SetActive(true);
-            selectBottonE.SetActive(true);
-            selectBottonF.SetActive(true);
-            selectBottonG.SetActive(true);
-            selectBottonH.SetActive(true);
-        }
-        else if (selectTimeActive == false)
-        {
-            selectBottonA.SetActive(false);
-            selectBottonB.SetActive(false);
-            selectBottonC.SetActive(false);
-            selectBottonD.SetActive(false);
-            selectBottonE.SetActive(false);
-            selectBottonF.SetActive(false);
-            selectBottonG.SetActive(false);
-            selectBottonH.SetActive(false);
-        }
-
-
-
+        
     }
 
     //####################################  other  ####################################
@@ -392,7 +363,29 @@ public class SiteManager : MonoBehaviour
         }
     }
 
+    public void selectTimeStart()  //  キャラセレクト開始（ボタン点灯）
+    {
+        selectBottonA.SetActive(true);
+        selectBottonB.SetActive(true);
+        selectBottonC.SetActive(true);
+        selectBottonD.SetActive(true);
+        selectBottonE.SetActive(true);
+        selectBottonF.SetActive(true);
+        selectBottonG.SetActive(true);
+        selectBottonH.SetActive(true);
+    }
 
+    public void selectTimeEnd()  //  キャラセレクト終了（ボタン消灯）
+    {
+        selectBottonA.SetActive(false);
+        selectBottonB.SetActive(false);
+        selectBottonC.SetActive(false);
+        selectBottonD.SetActive(false);
+        selectBottonE.SetActive(false);
+        selectBottonF.SetActive(false);
+        selectBottonG.SetActive(false);
+        selectBottonH.SetActive(false);
+    }
 
     public void AppearPanelMAKU()
     {
@@ -705,11 +698,6 @@ public class SiteManager : MonoBehaviour
         OpenPanelBattleFieldBox();
     }
     #endregion
-
-    public void selectTimeEnd()
-    {
-        selectTimeActive = false;
-    }
 
     public void MenuButtonModeQuestion()
     {

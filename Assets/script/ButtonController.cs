@@ -144,7 +144,7 @@ public class ButtonController : MonoBehaviour {
 
     public void selectTimeStart()
     {
-        SiteMSC.selectTimeActive = true;
+        SiteMSC.selectTimeStart();
         SEMSC.Kettei2_SE();  // SEも入れる（チュイーン）
     }
 
@@ -254,7 +254,7 @@ public class ButtonController : MonoBehaviour {
             OpenQuestion();
         }
         else    // ガイド文OFFで いきなりキャラ選択へ進む（説明文スキップ）
-        {       // （→ MenuButtonMode が 1 で、selectTimeActive = true になる）
+        { 
             PushActButtonGideTextOFFCommon();
         }
     }

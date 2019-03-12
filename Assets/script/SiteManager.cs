@@ -23,6 +23,7 @@ public class SiteManager : MonoBehaviour
 
     public int TotalSurvivalSiteN = 8;
     public int NowActiveSiteN = 1;
+    public int ActiveSiteRoll = 0;  // 今アクティブなキャラの役割
     public int siteN = 0;   //サイト
     public int charaF = 0;  //キャラ顔
                             //    public int charaN = 0;  //キャラname
@@ -214,6 +215,7 @@ public class SiteManager : MonoBehaviour
     public bool CanPush_Unmask = true;
     public bool CanPush_Attack = false;
 
+    float currentTime = 0f;  //〇秒間に一度する処理用
     #endregion
 
     // --------------------------------------------
@@ -279,8 +281,13 @@ public class SiteManager : MonoBehaviour
     void Update()
     {
         //        Debug.Log("MenuButtonMode？ " + MenuButtonMode);
-        Debug.Log("◆◎NowOyabunStatus：" + NowOyabunStatus);
-        
+        currentTime += Time.deltaTime;
+
+        if (currentTime > 3)
+        {
+            Debug.Log("◆◎NowOyabunStatus：" + NowOyabunStatus);
+            currentTime = 0f;
+        }
     }
 
     //####################################  other  ####################################
@@ -2651,12 +2658,16 @@ public class SiteManager : MonoBehaviour
 
     public void StartCPU_Operation()  // CPU操作開始
     {
+        var sequence = DOTween.Sequence();
         AppearInfoCPU();         // 「CPU そうさ中」のメッセージを画面下に表示（ON）
-        PushActButton_byCPU();   // 行動ボタン、いずれか押下
-                          // 行動ボタンBoxひらいて、Box内の操作
-                          // 行動ボタンBox 閉じる
-                          // （CPU操作 ここまで）
-                          // （適宜、SEも）
+        CheckMyRole();           // 自身の役割確認:  rollF[NowActiveSiteN] 
+                                 // 他人がどちらのチームか？どの役割か？予想するフェーズ。
+
+        sequence.InsertCallback(2f, () => PushActButton_byCPU());   // 行動ボタン、いずれか押下(●可能性値に基づき行動を選択する)
+                                                                    // 行動ボタンBoxひらいて、Box内の操作
+                                                                    // 行動ボタンBox 閉じる
+                                                                    // （CPU操作 ここまで）
+                                                                    // （適宜、SEも）
     }
 
     public void FinishCPU_Operation()  // CPU操作終了
@@ -2676,11 +2687,70 @@ public class SiteManager : MonoBehaviour
         PanelInfoCPU.SetActive(false);
     }
 
+
+    public void CheckMyRole() //自分の役割チェック
+    {
+        if (rollF[NowActiveSiteN] == 1) // ももたろう
+        {
+            ActiveSiteRoll = 1;
+        }
+        else if (rollF[NowActiveSiteN] >= 2 && rollF[NowActiveSiteN] <= 4) // いぬ、さる、きじ
+        {
+            ActiveSiteRoll = 2;
+        }
+        else if (rollF[NowActiveSiteN] == 5) // おにのおやぶん
+        {
+            ActiveSiteRoll = 5;
+        }
+        else if (rollF[NowActiveSiteN] >= 6 && rollF[NowActiveSiteN] <= 8) // こオニたち
+        {
+            ActiveSiteRoll = 6;
+        }
+        Debug.Log("NowActiveSiteN "+ NowActiveSiteN);
+        Debug.Log("自分の役割チェック " + rollF[NowActiveSiteN]);
+    }
+
+
     public void PushActButton_byCPU()
     {
-        // アクティブサイトが桃チームか おにチームか判定
-        // 桃チームの時の処理
-        // おにチームの時の処理
+        var sequence = DOTween.Sequence();
+        if (ActiveSiteRoll == 1 || ActiveSiteRoll == 2)  // アクティブサイトが 桃チーム
+        {
+            Debug.Log("アクティブサイトが 桃チーム");
+            if (NowOyabunStatus == 4)  // もし おやぶんが 役割オープン（ステータス：4）なら → 攻撃
+            {
+                Debug.Log("おやぶんが 役割オープン（ステータス：4）なら → 攻撃");
+                ButtonCscr.BranchOpenAttack();  // M-3：この場合は「こうげき」ボタン
+                // エイムセレクト画面で おやぶん を選択する
+                // OKボタン 押下で 攻撃
+                // OKボタン 押下で ウインドウ 閉じる
+            }
+            else if (NowOyabunStatus == 2)  // もし おやぶんが 木札ON（ステータス：2）なら → 役割当て
+            {
+                Debug.Log("おやぶんが 木札ON（ステータス：2）なら → 役割当て");
+                ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン
+            }
+            else if (NowOyabunStatus == 1)  // もし おやぶんが 木札無し（ステータス：1）なら → 役割当て or しつもん
+            {
+                Debug.Log("おやぶんが 木札無し（ステータス：1）なら → 役割当て or しつもん");
+                //  場の全体を見て おやぶん だと判明した場合
+                // M-2：この場合は「役割あて」ボタン
+
+                // それでも おやぶんが どこか不明な時
+                ButtonCscr.BranchOpenQuestion();  // M-1：この場合は「しつもん」ボタン
+                sequence.InsertCallback(0.2f, () => ButtonCscr.CloseBrownBox());  // OKボタン 押下で BrownBox 閉じる
+                sequence.InsertCallback(0.2f, () => ButtonCscr.JudgeGoSelectTime());  // OKボタン 押下で BrownBox 閉じる
+            }
+        }
+        else if (ActiveSiteRoll == 5)  // アクティブサイトが おにのおやぶん
+        {
+            Debug.Log("アクティブサイトが おにのおやぶん");
+        }
+
+        else if (ActiveSiteRoll == 6)  // アクティブサイトが こおに
+        {
+            Debug.Log("アクティブサイトが こおに");
+        }
     }
 
     public void AppearNext_InfoCPUWillOperate()  //  CPUがこれから操作する旨を画面中央にメッセージ表示（予告）

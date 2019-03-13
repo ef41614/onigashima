@@ -5343,7 +5343,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 30.376152, y: 32.42015}
+  m_AnchoredPosition: {x: 30.376152, y: 32.41992}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &184084885
@@ -6285,7 +6285,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -110.37615, y: -146}
+  m_AnchoredPosition: {x: -110.37598, y: -146}
   m_SizeDelta: {x: -110, y: -276}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &209245079
@@ -10732,7 +10732,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -17149,7 +17149,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -75, y: 22.399902}
+  m_AnchoredPosition: {x: -75, y: 22.40039}
   m_SizeDelta: {x: 65.1, y: 58.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &416363220
@@ -18321,7 +18321,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 10, y: -10.300049}
+  m_AnchoredPosition: {x: 10, y: -10.299805}
   m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &463395399
@@ -22627,7 +22627,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 4, y: 32.25659}
+  m_AnchoredPosition: {x: 4, y: 32.256836}
   m_SizeDelta: {x: 249.8266, y: 459.03052}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &622299110
@@ -27408,7 +27408,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 190.37616, y: 32.42015}
+  m_AnchoredPosition: {x: 190.37616, y: 32.41992}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &840789168
@@ -33764,7 +33764,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 82.87615, y: 32.42015}
+  m_AnchoredPosition: {x: 82.87615, y: 32.41992}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1127812710
@@ -33892,7 +33892,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 204, y: 372.1}
+  m_AnchoredPosition: {x: 204, y: 372.0996}
   m_SizeDelta: {x: 21.5, y: 21.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1128365361
@@ -34108,7 +34108,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -20.300003, y: 95.21}
+  m_AnchoredPosition: {x: -20.299805, y: 95.20996}
   m_SizeDelta: {x: 211, y: 375}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1132050045
@@ -34752,7 +34752,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: 05638a29099c7e24b981f8890e54fb58, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 0.78431374}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -38255,7 +38255,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -3.2, y: -18.399902}
+  m_AnchoredPosition: {x: -3.2, y: -18.40039}
   m_SizeDelta: {x: 130, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1298300509
@@ -52017,7 +52017,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 18.9, y: 372.1}
+  m_AnchoredPosition: {x: 18.9, y: 372.0996}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1540115973
@@ -56497,7 +56497,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 137.87616, y: 32.42015}
+  m_AnchoredPosition: {x: 137.87616, y: 32.41992}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1686651122
@@ -57867,7 +57867,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 1, y: 202.8}
+  m_AnchoredPosition: {x: 1, y: 202.7998}
   m_SizeDelta: {x: 0, y: 2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1731300751
@@ -59551,7 +59551,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.78431374}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -62932,7 +62932,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 190.37616, y: 32.42015}
+  m_AnchoredPosition: {x: 190.37616, y: 32.41992}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1892549103
@@ -63782,7 +63782,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 10, y: -44.19995}
+  m_AnchoredPosition: {x: 10, y: -44.200195}
   m_SizeDelta: {x: 32, y: 32}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1922788406
@@ -66024,6 +66024,7 @@ MonoBehaviour:
   PanelRollCheck: {fileID: 792460276}
   TotalSurvivalSiteN: 8
   NowActiveSiteN: 1
+  ActiveSiteRoll: 0
   siteN: 0
   charaF: 0
   huda: 0
@@ -66102,6 +66103,14 @@ MonoBehaviour:
   KifudaManager: {fileID: 1970236657}
   ButtonController: {fileID: 1836641338}
   MainFlow: {fileID: 492953700}
+  Yaku_A: {fileID: 1795402374}
+  Yaku_B: {fileID: 1551090868}
+  Yaku_C: {fileID: 476889414}
+  Yaku_D: {fileID: 562556230}
+  Yaku_E: {fileID: 1507283606}
+  Yaku_F: {fileID: 880307082}
+  Yaku_G: {fileID: 977295828}
+  Yaku_H: {fileID: 2134446945}
   AttackMissText: {fileID: 101932395}
   TextCounterHit: {fileID: 478110557}
   AttakedAfterText: {fileID: 1756816201}

@@ -145,7 +145,14 @@ public class ButtonController : MonoBehaviour {
     public void selectTimeStart()
     {
         SiteMSC.selectTimeStart();
-        SEMSC.Kettei2_SE();  // SEも入れる（チュイーン）
+        if (SiteMSC.NowActiveSite_isCPU == false)  // プレイヤーが人間の時
+        {
+            SEMSC.Kettei2_SE();  // SEも入れる（チュイーン）
+        }
+        else
+        {
+    //        SEMSC.select01_SE();
+        }
     }
 
     public void JudgeGoSelectTime()

@@ -129,6 +129,23 @@ public class SiteManager : MonoBehaviour
     public GameObject MainFlow;
     MainFlow MainFlowScr;
 
+    public GameObject Yaku_A;
+    CardReverse_Ba CardR_BaASC;
+    public GameObject Yaku_B;
+    CardReverse_Ba CardR_BaBSC;
+    public GameObject Yaku_C;
+    CardReverse_Ba CardR_BaCSC;
+    public GameObject Yaku_D;
+    CardReverse_Ba CardR_BaDSC;
+    public GameObject Yaku_E;
+    CardReverse_Ba CardR_BaESC;
+    public GameObject Yaku_F;
+    CardReverse_Ba CardR_BaFSC;
+    public GameObject Yaku_G;
+    CardReverse_Ba CardR_BaGSC;
+    public GameObject Yaku_H;
+    CardReverse_Ba CardR_BaHSC;
+
     public GameObject AttackMissText;    // 「Miss」と書かれたテキスト文（攻撃失敗時に出す）
     public GameObject TextCounterHit;    // 「カウンターだ」と書かれたテキスト文（カウンター発動時に出す）
     public GameObject AttakedAfterText;   // 攻撃後のセリフ（当たった時、外れた時、共に）
@@ -273,6 +290,15 @@ public class SiteManager : MonoBehaviour
         PanelMAKUPositon = PanelMAKU.transform.position;  // 幕の現在位置(初期位置)をPositionに代入
         SetPositionPanelMAKU();  // 幕の位置を初期化
         selectTimeEnd();  //  キャラセレクトボタン初期化（ボタン消灯）
+
+        CardR_BaASC = Yaku_A.GetComponent<CardReverse_Ba>();
+        CardR_BaBSC = Yaku_B.GetComponent<CardReverse_Ba>();
+        CardR_BaCSC = Yaku_C.GetComponent<CardReverse_Ba>();
+        CardR_BaDSC = Yaku_D.GetComponent<CardReverse_Ba>();
+        CardR_BaESC = Yaku_E.GetComponent<CardReverse_Ba>();
+        CardR_BaFSC = Yaku_F.GetComponent<CardReverse_Ba>();
+        CardR_BaGSC = Yaku_G.GetComponent<CardReverse_Ba>();
+        CardR_BaHSC = Yaku_H.GetComponent<CardReverse_Ba>();
     }
 
 
@@ -2721,6 +2747,7 @@ public class SiteManager : MonoBehaviour
             {
                 Debug.Log("おやぶんが 役割オープン（ステータス：4）なら → 攻撃");
                 ButtonCscr.BranchOpenAttack();  // M-3：この場合は「こうげき」ボタン
+                CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
                 // エイムセレクト画面で おやぶん を選択する
                 // OKボタン 押下で 攻撃
                 // OKボタン 押下で ウインドウ 閉じる
@@ -2729,6 +2756,8 @@ public class SiteManager : MonoBehaviour
             {
                 Debug.Log("おやぶんが 木札ON（ステータス：2）なら → 役割当て");
                 ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン
+                CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                sequence.InsertCallback(2f, () => YouAreOyabun());     // 木札ONの おやぶん を探して エイムでセレクト
             }
             else if (NowOyabunStatus == 1)  // もし おやぶんが 木札無し（ステータス：1）なら → 役割当て or しつもん
             {
@@ -2738,8 +2767,7 @@ public class SiteManager : MonoBehaviour
 
                 // それでも おやぶんが どこか不明な時
                 ButtonCscr.BranchOpenQuestion();  // M-1：この場合は「しつもん」ボタン
-                sequence.InsertCallback(0.2f, () => ButtonCscr.CloseBrownBox());  // OKボタン 押下で BrownBox 閉じる
-                sequence.InsertCallback(0.2f, () => ButtonCscr.JudgeGoSelectTime());  // OKボタン 押下で BrownBox 閉じる
+                CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
             }
         }
         else if (ActiveSiteRoll == 5)  // アクティブサイトが おにのおやぶん
@@ -2752,6 +2780,91 @@ public class SiteManager : MonoBehaviour
             Debug.Log("アクティブサイトが こおに");
         }
     }
+
+    public void CloseBrownBoxCommon()
+    {
+        var sequence = DOTween.Sequence();
+        sequence.InsertCallback(0.2f, () => ButtonCscr.CloseBrownBox());  // OKボタン 押下で BrownBox 閉じる
+        sequence.InsertCallback(0.2f, () => ButtonCscr.JudgeGoSelectTime());  // OKボタン 押下で BrownBox 閉じる
+    }
+
+    public void YouAreOyabun()  // 木札ONの おやぶん を探して エイムでセレクト
+    {
+        var sequence = DOTween.Sequence();
+        Debug.Log("木札ONの おやぶん を探して エイムでセレクト");
+        if (rollF[1] == 5) // 役割が おにのおやぶん
+        {
+            SiteA_Aimed();
+            sequence.InsertCallback(2f, () => CharaMSC.ShowSiteA_Aimed()); ;
+        }
+        else if (rollF[2] == 5) // 役割が おにのおやぶん
+        {
+            SiteB_Aimed();
+            sequence.InsertCallback(2f, () => CharaMSC.ShowSiteB_Aimed());
+        }
+        else if (rollF[3] == 5) // 役割が おにのおやぶん
+        {
+            SiteC_Aimed();
+            sequence.InsertCallback(2f, () => CharaMSC.ShowSiteC_Aimed());
+        }
+        else if (rollF[4] == 5) // 役割が おにのおやぶん
+        {
+            SiteD_Aimed();
+            sequence.InsertCallback(2f, () => CharaMSC.ShowSiteD_Aimed());
+        }
+        else if (rollF[5] == 5) // 役割が おにのおやぶん
+        {
+            SiteE_Aimed();
+            sequence.InsertCallback(2f, () => CharaMSC.ShowSiteE_Aimed());
+        }
+        else if (rollF[6] == 5) // 役割が おにのおやぶん
+        {
+            SiteF_Aimed();
+            sequence.InsertCallback(2f, () => CharaMSC.ShowSiteF_Aimed());
+        }
+        else if (rollF[7] == 5) // 役割が おにのおやぶん
+        {
+            SiteG_Aimed();
+            sequence.InsertCallback(2f, () => CharaMSC.ShowSiteG_Aimed());
+        }
+        else if (rollF[8] == 5) // 役割が おにのおやぶん
+        {
+            SiteH_Aimed();
+            sequence.InsertCallback(2f, () => CharaMSC.ShowSiteH_Aimed());
+        }
+        sequence.InsertCallback(4f, () => YouAreOyabun2());
+        sequence.InsertCallback(8f, () => YouAreOyabun3());
+    }
+
+    public void YouAreOyabun2()  // 役割当て画面で おやぶん のアイコンを クリック
+    {
+        CloseBeforeUnmask();
+        AppearAfterUnmask();
+        YosouOyabun();
+    }
+
+    public void YouAreOyabun3()  // 役割当て画面クローズ
+    {
+        CloseAfterUnmask();
+        CloseUnmaskMode();
+        ClosePanelBattleFieldBox();
+        selectTimeEnd();
+        AddplayerOrderNum();
+        CharaMSC.OpenPanelYourTurn();
+        CharaMSC.AppearNowActiveSite();
+        CheckYourTurn();
+
+        CardR_BaASC.StartCardOpen();
+        CardR_BaBSC.StartCardOpen();
+        CardR_BaCSC.StartCardOpen();
+        CardR_BaDSC.StartCardOpen();
+        CardR_BaESC.StartCardOpen();
+        CardR_BaFSC.StartCardOpen();
+        CardR_BaGSC.StartCardOpen();
+        CardR_BaHSC.StartCardOpen();
+
+    }
+
 
     public void AppearNext_InfoCPUWillOperate()  //  CPUがこれから操作する旨を画面中央にメッセージ表示（予告）
     {

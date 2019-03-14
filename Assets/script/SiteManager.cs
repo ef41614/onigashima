@@ -38,6 +38,7 @@ public class SiteManager : MonoBehaviour
                                                            //    public int[] StatusSite = Enumerable.Repeat<int>(1, 9).ToArray();
                                                            //public int[] StatusSite = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };    //ステータス
                                                            //    public int[] DEX = { 0, 1, 2, 3, 4, 5, 6 };    //命中力
+    int RollFNum = 0;
     public int DEX = 0; //命中力
     public int human_num = 1;
     int HandOfTime = 0;    // 「つぎの人に渡してね」のメッセージを表示させる
@@ -2791,17 +2792,14 @@ public class SiteManager : MonoBehaviour
     public void PushActButton_byCPU()
     {
         var sequence = DOTween.Sequence();
-        if (ActiveSiteRoll == 1 || ActiveSiteRoll == 2)  // アクティブサイトが 桃チーム
+        // アクティブサイトが 桃チーム
+        if (ActiveSiteRoll == 1 || ActiveSiteRoll == 2)  
         {
             Debug.Log("アクティブサイトが 桃チーム");
             if (NowOyabunStatus == 4)  // もし おやぶんが 役割オープン（ステータス：4）なら → 攻撃
             {
                 Debug.Log("おやぶんが 役割オープン（ステータス：4）なら → 攻撃");
-                ButtonCscr.BranchOpenAttack();  // M-3：この場合は「こうげき」ボタン
-                CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                sequence.InsertCallback(2f, () => YouAreOyabun());  // エイムセレクト画面で おやぶん を選択する
-                sequence.InsertCallback(4f, () => YouAreOyabun2_Attack());  // OKボタン 押下で 攻撃
-                sequence.InsertCallback(8f, () => YouAreOyabun3_Attack());  // OKボタン 押下で ウインドウ 閉じる
+                AttackToHogeCommon(5);  // おやぶん に攻撃(CPU)
             }
             else if (NowOyabunStatus == 2)  // もし おやぶんが 木札ON（ステータス：2）なら → 役割当て
             {
@@ -2907,12 +2905,188 @@ public class SiteManager : MonoBehaviour
                 }
             }
         }
-        else if (ActiveSiteRoll == 5)  // アクティブサイトが おにのおやぶん
+
+        // アクティブサイトが おにのおやぶん
+        else if (ActiveSiteRoll == 5)  
         {
+            RollFNum = 0;  // 初期化
+            int PushedBtnFlg = 0;  // 処理を実施したかどうか
             Debug.Log("アクティブサイトが おにのおやぶん");
+            // 桃太郎が 残りHP1 なら → 攻撃
+            if (rollF[1] == 1) // ももたろう
+            {
+                if (HPMSC.HP_A == 1)
+                {
+                    AttackToMomotaro();  // ももたろう に攻撃(CPU)
+                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                }
+            }
+            else if (rollF[2] == 1) // ももたろう
+            {
+                if (HPMSC.HP_B == 1)
+                {
+                    AttackToMomotaro();  // ももたろう に攻撃(CPU)
+                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                }
+            }
+            else if (rollF[3] == 1) // ももたろう
+            {
+                if (HPMSC.HP_C == 1)
+                {
+                    AttackToMomotaro();  // ももたろう に攻撃(CPU)
+                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                }
+            }
+            else if (rollF[4] == 1) // ももたろう
+            {
+                if (HPMSC.HP_D == 1)
+                {
+                    AttackToMomotaro();  // ももたろう に攻撃(CPU)
+                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                }
+            }
+            else if (rollF[5] == 1) // ももたろう
+            {
+                if (HPMSC.HP_E == 1)
+                {
+                    AttackToMomotaro();  // ももたろう に攻撃(CPU)
+                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                }
+            }
+            else if (rollF[6] == 1) // ももたろう
+            {
+                if (HPMSC.HP_F == 1)
+                {
+                    AttackToMomotaro();  // ももたろう に攻撃(CPU)
+                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                }
+            }
+            else if (rollF[7] == 1) // ももたろう
+            {
+                if (HPMSC.HP_G == 1)
+                {
+                    AttackToMomotaro();  // ももたろう に攻撃(CPU)
+                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                }
+            }
+            else if (rollF[8] == 1) // ももたろう
+            {
+                if (HPMSC.HP_H == 1)
+                {
+                    AttackToMomotaro();  // ももたろう に攻撃(CPU)
+                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                }
+            }
+
+            // 桃メイトが 役割オープンなら → 攻撃
+            if (PushedBtnFlg == 0)  // 処理を実施したかどうか
+            {
+                for (int TN = 8; TN > 0; TN--)  // 順番マーカーが 8 のものからチェック
+                {
+                    if (TurnChip_A == TN)
+                    {
+                        if (rollF[1] >= 2 && rollF[1] <= 4) // いぬ、さる、きじ
+                        {
+                            if (StatusSiteA == 4)  // 桃メイトが 役割オープン
+                            {
+                                RollFNum = rollF[1];
+                                TN = -1;
+                            }
+                        }
+                    }
+                    else if (TurnChip_B == TN)
+                    {
+                        if (rollF[2] >= 2 && rollF[2] <= 4) // いぬ、さる、きじ
+                        {
+                            if (StatusSiteB == 4)
+                            {
+                                RollFNum = rollF[2];
+                                TN = -1;
+                            }
+                        }
+                    }
+                    else if (TurnChip_C == TN)
+                    {
+                        if (rollF[3] >= 2 && rollF[3] <= 4) // いぬ、さる、きじ
+                        {
+                            if (StatusSiteC == 4)
+                            {
+                                RollFNum = rollF[3];
+                                TN = -1;
+                            }
+                        }
+                    }
+                    else if (TurnChip_D == TN)
+                    {
+                        if (rollF[4] >= 2 && rollF[4] <= 4) // いぬ、さる、きじ
+                        {
+                            if (StatusSiteD == 4)
+                            {
+                                RollFNum = rollF[4];
+                                TN = -1;
+                            }
+                        }
+                    }
+                    else if (TurnChip_E == TN)
+                    {
+                        if (rollF[5] >= 2 && rollF[5] <= 4) // いぬ、さる、きじ
+                        {
+                            if (StatusSiteE == 4)
+                            {
+                                RollFNum = rollF[5];
+                                TN = -1;
+                            }
+                        }
+                    }
+                    else if (TurnChip_F == TN)
+                    {
+                        if (rollF[6] >= 2 && rollF[6] <= 4) // いぬ、さる、きじ
+                        {
+                            if (StatusSiteF == 4)
+                            {
+                                RollFNum = rollF[6];
+                                TN = -1;
+                            }
+                        }
+                    }
+                    else if (TurnChip_G == TN)
+                    {
+                        if (rollF[7] >= 2 && rollF[7] <= 4) // いぬ、さる、きじ
+                        {
+                            if (StatusSiteG == 4)
+                            {
+                                RollFNum = rollF[7];
+                                TN = -1;
+                            }
+                        }
+                    }
+                    else if (TurnChip_H == TN)
+                    {
+                        if (rollF[8] >= 2 && rollF[8] <= 4) // いぬ、さる、きじ
+                        {
+                            if (StatusSiteH == 4)
+                            {
+                                RollFNum = rollF[8];
+                                TN = -1;
+                            }
+                        }
+                    }
+                    if(TN == -1)
+                    {
+                        PushedBtnFlg = 1;  // 処理を実施したかどうか
+                        AttackToMomoMate();  // ももたろうの仲間 に攻撃(CPU)
+                    }
+                }
+            }
+            // 桃太郎が   役割オープンなら → 攻撃
+            // 桃メイトが 木札ONなら → 役割当て
+            // 桃太郎が   木札ONなら → 役割当て
+            // 桃メイトが 木札無しなら → 役割当て or しつもん
+            // 桃太郎が   木札無しなら → 役割当て or しつもん
         }
 
-        else if (ActiveSiteRoll == 6)  // アクティブサイトが こおに
+        // アクティブサイトが こおに
+        else if (ActiveSiteRoll == 6)  
         {
             Debug.Log("アクティブサイトが こおに");
         }
@@ -2927,7 +3101,6 @@ public class SiteManager : MonoBehaviour
 
     public void AreYouOyabun_Question()
     {
-        var sequence = DOTween.Sequence();
         var AimedSite = Enumerable.Range(1, 8).OrderBy(n => Guid.NewGuid()).Take(8).ToArray();  // 配列に 1～8 までの数値を ランダムに入れる
         int AimedFlg = 0;
         Debug.Log("エイムセレクト画面で ランダム で選択する");
@@ -3055,66 +3228,85 @@ public class SiteManager : MonoBehaviour
         var sequence = DOTween.Sequence();
         ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン
         CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-        sequence.InsertCallback(2f, () => YouAreOyabun());     // 木札ONの おやぶん を探して エイムでセレクト
-        sequence.InsertCallback(4f, () => YouAreOyabun2_Unmask());  // 役割当て画面で おやぶん のアイコンを クリック
-        sequence.InsertCallback(8f, () => YouAreOyabun3_Unmask());  // 役割当て画面クローズ
+        sequence.InsertCallback(2f, () => YouAreHoge(5));     // 木札ONの おやぶん を探して エイムでセレクト
+        sequence.InsertCallback(4f, () => YouAreHoge2_Unmask(5));  // 役割当て画面で おやぶん のアイコンを クリック
+        sequence.InsertCallback(8f, () => YouAreHoge3_Unmask());  // 役割当て画面クローズ
     }
 
-    public void YouAreOyabun()  // エイムセレクト画面で おやぶん を選択する
+    public void YouAreHoge(int cnum)  // エイムセレクト画面で 1:ももたろう、5:おやぶん を選択する
     {
-        Debug.Log("エイムセレクト画面で おやぶん を選択する");
-        if (rollF[1] == 5) // 役割が おにのおやぶん
+        if (rollF[1] == cnum) // 役割が 1:ももたろう、5:おやぶん
         {
             SiteA_Aimed();
             CharaMSC.ShowSiteA_Aimed();
         }
-        else if (rollF[2] == 5) // 役割が おにのおやぶん
+        else if (rollF[2] == cnum) // 役割が 1:ももたろう、5:おやぶん
         {
             SiteB_Aimed();
             CharaMSC.ShowSiteB_Aimed();
         }
-        else if (rollF[3] == 5) // 役割が おにのおやぶん
+        else if (rollF[3] == cnum) // 役割が 1:ももたろう、5:おやぶん
         {
             SiteC_Aimed();
             CharaMSC.ShowSiteC_Aimed();
         }
-        else if (rollF[4] == 5) // 役割が おにのおやぶん
+        else if (rollF[4] == cnum) // 役割が 1:ももたろう、5:おやぶん
         {
             SiteD_Aimed();
             CharaMSC.ShowSiteD_Aimed();
         }
-        else if (rollF[5] == 5) // 役割が おにのおやぶん
+        else if (rollF[5] == cnum) // 役割が 1:ももたろう、5:おやぶん
         {
             SiteE_Aimed();
             CharaMSC.ShowSiteE_Aimed();
         }
-        else if (rollF[6] == 5) // 役割が おにのおやぶん
+        else if (rollF[6] == cnum) // 役割が 1:ももたろう、5:おやぶん
         {
             SiteF_Aimed();
             CharaMSC.ShowSiteF_Aimed();
         }
-        else if (rollF[7] == 5) // 役割が おにのおやぶん
+        else if (rollF[7] == cnum) // 役割が 1:ももたろう、5:おやぶん
         {
             SiteG_Aimed();
             CharaMSC.ShowSiteG_Aimed();
         }
-        else if (rollF[8] == 5) // 役割が おにのおやぶん
+        else if (rollF[8] == cnum) // 役割が 1:ももたろう、5:おやぶん
         {
             SiteH_Aimed();
             CharaMSC.ShowSiteH_Aimed();
         }
+
+        if (cnum == 1)                   // ももたろう
+        {
+            Debug.Log("エイムセレクト画面で ももたろう を選択する");
+        }
+        else if (cnum >= 2 && cnum <= 4) // いぬ、さる、きじ
+        {
+            Debug.Log("エイムセレクト画面で ももたろうの仲間 を選択する");
+        }
+        else if (cnum == 5)              // おやぶん
+        {
+            Debug.Log("エイムセレクト画面で おやぶん を選択する");
+        }
+        else if (cnum >= 6 && cnum <= 8) // こおに
+        {
+            Debug.Log("エイムセレクト画面で こおに を選択する");
+        }
     }
 
-
-
-    public void YouAreOyabun2_Unmask()  // 役割当て画面で おやぶん のアイコンを クリック
+    
+    public void YouAreHoge2_Unmask(int cnum)  // 役割当て画面で[ 1:ももたろう、5:おやぶん ] のアイコンを クリック
     {
         CloseBeforeUnmask();
         AppearAfterUnmask();
-        YosouOyabun();
+        
+        if (cnum == 5)
+        {
+            YosouOyabun();
+        }
     }
 
-    public void YouAreOyabun3_Unmask()  // 役割当て画面クローズ
+    public void YouAreHoge3_Unmask()  // 役割当て画面クローズ
     {
         CloseAfterUnmask();
         CloseUnmaskMode();
@@ -3130,7 +3322,7 @@ public class SiteManager : MonoBehaviour
         CardR_BaHSC.StartCardOpen();
     }
 
-    public void YouAreOyabun2_Attack()  // こうげき画面： OKボタン 押下で 攻撃 実行
+    public void YouAreHoge2_Attack()  // こうげき画面： OKボタン 押下で 攻撃 実行
     {
         CloseBeforeAttack();
         AppearAfterAttack();
@@ -3138,11 +3330,33 @@ public class SiteManager : MonoBehaviour
         JudgeHitting();
     }
 
-    public void YouAreOyabun3_Attack()  //  OKボタン 押下で ウインドウ 閉じる
+    public void YouAreHoge3_Attack()  //  OKボタン 押下で ウインドウ 閉じる
     {
         CloseAfterAttack();
         CloseAttackMode();
         AfterPushActButtonCommon();  // 各行動ボタン押下後の共通処理
+    }
+
+    public void AttackToMomotaro()
+    {
+        Debug.Log("ももたろう に攻撃");
+        AttackToHogeCommon(1);
+    }
+
+    public void AttackToMomoMate()
+    {
+        Debug.Log("ももたろうの 仲間 に攻撃");
+        AttackToHogeCommon(RollFNum);
+    }
+
+    public void AttackToHogeCommon(int AiteTeamMate)
+    {
+        var sequence = DOTween.Sequence();
+        ButtonCscr.BranchOpenAttack();  // M-3：この場合は「こうげき」ボタン
+        CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+        sequence.InsertCallback(2f, () => YouAreHoge(AiteTeamMate));  // エイムセレクト画面で 相手 を選択する
+        sequence.InsertCallback(4f, () => YouAreHoge2_Attack());  // OKボタン 押下で 攻撃
+        sequence.InsertCallback(8f, () => YouAreHoge3_Attack());  // OKボタン 押下で ウインドウ 閉じる
     }
 
     public void AfterPushActButtonCommon()  // 各行動ボタン押下後の共通処理
@@ -3156,7 +3370,7 @@ public class SiteManager : MonoBehaviour
     }
 
 
-        public void AppearNext_InfoCPUWillOperate()  //  CPUがこれから操作する旨を画面中央にメッセージ表示（予告）
+    public void AppearNext_InfoCPUWillOperate()  //  CPUがこれから操作する旨を画面中央にメッセージ表示（予告）
     {
         Next_InfoCPUWillOperate.SetActive(true);
     }

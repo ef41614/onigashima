@@ -64,6 +64,16 @@ public class SiteManager : MonoBehaviour
     public int teamSiteF = 0;
     public int teamSiteG = 0;
     public int teamSiteH = 0;
+    
+    public int KifudaProgressA = 0;
+    public int KifudaProgressB = 0;
+    public int KifudaProgressC = 0;
+    public int KifudaProgressD = 0;
+    public int KifudaProgressE = 0;
+    public int KifudaProgressF = 0;
+    public int KifudaProgressG = 0;
+    public int KifudaProgressH = 0;
+    public int KifudaProgressTotal = 0;  // 木札ONの進捗状況
 
     public int TurnChip_A = 0;  // 順番マーカーのナンバー
     public int TurnChip_B = 0;
@@ -283,6 +293,7 @@ public class SiteManager : MonoBehaviour
         CloseHomeButton_Box();
         CloseHaguruma_Box();
         CloseInfoCPU();
+        KifudaProgressTotal = 0;  // 木札ONの進捗状況 初期化
 
         PoleRightPos = ImagePole_Right.gameObject.transform.position;
         PoleLeftPos = ImagePole_Left.gameObject.transform.position;
@@ -512,6 +523,7 @@ public class SiteManager : MonoBehaviour
     public void CheckYourTurn()
     {
         TeamHanteiByKihuda();
+        CheckKifudaProgressTotal();  // 木札ONの進捗状況
         TeamHanteiByOpen01();
         Debug.Log("今このターンで何人目か？" + preventPlayerOrderNum);
         if (TurnChip_A == preventPlayerOrderNum)
@@ -2218,6 +2230,45 @@ public class SiteManager : MonoBehaviour
         }
     }
 
+    public void CheckKifudaProgressTotal()  // 木札ONの進捗状況
+    {
+        if(StatusSiteA >= 2)
+        {
+            KifudaProgressA = 1;
+        }
+        if (StatusSiteB >= 2)
+        {
+            KifudaProgressB = 1;
+        }
+        if (StatusSiteC >= 2)
+        {
+            KifudaProgressC = 1;
+        }
+        if (StatusSiteD >= 2)
+        {
+            KifudaProgressD = 1;
+        }
+        if (StatusSiteE >= 2)
+        {
+            KifudaProgressE = 1;
+        }
+        if (StatusSiteF >= 2)
+        {
+            KifudaProgressF = 1;
+        }
+        if (StatusSiteG >= 2)
+        {
+            KifudaProgressG = 1;
+        }
+        if (StatusSiteH >= 2)
+        {
+            KifudaProgressH = 1;
+        }
+        KifudaProgressTotal = KifudaProgressA + KifudaProgressB + KifudaProgressC + KifudaProgressD + KifudaProgressE + KifudaProgressF + KifudaProgressG + KifudaProgressH;
+        // KifudaProgressTotal の範囲は 0 ～ 16 ：鬼チームは1pt、 桃チームは3pt 
+        Debug.Log("KifudaProgressTotal(木札ONの進捗状況) " + KifudaProgressTotal);
+    }
+
     public void TeamHanteiAll()  // （強制的に）全員の所属チームの判定を行う
     {
         teamSiteA = TeamHanteiByOpen02(1);   // 所属チームを明らかにする
@@ -2748,26 +2799,112 @@ public class SiteManager : MonoBehaviour
                 Debug.Log("おやぶんが 役割オープン（ステータス：4）なら → 攻撃");
                 ButtonCscr.BranchOpenAttack();  // M-3：この場合は「こうげき」ボタン
                 CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                // エイムセレクト画面で おやぶん を選択する
-                // OKボタン 押下で 攻撃
-                // OKボタン 押下で ウインドウ 閉じる
+                sequence.InsertCallback(2f, () => YouAreOyabun());  // エイムセレクト画面で おやぶん を選択する
+                sequence.InsertCallback(4f, () => YouAreOyabun2_Attack());  // OKボタン 押下で 攻撃
+                sequence.InsertCallback(8f, () => YouAreOyabun3_Attack());  // OKボタン 押下で ウインドウ 閉じる
             }
             else if (NowOyabunStatus == 2)  // もし おやぶんが 木札ON（ステータス：2）なら → 役割当て
             {
                 Debug.Log("おやぶんが 木札ON（ステータス：2）なら → 役割当て");
-                ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン
-                CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                sequence.InsertCallback(2f, () => YouAreOyabun());     // 木札ONの おやぶん を探して エイムでセレクト
+                PushYakuwariBtn_Common();  // M-2：この場合は「役割あて」ボタン
             }
             else if (NowOyabunStatus == 1)  // もし おやぶんが 木札無し（ステータス：1）なら → 役割当て or しつもん
             {
+                int PushedBtnFlg = 0;  // 処理を実施したかどうか
+                CheckKifudaProgressTotal();  // 木札ONの進捗状況
+                Debug.Log("KifudaProgressTotal(木札ONの進捗状況) " + KifudaProgressTotal);
                 Debug.Log("おやぶんが 木札無し（ステータス：1）なら → 役割当て or しつもん");
-                //  場の全体を見て おやぶん だと判明した場合
-                // M-2：この場合は「役割あて」ボタン
+                if (KifudaProgressTotal == 7)  // 他のキャラが全部札付きで「おに」だけ残っている ◆場の全体を見て おやぶん だと判明した場合
+                {
+                    Debug.Log("他のキャラが全部札付きで「おに」だけ残っている");
+                    PushYakuwariBtn_Common();  // M-2：この場合は「役割あて」ボタン
+                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                }
+                else if (KifudaProgressTotal == 6)  // 自分が桃チームで、残りの木札がおやぶんと もうプラス1 ◆場の全体を見て おやぶん 判明した場合
+                {
+                    if (NowActiveSiteN == 1)  // 今のアクティブサイトがサイトA（自分）
+                    {
+                        if (StatusSiteA == 1)  // 自分が木札無し
+                        {
+                            Debug.Log("自分が桃チームで、残りの木札がおやぶんと自分のみ 残っている");
+                            PushYakuwariBtn_Common();  // M-2：この場合は「役割あて」ボタン
+                            PushedBtnFlg = 1;  // 処理を実施したかどうか
+                        }
+                    }
+                    else if (NowActiveSiteN == 2)  // 今のアクティブサイトがサイトB
+                    {
+                        if (StatusSiteB == 1)  // 自分が木札無し
+                        {
+                            Debug.Log("自分が桃チームで、残りの木札がおやぶんと自分のみ 残っている");
+                            PushYakuwariBtn_Common();  // M-2：この場合は「役割あて」ボタン
+                            PushedBtnFlg = 1;  // 処理を実施したかどうか
+                        }
+                    }
+                    else if (NowActiveSiteN == 3)  // 今のアクティブサイトがサイトC
+                    {
+                        if (StatusSiteC == 1)  // 自分が木札無し
+                        {
+                            Debug.Log("自分が桃チームで、残りの木札がおやぶんと自分のみ 残っている");
+                            PushYakuwariBtn_Common();  // M-2：この場合は「役割あて」ボタン
+                            PushedBtnFlg = 1;  // 処理を実施したかどうか
+                        }
+                    }
+                    else if (NowActiveSiteN == 4)  // 今のアクティブサイトがサイトD
+                    {
+                        if (StatusSiteD == 1)  // 自分が木札無し
+                        {
+                            Debug.Log("自分が桃チームで、残りの木札がおやぶんと自分のみ 残っている");
+                            PushYakuwariBtn_Common();  // M-2：この場合は「役割あて」ボタン
+                            PushedBtnFlg = 1;  // 処理を実施したかどうか
+                        }
+                    }
+                    else if (NowActiveSiteN == 5)  // 今のアクティブサイトがサイトE
+                    {
+                        if (StatusSiteE == 1)  // 自分が木札無し
+                        {
+                            Debug.Log("自分が桃チームで、残りの木札がおやぶんと自分のみ 残っている");
+                            PushYakuwariBtn_Common();  // M-2：この場合は「役割あて」ボタン
+                            PushedBtnFlg = 1;  // 処理を実施したかどうか
+                        }
+                    }
+                    else if (NowActiveSiteN == 6)  // 今のアクティブサイトがサイトF
+                    {
+                        if (StatusSiteF == 1)  // 自分が木札無し
+                        {
+                            Debug.Log("自分が桃チームで、残りの木札がおやぶんと自分のみ 残っている");
+                            PushYakuwariBtn_Common();  // M-2：この場合は「役割あて」ボタン
+                            PushedBtnFlg = 1;  // 処理を実施したかどうか
+                        }
+                    }
+                    else if (NowActiveSiteN == 7)  // 今のアクティブサイトがサイトG
+                    {
+                        if (StatusSiteG == 1)  // 自分が木札無し
+                        {
+                            Debug.Log("自分が桃チームで、残りの木札がおやぶんと自分のみ 残っている");
+                            PushYakuwariBtn_Common();  // M-2：この場合は「役割あて」ボタン
+                            PushedBtnFlg = 1;  // 処理を実施したかどうか
+                        }
+                    }
+                    else if (NowActiveSiteN == 8)  // 今のアクティブサイトがサイトH
+                    {
+                        if (StatusSiteH == 1)  // 自分が木札無し
+                        {
+                            Debug.Log("自分が桃チームで、残りの木札がおやぶんと自分のみ 残っている");
+                            PushYakuwariBtn_Common();  // M-2：この場合は「役割あて」ボタン
+                            PushedBtnFlg = 1;  // 処理を実施したかどうか
+                        }
+                    }
+                }
 
-                // それでも おやぶんが どこか不明な時
-                ButtonCscr.BranchOpenQuestion();  // M-1：この場合は「しつもん」ボタン
-                CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                if (PushedBtnFlg == 0)// 処理を実施したかどうか
+                {
+                    // ◆それでも おやぶんが どこのサイトか 不明な時
+                    ButtonCscr.BranchOpenQuestion();  // M-1：この場合は「しつもん」ボタン
+                    CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                    sequence.InsertCallback(2f, () => AreYouOyabun_Question());  // エイムセレクト画面で ランダム で選択する
+                    sequence.InsertCallback(4f, () => AreYouOyabun2_Question());  // OKボタン 押下で 木札をON
+                    sequence.InsertCallback(8f, () => AreYouOyabun3_Question());  // OKボタン 押下で ウインドウ 閉じる
+                }
             }
         }
         else if (ActiveSiteRoll == 5)  // アクティブサイトが おにのおやぶん
@@ -2785,74 +2922,203 @@ public class SiteManager : MonoBehaviour
     {
         var sequence = DOTween.Sequence();
         sequence.InsertCallback(0.2f, () => ButtonCscr.CloseBrownBox());  // OKボタン 押下で BrownBox 閉じる
-        sequence.InsertCallback(0.2f, () => ButtonCscr.JudgeGoSelectTime());  // OKボタン 押下で BrownBox 閉じる
+        sequence.InsertCallback(0.2f, () => ButtonCscr.JudgeGoSelectTime());   // セレクト画面に行けるか、エラーかを判定する
     }
 
-    public void YouAreOyabun()  // 木札ONの おやぶん を探して エイムでセレクト
+    public void AreYouOyabun_Question()
     {
         var sequence = DOTween.Sequence();
-        Debug.Log("木札ONの おやぶん を探して エイムでセレクト");
+        var AimedSite = Enumerable.Range(1, 8).OrderBy(n => Guid.NewGuid()).Take(8).ToArray();  // 配列に 1～8 までの数値を ランダムに入れる
+        int AimedFlg = 0;
+        Debug.Log("エイムセレクト画面で ランダム で選択する");
+
+        for (int s = 0; AimedFlg == 0; s++)
+        {
+            Debug.Log(AimedSite[s]);
+            if (AimedSite[s] == 1)
+            {
+                if (StatusSiteA <= 1)  // 木札無しならば
+                {
+                    if (AimedSite[s] != NowActiveSiteN)  // 選択したのが自分自身でなければ
+                    {
+                        SiteA_Aimed();
+                        CharaMSC.ShowSiteA_Aimed();
+                        AimedFlg = 1;
+                    }
+                }
+            }
+            else if (AimedSite[s] == 2)
+            {
+                if (StatusSiteB <= 1)  // 木札無しならば
+                {
+                    if (AimedSite[s] != NowActiveSiteN)  // 選択したのが自分自身でなければ
+                    {
+                        SiteB_Aimed();
+                        CharaMSC.ShowSiteB_Aimed();
+                        AimedFlg = 1;
+                    }
+                }
+            }
+            else if (AimedSite[s] == 3)
+            {
+                if (StatusSiteC <= 1)  // 木札無しならば
+                {
+                    if (AimedSite[s] != NowActiveSiteN)  // 選択したのが自分自身でなければ
+                    {
+                        SiteC_Aimed();
+                        CharaMSC.ShowSiteC_Aimed();
+                        AimedFlg = 1;
+                    }
+                }
+            }
+            else if (AimedSite[s] == 4)
+            {
+                if (StatusSiteD <= 1)  // 木札無しならば
+                {
+                    if (AimedSite[s] != NowActiveSiteN)  // 選択したのが自分自身でなければ
+                    {
+                        SiteD_Aimed();
+                        CharaMSC.ShowSiteD_Aimed();
+                        AimedFlg = 1;
+                    }
+                }
+            }
+            else if (AimedSite[s] == 5)
+            {
+                if (StatusSiteE <= 1)  // 木札無しならば
+                {
+                    if (AimedSite[s] != NowActiveSiteN)  // 選択したのが自分自身でなければ
+                    {
+                        SiteE_Aimed();
+                        CharaMSC.ShowSiteE_Aimed();
+                        AimedFlg = 1;
+                    }
+                }
+            }
+            else if (AimedSite[s] == 6)
+            {
+                if (StatusSiteF <= 1)  // 木札無しならば
+                {
+                    if (AimedSite[s] != NowActiveSiteN)  // 選択したのが自分自身でなければ
+                    {
+                        SiteF_Aimed();
+                        CharaMSC.ShowSiteF_Aimed();
+                        AimedFlg = 1;
+                    }
+                }
+            }
+            else if (AimedSite[s] == 7)
+            {
+                if (StatusSiteG <= 1)  // 木札無しならば
+                {
+                    if (AimedSite[s] != NowActiveSiteN)  // 選択したのが自分自身でなければ
+                    {
+                        SiteG_Aimed();
+                        CharaMSC.ShowSiteG_Aimed();
+                        AimedFlg = 1;
+                    }
+                }
+            }
+            else if (AimedSite[s] == 8)
+            {
+                if (StatusSiteH <= 1)  // 木札無しならば
+                {
+                    if (AimedSite[s] != NowActiveSiteN)  // 選択したのが自分自身でなければ
+                    {
+                        SiteH_Aimed();
+                        CharaMSC.ShowSiteH_Aimed();
+                        AimedFlg = 1;
+                    }
+                }
+            }
+        }
+    }
+
+    public void AreYouOyabun2_Question()
+    {
+        CloseBeforeQuestion();
+        AppearAfterQuestion();
+        SerifDependOnRole();
+    }
+
+    public void AreYouOyabun3_Question()
+    {
+        CloseAfterQuestion();
+        CloseQuestionMode();
+        AfterPushActButtonCommon();  // 各行動ボタン押下後の共通処理
+        KifudaMSC.askedQuestionSite_active();
+        KifudaMSC.AppearKifudaWait();
+    }
+
+    public void PushYakuwariBtn_Common()
+    {
+        var sequence = DOTween.Sequence();
+        ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン
+        CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+        sequence.InsertCallback(2f, () => YouAreOyabun());     // 木札ONの おやぶん を探して エイムでセレクト
+        sequence.InsertCallback(4f, () => YouAreOyabun2_Unmask());  // 役割当て画面で おやぶん のアイコンを クリック
+        sequence.InsertCallback(8f, () => YouAreOyabun3_Unmask());  // 役割当て画面クローズ
+    }
+
+    public void YouAreOyabun()  // エイムセレクト画面で おやぶん を選択する
+    {
+        Debug.Log("エイムセレクト画面で おやぶん を選択する");
         if (rollF[1] == 5) // 役割が おにのおやぶん
         {
             SiteA_Aimed();
-            sequence.InsertCallback(2f, () => CharaMSC.ShowSiteA_Aimed()); ;
+            CharaMSC.ShowSiteA_Aimed();
         }
         else if (rollF[2] == 5) // 役割が おにのおやぶん
         {
             SiteB_Aimed();
-            sequence.InsertCallback(2f, () => CharaMSC.ShowSiteB_Aimed());
+            CharaMSC.ShowSiteB_Aimed();
         }
         else if (rollF[3] == 5) // 役割が おにのおやぶん
         {
             SiteC_Aimed();
-            sequence.InsertCallback(2f, () => CharaMSC.ShowSiteC_Aimed());
+            CharaMSC.ShowSiteC_Aimed();
         }
         else if (rollF[4] == 5) // 役割が おにのおやぶん
         {
             SiteD_Aimed();
-            sequence.InsertCallback(2f, () => CharaMSC.ShowSiteD_Aimed());
+            CharaMSC.ShowSiteD_Aimed();
         }
         else if (rollF[5] == 5) // 役割が おにのおやぶん
         {
             SiteE_Aimed();
-            sequence.InsertCallback(2f, () => CharaMSC.ShowSiteE_Aimed());
+            CharaMSC.ShowSiteE_Aimed();
         }
         else if (rollF[6] == 5) // 役割が おにのおやぶん
         {
             SiteF_Aimed();
-            sequence.InsertCallback(2f, () => CharaMSC.ShowSiteF_Aimed());
+            CharaMSC.ShowSiteF_Aimed();
         }
         else if (rollF[7] == 5) // 役割が おにのおやぶん
         {
             SiteG_Aimed();
-            sequence.InsertCallback(2f, () => CharaMSC.ShowSiteG_Aimed());
+            CharaMSC.ShowSiteG_Aimed();
         }
         else if (rollF[8] == 5) // 役割が おにのおやぶん
         {
             SiteH_Aimed();
-            sequence.InsertCallback(2f, () => CharaMSC.ShowSiteH_Aimed());
+            CharaMSC.ShowSiteH_Aimed();
         }
-        sequence.InsertCallback(4f, () => YouAreOyabun2());
-        sequence.InsertCallback(8f, () => YouAreOyabun3());
     }
 
-    public void YouAreOyabun2()  // 役割当て画面で おやぶん のアイコンを クリック
+
+
+    public void YouAreOyabun2_Unmask()  // 役割当て画面で おやぶん のアイコンを クリック
     {
         CloseBeforeUnmask();
         AppearAfterUnmask();
         YosouOyabun();
     }
 
-    public void YouAreOyabun3()  // 役割当て画面クローズ
+    public void YouAreOyabun3_Unmask()  // 役割当て画面クローズ
     {
         CloseAfterUnmask();
         CloseUnmaskMode();
-        ClosePanelBattleFieldBox();
-        selectTimeEnd();
-        AddplayerOrderNum();
-        CharaMSC.OpenPanelYourTurn();
-        CharaMSC.AppearNowActiveSite();
-        CheckYourTurn();
+        AfterPushActButtonCommon();  // 各行動ボタン押下後の共通処理
 
         CardR_BaASC.StartCardOpen();
         CardR_BaBSC.StartCardOpen();
@@ -2862,11 +3128,35 @@ public class SiteManager : MonoBehaviour
         CardR_BaFSC.StartCardOpen();
         CardR_BaGSC.StartCardOpen();
         CardR_BaHSC.StartCardOpen();
+    }
 
+    public void YouAreOyabun2_Attack()  // こうげき画面： OKボタン 押下で 攻撃 実行
+    {
+        CloseBeforeAttack();
+        AppearAfterAttack();
+        checkDEX();
+        JudgeHitting();
+    }
+
+    public void YouAreOyabun3_Attack()  //  OKボタン 押下で ウインドウ 閉じる
+    {
+        CloseAfterAttack();
+        CloseAttackMode();
+        AfterPushActButtonCommon();  // 各行動ボタン押下後の共通処理
+    }
+
+    public void AfterPushActButtonCommon()  // 各行動ボタン押下後の共通処理
+    {
+        ClosePanelBattleFieldBox();
+        selectTimeEnd();
+        AddplayerOrderNum();
+        CharaMSC.OpenPanelYourTurn();
+        CharaMSC.AppearNowActiveSite();
+        CheckYourTurn();
     }
 
 
-    public void AppearNext_InfoCPUWillOperate()  //  CPUがこれから操作する旨を画面中央にメッセージ表示（予告）
+        public void AppearNext_InfoCPUWillOperate()  //  CPUがこれから操作する旨を画面中央にメッセージ表示（予告）
     {
         Next_InfoCPUWillOperate.SetActive(true);
     }

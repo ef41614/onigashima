@@ -155,7 +155,7 @@ public class ButtonController : MonoBehaviour {
         }
     }
 
-    public void JudgeGoSelectTime()
+    public void JudgeGoSelectTime()  //  セレクト画面に行けるか、エラーかを判定する
     {
         SiteMSC.CheckCanPushMenuButtons();
         if (SiteMSC.MenuButtonMode == 1) // 質問の時

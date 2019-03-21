@@ -83,6 +83,16 @@ public class SiteManager : MonoBehaviour
     public int KifudaProgressH = 0;
     public int KifudaProgressTotal = 0;  // 木札ONの進捗状況
 
+    public int KurunProgressA = 0;
+    public int KurunProgressB = 0;
+    public int KurunProgressC = 0;
+    public int KurunProgressD = 0;
+    public int KurunProgressE = 0;
+    public int KurunProgressF = 0;
+    public int KurunProgressG = 0;
+    public int KurunProgressH = 0;
+    public int KurunProgressTotal = 0;  // 役割カードがオープンになったキャラが どれだけいるか の進捗状況
+
     public int TurnChip_A = 0;  // 順番マーカーのナンバー
     public int TurnChip_B = 0;
     public int TurnChip_C = 0;
@@ -536,6 +546,7 @@ public class SiteManager : MonoBehaviour
     {
         TeamHanteiByKihuda();
         CheckKifudaProgressTotal();  // 木札ONの進捗状況
+        CheckKurunProgressTotal();  // 役割カードがオープンになったキャラが どれだけいるか の進捗状況 確認
         TeamHanteiByOpen01();
         Debug.Log("今このターンで何人目か？" + preventPlayerOrderNum);
         if (TurnChip_A == preventPlayerOrderNum)
@@ -2321,6 +2332,45 @@ public class SiteManager : MonoBehaviour
         Debug.Log("KifudaProgressTotal(木札ONの進捗状況) " + KifudaProgressTotal);
     }
 
+    public void CheckKurunProgressTotal()  // 役割カードがオープンになったキャラが どれだけいるか の進捗状況 確認
+    {
+        if (StatusSiteA >= 4)
+        {
+            KurunProgressA = 1;
+        }
+        if (StatusSiteB >= 4)
+        {
+            KurunProgressB = 1;
+        }
+        if (StatusSiteC >= 4)
+        {
+            KurunProgressC = 1;
+        }
+        if (StatusSiteD >= 4)
+        {
+            KurunProgressD = 1;
+        }
+        if (StatusSiteE >= 4)
+        {
+            KurunProgressE = 1;
+        }
+        if (StatusSiteF >= 4)
+        {
+            KurunProgressF = 1;
+        }
+        if (StatusSiteG >= 4)
+        {
+            KurunProgressG = 1;
+        }
+        if (StatusSiteH >= 4)
+        {
+            KurunProgressH = 1;
+        }
+        KurunProgressTotal = KurunProgressA + KurunProgressB + KurunProgressC + KurunProgressD + KurunProgressE + KurunProgressF + KurunProgressG + KurunProgressH;
+        Debug.Log("KurunProgressTotal(役割カードがオープンの進捗状況) " + KurunProgressTotal);
+    }
+
+
     public void TeamHanteiAll()  // （強制的に）全員の所属チームの判定を行う
     {
         teamSiteA = TeamHanteiByOpen02(1);   // 所属チームを明らかにする
@@ -3042,9 +3092,9 @@ public class SiteManager : MonoBehaviour
                     // ◆それでも おやぶんが どこのサイトか 不明な時
                     ButtonCscr.BranchOpenQuestion();  // M-1：この場合は「しつもん」ボタン
                     CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                    sequence.InsertCallback(2f, () => AreYouOyabun_Question());  // エイムセレクト画面で ランダム で選択する
-                    sequence.InsertCallback(4f, () => AreYouOyabun2_Question());  // OKボタン 押下で 木札をON
-                    sequence.InsertCallback(8f, () => AreYouOyabun3_Question());  // OKボタン 押下で ウインドウ 閉じる
+                    sequence.InsertCallback(2f, () => WhatIsYourFavorite_Question());  // エイムセレクト画面で ランダム で選択する
+                    sequence.InsertCallback(4f, () => WhatIsYourFavorite2_Question());  // OKボタン 押下で 木札をON
+                    sequence.InsertCallback(8f, () => WhatIsYourFavorite3_Question());  // OKボタン 押下で ウインドウ 閉じる
                 }
             }
         }
@@ -3055,80 +3105,84 @@ public class SiteManager : MonoBehaviour
             RollFNum = 0;  // 現在エイムされているサイトの役わり：初期化
             PushedBtnFlg = 0;  // 処理を実施したかどうか
             Debug.Log("アクティブサイトが おにのおやぶん");
+
             // 桃太郎が 残りHP1(ももっち) なら → 攻撃
-            if (rollF[1] == 1) // ももたろう
+            if (PushedBtnFlg == 0)  // 処理を実施したかどうか
             {
-                if (HPMSC.HP_A == 1)
+                if (rollF[1] == 1) // ももたろう
                 {
-                    AttackToMomotaro();  // ももたろう に攻撃(CPU)
-                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    if (HPMSC.HP_A == 1)
+                    {
+                        AttackToMomotaro();  // ももたろう に攻撃(CPU)
+                        PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    }
                 }
-            }
-            else if (rollF[2] == 1) // ももたろう
-            {
-                if (HPMSC.HP_B == 1)
+                else if (rollF[2] == 1) // ももたろう
                 {
-                    AttackToMomotaro();  // ももたろう に攻撃(CPU)
-                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    if (HPMSC.HP_B == 1)
+                    {
+                        AttackToMomotaro();  // ももたろう に攻撃(CPU)
+                        PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    }
                 }
-            }
-            else if (rollF[3] == 1) // ももたろう
-            {
-                if (HPMSC.HP_C == 1)
+                else if (rollF[3] == 1) // ももたろう
                 {
-                    AttackToMomotaro();  // ももたろう に攻撃(CPU)
-                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    if (HPMSC.HP_C == 1)
+                    {
+                        AttackToMomotaro();  // ももたろう に攻撃(CPU)
+                        PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    }
                 }
-            }
-            else if (rollF[4] == 1) // ももたろう
-            {
-                if (HPMSC.HP_D == 1)
+                else if (rollF[4] == 1) // ももたろう
                 {
-                    AttackToMomotaro();  // ももたろう に攻撃(CPU)
-                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    if (HPMSC.HP_D == 1)
+                    {
+                        AttackToMomotaro();  // ももたろう に攻撃(CPU)
+                        PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    }
                 }
-            }
-            else if (rollF[5] == 1) // ももたろう
-            {
-                if (HPMSC.HP_E == 1)
+                else if (rollF[5] == 1) // ももたろう
                 {
-                    AttackToMomotaro();  // ももたろう に攻撃(CPU)
-                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    if (HPMSC.HP_E == 1)
+                    {
+                        AttackToMomotaro();  // ももたろう に攻撃(CPU)
+                        PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    }
                 }
-            }
-            else if (rollF[6] == 1) // ももたろう
-            {
-                if (HPMSC.HP_F == 1)
+                else if (rollF[6] == 1) // ももたろう
                 {
-                    AttackToMomotaro();  // ももたろう に攻撃(CPU)
-                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    if (HPMSC.HP_F == 1)
+                    {
+                        AttackToMomotaro();  // ももたろう に攻撃(CPU)
+                        PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    }
                 }
-            }
-            else if (rollF[7] == 1) // ももたろう
-            {
-                if (HPMSC.HP_G == 1)
+                else if (rollF[7] == 1) // ももたろう
                 {
-                    AttackToMomotaro();  // ももたろう に攻撃(CPU)
-                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    if (HPMSC.HP_G == 1)
+                    {
+                        AttackToMomotaro();  // ももたろう に攻撃(CPU)
+                        PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    }
                 }
-            }
-            else if (rollF[8] == 1) // ももたろう
-            {
-                if (HPMSC.HP_H == 1)
+                else if (rollF[8] == 1) // ももたろう
                 {
-                    AttackToMomotaro();  // ももたろう に攻撃(CPU)
-                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    if (HPMSC.HP_H == 1)
+                    {
+                        AttackToMomotaro();  // ももたろう に攻撃(CPU)
+                        PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    }
                 }
-            }
-            if (PushedBtnFlg == 1)
-            {
-                Debug.Log("桃太郎が 残りHP1(ももっち) なら → 攻撃");
+                if (PushedBtnFlg == 1)
+                {
+                    Debug.Log("桃太郎が 残りHP1(ももっち) なら → 攻撃");
+                }
             }
 
             // 桃メイトが 役割オープンなら → 攻撃
             if (PushedBtnFlg == 0)  // 処理を実施したかどうか
             {
-                SearchMomoMateCommon(4);  // ステータスが4（役割カードオープン） ＆ 役割が いぬ・さる・きぎ のキャラがいるか探す
+                SearchMomoMateCommon(4);  // ステータスが4（役割カードオープン） ＆ 役割が いぬ・さる・きじ のキャラがいるか探す
                 if (PushedBtnFlg == 1)  // オープンしている いぬ、さる、きじ が見つかったら
                 {
                     AttackToMomoMate();  // ももたろうの仲間 に攻撃(CPU)
@@ -3227,7 +3281,7 @@ public class SiteManager : MonoBehaviour
                 }
             }
 
-            // 桃太郎が   木札ONなら → 役割当て
+            // 桃太郎が   木札ON(ももじ)なら → 役割当て
             if (PushedBtnFlg == 0)  // 処理を実施したかどうか
             {
                 if (rollF[1] == 1) // ももたろう
@@ -3300,7 +3354,7 @@ public class SiteManager : MonoBehaviour
                 }
             }
 
-            // *メイビーパラメータを元に、桃メイト と思われるキャラを1人選ぶ(役割当て)
+            // *メイビーパラメータを元に、桃メイト と思われるキャラを1人選ぶ(役割当て) ※ 木札の有無は問わない
             if (PushedBtnFlg == 0)  // 処理を実施したかどうか
             {
                 for (int SN = 8; SN > 0; SN--)
@@ -3319,18 +3373,81 @@ public class SiteManager : MonoBehaviour
             if (PushedBtnFlg == 0)  // 処理を実施したかどうか
             {
                 SearchMomoOniCommon(2);  // ステータスが2（木札ON）＆ 役割が いぬ・さる・きじ・こおにたち  のキャラがいるか探す
-                if (PushedBtnFlg == 1)  // ステータスが2（木札ON）の いぬ、さる、きじ が見つかったら
+                if (PushedBtnFlg == 1)  // ステータスが2（木札ON）の いぬ、さる、きじ、こおにたち が 少なくとも一人以上いれば
                 {
                     Debug.Log("おやぶん・ももたろう以外で木札ONのキャラから ランダムで一人選ぶ(役割当て)");
                     PushYakuwariBtn_Common(RollFNum);  // RollFNum に いぬ、さる、きじ、こおにたち のいずれかが入っている
                 }
             }
-            
 
+            // 木札無しの 桃メイト がいれば  → 条件を満たせば 役割当て
+            if (PushedBtnFlg == 0)  // 処理を実施したかどうか
+            {
+                // *桃メイト を役割当て
+                CheckKurunProgressTotal();  // 役割カードがオープンになったキャラが どれだけいるか の進捗状況 確認
+                SearchMomoMateCommon(1);  // ステータスが1（札無し） ＆ 役割が いぬ・さる・きじ のキャラがいるか探す
+                if (PushedBtnFlg == 1)  // ステータスが1（札無し）の いぬ、さる、きじ が見つかったら
+                {
+                    if (KurunProgressTotal == 7) // 他のキャラが全部オープン済みで 一つだけデフォルト（札無し）で残っている ◆場の全体を見て その役割 だと判明した場合
+                    {
+                        Debug.Log("他のキャラが全部カードオープンで 、その役割カード（いぬ・さる・きじ のいずれか1枚）だけ 札無しで残っている");
+                        PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン
+                    }
+                    else if (KurunProgressTotal == 6) // 自分がおやぶんで、木札無しが 2人いる（他のキャラは全部オープン済み） ◆場の全体を見て その役割 だと判明した場合
+                    {
+                        if (NowOyabunStatus == 1)  // おやぶん（自分）が木札無し
+                        {
+                            Debug.Log("自分がおやぶんで、木札無しが自分と もう1人いる（他のキャラは全部オープン済み）");
+                            PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン
+                        }
+                    }
+                    else
+                    {
+                        PushedBtnFlg = 0;  // 条件を満たしていなければ、フラグをリセット（次に進む）
+                    }
+                }
+            }
 
+            // 桃太郎が 木札無しなら → 条件を満たせば 役割当て
+            if (PushedBtnFlg == 0)  // 処理を実施したかどうか
+            {
+                // * 桃太郎 を 役割当て
+                CheckKurunProgressTotal();  // 役割カードがオープンになったキャラが どれだけいるか の進捗状況 確認
+                SearchMomotaroCommon(1);  // ステータスが1（札無し） ＆ 役割が ももたろう のキャラがいるか探す
+                if (PushedBtnFlg == 1)  // ステータスが1（札無し）の ももたろう が見つかったら
+                {
+                    if (KurunProgressTotal == 7) // 他のキャラが全部オープン済みで 一つだけデフォルト（札無し）で残っている ◆場の全体を見て その役割 だと判明した場合
+                    {
+                        Debug.Log("他のキャラが全部カードオープンで 、その役割カード（ももたろう）だけ 札無しで残っている");
+                        PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン
+                    }
+                    else if (KurunProgressTotal == 6) // 自分がおやぶんで、木札無しが 2人いる（他のキャラは全部オープン済み） ◆場の全体を見て その役割 だと判明した場合
+                    {
+                        if (NowOyabunStatus == 1)  // おやぶん（自分）が木札無し
+                        {
+                            Debug.Log("自分がおやぶんで、木札無しが自分と もう1人いる（他のキャラは全部オープン済み）");
+                            PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン
+                        }
+                    }
+                    else
+                    {
+                        PushedBtnFlg = 0;  // 条件を満たしていなければ、フラグをリセット（次に進む）
+                    }
+                }
+            }
 
-            // 桃メイトが 木札無しなら → 役割当て or しつもん
-            // 桃太郎が   木札無しなら → 役割当て or しつもん
+            // *桃チームに 対して しつもん (ここまで進んだら、必然的に これを実施する) 
+            if (PushedBtnFlg == 0)  // 処理を実施したかどうか
+            {
+                // ◆それでも 桃チーム が どこのサイトか 不明な時
+                Debug.Log("◆それでも 桃チーム が どこのサイトか 不明な時");
+                ButtonCscr.BranchOpenQuestion();  // M-1：この場合は「しつもん」ボタン
+                CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                sequence.InsertCallback(2f, () => WhatIsYourFavorite_Question());  // エイムセレクト画面で ランダム で選択する
+                sequence.InsertCallback(4f, () => WhatIsYourFavorite2_Question());  // OKボタン 押下で 木札をON
+                sequence.InsertCallback(8f, () => WhatIsYourFavorite3_Question());  // OKボタン 押下で ウインドウ 閉じる
+                PushedBtnFlg = 1;  // 処理を実施したかどうか
+            }
         }
 
         // アクティブサイトが こおに
@@ -3347,7 +3464,7 @@ public class SiteManager : MonoBehaviour
         sequence.InsertCallback(0.2f, () => ButtonCscr.JudgeGoSelectTime());   // セレクト画面に行けるか、エラーかを判定する
     }
 
-    public void AreYouOyabun_Question()
+    public void WhatIsYourFavorite_Question()
     {
         var AimedSite = Enumerable.Range(1, 8).OrderBy(n => Guid.NewGuid()).Take(8).ToArray();  // 配列に 1～8 までの数値を ランダムに入れる
         int AimedFlg = 0;
@@ -3455,14 +3572,14 @@ public class SiteManager : MonoBehaviour
         }
     }
 
-    public void AreYouOyabun2_Question()
+    public void WhatIsYourFavorite2_Question()
     {
         CloseBeforeQuestion();
         AppearAfterQuestion();
         SerifDependOnRole();
     }
 
-    public void AreYouOyabun3_Question()
+    public void WhatIsYourFavorite3_Question()
     {
         CloseAfterQuestion();
         CloseQuestionMode();
@@ -3695,13 +3812,82 @@ public class SiteManager : MonoBehaviour
         }
     }
 
-    public void SearchMomoOniCommon(int StatusSiteNum)  // ステータスが 指定された状態であり ＆ 役割が いぬ・さる・きぎ・こおにたち のキャラがいるか探す
+    public void SearchMomotaroCommon(int StatusSiteNum)  // 役割が ももたろう のキャラがいるか探す
+    {
+        if (rollF[1] == 5) // ももたろう
+        {
+            if (StatusSiteA == StatusSiteNum)  // ももたろう が 指定されたステータス である
+            {
+                RollFNum = rollF[1];  // 現在エイムされているサイトの役わり が サイトA の役割 に上書きあれる
+                PushedBtnFlg = 1;  // 処理を実施したかどうか → オンにする
+            }
+        }
+        else if (rollF[2] == 5) // ももたろう
+        {
+            if (StatusSiteB == StatusSiteNum)
+            {
+                RollFNum = rollF[2];
+                PushedBtnFlg = 1;  // 処理を実施したかどうか → オンにする
+            }
+        }
+        else if (rollF[3] == 5) // ももたろう
+        {
+            if (StatusSiteC == StatusSiteNum)
+            {
+                RollFNum = rollF[3];
+                PushedBtnFlg = 1;  // 処理を実施したかどうか → オンにする
+            }
+        }
+        else if (rollF[4] == 5) // ももたろう
+        {
+            if (StatusSiteD == StatusSiteNum)
+            {
+                RollFNum = rollF[4];
+                PushedBtnFlg = 1;  // 処理を実施したかどうか → オンにする
+            }
+        }
+        else if (rollF[5] == 5) // ももたろう
+        {
+            if (StatusSiteE == StatusSiteNum)
+            {
+                RollFNum = rollF[5];
+                PushedBtnFlg = 1;  // 処理を実施したかどうか → オンにする
+            }
+        }
+        else if (rollF[6] == 5) // ももたろう
+        {
+            if (StatusSiteF == StatusSiteNum)
+            {
+                RollFNum = rollF[6];
+                PushedBtnFlg = 1;  // 処理を実施したかどうか → オンにする
+            }
+        }
+        else if (rollF[7] == 5) // ももたろう
+        {
+            if (StatusSiteG == StatusSiteNum)
+            {
+                RollFNum = rollF[7];
+                PushedBtnFlg = 1;  // 処理を実施したかどうか → オンにする
+            }
+        }
+        else if (rollF[8] == 5) // ももたろう
+        {
+            if (StatusSiteH == StatusSiteNum)
+            {
+                RollFNum = rollF[8];
+                PushedBtnFlg = 1;  // 処理を実施したかどうか → オンにする
+            }
+        }
+    }
+
+
+    public void SearchMomoOniCommon(int StatusSiteNum)  // ステータスが 指定された状態であり ＆ 役割が いぬ・さる・きじ・こおにたち のキャラがいるか探す
     {
         for (int TN = 8; TN > 0; TN--)  // 順番マーカーが 8 のものからチェック
         {
             if (TurnChip_A == TN)       // サイトAの順番マーカーがTN番である
             {
-                if (rollF[1] != 1 && rollF[1] != 5) // 役割が いぬ・さる・きぎ・こおにたち
+                if (rollF[1] != 1 && rollF[1] != 5) // 役割が いぬ・さる・きじ・こおにたち
                 {
                     if (StatusSiteA == StatusSiteNum)  // ステータスが 指定された状態である (2:木札ON)
                     {
@@ -3712,7 +3898,7 @@ public class SiteManager : MonoBehaviour
             }
             else if (TurnChip_B == TN)
             {
-                if (rollF[2] != 1 && rollF[2] != 5) // 役割が いぬ・さる・きぎ・こおにたち
+                if (rollF[2] != 1 && rollF[2] != 5) // 役割が いぬ・さる・きじ・こおにたち
                 {
                     if (StatusSiteB == StatusSiteNum)
                     {
@@ -3723,7 +3909,7 @@ public class SiteManager : MonoBehaviour
             }
             else if (TurnChip_C == TN)
             {
-                if (rollF[3] != 1 && rollF[3] != 5) // 役割が いぬ・さる・きぎ・こおにたち
+                if (rollF[3] != 1 && rollF[3] != 5) // 役割が いぬ・さる・きじ・こおにたち
                 {
                     if (StatusSiteC == StatusSiteNum)
                     {
@@ -3734,7 +3920,7 @@ public class SiteManager : MonoBehaviour
             }
             else if (TurnChip_D == TN)
             {
-                if (rollF[4] != 1 && rollF[4] != 5) // 役割が いぬ・さる・きぎ・こおにたち
+                if (rollF[4] != 1 && rollF[4] != 5) // 役割が いぬ・さる・きじ・こおにたち
                 {
                     if (StatusSiteD == StatusSiteNum)
                     {
@@ -3745,7 +3931,7 @@ public class SiteManager : MonoBehaviour
             }
             else if (TurnChip_E == TN)
             {
-                if (rollF[5] != 1 && rollF[5] != 5) // 役割が いぬ・さる・きぎ・こおにたち
+                if (rollF[5] != 1 && rollF[5] != 5) // 役割が いぬ・さる・きじ・こおにたち
                 {
                     if (StatusSiteE == StatusSiteNum)
                     {
@@ -3756,7 +3942,7 @@ public class SiteManager : MonoBehaviour
             }
             else if (TurnChip_F == TN)
             {
-                if (rollF[6] != 1 && rollF[6] != 5) // 役割が いぬ・さる・きぎ・こおにたち
+                if (rollF[6] != 1 && rollF[6] != 5) // 役割が いぬ・さる・きじ・こおにたち
                 {
                     if (StatusSiteF == StatusSiteNum)
                     {
@@ -3767,7 +3953,7 @@ public class SiteManager : MonoBehaviour
             }
             else if (TurnChip_G == TN)
             {
-                if (rollF[7] != 1 && rollF[7] != 5) // 役割が いぬ・さる・きぎ・こおにたち
+                if (rollF[7] != 1 && rollF[7] != 5) // 役割が いぬ・さる・きじ・こおにたち
                 {
                     if (StatusSiteG == StatusSiteNum)
                     {
@@ -3778,7 +3964,7 @@ public class SiteManager : MonoBehaviour
             }
             else if (TurnChip_H == TN)
             {
-                if (rollF[8] != 1 && rollF[8] != 5) // 役割が いぬ・さる・きぎ・こおにたち
+                if (rollF[8] != 1 && rollF[8] != 5) // 役割が いぬ・さる・きじ・こおにたち
                 {
                     if (StatusSiteH == StatusSiteNum)
                     {

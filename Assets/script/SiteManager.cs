@@ -300,7 +300,7 @@ public class SiteManager : MonoBehaviour
         AppearPanelMAKU();
         preventTurnNum = 1;
         AppearEyecatch();
-        //        statusReset(); // ステータスをすべて1にする
+        ResetStatusAllSites();  // すべてのサイトのステータスをリセットする（初期化）        
         NowOyabunStatus = 1;  // 現在の おやぶんの ステータスをリセット
         OniLevel = SelectManager.getOniStrong(); // ゲッター関数を呼び出し、値を引き継ぐ
         KabaiKooniPositon = KabaiKooni.transform.position;  // かばいこおにの現在位置をPositionに代入
@@ -323,6 +323,7 @@ public class SiteManager : MonoBehaviour
         selectTimeEnd();  //  キャラセレクトボタン初期化（ボタン消灯）
         PushedBtnFlg = 0;  // CPU操作 処理を実施したかどうかのフラグ：初期化
         ResetMaybe_Allrolls();  // 役割 可能性値の初期化 ⇒ 各25％
+        ResetUkkariFlg();  // うっかりフラグをOFF（リセット）
 
         CardR_BaASC = Yaku_A.GetComponent<CardReverse_Ba>();
         CardR_BaBSC = Yaku_B.GetComponent<CardReverse_Ba>();
@@ -2723,6 +2724,30 @@ public class SiteManager : MonoBehaviour
         CanPush_Attack = false;
     }
 
+    public void ResetUkkariFlg()  // うっかりフラグをOFF（リセット）
+    {
+        UkkariSite[1] = 0;
+        UkkariSite[2] = 0;
+        UkkariSite[3] = 0;
+        UkkariSite[4] = 0;
+        UkkariSite[5] = 0;
+        UkkariSite[6] = 0;
+        UkkariSite[7] = 0;
+        UkkariSite[8] = 0;
+    }
+
+    public void ResetStatusAllSites()  // すべてのサイトのステータスをリセットする（初期化）
+    {
+        StatusSiteA = 1;
+        StatusSiteB = 1;
+        StatusSiteC = 1;
+        StatusSiteD = 1;
+        StatusSiteE = 1;
+        StatusSiteF = 1;
+        StatusSiteG = 1;
+        StatusSiteH = 1;
+    }
+
     #region(ResetMaybe_rolls)  // 役割 可能性値の初期化 ⇒ 各25％
     public void ResetMaybe_Allrolls()
     {
@@ -3270,6 +3295,7 @@ public class SiteManager : MonoBehaviour
                 {
                     if (UkkariSite[SN] == 1)    // *うっかりフラグが1のものがあれば、それを当てる
                     {
+                        Debug.Log("うっかりフラグ：UkkariSite[" + SN +"]" + UkkariSite[SN]);
                         if (rollF[SN] >= 2 && rollF[SN] <= 4) // 役割が いぬ、さる、きじ のどれかである
                         {
                             PushYakuwariBtn_Common(rollF[SN]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
@@ -3369,17 +3395,6 @@ public class SiteManager : MonoBehaviour
                 }
             }
 
-            // *特に参考になる情報がなければ、おやぶん・ももたろう以外で 木札ONのキャラから ランダムで一人選ぶ(役割当て)
-            if (PushedBtnFlg == 0)  // 処理を実施したかどうか
-            {
-                SearchMomoOniCommon(2);  // ステータスが2（木札ON）＆ 役割が いぬ・さる・きじ・こおにたち  のキャラがいるか探す
-                if (PushedBtnFlg == 1)  // ステータスが2（木札ON）の いぬ、さる、きじ、こおにたち が 少なくとも一人以上いれば
-                {
-                    Debug.Log("おやぶん・ももたろう以外で木札ONのキャラから ランダムで一人選ぶ(役割当て)");
-                    PushYakuwariBtn_Common(RollFNum);  // RollFNum に いぬ、さる、きじ、こおにたち のいずれかが入っている
-                }
-            }
-
             // 木札無しの 桃メイト がいれば  → 条件を満たせば 役割当て
             if (PushedBtnFlg == 0)  // 処理を実施したかどうか
             {
@@ -3433,6 +3448,23 @@ public class SiteManager : MonoBehaviour
                     {
                         PushedBtnFlg = 0;  // 条件を満たしていなければ、フラグをリセット（次に進む）
                     }
+                }
+            }
+
+            // *特に参考になる情報がなければ、おやぶん・ももたろう以外で 木札ONのキャラから ランダムで一人選ぶ(役割当て)
+            if (PushedBtnFlg == 0)  // 処理を実施したかどうか
+            {
+                SearchMomoOniCommon(2);  // ステータスが2（木札ON）＆ 役割が いぬ・さる・きじ・こおにたち  のキャラがいるか探す
+                if (PushedBtnFlg == 1)  // ステータスが2（木札ON）の いぬ、さる、きじ、こおにたち が 少なくとも一人以上いれば
+                {
+                    Debug.Log("おやぶん・ももたろう以外で木札ONのキャラから ランダムで一人選ぶ(役割当て)");
+                    // RollFNum に いぬ、さる、きじ、こおにたち のいずれかが入っている
+                    var sequence2 = DOTween.Sequence();
+                    ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン
+                    CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                    sequence2.InsertCallback(2f, () => YouAreHoge(RollFNum));     // 木札ONの キャラ を探して エイムでセレクト
+                    sequence2.InsertCallback(4f, () => YouAreHoge2_Unmask(2));  // 役割当て画面で 「桃メイト」 のアイコンを クリック
+                    sequence2.InsertCallback(8f, () => YouAreHoge3_Unmask());  // 役割当て画面クローズ
                 }
             }
 
@@ -3640,23 +3672,6 @@ public class SiteManager : MonoBehaviour
             SiteH_Aimed();
             CharaMSC.ShowSiteH_Aimed();
         }
-
-        if (cnum == 1)                   // ももたろう
-        {
-            Debug.Log("エイムセレクト画面で ももたろう を選択する");
-        }
-        else if (cnum >= 2 && cnum <= 4) // いぬ、さる、きじ
-        {
-            Debug.Log("エイムセレクト画面で ももたろうの仲間 を選択する");
-        }
-        else if (cnum == 5)              // おやぶん
-        {
-            Debug.Log("エイムセレクト画面で おやぶん を選択する");
-        }
-        else if (cnum >= 6 && cnum <= 8) // こおに
-        {
-            Debug.Log("エイムセレクト画面で こおに を選択する");
-        }
     }
 
 
@@ -3667,18 +3682,22 @@ public class SiteManager : MonoBehaviour
         if (cnum == 1)                   // ももたろう
         {
             YosouMomotaro();
+            Debug.Log("エイムセレクト画面で ももたろう を選択する");
         }
         else if (cnum >= 2 && cnum <= 4) // いぬ、さる、きじ
         {
             YosouMomomates();
+            Debug.Log("エイムセレクト画面で ももたろうの仲間 を選択する");
         }
         else if (cnum == 5)              // おやぶん
         {
             YosouOyabun();
+            Debug.Log("エイムセレクト画面で おやぶん を選択する");
         }
         else if (cnum >= 6 && cnum <= 8) // こおに
         {
             YosouKooni();
+            Debug.Log("エイムセレクト画面で こおに を選択する");
         }
     }
 

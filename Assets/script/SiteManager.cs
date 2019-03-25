@@ -800,19 +800,16 @@ public class SiteManager : MonoBehaviour
         CheckCanPushAttack();
     }
 
-    public void CheckCanPushQuestion()
+    public void CheckCanPushQuestion()  // 行動ボタン（質問）押せるかのチェック
     {
-//        CanPush_Question = true;  // しつもんモードボタンは押せる(一旦状態リセット)
         Debug.Log("■CheckCanPushQuestion");
         Debug.Log("◆◎NowActiveSiteN：" + NowActiveSiteN);
 
-        if (StatusSiteA < 2 || StatusSiteB < 2 || StatusSiteC < 2 || StatusSiteD < 2 || StatusSiteE < 2 || StatusSiteF < 2 || StatusSiteG < 2 || StatusSiteH < 2)
-        {   // もしまだ木札がONになっていないキャラが一人以上いるならば
-            // フリーなのが自分だけしか残っていない場合 → 選択できないようにする
-            // フリーなのが自分以外である → 行動ボタンは押せる
-            CanPush_Question = CheckCanPushButton_Common(2, CanPush_Question);
+        if (StatusSiteA < 2 || StatusSiteB < 2 || StatusSiteC < 2 || StatusSiteD < 2 || StatusSiteE < 2 || StatusSiteF < 2 || StatusSiteG < 2 || StatusSiteH < 2)  // 木札無しキャラ（ステータスが1）が 少なくとも一人いる → 判定に回す
+        {
+            CanPush_Question = CheckCanPushButton_Common(2, CanPush_Question);  // 結果（true or false） が代入される
         }
-        else
+        else  // 木札無しキャラが 1人もいない ＝ 全員ステータス2以上（木札ON）
         {
             CanPush_Question = false;  // しつもんモードボタンは押せない
         }
@@ -935,15 +932,16 @@ public class SiteManager : MonoBehaviour
         }
     }
 
-    public bool CheckCanPushButton_Common(int statusNum, bool CanPush_ActButton) // フリーなのが自分だけ → 選択できない || フリーなのが自分以外 → 行動ボタンは押せる
+    public bool CheckCanPushButton_Common(int statusNum, bool CanPush_ActButton) // 行動ボタンが押せるかどうか、判定する（前提：（ステータスが statusNum 未満が 少なくとも一人いる）
     {
         if (NowActiveSiteN == 1)  // 今のアクティブサイトがサイトA
         {
-            if (StatusSiteA < statusNum && StatusSiteB >= statusNum && StatusSiteC >= statusNum && StatusSiteD >= statusNum && StatusSiteE >= statusNum && StatusSiteF >= statusNum && StatusSiteG >= statusNum && StatusSiteH >= statusNum)
-            {  // フリーなのが自分だけしか残っていない
+            if (StatusSiteA < statusNum && StatusSiteB >= statusNum && StatusSiteC >= statusNum && StatusSiteD >= statusNum && StatusSiteE >= statusNum && StatusSiteF >= statusNum && StatusSiteG >= statusNum && StatusSiteH >= statusNum)   // フリーなのが自分だけ（自分のみステータスが statusNum 未満）
+            {
                 CanPush_ActButton = false;  // 今選んでいる行動ボタンは押せない
             }
-            else  // フリーなのが自分以外である
+            else  // フリーなのが自分ではなく他のキャラ                 or   フリーなのが自分と他にも存在している                ⇒ 自分以外のキャラでフリー(ステータス:statusNum 未満)なキャラが存在する
+                  // 例A：(StatusSiteA == 2) && (StatusSiteB == 1)           例B：(StatusSiteA == 1) && (StatusSiteB == 1)
             {
                 CanPush_ActButton = true;  // 今選んでいる行動ボタンは押せる
             }
@@ -3056,86 +3054,19 @@ public class SiteManager : MonoBehaviour
                 }
                 else if (KifudaProgressTotal == 6)  // 自分が桃チームで、残りの木札がおやぶんと もうプラス1 ◆場の全体を見て おやぶん 判明した場合
                 {
-                    if (NowActiveSiteN == 1)  // 今のアクティブサイトがサイトA（自分）
+                    if (NowActiveSiteStatus == 1)  // 今のアクティブサイト（自分:桃チーム所属） が 木札無し（ステータス1）
                     {
-                        if (StatusSiteA == 1)  // 自分が木札無し
-                        {
-                            Debug.Log("自分が桃チームで、残りの木札がおやぶんと自分のみ 残っている");
-                            PushYakuwariBtn_Common(5);  // M-2：この場合は「役割あて」ボタン
-                            PushedBtnFlg = 1;  // 処理を実施したかどうか
-                        }
-                    }
-                    else if (NowActiveSiteN == 2)  // 今のアクティブサイトがサイトB
-                    {
-                        if (StatusSiteB == 1)  // 自分が木札無し
-                        {
-                            Debug.Log("自分が桃チームで、残りの木札がおやぶんと自分のみ 残っている");
-                            PushYakuwariBtn_Common(5);  // M-2：この場合は「役割あて」ボタン
-                            PushedBtnFlg = 1;  // 処理を実施したかどうか
-                        }
-                    }
-                    else if (NowActiveSiteN == 3)  // 今のアクティブサイトがサイトC
-                    {
-                        if (StatusSiteC == 1)  // 自分が木札無し
-                        {
-                            Debug.Log("自分が桃チームで、残りの木札がおやぶんと自分のみ 残っている");
-                            PushYakuwariBtn_Common(5);  // M-2：この場合は「役割あて」ボタン
-                            PushedBtnFlg = 1;  // 処理を実施したかどうか
-                        }
-                    }
-                    else if (NowActiveSiteN == 4)  // 今のアクティブサイトがサイトD
-                    {
-                        if (StatusSiteD == 1)  // 自分が木札無し
-                        {
-                            Debug.Log("自分が桃チームで、残りの木札がおやぶんと自分のみ 残っている");
-                            PushYakuwariBtn_Common(5);  // M-2：この場合は「役割あて」ボタン
-                            PushedBtnFlg = 1;  // 処理を実施したかどうか
-                        }
-                    }
-                    else if (NowActiveSiteN == 5)  // 今のアクティブサイトがサイトE
-                    {
-                        if (StatusSiteE == 1)  // 自分が木札無し
-                        {
-                            Debug.Log("自分が桃チームで、残りの木札がおやぶんと自分のみ 残っている");
-                            PushYakuwariBtn_Common(5);  // M-2：この場合は「役割あて」ボタン
-                            PushedBtnFlg = 1;  // 処理を実施したかどうか
-                        }
-                    }
-                    else if (NowActiveSiteN == 6)  // 今のアクティブサイトがサイトF
-                    {
-                        if (StatusSiteF == 1)  // 自分が木札無し
-                        {
-                            Debug.Log("自分が桃チームで、残りの木札がおやぶんと自分のみ 残っている");
-                            PushYakuwariBtn_Common(5);  // M-2：この場合は「役割あて」ボタン
-                            PushedBtnFlg = 1;  // 処理を実施したかどうか
-                        }
-                    }
-                    else if (NowActiveSiteN == 7)  // 今のアクティブサイトがサイトG
-                    {
-                        if (StatusSiteG == 1)  // 自分が木札無し
-                        {
-                            Debug.Log("自分が桃チームで、残りの木札がおやぶんと自分のみ 残っている");
-                            PushYakuwariBtn_Common(5);  // M-2：この場合は「役割あて」ボタン
-                            PushedBtnFlg = 1;  // 処理を実施したかどうか
-                        }
-                    }
-                    else if (NowActiveSiteN == 8)  // 今のアクティブサイトがサイトH
-                    {
-                        if (StatusSiteH == 1)  // 自分が木札無し
-                        {
-                            Debug.Log("自分が桃チームで、残りの木札がおやぶんと自分のみ 残っている");
-                            PushYakuwariBtn_Common(5);  // M-2：この場合は「役割あて」ボタン
-                            PushedBtnFlg = 1;  // 処理を実施したかどうか
-                        }
+                        Debug.Log("自分が桃チームで、残りの木札がおやぶんと自分のみ 残っている");
+                        PushYakuwariBtn_Common(5);  // M-2：この場合は「役割あて」ボタン
+                        PushedBtnFlg = 1;  // 処理を実施したかどうか
                     }
                 }
-
                 if (PushedBtnFlg == 0)// 処理を実施したかどうか
                 {
                     // ◆それでも おやぶんが どこのサイトか 不明な時
-                    ButtonCscr.BranchOpenQuestion();  // M-1：この場合は「しつもん」ボタン
+                    ButtonCscr.BranchOpenQuestion();  // M-1：この場合は「しつもん」ボタン  // 行動ボタン押せるかのチェック ＆ BrownBoxを開く
                     CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                    sequence.InsertCallback(2f, () => WhatIsYourFavorite_Question());  // エイムセレクト画面で ランダム で選択する
+                    sequence.InsertCallback(2f, () => WhatIsYourFavorite_Question());  // 【しつもんモード】エイムセレクト画面で ランダム で選択する （条件：選択したのが自分自身ではない）
                     sequence.InsertCallback(4f, () => WhatIsYourFavorite2_Question());  // OKボタン 押下で 木札をON
                     sequence.InsertCallback(8f, () => WhatIsYourFavorite3_Question());  // OKボタン 押下で ウインドウ 閉じる
                 }
@@ -3152,7 +3083,7 @@ public class SiteManager : MonoBehaviour
             // 桃太郎が 残りHP1(ももっち) なら → 攻撃
             if (PushedBtnFlg == 0)  // 処理を実施したかどうか
             {
-                AttackToMomocchi();
+                CheckAttackToMomocchi();  // 桃太郎が 残りHP1(ももっち) であるか確認後、あてはまれば攻撃 or 条件を満たさなければスルー
                 if (PushedBtnFlg == 1)
                 {
                     Debug.Log("桃太郎が 残りHP1(ももっち) なら → 攻撃");
@@ -3173,7 +3104,7 @@ public class SiteManager : MonoBehaviour
             // 桃太郎が   役割オープン（HP2：ももじ）なら → 攻撃
             if (PushedBtnFlg == 0)  // 処理を実施したかどうか
             {
-                AttackToMomoji();
+                CheckAttackToMomoji();  // 桃太郎が 役割オープン（HP2：ももじ）なら 攻撃  or 条件を満たさなければスルー
                 if (PushedBtnFlg == 1)
                 {
                     Debug.Log("桃太郎が   役割オープン（HP2：ももじ）なら → 攻撃");
@@ -3183,13 +3114,13 @@ public class SiteManager : MonoBehaviour
             // うっかり桃メイト（木札ON） がいるなら → 役割当て
             if (PushedBtnFlg == 0)  // 処理を実施したかどうか
             {
-                UkkariAte(); // うっかりフラグが1のものがあれば、それを当てる
+                UkkariAte(); // うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）
             }
 
             // 桃太郎が   木札ON(ももじ)なら → 役割当て
             if (PushedBtnFlg == 0)  // 処理を実施したかどうか
             {
-                KifudaOnMomojiAte();
+                KifudaOnMomojiAte();  // 桃太郎が 木札ON（ステータス2）なら 役割当て or 条件を満たさなければスルー
                 if (PushedBtnFlg == 1)
                 {
                     Debug.Log("ももたろうが 木札ONなら → 役割当て");
@@ -3243,20 +3174,20 @@ public class SiteManager : MonoBehaviour
             if (PushedBtnFlg == 0)  // 処理を実施したかどうか
             {
                 // * 桃太郎 を 役割当て
-                CheckKurunProgressTotal();  // 役割カードがオープンになったキャラが どれだけいるか の進捗状況 確認
+                CheckKifudaProgressTotal();  // 木札ONの進捗状況 確認
                 SearchMomotaroCommon(1);  // ステータスが1（札無し） ＆ 役割が ももたろう のキャラがいるか探す
                 if (PushedBtnFlg == 1)  // ステータスが1（札無し）の ももたろう が見つかったら
                 {
-                    if (KurunProgressTotal == 7) // 他のキャラが全部オープン済みで 一つだけデフォルト（札無し）で残っている ◆場の全体を見て その役割 だと判明した場合
+                    if (KifudaProgressTotal == 7) // 他のキャラが全部 木札ONで 一つだけデフォルト（札無し）で残っている ◆場の全体を見て その役割 だと判明した場合
                     {
-                        Debug.Log("他のキャラが全部カードオープンで 、その役割カード（ももたろう）だけ 札無しで残っている");
+                        Debug.Log("他のキャラが全部 木札ONで 、その役割カード（ももたろう）だけ 札無しで残っている");
                         PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン
                     }
-                    else if (KurunProgressTotal == 6) // 自分がおやぶんで、木札無しが 2人いる（他のキャラは全部オープン済み） ◆場の全体を見て その役割 だと判明した場合
+                    else if (KifudaProgressTotal == 6) // 自分がおやぶんで、木札無しが 2人いる（他のキャラは全部オープン済み） ◆場の全体を見て その役割 だと判明した場合
                     {
                         if (NowOyabunStatus == 1)  // おやぶん（自分）が木札無し
                         {
-                            Debug.Log("自分がおやぶんで、木札無しが自分と もう1人いる（他のキャラは全部オープン済み）");
+                            Debug.Log("自分がおやぶんで、木札無しが自分と もう1人いる（他のキャラは全部 木札ON）");
                             PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン
                         }
                     }
@@ -3273,14 +3204,17 @@ public class SiteManager : MonoBehaviour
                 CheckKifudaProgressTotal();  // 木札ONの進捗状況 確認
                 if (KifudaProgressTotal < 8) // 木札ONの進捗状況が 8未満（＝少なくとも一人は札無しがいる）
                 {
-                    // ◆少なくとも一人は札無しがいる
-                    Debug.Log("◆*桃チームに 対して しつもん (少なくとも一人は札無しがいる) ");
-                    ButtonCscr.BranchOpenQuestion();  // M-1：この場合は「しつもん」ボタン
-                    CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                    sequence.InsertCallback(2f, () => WhatIsYourFavorite_Question());  // エイムセレクト画面で ランダム で選択する
-                    sequence.InsertCallback(4f, () => WhatIsYourFavorite2_Question());  // OKボタン 押下で 木札をON
-                    sequence.InsertCallback(8f, () => WhatIsYourFavorite3_Question());  // OKボタン 押下で ウインドウ 閉じる
-                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    CheckCanPushQuestion();  // 行動ボタン（質問）押せるかのチェック
+                    if (CanPush_Question)  // 行動ボタン（質問）押せる
+                    {
+                        Debug.Log("◆*桃チームに 対して しつもん (自分以外で一人は札無しがいる) ");
+                        ButtonCscr.BranchOpenQuestion();  // M-1：この場合は「しつもん」ボタン  // 行動ボタン押せるかのチェック ＆ BrownBoxを開く
+                        CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                        sequence.InsertCallback(2f, () => WhatIsYourFavorite_Question());  // 【しつもんモード】エイムセレクト画面で ランダム で選択する（条件：選択したのが自分自身ではない）
+                        sequence.InsertCallback(4f, () => WhatIsYourFavorite2_Question());  // OKボタン 押下で 木札をON
+                        sequence.InsertCallback(8f, () => WhatIsYourFavorite3_Question());  // OKボタン 押下で ウインドウ 閉じる
+                        PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    }
                 }
             }
 
@@ -3312,13 +3246,13 @@ public class SiteManager : MonoBehaviour
             // うっかり桃メイト（木札ON） がいるなら → 役割当て
             if (PushedBtnFlg == 0)  // 処理を実施したかどうか
             {
-                UkkariAte();  // うっかりフラグが1のものがあれば、それを当てる
+                UkkariAte();  // うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）
             }
 
             // 桃太郎が   木札ON(ももじ)なら → 役割当て
             if (PushedBtnFlg == 0)  // 処理を実施したかどうか
             {
-                KifudaOnMomojiAte();
+                KifudaOnMomojiAte();  // 桃太郎が 木札ON（ステータス2）なら 役割当て or 条件を満たさなければスルー
                 if (PushedBtnFlg == 1)
                 {
                     Debug.Log("ももたろうが 木札ONなら → 役割当て");
@@ -3343,7 +3277,7 @@ public class SiteManager : MonoBehaviour
             // 桃太郎が 残りHP1(ももっち) なら → 攻撃
             if (PushedBtnFlg == 0)  // 処理を実施したかどうか
             {
-                AttackToMomocchi();
+                CheckAttackToMomocchi();  // 桃太郎が 残りHP1(ももっち) であるか確認後、あてはまれば攻撃 or 条件を満たさなければスルー
                 if (PushedBtnFlg == 1)
                 {
                     Debug.Log("桃太郎が 残りHP1(ももっち) なら → 攻撃");
@@ -3364,7 +3298,7 @@ public class SiteManager : MonoBehaviour
             // 桃太郎が   役割オープン（HP2：ももじ）なら → 攻撃
             if (PushedBtnFlg == 0)  // 処理を実施したかどうか
             {
-                AttackToMomoji();
+                CheckAttackToMomoji();  // 桃太郎が 役割オープン（HP2：ももじ）なら 攻撃  or 条件を満たさなければスルー
                 if (PushedBtnFlg == 1)
                 {
                     Debug.Log("桃太郎が   役割オープン（HP2：ももじ）なら → 攻撃");
@@ -3562,7 +3496,7 @@ public class SiteManager : MonoBehaviour
         sequence.InsertCallback(0.2f, () => ButtonCscr.JudgeGoSelectTime());   // セレクト画面に行けるか、エラーかを判定する
     }
 
-    public void WhatIsYourFavorite_Question()
+    public void WhatIsYourFavorite_Question()  // 【しつもんモード】エイムセレクト画面で ランダム で選択する （条件：選択したのが自分自身ではない）
     {
         var AimedSite = Enumerable.Range(1, 8).OrderBy(n => Guid.NewGuid()).Take(8).ToArray();  // 配列に 1～8 までの数値を ランダムに入れる
         int AimedFlg = 0;
@@ -4067,17 +4001,114 @@ public class SiteManager : MonoBehaviour
 
     public void UkkariAte()   // うっかり桃メイト（木札ON） がいるなら → 役割当て
     {
-        for (int SN = 8; SN > 0; SN--)
+        if (UkkariSite[1] == 1)    // *うっかりフラグが1のものが 存在する
         {
-            if (UkkariSite[SN] == 1)    // *うっかりフラグが1のものがあれば、それを当てる
+            if (StatusSiteA == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
             {
-                Debug.Log("うっかりフラグ：UkkariSite[" + SN + "]" + UkkariSite[SN]);
-                if (rollF[SN] >= 2 && rollF[SN] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                if (rollF[1] >= 2 && rollF[1] <= 4) // 役割が いぬ、さる、きじ のどれかである
                 {
-                    PushYakuwariBtn_Common(rollF[SN]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
-                    SN = -1;  // ループフラグ終了
+                    PushYakuwariBtn_Common(rollF[1]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
                     PushedBtnFlg = 1;  // 処理を実施したかどうか
-                    Debug.Log("うっかりフラグが1のものがあれば、それを当てる");
+                    Debug.Log("うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）");
+                    UkkariSite[1] = -1;  // うっかり当て処理を実施済み のしるし
+                }
+            }
+        }
+
+        else if (UkkariSite[2] == 1)    // *うっかりフラグが1のものが 存在する
+        {
+            if (StatusSiteB == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
+            {
+                if (rollF[2] >= 2 && rollF[2] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                {
+                    PushYakuwariBtn_Common(rollF[2]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
+                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    Debug.Log("うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）");
+                    UkkariSite[2] = -1;  // うっかり当て処理を実施済み のしるし
+                }
+            }
+        }
+
+        else if (UkkariSite[3] == 1)    // *うっかりフラグが1のものが 存在する
+        {
+            if (StatusSiteC == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
+            {
+                if (rollF[3] >= 2 && rollF[3] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                {
+                    PushYakuwariBtn_Common(rollF[3]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
+                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    Debug.Log("うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）");
+                    UkkariSite[3] = -1;  // うっかり当て処理を実施済み のしるし
+                }
+            }
+        }
+
+        else if (UkkariSite[4] == 1)    // *うっかりフラグが1のものが 存在する
+        {
+            if (StatusSiteD == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
+            {
+                if (rollF[4] >= 2 && rollF[4] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                {
+                    PushYakuwariBtn_Common(rollF[4]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
+                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    Debug.Log("うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）");
+                    UkkariSite[4] = -1;  // うっかり当て処理を実施済み のしるし
+                }
+            }
+        }
+
+        else if (UkkariSite[5] == 1)    // *うっかりフラグが1のものが 存在する
+        {
+            if (StatusSiteE == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
+            {
+                if (rollF[5] >= 2 && rollF[5] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                {
+                    PushYakuwariBtn_Common(rollF[5]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
+                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    Debug.Log("うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）");
+                    UkkariSite[5] = -1;  // うっかり当て処理を実施済み のしるし
+                }
+            }
+        }
+
+        else if (UkkariSite[6] == 1)    // *うっかりフラグが1のものが 存在する
+        {
+            if (StatusSiteF == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
+            {
+                if (rollF[6] >= 2 && rollF[6] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                {
+                    PushYakuwariBtn_Common(rollF[6]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
+                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    Debug.Log("うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）");
+                    UkkariSite[6] = -1;  // うっかり当て処理を実施済み のしるし
+                }
+            }
+        }
+
+        else if (UkkariSite[7] == 1)    // *うっかりフラグが1のものが 存在する
+        {
+            if (StatusSiteG == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
+            {
+                if (rollF[7] >= 2 && rollF[7] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                {
+                    PushYakuwariBtn_Common(rollF[7]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
+                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    Debug.Log("うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）");
+                    UkkariSite[7] = -1;  // うっかり当て処理を実施済み のしるし
+                }
+            }
+        }
+
+        else if (UkkariSite[8] == 1)    // *うっかりフラグが1のものが 存在する
+        {
+            if (StatusSiteH == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
+            {
+                if (rollF[8] >= 2 && rollF[8] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                {
+                    PushYakuwariBtn_Common(rollF[8]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
+                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    Debug.Log("うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）");
+                    UkkariSite[8] = -1;  // うっかり当て処理を実施済み のしるし
                 }
             }
         }
@@ -4233,7 +4264,7 @@ public class SiteManager : MonoBehaviour
         }
     }
 
-    public void AttackToMomocchi()  // 桃太郎が 残りHP1(ももっち) なら → 攻撃
+    public void CheckAttackToMomocchi()  // 桃太郎が 残りHP1(ももっち) なら攻撃 or 条件を満たさなければスルー
     {
         if (rollF[1] == 1) // ももたろう
         {
@@ -4301,7 +4332,7 @@ public class SiteManager : MonoBehaviour
         }
     }
 
-    public void AttackToMomoji()  // 桃太郎が   役割オープン（HP2：ももじ）なら → 攻撃
+    public void CheckAttackToMomoji()  // 桃太郎が 役割オープン（HP2：ももじ）なら 攻撃  or 条件を満たさなければスルー
     {
         if (rollF[1] == 1) // ももたろう
         {

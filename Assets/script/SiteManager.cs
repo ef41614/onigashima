@@ -3160,6 +3160,10 @@ public class SiteManager : MonoBehaviour
             if (PushedBtnFlg == 0)  // 処理を実施したかどうか
             {
                 UkkariAte(); // うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）
+                if (PushedBtnFlg == 1)
+                {
+                    Debug.Log("うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）");
+                }
             }
 
             // 桃太郎が   木札ON(ももじ)なら → 役割当て
@@ -3612,7 +3616,8 @@ public class SiteManager : MonoBehaviour
             }
         }
 
-        // アクティブサイトが こおに
+
+        // アクティブサイトが こおに （こおにの役割・・・おやぶんが攻撃できるように、役割を当てる）
         else if (ActiveSiteRoll == 6)  
         {
             RollFNum = 0;  // 現在エイムされているサイトの役わり：初期化
@@ -3623,6 +3628,10 @@ public class SiteManager : MonoBehaviour
             if (PushedBtnFlg == 0)  // 処理を実施したかどうか
             {
                 UkkariAte();  // うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）
+                if (PushedBtnFlg == 1)
+                {
+                    Debug.Log("うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）");
+                }
             }
 
             // 桃太郎が   木札ON(ももじ)なら → 役割当て
@@ -3634,6 +3643,337 @@ public class SiteManager : MonoBehaviour
                     Debug.Log("ももたろうが 木札ONなら → 役割当て");
                 }
             }
+
+
+            // ステータスが2以下である 桃メイト がいれば  → 条件を満たせば 役割当て
+            if (PushedBtnFlg == 0)  // 処理を実施したかどうか
+            {
+                // *桃メイト を役割当て
+                CheckKurunProgressTotal();  // 役割カードがオープンになったキャラが どれだけいるか の進捗状況 確認
+                SearchMomoMateCommon(1);  // ステータスが1（札無し） ＆ 役割が いぬ・さる・きじ のキャラがいるか探す
+                SearchMomoMateCommon(2);  // ステータスが2（木札ON） ＆ 役割が いぬ・さる・きじ のキャラがいるか探す。 「RollFNum：現在エイムされているサイトの役わり」が上書きされる
+                if (PushedBtnFlg == 1)    // ステータスが2以下の いぬ、さる、きじ が見つかったら
+                {
+                    PushedBtnFlg = 0;  // 処理を実施したかどうか ：一旦フラグを初期化（リセット）
+                    if (KurunProgressTotal == 7) // 他のキャラが全部オープン済みで 一つだけステータスが2以下 で残っている ◆場の全体を見て その役割 だと判明した場合
+                    {
+                        Debug.Log("他のキャラが全部カードオープンで 、その役割カード（いぬ・さる・きじ のいずれか1枚）だけ ステータスが2以下で残っている");
+                        PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン ・・・その役割だと確定し、迷いなく処理する
+                        PushedBtnFlg = 1;  // 処理を実施したかどうか → 実施済み
+                    }
+                    else if (KurunProgressTotal == 6) // 自分がこおにで、ステータスが2以下が 2人いる（他のキャラは全部オープン済み） ◆場の全体を見て その役割 だと判明した場合
+                    {
+                        if (NowActiveSiteStatus <= 2)  // こおに（自分）がステータスが2以下
+                        {
+                            Debug.Log("自分がこおにで、ステータスが2以下 なのが自分と 桃メイト（他のキャラは全部オープン済み）");
+                            PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン ・・・その役割だと確定し、迷いなく処理する
+                            PushedBtnFlg = 1;  // 処理を実施したかどうか → 実施済み
+                        }
+                        else  // こおに（自分）がステータスが3以上（オープン後）
+                        {
+                            Sum_InokoriMate();   // 居残りメイトの合計を求める
+                            Sum_InokoriKooni();   // 居残りこおにの合計を求める
+                            if (InokoriMate == 2)   // 残りのサイト（ステータスが2以下）が、両方とも桃メイト
+                            {
+                                Debug.Log("残りのサイト（ステータスが2以下）が、両方とも桃メイト（他のキャラは全部オープン済み）");
+                                PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン ・・・その役割だと確定し、迷いなく処理する
+                                PushedBtnFlg = 1;  // 処理を実施したかどうか → 実施済み
+                            }
+                            else if (InokoriMate == 1)
+                            {
+                                if (InokoriKooni == 0)  // 居残りこおにがゼロ（＝後の居残りは [ももたろう か おやぶん]）
+                                {
+                                    CheckKifudaProgressTotal();  // 木札ONの進捗状況
+                                    if (KifudaProgressTotal >= 7)  // [ももたろう か おやぶん] か 桃メイト の少なくとも一方に 木札ON
+                                    {
+                                        Debug.Log("残りのサイト（ステータスが2以下）が、[ももたろう か おやぶん] と 桃メイト（他のキャラは全部オープン済み）");
+                                        PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン ・・・その役割だと確定し、迷いなく処理する
+                                        PushedBtnFlg = 1;  // 処理を実施したかどうか → 実施済み
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else if (KurunProgressTotal == 5) // 自分がこおにで、ステータスが2以下が 3人いる（他のキャラは全部オープン済み） ◆場の全体を見て その役割 だと判明した場合
+                    {
+                        Sum_InokoriMate();   // 居残りメイトの合計を求める
+                        Sum_InokoriKooni();   // 居残りこおにの合計を求める
+                        if (NowActiveSiteStatus <= 2)  // こおに（自分）がステータスが2以下
+                        {
+                            if (InokoriMate == 2)   // 残りのサイト（ステータスが2以下）が、自分（こおに）と 桃メイト×2
+                            {
+                                Debug.Log("自分がこおにで、ステータスが2以下 なのが自分（こおに）と 桃メイト×2（他のキャラは全部オープン済み）");
+                                PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン ・・・その役割だと確定し、迷いなく処理する
+                                PushedBtnFlg = 1;  // 処理を実施したかどうか → 実施済み
+                            }
+                            else if (InokoriMate == 1)
+                            {
+                                if (InokoriKooni == 1)  // 居残りこおにが1(自分)（＝後の居残りは [ももたろう か おやぶん]）
+                                {
+                                    CheckKifudaProgressTotal();  // 木札ONの進捗状況
+                                    if (NowActiveSiteStatus == 1)  // こおに（自分）がステータスが1
+                                    {
+                                        if (KifudaProgressTotal >= 6)  // 居残り組3人中、 木札ON 1枚以上（こおに札無し）
+                                        {
+                                            Debug.Log("残りのサイト（ステータスが2以下）が、自分（こおに） と [ももたろう か おやぶん] と 桃メイト （他のキャラは全部オープン済み）");
+                                            PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン ・・・その役割だと確定し、迷いなく処理する
+                                            PushedBtnFlg = 1;  // 処理を実施したかどうか → 実施済み
+                                        }
+                                    }
+                                    else if (NowActiveSiteStatus == 2)  // こおに（自分）がステータスが2(木札ON)
+                                    {
+                                        if (KifudaProgressTotal >= 7)  // 居残り組3人中、 木札ON 2枚以上（こおに札あり）
+                                        {
+                                            Debug.Log("残りのサイト（ステータスが2以下）が、自分（こおに） と [ももたろう か おやぶん] と 桃メイト （他のキャラは全部オープン済み）");
+                                            PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン ・・・その役割だと確定し、迷いなく処理する
+                                            PushedBtnFlg = 1;  // 処理を実施したかどうか → 実施済み
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else  // こおに（自分）がステータスが3以上（オープン後）
+                        {
+                            if (InokoriMate == 3)   // 残りのサイト（ステータスが2以下）が、3人とも桃メイト
+                            {
+                                Debug.Log("残りのサイト（ステータスが2以下）が、3人とも桃メイト（他のキャラは全部オープン済み）");
+                                PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン ・・・その役割だと確定し、迷いなく処理する
+                                PushedBtnFlg = 1;  // 処理を実施したかどうか → 実施済み
+                            }
+                            else if (InokoriMate == 2)
+                            {
+                                if (InokoriKooni == 0)  // 居残りこおにがゼロ（＝後の居残りは [ももたろう か おやぶん]）
+                                {
+                                    CheckKifudaProgressTotal();  // 木札ONの進捗状況
+                                    if (KifudaProgressTotal >= 6)  // 居残り組3人中、 誰か1人 に木札ON で確定
+                                    {
+                                        Debug.Log("残りのサイト（ステータスが2以下）が、[ももたろう か おやぶん] と 桃メイト×2（他のキャラは全部オープン済み）");
+                                        PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン ・・・その役割だと確定し、迷いなく処理する
+                                        PushedBtnFlg = 1;  // 処理を実施したかどうか → 実施済み
+                                    }
+                                }
+                            }
+                            else if (InokoriMate == 1)
+                            {
+                                if (InokoriKooni == 0)  // 居残りこおにがゼロ（＝後の居残りは ももたろう と おやぶん）
+                                {
+                                    CheckKifudaProgressTotal();  // 木札ONの進捗状況
+                                    CheckNowMomotaroStatus();  // ももたろうのステータス確認
+                                    if (KifudaProgressTotal >= 7)  // 居残り組3人中、 誰か2人 に木札ON で確定
+                                    {
+                                        Debug.Log("残りのサイト（ステータスが2以下）が、ももたろう と おやぶん と 桃メイト（他のキャラは全部オープン済み）");
+                                        PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン ・・・その役割だと確定し、迷いなく処理する
+                                        PushedBtnFlg = 1;  // 処理を実施したかどうか → 実施済み
+                                    }
+                                    else if (KifudaProgressTotal == 6)  // 居残り組3人中、 桃メイト1人 に木札ON で確定
+                                    {
+                                        if (NowMomotaroStatus == 1)  // ももたろう の ステータスが1（札無し）だったら
+                                        {
+                                            if (NowOyabunStatus == 1)  // おやぶん がステータス1
+                                            {
+                                                Debug.Log("残りのサイト（ステータスが2以下）が、ももたろう と おやぶん と 桃メイト（他のキャラは全部オープン済み）");
+                                                PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン ・・・その役割だと確定し、迷いなく処理する
+                                                PushedBtnFlg = 1;  // 処理を実施したかどうか → 実施済み
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else if (KurunProgressTotal == 4) // 自分がこおにで、ステータスが2以下が 4人いる（他のキャラは全部オープン済み） ◆場の全体を見て その役割 だと判明した場合
+                    {
+                        Sum_InokoriMate();   // 居残りメイトの合計を求める
+                        Sum_InokoriKooni();   // 居残りこおにの合計を求める
+                        if (NowActiveSiteStatus <= 2)  // こおに（自分）がステータスが2以下
+                        {
+                            if (InokoriMate == 3)   // 残りのサイト（ステータスが2以下）が、自分（こおに）と 桃メイト×3
+                            {
+                                Debug.Log("自分がこおにで、ステータスが2以下 なのが自分（こおに）と 桃メイト×3（他のキャラは全部オープン済み）");
+                                PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン ・・・その役割だと確定し、迷いなく処理する
+                                PushedBtnFlg = 1;  // 処理を実施したかどうか → 実施済み
+                            }
+                            else if (InokoriMate == 2)
+                            {
+                                if (InokoriKooni == 1)  // 居残りこおにが1(自分)（＝後の居残りは [ももたろう か おやぶん]）
+                                {
+                                    CheckKifudaProgressTotal();  // 木札ONの進捗状況
+                                    if (NowActiveSiteStatus == 1)  // こおに（自分）がステータスが1
+                                    {
+                                        if (KifudaProgressTotal >= 5)  // 居残り組4人中、 木札ON 1枚以上 (こおに（自分）は札無し)
+                                        {
+                                            Debug.Log("残りのサイト（ステータスが2以下）が、自分（こおに）と [ももたろう か おやぶん] と 桃メイト×2（他のキャラは全部オープン済み）");
+                                            PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン ・・・その役割だと確定し、迷いなく処理する
+                                            PushedBtnFlg = 1;  // 処理を実施したかどうか → 実施済み
+                                        }
+                                    }
+                                    else if (NowActiveSiteStatus == 2)  // こおに（自分）がステータスが2(木札ON)
+                                    {
+                                        if (KifudaProgressTotal >= 6)  // 居残り組4人中、 木札ON 2枚以上  (こおに（自分）は札あり)
+                                        {
+                                            Debug.Log("残りのサイト（ステータスが2以下）が、自分（こおに）と ももたろう と 桃メイト×2（他のキャラは全部オープン済み）");
+                                            PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン ・・・その役割だと確定し、迷いなく処理する
+                                            PushedBtnFlg = 1;  // 処理を実施したかどうか → 実施済み
+                                        }
+                                    }
+                                }
+                            }
+                            else if (InokoriMate == 1)
+                            {
+                                if (InokoriKooni == 1)  // 居残りこおにが1(自分)（＝後の居残りは ももたろう と おやぶん）
+                                {
+                                    CheckKifudaProgressTotal();  // 木札ONの進捗状況
+                                    CheckNowMomotaroStatus();  // ももたろうのステータス確認
+                                    if (NowActiveSiteStatus == 1)  // こおに（自分）がステータスが1
+                                    {
+                                        if (KifudaProgressTotal >= 6)  // 居残り組4人中、 2人 に木札ON で確定
+                                        {
+                                            Debug.Log("残りのサイト（ステータスが2以下）が、ももたろう と おやぶん と 桃メイト（他のキャラは全部オープン済み）");
+                                            PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン ・・・その役割だと確定し、迷いなく処理する
+                                            PushedBtnFlg = 1;  // 処理を実施したかどうか → 実施済み
+                                        }
+                                        else if (KifudaProgressTotal == 5)  // 居残り組4人中、 桃メイト に木札ON 1枚 (こおに（自分）は札無し)
+                                        {
+                                            if (NowMomotaroStatus == 1)  // ももたろう の ステータスが1（札無し）だったら
+                                            {
+                                                if (NowOyabunStatus == 1)  // おやぶん がステータス1
+                                                {
+                                                    Debug.Log("残りのサイト（ステータスが2以下）が、ももたろう と おやぶん と 桃メイト（他のキャラは全部オープン済み）");
+                                                    PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン ・・・その役割だと確定し、迷いなく処理する
+                                                    PushedBtnFlg = 1;  // 処理を実施したかどうか → 実施済み
+                                                }
+                                            }
+                                        }
+                                    }
+                                    else if (NowActiveSiteStatus == 2)  // こおに（自分）がステータスが2(木札ON)
+                                    {
+                                        if (KifudaProgressTotal >= 7)  // 居残り組4人中、 3人 に木札ON で確定
+                                        {
+                                            Debug.Log("残りのサイト（ステータスが2以下）が、ももたろう と おやぶん と 桃メイト（他のキャラは全部オープン済み）");
+                                            PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン ・・・その役割だと確定し、迷いなく処理する
+                                            PushedBtnFlg = 1;  // 処理を実施したかどうか → 実施済み
+                                        }
+                                        else if (KifudaProgressTotal == 6)  // 居残り組4人中、 桃メイト に木札ON 1枚 (こおに（自分）は札あり)
+                                        {
+                                            if (NowMomotaroStatus == 1)  // ももたろう の ステータスが1（札無し）だったら
+                                            {
+                                                if (NowOyabunStatus == 1)  // おやぶん がステータス1
+                                                {
+                                                    Debug.Log("残りのサイト（ステータスが2以下）が、ももたろう と おやぶん と 桃メイト（他のキャラは全部オープン済み）");
+                                                    PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン ・・・その役割だと確定し、迷いなく処理する
+                                                    PushedBtnFlg = 1;  // 処理を実施したかどうか → 実施済み
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
+                        else  // こおに（自分）がステータスが3以上（オープン後）
+                        {
+                            if (InokoriKooni == 0)  // 居残りこおにがゼロ（＝後の居残りは [ももたろう か おやぶん] と 桃メイト×3）
+                            {
+                                CheckKifudaProgressTotal();  // 木札ONの進捗状況
+                                CheckNowMomotaroStatus();  // ももたろうのステータス確認
+
+                                if (InokoriMate == 3)   // 残りのサイト（ステータスが2以下）が、[ももたろう か おやぶん] と 桃メイト×3
+                                {
+                                    if (KifudaProgressTotal >= 5)  // 居残り組5人中、 木札ON 1枚以上
+                                    {
+                                        Debug.Log("残りのサイト（ステータスが2以下）が、[ももたろう か おやぶん] と 桃メイト×3（他のキャラは全部オープン済み）");
+                                        PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン ・・・その役割だと確定し、迷いなく処理する
+                                        PushedBtnFlg = 1;  // 処理を実施したかどうか → 実施済み
+                                    }
+                                }
+                                else if (InokoriMate == 2)  // 残りのサイト（ステータスが2以下）が、ももたろう と おやぶん と 桃メイト×2
+                                {
+                                    if (KifudaProgressTotal >= 6)  // 居残り組4人中、 2人 に木札ON で確定
+                                    {
+                                        Debug.Log("残りのサイト（ステータスが2以下）が、ももたろう と おやぶん と 桃メイト×2（他のキャラは全部オープン済み）");
+                                        PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン ・・・その役割だと確定し、迷いなく処理する
+                                        PushedBtnFlg = 1;  // 処理を実施したかどうか → 実施済み
+                                    }
+                                    else if (KifudaProgressTotal == 5)  // 居残り組4人中、 桃メイト に木札ON 1枚 (こおに（自分）は札あり)
+                                    {
+                                        if (NowMomotaroStatus == 1)  // ももたろう の ステータスが1（札無し）だったら
+                                        {
+                                            if (NowOyabunStatus == 1)  // おやぶん がステータス1
+                                            {
+                                                Debug.Log("残りのサイト（ステータスが2以下）が、ももたろう と おやぶん と 桃メイト×2（他のキャラは全部オープン済み）");
+                                                PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン ・・・その役割だと確定し、迷いなく処理する
+                                                PushedBtnFlg = 1;  // 処理を実施したかどうか → 実施済み
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else if (KurunProgressTotal == 3) // 自分がこおにで、ステータスが2以下が 5人いる（他のキャラは全部オープン済み） ◆場の全体を見て その役割 だと判明した場合
+                    {
+                        Sum_InokoriMate();   // 居残りメイトの合計を求める
+                        Sum_InokoriKooni();   // 居残りこおにの合計を求める
+                        CheckKifudaProgressTotal();  // 木札ONの進捗状況
+                        if (NowActiveSiteStatus <= 2)  // こおに（自分）がステータスが2以下
+                        {
+                            if (InokoriMate == 3)   // 残りのサイト（ステータスが2以下）が、自分（こおに）と 桃メイト×3 と [ももたろう か おやぶん]
+                            {
+                                if (InokoriKooni == 1)  // 居残りこおにが1(自分)（＝後の居残りは [ももたろう か おやぶん] と 桃メイト×3）
+                                {
+                                    if (NowActiveSiteStatus == 1)  // こおに（自分）がステータスが1
+                                    {
+                                        if (KifudaProgressTotal >= 4)  // 居残り組5人中、 木札ON 1枚以上 (こおに（自分）は札無し)
+                                        {
+                                            Debug.Log("残りのサイト（ステータスが2以下）が、自分（こおに）と [ももたろう か おやぶん] と 桃メイト×3（他のキャラは全部オープン済み）");
+                                            PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン ・・・その役割だと確定し、迷いなく処理する
+                                            PushedBtnFlg = 1;  // 処理を実施したかどうか → 実施済み
+                                        }
+                                    }
+                                    else if (NowActiveSiteStatus == 2)  // こおに（自分）がステータスが2(木札ON)
+                                    {
+                                        if (KifudaProgressTotal >= 5)  // 居残り組5人中、 木札ON 2枚以上  (こおに（自分）は札あり)
+                                        {
+                                            Debug.Log("残りのサイト（ステータスが2以下）が、自分（こおに）と [ももたろう か おやぶん] と 桃メイト×3（他のキャラは全部オープン済み）");
+                                            PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン ・・・その役割だと確定し、迷いなく処理する
+                                            PushedBtnFlg = 1;  // 処理を実施したかどうか → 実施済み
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else  // こおに（自分）がステータスが3以上（オープン後）
+                        {
+                            if (InokoriMate == 3)   // 残りのサイト（ステータスが2以下）が、桃メイト×3 と ももたろう と おやぶん
+                            {
+                                if (InokoriKooni == 0)  // 居残りこおにがゼロ（＝後の居残りは ももたろう と おやぶん と 桃メイト×3）
+                                {
+                                    if (KifudaProgressTotal >= 5)  // 居残り組5人中、 木札ON 2枚以上  で確定
+                                    {
+                                        Debug.Log("残りのサイト（ステータスが2以下）が、と ももたろう と おやぶん と 桃メイト×3（他のキャラは全部オープン済み）");
+                                        PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン ・・・その役割だと確定し、迷いなく処理する
+                                        PushedBtnFlg = 1;  // 処理を実施したかどうか → 実施済み
+                                    }
+                                    else if (KifudaProgressTotal == 4)  // 居残り組5人中、 桃メイト に木札ON 1枚 
+                                    {
+                                        if (NowMomotaroStatus == 1)  // ももたろう の ステータスが1（札無し）だったら
+                                        {
+                                            if (NowOyabunStatus == 1)  // おやぶん がステータス1
+                                            {
+                                                Debug.Log("残りのサイト（ステータスが2以下）が、と ももたろう と おやぶん と 桃メイト×3（他のキャラは全部オープン済み）");
+                                                PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン ・・・その役割だと確定し、迷いなく処理する
+                                                PushedBtnFlg = 1;  // 処理を実施したかどうか → 実施済み
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+
 
             // *メイビーパラメータを元に、桃メイト と思われるキャラを1人選ぶ(役割当て) ※ 木札の有無は問わない
             if (PushedBtnFlg == 0)  // 処理を実施したかどうか
@@ -4375,120 +4715,131 @@ public class SiteManager : MonoBehaviour
         }
     }
 
+
     public void UkkariAte()   // うっかり桃メイト（木札ON） がいるなら → 役割当て
     {
-        if (UkkariSite[1] == 1)    // *うっかりフラグが1のものが 存在する
+        if (PushedBtnFlg == 0)  // 処理を実施したかどうか
         {
-            if (StatusSiteA == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
+            if (UkkariSite[1] == 1)    // *うっかりフラグが1のものが 存在する
             {
-                if (rollF[1] >= 2 && rollF[1] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                if (StatusSiteA == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
                 {
-                    PushYakuwariBtn_Common(rollF[1]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
-                    PushedBtnFlg = 1;  // 処理を実施したかどうか
-                    Debug.Log("うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）");
-                    UkkariSite[1] = -1;  // うっかり当て処理を実施済み のしるし
+                    if (rollF[1] >= 2 && rollF[1] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                    {
+                        PushYakuwariBtn_Common(rollF[1]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
+                        PushedBtnFlg = 1;  // 処理を実施したかどうか
+                        UkkariSite[1] = -1;  // うっかり当て処理を実施済み のしるし
+                    }
                 }
             }
         }
-
-        else if (UkkariSite[2] == 1)    // *うっかりフラグが1のものが 存在する
+        if (PushedBtnFlg == 0)  // 処理を実施したかどうか
         {
-            if (StatusSiteB == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
+            if (UkkariSite[2] == 1)    // *うっかりフラグが1のものが 存在する
             {
-                if (rollF[2] >= 2 && rollF[2] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                if (StatusSiteB == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
                 {
-                    PushYakuwariBtn_Common(rollF[2]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
-                    PushedBtnFlg = 1;  // 処理を実施したかどうか
-                    Debug.Log("うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）");
-                    UkkariSite[2] = -1;  // うっかり当て処理を実施済み のしるし
+                    if (rollF[2] >= 2 && rollF[2] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                    {
+                        PushYakuwariBtn_Common(rollF[2]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
+                        PushedBtnFlg = 1;  // 処理を実施したかどうか
+                        UkkariSite[2] = -1;  // うっかり当て処理を実施済み のしるし
+                    }
                 }
             }
         }
-
-        else if (UkkariSite[3] == 1)    // *うっかりフラグが1のものが 存在する
+        if (PushedBtnFlg == 0)  // 処理を実施したかどうか
         {
-            if (StatusSiteC == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
+            if (UkkariSite[3] == 1)    // *うっかりフラグが1のものが 存在する
             {
-                if (rollF[3] >= 2 && rollF[3] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                if (StatusSiteC == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
                 {
-                    PushYakuwariBtn_Common(rollF[3]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
-                    PushedBtnFlg = 1;  // 処理を実施したかどうか
-                    Debug.Log("うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）");
-                    UkkariSite[3] = -1;  // うっかり当て処理を実施済み のしるし
+                    if (rollF[3] >= 2 && rollF[3] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                    {
+                        PushYakuwariBtn_Common(rollF[3]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
+                        PushedBtnFlg = 1;  // 処理を実施したかどうか
+                        UkkariSite[3] = -1;  // うっかり当て処理を実施済み のしるし
+                    }
                 }
             }
         }
-
-        else if (UkkariSite[4] == 1)    // *うっかりフラグが1のものが 存在する
+        if (PushedBtnFlg == 0)  // 処理を実施したかどうか
         {
-            if (StatusSiteD == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
+            if (UkkariSite[4] == 1)    // *うっかりフラグが1のものが 存在する
             {
-                if (rollF[4] >= 2 && rollF[4] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                if (StatusSiteD == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
                 {
-                    PushYakuwariBtn_Common(rollF[4]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
-                    PushedBtnFlg = 1;  // 処理を実施したかどうか
-                    Debug.Log("うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）");
-                    UkkariSite[4] = -1;  // うっかり当て処理を実施済み のしるし
+                    if (rollF[4] >= 2 && rollF[4] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                    {
+                        PushYakuwariBtn_Common(rollF[4]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
+                        PushedBtnFlg = 1;  // 処理を実施したかどうか
+                        UkkariSite[4] = -1;  // うっかり当て処理を実施済み のしるし
+                    }
                 }
             }
         }
-
-        else if (UkkariSite[5] == 1)    // *うっかりフラグが1のものが 存在する
+        if (PushedBtnFlg == 0)  // 処理を実施したかどうか
         {
-            if (StatusSiteE == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
+            if (UkkariSite[5] == 1)    // *うっかりフラグが1のものが 存在する
             {
-                if (rollF[5] >= 2 && rollF[5] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                if (StatusSiteE == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
                 {
-                    PushYakuwariBtn_Common(rollF[5]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
-                    PushedBtnFlg = 1;  // 処理を実施したかどうか
-                    Debug.Log("うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）");
-                    UkkariSite[5] = -1;  // うっかり当て処理を実施済み のしるし
+                    if (rollF[5] >= 2 && rollF[5] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                    {
+                        PushYakuwariBtn_Common(rollF[5]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
+                        PushedBtnFlg = 1;  // 処理を実施したかどうか
+                        UkkariSite[5] = -1;  // うっかり当て処理を実施済み のしるし
+                    }
                 }
             }
         }
-
-        else if (UkkariSite[6] == 1)    // *うっかりフラグが1のものが 存在する
+        if (PushedBtnFlg == 0)  // 処理を実施したかどうか
         {
-            if (StatusSiteF == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
+            if (UkkariSite[6] == 1)    // *うっかりフラグが1のものが 存在する
             {
-                if (rollF[6] >= 2 && rollF[6] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                if (StatusSiteF == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
                 {
-                    PushYakuwariBtn_Common(rollF[6]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
-                    PushedBtnFlg = 1;  // 処理を実施したかどうか
-                    Debug.Log("うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）");
-                    UkkariSite[6] = -1;  // うっかり当て処理を実施済み のしるし
+                    if (rollF[6] >= 2 && rollF[6] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                    {
+                        PushYakuwariBtn_Common(rollF[6]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
+                        PushedBtnFlg = 1;  // 処理を実施したかどうか
+                        UkkariSite[6] = -1;  // うっかり当て処理を実施済み のしるし
+                    }
                 }
             }
         }
-
-        else if (UkkariSite[7] == 1)    // *うっかりフラグが1のものが 存在する
+        if (PushedBtnFlg == 0)  // 処理を実施したかどうか
         {
-            if (StatusSiteG == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
+            if (UkkariSite[7] == 1)    // *うっかりフラグが1のものが 存在する
             {
-                if (rollF[7] >= 2 && rollF[7] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                if (StatusSiteG == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
                 {
-                    PushYakuwariBtn_Common(rollF[7]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
-                    PushedBtnFlg = 1;  // 処理を実施したかどうか
-                    Debug.Log("うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）");
-                    UkkariSite[7] = -1;  // うっかり当て処理を実施済み のしるし
+                    if (rollF[7] >= 2 && rollF[7] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                    {
+                        PushYakuwariBtn_Common(rollF[7]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
+                        PushedBtnFlg = 1;  // 処理を実施したかどうか
+                        UkkariSite[7] = -1;  // うっかり当て処理を実施済み のしるし
+                    }
                 }
             }
         }
-
-        else if (UkkariSite[8] == 1)    // *うっかりフラグが1のものが 存在する
+        if (PushedBtnFlg == 0)  // 処理を実施したかどうか
         {
-            if (StatusSiteH == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
+            if (UkkariSite[8] == 1)    // *うっかりフラグが1のものが 存在する
             {
-                if (rollF[8] >= 2 && rollF[8] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                if (StatusSiteH == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
                 {
-                    PushYakuwariBtn_Common(rollF[8]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
-                    PushedBtnFlg = 1;  // 処理を実施したかどうか
-                    Debug.Log("うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）");
-                    UkkariSite[8] = -1;  // うっかり当て処理を実施済み のしるし
+                    if (rollF[8] >= 2 && rollF[8] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                    {
+                        PushYakuwariBtn_Common(rollF[8]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
+                        PushedBtnFlg = 1;  // 処理を実施したかどうか
+                        UkkariSite[8] = -1;  // うっかり当て処理を実施済み のしるし
+                    }
                 }
             }
         }
     }
+
 
     public void KifudaOnMomojiAte()  // 桃太郎が 木札ON(ももじ)なら → 役割当て
     {

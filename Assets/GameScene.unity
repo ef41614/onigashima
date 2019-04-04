@@ -7934,7 +7934,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 40, y: 40}
+  m_SizeDelta: {x: 25, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &246214956
 MonoBehaviour:
@@ -11252,7 +11252,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 40, y: 40}
+  m_SizeDelta: {x: 25, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &395080128
 MonoBehaviour:
@@ -30168,7 +30168,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 40, y: 40}
+  m_SizeDelta: {x: 25, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &952685984
 MonoBehaviour:
@@ -34581,7 +34581,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 40, y: 40}
+  m_SizeDelta: {x: 25, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1141731250
 MonoBehaviour:
@@ -36725,7 +36725,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 40, y: 40}
+  m_SizeDelta: {x: 25, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1245166586
 MonoBehaviour:
@@ -54733,7 +54733,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 40, y: 40}
+  m_SizeDelta: {x: 25, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1637127023
 MonoBehaviour:
@@ -66034,6 +66034,11 @@ MonoBehaviour:
   turnM: 000000000100000002000000030000000400000005000000060000000700000008000000
   charaN: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   rollF: 000000000000000000000000000000000000000000000000000000000000000000000000
+  UkkariSite: 000000000100000002000000030000000400000005000000060000000700000008000000
+  Maybe_Momotaro: 000000000100000002000000030000000400000005000000060000000700000008000000
+  Maybe_MomoMate: 000000000100000002000000030000000400000005000000060000000700000008000000
+  Maybe_Kooni: 000000000100000002000000030000000400000005000000060000000700000008000000
+  Maybe_Oyabun: 000000000100000002000000030000000400000005000000060000000700000008000000
   DEX: 0
   human_num: 1
   preventTurnNum: 1
@@ -66048,6 +66053,8 @@ MonoBehaviour:
   StatusSiteG: 1
   StatusSiteH: 1
   NowOyabunStatus: 1
+  NowMomotaroStatus: 1
+  NowActiveSiteStatus: 1
   teamSiteA: 0
   teamSiteB: 0
   teamSiteC: 0
@@ -66056,6 +66063,24 @@ MonoBehaviour:
   teamSiteF: 0
   teamSiteG: 0
   teamSiteH: 0
+  KifudaProgressA: 0
+  KifudaProgressB: 0
+  KifudaProgressC: 0
+  KifudaProgressD: 0
+  KifudaProgressE: 0
+  KifudaProgressF: 0
+  KifudaProgressG: 0
+  KifudaProgressH: 0
+  KifudaProgressTotal: 0
+  KurunProgressA: 0
+  KurunProgressB: 0
+  KurunProgressC: 0
+  KurunProgressD: 0
+  KurunProgressE: 0
+  KurunProgressF: 0
+  KurunProgressG: 0
+  KurunProgressH: 0
+  KurunProgressTotal: 0
   TurnChip_A: 0
   TurnChip_B: 0
   TurnChip_C: 0
@@ -66173,6 +66198,8 @@ MonoBehaviour:
   CanPush_Question: 1
   CanPush_Unmask: 0
   CanPush_Attack: 0
+  InokoriMate: 0
+  InokoriKooni: 0
 --- !u!4 &2013157666
 Transform:
   m_ObjectHideFlags: 0
@@ -67542,7 +67569,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 40, y: 40}
+  m_SizeDelta: {x: 25, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2066865442
 MonoBehaviour:
@@ -68899,7 +68926,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 40, y: 40}
+  m_SizeDelta: {x: 25, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2123487366
 MonoBehaviour:

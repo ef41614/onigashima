@@ -810,7 +810,6 @@ public class SiteManager : MonoBehaviour
 
     public void CheckCanPushQuestion()  // 行動ボタン（質問）押せるかのチェック
     {
-        Debug.Log("■CheckCanPushQuestion");
         Debug.Log("◆◎NowActiveSiteN：" + NowActiveSiteN);
 
         if (StatusSiteA < 2 || StatusSiteB < 2 || StatusSiteC < 2 || StatusSiteD < 2 || StatusSiteE < 2 || StatusSiteF < 2 || StatusSiteG < 2 || StatusSiteH < 2)  // 木札無しキャラ（ステータスが1）が 少なくとも一人いる → 判定に回す
@@ -821,6 +820,7 @@ public class SiteManager : MonoBehaviour
         {
             CanPush_Question = false;  // しつもんモードボタンは押せない
         }
+        Debug.Log("■CheckCanPushQuestion の結果："+ CanPush_Question);
     }
 
     public void CheckCanPushUnmask()
@@ -3395,8 +3395,8 @@ public class SiteManager : MonoBehaviour
             {
                 // * 桃太郎 を 役割当て
                 CheckKifudaProgressTotal();  // 木札ONの進捗状況 確認
-                SearchMomotaroCommon(1);  // ももたろう の ステータスが1（札無し）であるか確認 → 条件に合えば、RollFNum を そのサイトの番号に上書き （3ターン目で、行動済みのキャラに対してはエイムしない）
                 CheckNowMomotaroStatus();  // ももたろうのステータス確認
+                SearchMomotaroCommon(1);  // ももたろう の ステータスが1（札無し）であるか確認 → 条件に合えば、RollFNum を そのサイトの番号に上書き （3ターン目で、行動済みのキャラに対してはエイムしない）
                 if (NowMomotaroStatus == 1)  // ももたろう の ステータスが1（札無し）だったら
                 {
                     if (KifudaProgressTotal == 7) // 他のキャラが全部 木札ONで 一つだけデフォルト（札無し）で残っている ◆場の全体を見て その役割 だと判明した場合
@@ -3533,6 +3533,57 @@ public class SiteManager : MonoBehaviour
                     }
                 }
 
+                if (PushedBtnFlg == 0)  // 処理を実施したかどうか
+                {
+                    int RndAct = UnityEngine.Random.Range(1, 11);  // こうげきするか、その他の行動をとるか、ランダムで決定
+                    Debug.Log("RndAct ： " + RndAct);
+                    if (RndAct <= 7) // 攻撃はしないで他の行動でいこう
+                    {
+                        if (RndAct <= 4) // しつもん しよう
+                        {
+                            // *桃チームに 対して しつもん (少なくとも一人は札無しがいる) 
+                            if (PushedBtnFlg == 0)  // 処理を実施したかどうか
+                            {
+                                CheckKifudaProgressTotal();  // 木札ONの進捗状況 確認
+                                if (KifudaProgressTotal < 8) // 木札ONの進捗状況が 8未満（＝少なくとも一人は札無しがいる）
+                                {
+                                    CheckCanPushQuestion();  // 行動ボタン（質問）押せるかのチェック
+                                    if (CanPush_Question)  // 行動ボタン（質問）押せる
+                                    {
+                                        ButtonCscr.BranchOpenQuestion();  // M-1：この場合は「しつもん」ボタン  // 行動ボタン押せるかのチェック ＆ BrownBoxを開く
+                                        CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                                        sequence.InsertCallback(2f, () => WhatIsYourFavorite_Question());  // 【しつもんモード】エイムセレクト画面で ランダム で選択する（条件：選択したのが自分自身ではない） （3ターン目で、行動済みのキャラに対してエイムしない）
+                                        if (AimedFlg == 1)  // エイム条件を満たしているならば （3ターン目で、行動済みのキャラに対してエイムしない）
+                                        {
+                                            sequence.InsertCallback(4f, () => WhatIsYourFavorite2_Question());  // OKボタン 押下で 木札をON
+                                            sequence.InsertCallback(8f, () => WhatIsYourFavorite3_Question());  // OKボタン 押下で ウインドウ 閉じる
+                                            PushedBtnFlg = 1;  // 処理を実施したかどうか
+                                            Debug.Log("◆*桃チームに 対して しつもん (自分以外で一人は札無しがいる) ");
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        // *特に参考になる情報がなければ、おやぶん・ももたろう以外で 木札ONのキャラから ランダムで一人選ぶ(役割当て) （前提：木札無しがいない＝全員ステータス2以上）
+                        if (PushedBtnFlg == 0)  // 処理を実施したかどうか
+                        {
+                            SearchMomoOniCommon(2);  // ステータスが2（木札ON）＆ 役割が いぬ・さる・きじ・こおにたち  のキャラがいるか探す 「RollFNum：現在エイムされているサイトの役わり」が上書きされる
+                            if (PushedBtnFlg == 1)  // ステータスが2（木札ON）の いぬ、さる、きじ、こおにたち が 少なくとも一人以上いれば
+                            {
+                                Debug.Log("おやぶん・ももたろう以外で木札ONのキャラから ランダムで一人選ぶ(役割当て)");
+                                // RollFNum に いぬ、さる、きじ、こおにたち のいずれかが入っている
+                                var sequence2 = DOTween.Sequence();
+                                ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン
+                                CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                                sequence2.InsertCallback(2f, () => YouAreHoge(RollFNum));     // 木札ONの キャラ を探して エイムでセレクト
+                                sequence2.InsertCallback(4f, () => YouAreHoge2_Unmask(2));  // 役割当て画面で 「桃メイト」 のアイコンを クリック（自分がおやぶんなので、こおにを選ぶことはしない）
+                                sequence2.InsertCallback(8f, () => YouAreHoge3_Unmask());  // 役割当て画面クローズ
+                            }
+                        }
+                    }
+                }
+
                 // 桃太郎が 残りHP1(ももっち) なら → 攻撃
                 if (PushedBtnFlg == 0)  // 処理を実施したかどうか
                 {
@@ -3566,26 +3617,26 @@ public class SiteManager : MonoBehaviour
 
                 // *桃チームに 対して しつもん (少なくとも一人は札無しがいる) 
                 if (PushedBtnFlg == 0)  // 処理を実施したかどうか
-                {
-                    CheckKifudaProgressTotal();  // 木札ONの進捗状況 確認
-                    if (KifudaProgressTotal < 8) // 木札ONの進捗状況が 8未満（＝少なくとも一人は札無しがいる）
                     {
-                        CheckCanPushQuestion();  // 行動ボタン（質問）押せるかのチェック
-                        if (CanPush_Question)  // 行動ボタン（質問）押せる
+                        CheckKifudaProgressTotal();  // 木札ONの進捗状況 確認
+                        if (KifudaProgressTotal < 8) // 木札ONの進捗状況が 8未満（＝少なくとも一人は札無しがいる）
                         {
-                            ButtonCscr.BranchOpenQuestion();  // M-1：この場合は「しつもん」ボタン  // 行動ボタン押せるかのチェック ＆ BrownBoxを開く
-                            CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                            sequence.InsertCallback(2f, () => WhatIsYourFavorite_Question());  // 【しつもんモード】エイムセレクト画面で ランダム で選択する（条件：選択したのが自分自身ではない） （3ターン目で、行動済みのキャラに対してエイムしない）
-                            if (AimedFlg == 1)  // エイム条件を満たしているならば （3ターン目で、行動済みのキャラに対してエイムしない）
+                            CheckCanPushQuestion();  // 行動ボタン（質問）押せるかのチェック
+                            if (CanPush_Question)  // 行動ボタン（質問）押せる
                             {
-                                sequence.InsertCallback(4f, () => WhatIsYourFavorite2_Question());  // OKボタン 押下で 木札をON
-                                sequence.InsertCallback(8f, () => WhatIsYourFavorite3_Question());  // OKボタン 押下で ウインドウ 閉じる
-                                PushedBtnFlg = 1;  // 処理を実施したかどうか
-                                Debug.Log("◆*桃チームに 対して しつもん (自分以外で一人は札無しがいる) ");
+                                ButtonCscr.BranchOpenQuestion();  // M-1：この場合は「しつもん」ボタン  // 行動ボタン押せるかのチェック ＆ BrownBoxを開く
+                                CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                                sequence.InsertCallback(2f, () => WhatIsYourFavorite_Question());  // 【しつもんモード】エイムセレクト画面で ランダム で選択する（条件：選択したのが自分自身ではない） （3ターン目で、行動済みのキャラに対してエイムしない）
+                                if (AimedFlg == 1)  // エイム条件を満たしているならば （3ターン目で、行動済みのキャラに対してエイムしない）
+                                {
+                                    sequence.InsertCallback(4f, () => WhatIsYourFavorite2_Question());  // OKボタン 押下で 木札をON
+                                    sequence.InsertCallback(8f, () => WhatIsYourFavorite3_Question());  // OKボタン 押下で ウインドウ 閉じる
+                                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                                    Debug.Log("◆*桃チームに 対して しつもん (自分以外で一人は札無しがいる) ");
+                                }
                             }
                         }
                     }
-                }
 
                 // *特に参考になる情報がなければ、おやぶん・ももたろう以外で 木札ONのキャラから ランダムで一人選ぶ(役割当て) （前提：木札無しがいない＝全員ステータス2以上）
                 if (PushedBtnFlg == 0)  // 処理を実施したかどうか

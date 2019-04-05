@@ -3140,9 +3140,10 @@ public class SiteManager : MonoBehaviour
                     // ◆それでも おやぶんが どこのサイトか 不明な時 → ランダム で しつもん
                     ButtonCscr.BranchOpenQuestion();  // M-1：この場合は「しつもん」ボタン  // 行動ボタン押せるかのチェック ＆ BrownBoxを開く
                     CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                    PushedBtnFlg = 1;  // 処理を実施したかどうか (便宜上、一旦ここでONにする)
                     sequence.InsertCallback(2f, () => WhatIsYourFavorite_Question());  // 【しつもんモード】エイムセレクト画面で ランダム で選択する （条件：選択したのが自分自身ではない）（3ターン目で、行動済みのキャラに対してエイムしない）
-                    sequence.InsertCallback(4f, () => WhatIsYourFavorite2_Question());  // OKボタン 押下で 木札をON
-                    sequence.InsertCallback(8f, () => WhatIsYourFavorite3_Question());  // OKボタン 押下で ウインドウ 閉じる
+                    // sequence.InsertCallback(4f, () => WhatIsYourFavorite2_Question());  // OKボタン 押下で 木札をON
+                    // sequence.InsertCallback(8f, () => WhatIsYourFavorite3_Question());  // OKボタン 押下で ウインドウ 閉じる
                 }
             }
         }
@@ -3464,13 +3465,8 @@ public class SiteManager : MonoBehaviour
                         Debug.Log("◆*桃チームに 対して しつもん (自分以外で一人は札無しがいる) ");
                         ButtonCscr.BranchOpenQuestion();  // M-1：この場合は「しつもん」ボタン  // 行動ボタン押せるかのチェック ＆ BrownBoxを開く
                         CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                        PushedBtnFlg = 1;  // 処理を実施したかどうか (便宜上、一旦ここでONにする)
                         sequence.InsertCallback(2f, () => WhatIsYourFavorite_Question());  // 【しつもんモード】エイムセレクト画面で ランダム で選択する（条件：選択したのが自分自身ではない） （3ターン目で、行動済みのキャラに対してエイムしない）
-                        if (AimedFlg == 1)  // エイム条件を満たしているならば （3ターン目で、行動済みのキャラに対してエイムしない）
-                        {
-                            sequence.InsertCallback(4f, () => WhatIsYourFavorite2_Question());  // OKボタン 押下で 木札をON
-                            sequence.InsertCallback(8f, () => WhatIsYourFavorite3_Question());  // OKボタン 押下で ウインドウ 閉じる
-                            PushedBtnFlg = 1;  // 処理を実施したかどうか
-                        }
                     }
                 }
             }
@@ -3577,14 +3573,8 @@ public class SiteManager : MonoBehaviour
                                     {
                                         ButtonCscr.BranchOpenQuestion();  // M-1：この場合は「しつもん」ボタン  // 行動ボタン押せるかのチェック ＆ BrownBoxを開く
                                         CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                                        PushedBtnFlg = 1;  // 処理を実施したかどうか (便宜上、一旦ここでONにする)
                                         sequence.InsertCallback(2f, () => WhatIsYourFavorite_Question());  // 【しつもんモード】エイムセレクト画面で ランダム で選択する（条件：選択したのが自分自身ではない） （3ターン目で、行動済みのキャラに対してエイムしない）
-                                        if (AimedFlg == 1)  // エイム条件を満たしているならば （3ターン目で、行動済みのキャラに対してエイムしない）
-                                        {
-                                            sequence.InsertCallback(4f, () => WhatIsYourFavorite2_Question());  // OKボタン 押下で 木札をON
-                                            sequence.InsertCallback(8f, () => WhatIsYourFavorite3_Question());  // OKボタン 押下で ウインドウ 閉じる
-                                            PushedBtnFlg = 1;  // 処理を実施したかどうか
-                                            Debug.Log("◆*桃チームに 対して しつもん (自分以外で一人は札無しがいる) ");
-                                        }
                                     }
                                 }
                             }
@@ -3642,26 +3632,20 @@ public class SiteManager : MonoBehaviour
 
                 // *桃チームに 対して しつもん (少なくとも一人は札無しがいる) 
                 if (PushedBtnFlg == 0)  // 処理を実施したかどうか
+                {
+                    CheckKifudaProgressTotal();  // 木札ONの進捗状況 確認
+                    if (KifudaProgressTotal < 8) // 木札ONの進捗状況が 8未満（＝少なくとも一人は札無しがいる）
                     {
-                        CheckKifudaProgressTotal();  // 木札ONの進捗状況 確認
-                        if (KifudaProgressTotal < 8) // 木札ONの進捗状況が 8未満（＝少なくとも一人は札無しがいる）
+                        CheckCanPushQuestion();  // 行動ボタン（質問）押せるかのチェック
+                        if (CanPush_Question)  // 行動ボタン（質問）押せる
                         {
-                            CheckCanPushQuestion();  // 行動ボタン（質問）押せるかのチェック
-                            if (CanPush_Question)  // 行動ボタン（質問）押せる
-                            {
-                                ButtonCscr.BranchOpenQuestion();  // M-1：この場合は「しつもん」ボタン  // 行動ボタン押せるかのチェック ＆ BrownBoxを開く
-                                CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                                sequence.InsertCallback(2f, () => WhatIsYourFavorite_Question());  // 【しつもんモード】エイムセレクト画面で ランダム で選択する（条件：選択したのが自分自身ではない） （3ターン目で、行動済みのキャラに対してエイムしない）
-                                if (AimedFlg == 1)  // エイム条件を満たしているならば （3ターン目で、行動済みのキャラに対してエイムしない）
-                                {
-                                    sequence.InsertCallback(4f, () => WhatIsYourFavorite2_Question());  // OKボタン 押下で 木札をON
-                                    sequence.InsertCallback(8f, () => WhatIsYourFavorite3_Question());  // OKボタン 押下で ウインドウ 閉じる
-                                    PushedBtnFlg = 1;  // 処理を実施したかどうか
-                                    Debug.Log("◆*桃チームに 対して しつもん (自分以外で一人は札無しがいる) ");
-                                }
-                            }
+                            ButtonCscr.BranchOpenQuestion();  // M-1：この場合は「しつもん」ボタン  // 行動ボタン押せるかのチェック ＆ BrownBoxを開く
+                            CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                            PushedBtnFlg = 1;  // 処理を実施したかどうか (便宜上、一旦ここでONにする)
+                            sequence.InsertCallback(2f, () => WhatIsYourFavorite_Question());  // 【しつもんモード】エイムセレクト画面で ランダム で選択する（条件：選択したのが自分自身ではない） （3ターン目で、行動済みのキャラに対してエイムしない）
                         }
                     }
+                }
 
                 // *特に参考になる情報がなければ、おやぶん・ももたろう以外で 木札ONのキャラから ランダムで一人選ぶ(役割当て) （前提：木札無しがいない＝全員ステータス2以上）
                 if (PushedBtnFlg == 0)  // 処理を実施したかどうか
@@ -3774,14 +3758,8 @@ public class SiteManager : MonoBehaviour
                         {
                             ButtonCscr.BranchOpenQuestion();  // M-1：この場合は「しつもん」ボタン  // 行動ボタン押せるかのチェック ＆ BrownBoxを開く
                             CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                            PushedBtnFlg = 1;  // 処理を実施したかどうか (便宜上、一旦ここでONにする)
                             sequence.InsertCallback(2f, () => WhatIsYourFavorite_Question());  // 【しつもんモード】エイムセレクト画面で ランダム で選択する（条件：選択したのが自分自身ではない） （3ターン目で、行動済みのキャラに対してエイムしない）
-                            if (AimedFlg == 1)  // エイム条件を満たしているならば （3ターン目で、行動済みのキャラに対してエイムしない）
-                            {
-                                sequence.InsertCallback(4f, () => WhatIsYourFavorite2_Question());  // OKボタン 押下で 木札をON
-                                sequence.InsertCallback(8f, () => WhatIsYourFavorite3_Question());  // OKボタン 押下で ウインドウ 閉じる
-                                PushedBtnFlg = 1;  // 処理を実施したかどうか
-                                Debug.Log("◆*桃チームに 対して しつもん (自分以外で一人は札無しがいる) ");
-                            }
                         }
                     }
                 }
@@ -4675,6 +4653,7 @@ public class SiteManager : MonoBehaviour
 
     public void WhatIsYourFavorite_Question()  // 【しつもんモード】エイムセレクト画面で ランダム で選択する （条件：選択したのが自分自身ではない） （3ターン目で、行動済みのキャラに対してはエイムしない）
     {
+        var sequence = DOTween.Sequence();
         var AimedSite = Enumerable.Range(1, 8).OrderBy(n => Guid.NewGuid()).Take(8).ToArray();  // 配列に 1～8 までの数値を ランダムに入れる
         AimedFlg = 0;  // エイムドフラグ 初期化
         Debug.Log("エイムセレクト画面で ランダム で選択する");
@@ -4855,6 +4834,19 @@ public class SiteManager : MonoBehaviour
                 AimedFlg = -1;  // ここのフェーズでは該当なし
                 Debug.Log("条件を満たさなかったため、エイムセレクト画面で ランダム で選択する のは中断する");
             }
+        }
+
+        if (AimedFlg == 1)  // エイム条件を満たしているならば （3ターン目で、行動済みのキャラに対してエイムしない）
+        {
+            sequence.InsertCallback(4f, () => WhatIsYourFavorite2_Question());  // OKボタン 押下で 木札をON
+            sequence.InsertCallback(8f, () => WhatIsYourFavorite3_Question());  // OKボタン 押下で ウインドウ 閉じる
+            PushedBtnFlg = 1;  // 処理を実施したかどうか
+            Debug.Log("◆【しつもんモード】エイムセレクト画面で ランダム で選択する (自分以外で一人は札無しがいる) ");
+        }
+        else  // エイム条件を満たしていない
+        {
+            PushedBtnFlg = 0;  // 処理を実施したかどうか
+            Debug.Log("条件を満たさなかったため、エイムセレクト画面で ランダム で選択する のは中断し、次のフェーズへ移る");
         }
     }
     

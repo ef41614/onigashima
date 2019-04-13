@@ -89,8 +89,20 @@ public class SelectManager : MonoBehaviour
     public GameObject ImageOniStr03;
     public GameObject ImageOniStr04;
 
+    public static int MessageSpeed = 2;  // メッセージスピード： 2（デフォルト）が「ふつう」
+
+    bool SelectedFlgSpeed01 = false;  // おそい
+    bool SelectedFlgSpeed02 = false;  // ふつう
+    bool SelectedFlgSpeed03 = false;  // はやい
+
+    public GameObject ImageMesSpeed01;
+    public GameObject ImageMesSpeed02;
+    public GameObject ImageMesSpeed03;
+
     public GameObject GuideCheckMark; // チェックマーク。初期値は表示（チェック入り）にしておく（ゲーム毎にはしない）
     public static int GuideMode = 1;  // 1 でガイド文 ON
+
+    public GameObject Haguruma_Box;  // メッセージスピードや音量などを調整する設定画面
 
     //☆################☆################  Start  ################☆################☆
 
@@ -115,10 +127,16 @@ public class SelectManager : MonoBehaviour
 
 //        image = this.GetComponent<Image>();
         Check_numberOfPersons();
+
         ResetSelectOniStrong();  // おにチームの強さを一旦リセットする
         SelectOnistr02();   // 初期設定「ふつう」にする
         CheckSelectedOniStr();  // 選択されている強さをアピールする（黄色背景点滅）
 
+        ResetSelectMessageSpeed();  // メッセージスピードを一旦リセットする
+        SelectMesSpeed02();  // 初期設定「ふつう」にする
+        CheckSelectedMesSpeed();  // 選択されているスピードをアピールする（黄色背景点滅）
+
+        CloseHaguruma_Box();
     }
 
 
@@ -807,6 +825,7 @@ public class SelectManager : MonoBehaviour
     }
     #endregion
 
+    #region OniStrongGroup
     public void ResetSelectOniStrong()  // フラグをすべてfalseにする（あくまでフラグのみ。これだけでは非表示にならない）
     {
         SelectedFlgOni01 = false;
@@ -877,6 +896,69 @@ public class SelectManager : MonoBehaviour
     { 
         return OniStrong;
     }
+    #endregion
+
+    #region MessageSpeedGroup_in_SelectMSC
+    public void ResetSelectMessageSpeed()  // フラグをすべてfalseにする（あくまでフラグのみ。これだけでは非表示にならない）
+    {
+        SelectedFlgSpeed01 = false;
+        SelectedFlgSpeed02 = false;
+        SelectedFlgSpeed03 = false;
+    }
+
+    public void SelectMesSpeed01()
+    {
+        SelectedFlgSpeed01 = true;
+    }
+
+    public void SelectMesSpeed02()
+    {
+        SelectedFlgSpeed02 = true;
+    }
+
+    public void SelectMesSpeed03()
+    {
+        SelectedFlgSpeed03 = true;
+    }
+
+    public void CheckSelectedMesSpeed()
+    {
+        CloseSelectedMesSpeed();  // まず、全部消す
+        AppearSelectedMesSpeed();  // 次に、条件にあった物のみ表示させる
+    }
+
+    public void AppearSelectedMesSpeed()
+    {
+        if (SelectedFlgSpeed01)
+        {
+            ImageMesSpeed01.SetActive(true);
+            MessageSpeed = 1;
+        }
+        if (SelectedFlgSpeed02)
+        {
+            ImageMesSpeed02.SetActive(true);
+            MessageSpeed = 2;
+        }
+        if (SelectedFlgSpeed03)
+        {
+            ImageMesSpeed03.SetActive(true);
+            MessageSpeed = 3;
+        }
+        Debug.Log("MessageSpeed：" + MessageSpeed);
+    }
+
+    public void CloseSelectedMesSpeed()
+    {
+        ImageMesSpeed01.SetActive(false);
+        ImageMesSpeed02.SetActive(false);
+        ImageMesSpeed03.SetActive(false);
+    }
+
+    public static int getMessageSpeed()  // ゲッターの関数
+    {
+        return MessageSpeed;
+    }
+    #endregion
 
 
     public void SwitchGuideMode()
@@ -920,6 +1002,16 @@ public class SelectManager : MonoBehaviour
     public void CloseGuideCheckMark()
     {
         GuideCheckMark.SetActive(false);
+    }
+
+    public void AppearHaguruma_Box()
+    {
+        Haguruma_Box.SetActive(true);
+    }
+
+    public void CloseHaguruma_Box()
+    {
+        Haguruma_Box.SetActive(false);
     }
 
 

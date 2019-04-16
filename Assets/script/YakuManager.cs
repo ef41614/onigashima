@@ -84,6 +84,8 @@ public class YakuManager : MonoBehaviour {
     public Image WinRole03;
     public Image WinRole04;
 
+    float currentTime = 0f;  //〇秒間に一度する処理用
+
 
     //☆################☆################  Start  ################☆################☆
 
@@ -137,11 +139,12 @@ public class YakuManager : MonoBehaviour {
         //ダメージを受けた時の処理
         if (isDamaged)
         {
-            Debug.Log("◆ダメージを受けた時の処理ON・・・点滅");
-//            float level = Mathf.Abs(Mathf.Sin(Time.time * 10));
-            //            AttackedRollFaceObj.gameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, level);
-//            renderer.color = new Color(1f, 1f, 1f, level);
-
+            currentTime += Time.deltaTime;
+            if (currentTime > 0.2f)
+            {
+                Debug.Log("◆ダメージを受けた時の処理ON・・・点滅");
+                currentTime = 0f;
+            }
             //オブジェクトのAlpha値を更新
             imageTen.color = GetAlphaColor(image.color);
         }
@@ -149,15 +152,25 @@ public class YakuManager : MonoBehaviour {
         //かばう成功時の処理
         if (isKabaied)
         {
-            Debug.Log("◆かばう成功時の処理ON・・・点滅");
+            currentTime += Time.deltaTime;
+            if (currentTime > 0.2f)
+            {
+                Debug.Log("◆かばう成功時の処理ON・・・点滅");
+                currentTime = 0f;
+            }
             //オブジェクトのAlpha値を更新
             imageKabaiKooniTen.color = GetAlphaColor(image.color);
         }
 
-        //かばう成功時の処理
+        //カウンター発動時の処理
         if (isCountered)
         {
-            Debug.Log("◆カウンター発動時の処理ON・・・点滅");
+            currentTime += Time.deltaTime;
+            if (currentTime > 0.2f)
+            {
+                Debug.Log("◆カウンター発動時の処理ON・・・点滅");
+                currentTime = 0f;
+            }
             //オブジェクトのAlpha値を更新
             imageCounteredCharaTen.color = GetAlphaColor(image.color);
         }

@@ -354,8 +354,8 @@ public class SiteManager : MonoBehaviour
         ResetSelectMessageLevel();  // メッセージ送りスピードを更新する
         // SelectMesSpeed02();  // 初期設定「ふつう」にする
         MessageLevel = SelectManager.getMessageSpeed(); // ゲッター関数を呼び出し、値を引き継ぐ
-        CheckSelectedMesSpeed();  // 選択されているスピードをアピールする（黄色背景点滅）
         ReflectMessageLevel();  // MessageLevel を元に、MessageOkuriTime を決める（メッセージ送りスピードを更新する）
+        CheckSelectedMesSpeed();  // 選択されているスピードをアピールする（黄色背景点滅）
     }
 
 
@@ -1204,15 +1204,15 @@ public class SiteManager : MonoBehaviour
         {
             if (rollF[NowActiveSiteN] != 5)  // 今のアクティブプレーヤーが おやぶん 以外
             {
-                Maybe_Momotaro[NowActiveSiteN] = 2;
-                Maybe_MomoMate[NowActiveSiteN] = 2;
+                Maybe_Momotaro[NowActiveSiteN] = -2;
+                Maybe_MomoMate[NowActiveSiteN] = -2;
                 Maybe_Oyabun[NowActiveSiteN] = 0;
                 Maybe_Kooni[NowActiveSiteN] = Maybe_Kooni[NowActiveSiteN] + 50;
             }
             else  // 今のアクティブプレーヤーが おやぶん
             {
-                Maybe_Momotaro[NowActiveSiteN] = 2;
-                Maybe_MomoMate[NowActiveSiteN] = 2;
+                Maybe_Momotaro[NowActiveSiteN] = -2;
+                Maybe_MomoMate[NowActiveSiteN] = -2;
                 Maybe_Oyabun[NowActiveSiteN] = 98;
                 Maybe_Kooni[NowActiveSiteN] = 2;
             }
@@ -1380,66 +1380,42 @@ public class SiteManager : MonoBehaviour
         Debug.Log("◆◎NowActiveSiteN：" + NowActiveSiteN);
         if (NowActiveSiteN == 1)
         {
-            if (MenuButtonMode == 2)
-            {
-                StatusSiteA = 4;
-            }
+            StatusSiteA = 4;
             YakuMSC.OpenYakuCardA();
         }
         else if (NowActiveSiteN == 2)
         {
-            if (MenuButtonMode == 2)
-            {
-                StatusSiteB = 4;
-            }
+            StatusSiteA = 4;
             YakuMSC.OpenYakuCardB();
         }
         else if (NowActiveSiteN == 3)
         {
-            if (MenuButtonMode == 2)
-            {
-                StatusSiteC = 4;
-            }
+            StatusSiteA = 4;
             YakuMSC.OpenYakuCardC();
         }
         else if (NowActiveSiteN == 4)
         {
-            if (MenuButtonMode == 2)
-            {
-                StatusSiteD = 4;
-            }
+            StatusSiteA = 4;
             YakuMSC.OpenYakuCardD();
         }
         else if (NowActiveSiteN == 5)
         {
-            if (MenuButtonMode == 2)
-            {
-                StatusSiteE = 4;
-            }
+            StatusSiteA = 4;
             YakuMSC.OpenYakuCardE();
         }
         else if (NowActiveSiteN == 6)
         {
-            if (MenuButtonMode == 2)
-            {
-                StatusSiteF = 4;
-            }
+            StatusSiteA = 4;
             YakuMSC.OpenYakuCardF();
         }
         else if (NowActiveSiteN == 7)
         {
-            if (MenuButtonMode == 2)
-            {
-                StatusSiteG = 4;
-            }
+            StatusSiteA = 4;
             YakuMSC.OpenYakuCardG();
         }
         else if (NowActiveSiteN == 8)
         {
-            if (MenuButtonMode == 2)
-            {
-                StatusSiteH = 4;
-            }
+            StatusSiteA = 4;
             YakuMSC.OpenYakuCardH();
         }
         CheckNowOyabunStatus();  // おやぶんのステータス確認
@@ -1553,9 +1529,26 @@ public class SiteManager : MonoBehaviour
                     if (ActiveKooni >= 1)// 元気な こオニが1人以上いる
                     {
                         int accuracy = UnityEngine.Random.Range(1, 7); // かばうが成功するかどうかのランダム数値  
-                        if (1 <= accuracy && accuracy <= 3)   // ★7だと100％かばう成功
+                        if (OniLevel == 2)
                         {
-                            KabauFlg = true;  // かばう条件を満たしている →かばうフラグをON → 「かばう」発動！
+                            if (1 <= accuracy && accuracy <= 3)   // ★7だと100％かばう成功
+                            {
+                                KabauFlg = true;  // かばう条件を満たしている →かばうフラグをON → 「かばう」発動！
+                            }
+                        }
+                        else if (OniLevel == 3)
+                        {
+                            if (1 <= accuracy && accuracy <= 4)   // ★7だと100％かばう成功
+                            {
+                                KabauFlg = true;  // かばう条件を満たしている →かばうフラグをON → 「かばう」発動！
+                            }
+                        }
+                        else if (OniLevel == 4)
+                        {
+                            if (1 <= accuracy && accuracy <= 5)   // ★7だと100％かばう成功
+                            {
+                                KabauFlg = true;  // かばう条件を満たしている →かばうフラグをON → 「かばう」発動！
+                            }
                         }
                     }
 
@@ -1571,13 +1564,13 @@ public class SiteManager : MonoBehaviour
         {
             Maybe_Momotaro[NowActiveSiteN] = Maybe_Momotaro[NowActiveSiteN] + 25;
             Maybe_MomoMate[NowActiveSiteN] = Maybe_MomoMate[NowActiveSiteN] + 25;
-            Maybe_Oyabun[NowActiveSiteN] = 2;
-            Maybe_Kooni[NowActiveSiteN] = 2;
+            Maybe_Oyabun[NowActiveSiteN] = -2;
+            Maybe_Kooni[NowActiveSiteN] = -2;
         }
         else if ((rollF[TargetSiteNum] >= 1) && (rollF[TargetSiteNum] <= 4))  // 狙った相手が 桃チームチーム である → 今のアクティブプレーヤーは  おにチーム である可能性が高い
         {
-            Maybe_Momotaro[NowActiveSiteN] = 2;
-            Maybe_MomoMate[NowActiveSiteN] = 2;
+            Maybe_Momotaro[NowActiveSiteN] = -2;
+            Maybe_MomoMate[NowActiveSiteN] = -2;
             Maybe_Oyabun[NowActiveSiteN] = Maybe_Oyabun[NowActiveSiteN] + 25;
             Maybe_Kooni[NowActiveSiteN] = Maybe_Kooni[NowActiveSiteN] + 25;
         }
@@ -1939,11 +1932,9 @@ public class SiteManager : MonoBehaviour
 
     public void OpenKurunCounter()  // 攻撃してきたキャラをクルンと回して表示する
     {
-        //       CardReverseCounterScr.ImageReset();
         NextTurnWait = 1.0f;  // 次のターンに行くまでの待機時間
         var sequence = DOTween.Sequence();
         sequence.InsertCallback(0.4f, () => OpenKurunCounter2());
-        //        sequence.InsertCallback(3.0f, () => CardReverseCounterScr.ImageReset());
     }
 
     public void OpenKurunCounter2()
@@ -1958,7 +1949,7 @@ public class SiteManager : MonoBehaviour
     {
         TargetSiteNum = NowActiveSiteN;     // 今攻撃してきたキャラを TargetSiteNum に上書きする
                                             //        YosouYes2();
-        PenaltyOpenYakuCard();    // 今攻撃してきたキャラの画像オープン
+        PenaltyOpenYakuCard();    // 今攻撃してきたキャラの画像オープン → ステータス4 に修正
         DecreaseHP();
     }
 
@@ -3066,14 +3057,17 @@ public class SiteManager : MonoBehaviour
         if (MessageLevel == 1)  // おそい
         {
             MessageOkuriTime = 1.5f;
+            SelectMesSpeed01();
         }
         else if (MessageLevel == 2)  // ふつう
         {
             MessageOkuriTime = 1.0f;
+            SelectMesSpeed02();
         }
         else if (MessageLevel == 3)  // はやい
         {
             MessageOkuriTime = 0.5f;
+            SelectMesSpeed03();
         }
     }
 
@@ -3132,7 +3126,7 @@ public class SiteManager : MonoBehaviour
 
     public void CheckNowActiveSite_isCPU()  // 今アクティブなサイトがCPUか確認（順番毎に）
     {
-        Debug.Log("★今アクティブなサイトがCPUか確認時の NowActiveSiteN：" + NowActiveSiteN);
+        Debug.Log("〇 今アクティブなサイトがCPUか確認時の NowActiveSiteN：" + NowActiveSiteN);
         if (NowActiveSiteN == 1)
         {
             NowActiveSite_isCPU = false;  // 今アクティブなサイトは CPU ではない（＝「人」である）【SiteAの場合、必然】
@@ -3177,7 +3171,7 @@ public class SiteManager : MonoBehaviour
     }
 
 
-    public void CheckWakeUpCPU()  // 今アクティブなサイトがCPUなら、CPU操作開始  ★修正
+    public void CheckWakeUpCPU()  // 今アクティブなサイトがCPUなら、CPU操作開始 
     {
         Debug.Log("◎今アクティブなサイトがCPU時の NowActiveSiteN：" + NowActiveSiteN);
         if (NowActiveSite_isCPU)
@@ -3770,7 +3764,7 @@ public class SiteManager : MonoBehaviour
                         }
                     }
 
-                    // 桃太郎が 木札無しなら → 条件を満たせば 役割当て (その役割だと確定し、迷いなく処理する)
+                    // 桃太郎が 木札無しなら → 条件を満たせば 役割当て (その役割だと確定し、迷いなく処理する)  ＆ メイビーパラメータ等も考慮
                     if (PushedBtnFlg == 0)  // 処理を実施したかどうか
                     {
                         Debug.Log("【CPU】kooni-5");
@@ -3808,10 +3802,10 @@ public class SiteManager : MonoBehaviour
                         Debug.Log("【CPU】kooni-7");
                         int RndAct = UnityEngine.Random.Range(1, 11);  // こうげきするか、その他の行動をとるか、ランダムで決定
                         Debug.Log("RndAct ： " + RndAct);
-                        if (RndAct <= 11) // 攻撃はしないで他の行動でいこう  ★
+                        if (RndAct <= 7) // 攻撃はしないで他の行動でいこう  ★
                         {
                             Debug.Log("【CPU】kooni-7-0");
-                            if (RndAct <= 11) // しつもん しよう
+                            if (RndAct <= 4) // しつもん しよう
                             {
                                 // *桃チームに 対して しつもん (少なくとも一人は札無しがいる) 
                                 if (PushedBtnFlg == 0)  // 処理を実施したかどうか
@@ -3841,7 +3835,7 @@ public class SiteManager : MonoBehaviour
                                 SearchMomoOniCommon(2);  // ステータスが2（木札ON）＆ 役割が いぬ・さる・きじ・こおにたち  のキャラがいるか探す 「RollFNum：現在エイムされているサイトの役わり」が上書きされる
                                 if (PushedBtnFlg == 1)  // ステータスが2（木札ON）の いぬ、さる、きじ、こおにたち が 少なくとも一人以上いれば
                                 {
-                                    Debug.Log("おやぶん・ももたろう以外で木札ONのキャラから ランダムで一人選ぶ(役割当て)");
+                                    Debug.Log("チャレンジアクション：おやぶん・ももたろう以外で木札ONのキャラから ランダムで一人選ぶ(役割当て)");
                                     // RollFNum に いぬ、さる、きじ、こおにたち のいずれかが入っている
                                     var sequence2 = DOTween.Sequence();
                                     ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン
@@ -3996,7 +3990,7 @@ public class SiteManager : MonoBehaviour
                     }
                 }
 
-                // 桃太郎が 木札無しなら → 条件を満たせば 役割当て (その役割だと確定し、迷いなく処理する)
+                // 桃太郎が 木札無しなら → 条件を満たせば 役割当て (その役割だと確定し、迷いなく処理する)  ＆ メイビーパラメータ等も考慮
                 if (PushedBtnFlg == 0)  // 処理を実施したかどうか
                 {
                     Debug.Log("【CPU】kooni-20");
@@ -4398,93 +4392,81 @@ public class SiteManager : MonoBehaviour
         }
     }
 
-    public void MomotaroYakuwariAte_WithConviction()  // * 桃太郎 を 役割当て
+    public void MomotaroYakuwariAte_WithConviction()  // * 桃太郎 を 役割当て： その役割だと確定し、迷いなく処理する ＆ メイビーパラメータ等も考慮
     {
-        CheckKurunProgressTotal();  // 役割カードがオープンになったキャラが どれだけいるか の進捗状況 確認
-        SearchMomotaroCommon(1);  // ステータスが1（札無し） ＆ 役割が ももたろう のキャラがいるか探す （3ターン目で、行動済みのキャラに対してはエイムしない）
-        if (PushedBtnFlg == 1)  // ステータスが1（札無し）の ももたろう が見つかったら
+        CheckKifudaProgressTotal();  // 木札ONの進捗状況 確認
+        CheckNowMomotaroStatus();  // ももたろうのステータス確認
+        if (NowMomotaroStatus == 1)  // ももたろう の ステータスが1（札無し）だったら
         {
-            Debug.Log("ステータスが1（札無し）の ももたろう が残っている");
-            if (KurunProgressTotal == 7) // 他のキャラが全部オープン済みで 一つだけデフォルト（札無し）で残っている ◆場の全体を見て その役割 だと判明した場合
+            Debug.Log("【CPU】MomotaroYakuwariAte-1");
+            if (KifudaProgressTotal == 7) // 他のキャラが全部 木札ONで 一つだけデフォルト（札無し）で残っている ◆場の全体を見て その役割 だと判明した場合
             {
-                Debug.Log("他のキャラが全部カードオープンで 、その役割カード だけ 札無しで残っている");
-                PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン
-            }
-            else if (KurunProgressTotal == 6) // 自分が こおに で、木札無しが 2人いる（他のキャラは全部オープン済み） ◆場の全体を見て その役割 だと判明した場合
-            {
-                if (NowActiveSiteStatus == 1)  // こおに（自分）が木札無し
+                Debug.Log("【CPU】MomotaroYakuwariAte-2");
+                SearchMomotaroCommon(1);  // 札無しももたろう（ももじ）のサイト位置をサーチ → 見つかったら、RollFNum を そのサイトの番号に上書き （3ターン目で、行動済みのキャラに対してはエイムしない）
+                if (PushedBtnFlg == 1)  // ももじ が見つかったら
                 {
-                    int FindMomotaroFlg = 0; // 条件に合う ももたろう がいるかどうか
-                    if (rollF[1] == 1) // 役割が ももたろう である
+                    Debug.Log("他のキャラが全部 木札ONで 、その役割カード（ももたろう）だけ 札無しで残っている");
+                    PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン： その役割だと確定し、迷いなく処理する
+                }
+            }
+            else if (KifudaProgressTotal == 6) // 自分が こおに で、木札無しが 2人いる（他のキャラは全部木札ON済み） ◆場の全体を見て その役割 だと判明した場合
+            {
+                Debug.Log("【CPU】MomotaroYakuwariAte-3");
+                if (NowActiveSiteStatus == 1)  // こおに（自分）が 木札無し
+                {
+                    Debug.Log("【CPU】MomotaroYakuwariAte-4");
+                    SearchMomotaroCommon(1);  // 札無しももたろう（ももじ）のサイト位置をサーチ → 見つかったら、RollFNum を そのサイトの番号に上書き （3ターン目で、行動済みのキャラに対してはエイムしない）
+                    if (PushedBtnFlg == 1)  // ももじ が見つかったら
                     {
-                        if (StatusSiteA == 1)  //  状態（ステータス）が木札無し（デフォルト）
+                        Debug.Log("札無し が自分(こおに)と ももたろうう である（他のキャラは全部 木札ON）");
+                        PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン： その役割だと確定し、迷いなく処理する
+                    }
+                }
+                else  // こおに（自分）が 木札ON （ステータス2）以上
+                {
+                    Debug.Log("【CPU】MomotaroYakuwariAte-5");    // *うっかりフラグが1のものが 存在する
+                    if ((UkkariSite[1] == 1) || (UkkariSite[2] == 1) || (UkkariSite[3] == 1) || (UkkariSite[4] == 1) || (UkkariSite[5] == 1) || (UkkariSite[6] == 1) || (UkkariSite[7] == 1) || (UkkariSite[8] == 1))
+                    {
+                        SearchMomotaroCommon(1);  // 札無しももたろう（ももじ）のサイト位置をサーチ → 見つかったら、RollFNum を そのサイトの番号に上書き （3ターン目で、行動済みのキャラに対してはエイムしない）
+                        if (PushedBtnFlg == 1)  // ももじ が見つかったら
                         {
-                            FindMomotaroFlg = 1;
+                            Debug.Log("自分(こおに)は木札ON以上で 札無しが ももたろうう と もう一人である（他のキャラは全部 木札ON）");
+                            PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン： その役割だと確定し、迷いなく処理する
                         }
                     }
-                    if (rollF[2] == 1) // 役割が ももたろう である
+                    else if (Maybe_MomoMate[1] > 25 || Maybe_MomoMate[2] > 25 || Maybe_MomoMate[3] > 25 || Maybe_MomoMate[4] > 25 || Maybe_MomoMate[5] > 25 || Maybe_MomoMate[6] > 25 || Maybe_MomoMate[7] > 25 || Maybe_MomoMate[8] > 25)
                     {
-                        if (StatusSiteB == 1)  //  状態（ステータス）が木札無し（デフォルト）
+                        SearchMomotaroCommon(1);  // 札無しももたろう（ももじ）のサイト位置をサーチ → 見つかったら、RollFNum を そのサイトの番号に上書き （3ターン目で、行動済みのキャラに対してはエイムしない）
+                        if (PushedBtnFlg == 1)  // ももじ が見つかったら
                         {
-                            FindMomotaroFlg = 1;
+                            Debug.Log("自分(こおに)は木札ON以上で 札無しが ももたろうう と もう一人である（他のキャラは全部 木札ON）");
+                            PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン : メイビーパラメータを元に予想して当てにいく
                         }
                     }
-                    if (rollF[3] == 1) // 役割が ももたろう である
+                    else if (Maybe_Kooni[1] > 25 || Maybe_Kooni[2] > 25 || Maybe_Kooni[3] > 25 || Maybe_Kooni[4] > 25 || Maybe_Kooni[5] > 25 || Maybe_Kooni[6] > 25 || Maybe_Kooni[7] > 25 || Maybe_Kooni[8] > 25)
                     {
-                        if (StatusSiteC == 1)  //  状態（ステータス）が木札無し（デフォルト）
+                        SearchMomotaroCommon(1);  // 札無しももたろう（ももじ）のサイト位置をサーチ → 見つかったら、RollFNum を そのサイトの番号に上書き （3ターン目で、行動済みのキャラに対してはエイムしない）
+                        if (PushedBtnFlg == 1)  // ももじ が見つかったら
                         {
-                            FindMomotaroFlg = 1;
+                            Debug.Log("自分(こおに)は木札ON以上で 札無しが ももたろうう と もう一人である（他のキャラは全部 木札ON）");
+                            PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン : メイビーパラメータを元に予想して当てにいく
                         }
                     }
-                    if (rollF[4] == 1) // 役割が ももたろう である
+                    else if (Maybe_Oyabun[1] > 25 || Maybe_Oyabun[2] > 25 || Maybe_Oyabun[3] > 25 || Maybe_Oyabun[4] > 25 || Maybe_Oyabun[5] > 25 || Maybe_Oyabun[6] > 25 || Maybe_Oyabun[7] > 25 || Maybe_Oyabun[8] > 25)
                     {
-                        if (StatusSiteD == 1)  //  状態（ステータス）が木札無し（デフォルト）
+                        SearchMomotaroCommon(1);  // 札無しももたろう（ももじ）のサイト位置をサーチ → 見つかったら、RollFNum を そのサイトの番号に上書き （3ターン目で、行動済みのキャラに対してはエイムしない）
+                        if (PushedBtnFlg == 1)  // ももじ が見つかったら
                         {
-                            FindMomotaroFlg = 1;
+                            Debug.Log("自分(こおに)は木札ON以上で 札無しが ももたろうう と もう一人である（他のキャラは全部 木札ON）");
+                            PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン : メイビーパラメータを元に予想して当てにいく
                         }
-                    }
-                    if (rollF[5] == 1) // 役割が ももたろう である
-                    {
-                        if (StatusSiteE == 1)  //  状態（ステータス）が木札無し（デフォルト）
-                        {
-                            FindMomotaroFlg = 1;
-                        }
-                    }
-                    if (rollF[6] == 1) // 役割が ももたろう である
-                    {
-                        if (StatusSiteF == 1)  //  状態（ステータス）が木札無し（デフォルト）
-                        {
-                            FindMomotaroFlg = 1;
-                        }
-                    }
-                    if (rollF[7] == 1) // 役割が ももたろう である
-                    {
-                        if (StatusSiteG == 1)  //  状態（ステータス）が木札無し（デフォルト）
-                        {
-                            FindMomotaroFlg = 1;
-                        }
-                    }
-                    if (rollF[8] == 1) // 役割が ももたろう である
-                    {
-                        if (StatusSiteH == 1)  //  状態（ステータス）が木札無し（デフォルト）
-                        {
-                            FindMomotaroFlg = 1;
-                        }
-                    }
-
-                    if (FindMomotaroFlg == 1)  // 条件に合う桃メイトがいたら
-                    {
-                        Debug.Log("自分が こおに で、木札無しが自分と もう1人（ももたろう）いる（他のキャラは全部オープン済み）");
-                        PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン
                     }
                 }
             }
-            else
-            {
-                PushedBtnFlg = 0;  // 条件を満たしていなければ、フラグをリセット（次に進む）
-            }
         }
     }
+
+
 
     public void MaybeOyabun_Ate()  // おやぶん と思われるキャラを1人選ぶ(役割当て) （前提：おやぶん 木札無し：ステータス1）（メイビーパラメータが初期値ならば このフェーズはスルー）
     {
@@ -6304,71 +6286,76 @@ public class SiteManager : MonoBehaviour
 
     public void KifudaOnMomojiAte()  // 桃太郎が 木札ON(ももじ)なら → 役割当て （3ターン目で、行動済みのキャラに対してはエイムしない）
     {
-        TargetSiteOrderNum = 0;  // オーダーナンバーを初期化（0のままでは意味をなさない）
-        if (rollF[1] == 1) // ももたろう
+        CheckNowMomotaroStatus();  // ももたろうのステータス確認
+        if (NowMomotaroStatus == 2)  // 桃太郎が 木札ON(ももじ) (ステータス2) である
         {
-            if (StatusSiteA == 2)  // ももたろう が 木札ON
+            Debug.Log("桃太郎が 木札ON(ももじ) (ステータス2) である");
+            TargetSiteOrderNum = 0;  // オーダーナンバーを初期化（0のままでは意味をなさない）
+            if (rollF[1] == 1) // ももたろう
             {
-                TargetSiteOrderNum = TurnChip_A;  // 今狙われているエイムサイトは SiteA
+                if (StatusSiteA == 2)  // ももたろう が 木札ON
+                {
+                    TargetSiteOrderNum = TurnChip_A;  // 今狙われているエイムサイトは SiteA
+                }
             }
-        }
-        else if (rollF[2] == 1) // ももたろう
-        {
-            if (StatusSiteB == 2)
+            else if (rollF[2] == 1) // ももたろう
             {
-                TargetSiteOrderNum = TurnChip_B;  // 今狙われているエイムサイトは SiteB
+                if (StatusSiteB == 2)
+                {
+                    TargetSiteOrderNum = TurnChip_B;  // 今狙われているエイムサイトは SiteB
+                }
             }
-        }
-        else if (rollF[3] == 1) // ももたろう
-        {
-            if (StatusSiteC == 2)
+            else if (rollF[3] == 1) // ももたろう
             {
-                TargetSiteOrderNum = TurnChip_C;  // 今狙われているエイムサイトは SiteC
+                if (StatusSiteC == 2)
+                {
+                    TargetSiteOrderNum = TurnChip_C;  // 今狙われているエイムサイトは SiteC
+                }
             }
-        }
-        else if (rollF[4] == 1) // ももたろう
-        {
-            if (StatusSiteD == 2)
+            else if (rollF[4] == 1) // ももたろう
             {
-                TargetSiteOrderNum = TurnChip_D;  // 今狙われているエイムサイトは SiteD
+                if (StatusSiteD == 2)
+                {
+                    TargetSiteOrderNum = TurnChip_D;  // 今狙われているエイムサイトは SiteD
+                }
             }
-        }
-        else if (rollF[5] == 1) // ももたろう
-        {
-            if (StatusSiteE == 2)
+            else if (rollF[5] == 1) // ももたろう
             {
-                TargetSiteOrderNum = TurnChip_E;  // 今狙われているエイムサイトは SiteE
+                if (StatusSiteE == 2)
+                {
+                    TargetSiteOrderNum = TurnChip_E;  // 今狙われているエイムサイトは SiteE
+                }
             }
-        }
-        else if (rollF[6] == 1) // ももたろう
-        {
-            if (StatusSiteF == 2)
+            else if (rollF[6] == 1) // ももたろう
             {
-                TargetSiteOrderNum = TurnChip_F;  // 今狙われているエイムサイトは SiteF
+                if (StatusSiteF == 2)
+                {
+                    TargetSiteOrderNum = TurnChip_F;  // 今狙われているエイムサイトは SiteF
+                }
             }
-        }
-        else if (rollF[7] == 1) // ももたろう
-        {
-            if (StatusSiteG == 2)
+            else if (rollF[7] == 1) // ももたろう
             {
-                TargetSiteOrderNum = TurnChip_G;  // 今狙われているエイムサイトは SiteG
+                if (StatusSiteG == 2)
+                {
+                    TargetSiteOrderNum = TurnChip_G;  // 今狙われているエイムサイトは SiteG
+                }
             }
-        }
-        else if (rollF[8] == 1) // ももたろう
-        {
-            if (StatusSiteH == 2)
+            else if (rollF[8] == 1) // ももたろう
             {
-                TargetSiteOrderNum = TurnChip_H;  // 今狙われているエイムサイトは SiteH
+                if (StatusSiteH == 2)
+                {
+                    TargetSiteOrderNum = TurnChip_H;  // 今狙われているエイムサイトは SiteH
+                }
             }
-        }
 
-        if (TargetSiteOrderNum != 0)    // オーダーナンバーが初期値（ゼロ）から変化している（エイムする一段階目の条件を満たしている）
-        {
-            HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
-            if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+            if (TargetSiteOrderNum != 0)    // オーダーナンバーが初期値（ゼロ）から変化している（エイムする一段階目の条件を満たしている）
             {
-                PushedBtnFlg = 1;  // 処理を実施したかどうか
-                PushYakuwariBtn_Common(1);  // M-2：この場合は「役割あて」ボタン
+                HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
+                if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                {
+                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    PushYakuwariBtn_Common(1);  // M-2：この場合は「役割あて」ボタン
+                }
             }
         }
     }

@@ -709,8 +709,8 @@ public class SiteManager : MonoBehaviour
     #region  Site_Aimed
     public void SiteAimedHantei(int x, int y)
     {
-        Debug.Log("int x: " + x);
-        Debug.Log("int y: " + y);
+        Debug.Log("エイムされているサイトナンバー int x: " + x);
+        Debug.Log("エイムされているサイトのステータス int y: " + y);
         if (NowActiveSiteN != x) // もし自分以外の相手をちゃんと選んでいたら
         {
             if (MenuButtonMode == 1) // 質問の時
@@ -3283,7 +3283,7 @@ public class SiteManager : MonoBehaviour
                 {
                     Debug.Log("【CPU】Momo-1");
                     MaybeOyabun_Ate();  // おやぶん と思われるキャラを1人選ぶ(役割当て) （前提：おやぶん 木札無し：ステータス1）
-                    if (PushedBtnFlg == 1)  // 条件に合う おやぶん と思われるキャラ が見つかったら
+                    if (PushedBtnFlg == 1)  // 条件に合う おやぶん と思われるキャラ が見つかったら  (前提：エイムサイトが自分ではない)
                     {
                         Debug.Log("*メイビーパラメータを元に、おやぶん と思われるキャラ（木札無し：ステータス1）を1人選ぶ(役割当て)");
                     }
@@ -3297,7 +3297,7 @@ public class SiteManager : MonoBehaviour
                     {
                         Debug.Log("(試合終盤のみ)【CPU】Momo-1.5");
                         AtezuppoOyabun_Ate();  // おやぶん と思われるキャラを 当てずっぽうで 1人選ぶ(役割当て) （前提：おやぶん 木札無し：ステータス1）もう何もヒント無し
-                        if (PushedBtnFlg == 1)  // 条件に合う おやぶん と思われるキャラ が見つかったら（ここまで来たら、必然的にフラグ=1になる）
+                        if (PushedBtnFlg == 1)  // 条件に合う おやぶん と思われるキャラ が見つかったら（ここまで来たら、必然的にフラグ=1になる） (前提：エイムサイトが自分ではない)
                         {
                             Debug.Log("*おやぶん と思われるキャラを 当てずっぽうで 1人選ぶ(役割当て) ");
                         }
@@ -3309,7 +3309,7 @@ public class SiteManager : MonoBehaviour
                 {
                     Debug.Log("【CPU】Momo-2");
                     MaybeKooni_Ate();  // こおにのうち、少なくとも1人オープン前（ステータス2以下）のキャラが存在するならば
-                    if (PushedBtnFlg == 1)  // 条件に合う こおに と思われるキャラ が見つかったら
+                    if (PushedBtnFlg == 1)  // 条件に合う こおに と思われるキャラ が見つかったら  (前提：エイムサイトが自分ではない)
                     {
                         Debug.Log("*メイビーパラメータを元に、こおに と思われるキャラを1人選ぶ(役割当て)");
                     }
@@ -3350,7 +3350,7 @@ public class SiteManager : MonoBehaviour
             {
                 Debug.Log("【CPU】Oya-2");
                 SearchMomoMateCommon(4);  // ステータスが4（役割カードオープン） ＆ 役割が いぬ・さる・きじ のキャラがいるか探す （3ターン目で、行動済みのキャラに対してエイムしない）
-                if (PushedBtnFlg == 1)  // オープンしている いぬ、さる、きじ が見つかったら
+                if (PushedBtnFlg == 1)  // オープンしている いぬ、さる、きじ が見つかったら (前提：エイムサイトが自分ではない)
                 {
                     AttackToMomoMate();  // ももたろうの仲間 に攻撃(CPU)
                     Debug.Log("桃メイトが 役割オープンなら → 攻撃");
@@ -3373,7 +3373,7 @@ public class SiteManager : MonoBehaviour
             {
                 Debug.Log("【CPU】Oya-4");
                 UkkariAte(); // うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）
-                if (PushedBtnFlg == 1)
+                if (PushedBtnFlg == 1)  // (前提：エイムサイトが自分ではない)
                 {
                     Debug.Log("うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）");
                 }
@@ -3384,7 +3384,7 @@ public class SiteManager : MonoBehaviour
             {
                 Debug.Log("【CPU】Oya-5");
                 KifudaOnMomojiAte();  // 桃太郎が 木札ON（ステータス2）なら 役割当て or 条件を満たさなければスルー
-                if (PushedBtnFlg == 1)
+                if (PushedBtnFlg == 1)  // (前提：エイムサイトが自分ではない)
                 {
                     Debug.Log("ももたろうが 木札ONなら → 役割当て");
                 }
@@ -3398,7 +3398,7 @@ public class SiteManager : MonoBehaviour
                 CheckKurunProgressTotal();  // 役割カードがオープンになったキャラが どれだけいるか の進捗状況 確認
                 SearchMomoMateCommon(1);  // ステータスが1（札無し） ＆ 役割が いぬ・さる・きじ のキャラがいるか探す （3ターン目で、行動済みのキャラに対してエイムしない）
                 SearchMomoMateCommon(2);  // ステータスが2（木札ON） ＆ 役割が いぬ・さる・きじ のキャラがいるか探す。 「RollFNum：現在エイムされているサイトの役わり」が上書きされる
-                if (PushedBtnFlg == 1)    // ステータスが2以下の いぬ、さる、きじ が見つかったら
+                if (PushedBtnFlg == 1)    // ステータスが2以下の いぬ、さる、きじ が見つかったら (前提：エイムサイトが自分ではない)
                 {
                     PushedBtnFlg = 0;  // 処理を実施したかどうか ：一旦フラグを初期化（リセット）
                     if (KurunProgressTotal == 7) // 他のキャラが全部オープン済みで 一つだけステータスが2以下 で残っている ◆場の全体を見て その役割 だと判明した場合
@@ -3615,7 +3615,7 @@ public class SiteManager : MonoBehaviour
                     {
                         Debug.Log("【CPU】Oya-7-2");
                         SearchMomotaroCommon(1);  // ももたろう の ステータスが1（札無し）であるか確認 → 条件に合えば、RollFNum を そのサイトの番号に上書き （3ターン目で、行動済みのキャラに対してはエイムしない）
-                        if (PushedBtnFlg == 1)  // 条件に合う サイト と思われるキャラ が見つかったら
+                        if (PushedBtnFlg == 1)  // 条件に合う サイト と思われるキャラ が見つかったら  (前提：エイムサイトが自分ではない)
                         {
                             PushedBtnFlg = 1;  // 処理を実施したかどうか → 実施済み
                             Debug.Log("他のキャラが全部 木札ONで 、その役割カード（ももたろう）だけ 札無しで残っている");
@@ -3629,7 +3629,7 @@ public class SiteManager : MonoBehaviour
                         {
                             Debug.Log("【CPU】Oya-7-4");
                             SearchMomotaroCommon(1);  // ももたろう の ステータスが1（札無し）であるか確認 → 条件に合えば、RollFNum を そのサイトの番号に上書き （3ターン目で、行動済みのキャラに対してはエイムしない）
-                            if (PushedBtnFlg == 1)  // 条件に合う サイト と思われるキャラ が見つかったら
+                            if (PushedBtnFlg == 1)  // 条件に合う サイト と思われるキャラ が見つかったら  (前提：エイムサイトが自分ではない)
                             {
                                 PushedBtnFlg = 1;  // 処理を実施したかどうか → 実施済み
                                 Debug.Log("自分がおやぶんで、札無し が自分(おやぶん)と ももたろうう である（他のキャラは全部 木札ON）");
@@ -3645,7 +3645,7 @@ public class SiteManager : MonoBehaviour
             {
                 Debug.Log("【CPU】Oya-8");
                 MaybeMomoMate_Ate();  // 桃メイトのうち、少なくとも1人オープン前（ステータス2以下）のキャラが存在するならば
-                if (PushedBtnFlg == 1)  // 条件に合う 桃メイト と思われるキャラ が見つかったら
+                if (PushedBtnFlg == 1)  // 条件に合う 桃メイト と思われるキャラ が見つかったら  (前提：エイムサイトが自分ではない)
                 {
                     Debug.Log("*メイビーパラメータを元に、桃メイト と思われるキャラを1人選ぶ(役割当て)");
                 }
@@ -3656,7 +3656,7 @@ public class SiteManager : MonoBehaviour
             {
                 Debug.Log("【CPU】Oya-9");
                 MaybeMomotaro_Ate();  // 桃太郎のうち、少なくとも1人オープン前（ステータス2以下）のキャラが存在するならば
-                if (PushedBtnFlg == 1)  // 条件に合う 桃太郎 と思われるキャラ が見つかったら
+                if (PushedBtnFlg == 1)  // 条件に合う 桃太郎 と思われるキャラ が見つかったら  (前提：エイムサイトが自分ではない)
                 {
                     Debug.Log("*メイビーパラメータを元に、桃太郎 と思われるキャラを1人選ぶ(役割当て)");
                 }
@@ -3686,7 +3686,7 @@ public class SiteManager : MonoBehaviour
             {
                 Debug.Log("【CPU】Oya-11");
                 SearchMomoOniCommon(2);  // ステータスが2（木札ON）＆ 役割が いぬ・さる・きじ・こおにたち  のキャラがいるか探す 「RollFNum：現在エイムされているサイトの役わり」が上書きされる
-                if (PushedBtnFlg == 1)  // ステータスが2（木札ON）の いぬ、さる、きじ、こおにたち が 少なくとも一人以上いれば
+                if (PushedBtnFlg == 1)  // ステータスが2（木札ON）の いぬ、さる、きじ、こおにたち が 少なくとも一人以上いれば  (前提：エイムサイトが自分ではない)
                 {
                     Debug.Log("おやぶん・ももたろう以外で木札ONのキャラから ランダムで一人選ぶ(役割当て)");
                     // RollFNum に いぬ、さる、きじ、こおにたち のいずれかが入っている
@@ -3721,7 +3721,7 @@ public class SiteManager : MonoBehaviour
                 Debug.Log("【CPU】kooni：桃チームがすべてオープン済みかチェックする");
                 SearchMomoMateCommon(1);  // ステータスが1（札無し） ＆ 役割が いぬ・さる・きじ のキャラがいるか探す （3ターン目で、行動済みのキャラに対してエイムしない）
                 SearchMomoMateCommon(2);  // ステータスが2（木札ON） ＆ 役割が いぬ・さる・きじ のキャラがいるか探す。 「RollFNum：現在エイムされているサイトの役わり」が上書きされる
-                if ((NowMomotaroStatus >=3) && (PushedBtnFlg == 0))    // ももたろう が オープン後 && ステータスが2以下の いぬ、さる、きじ がいない（＝ 桃メイト全員オープン後）
+                if ((NowMomotaroStatus >=3) && (PushedBtnFlg == 0))    // ももたろう が オープン後 && ステータスが2以下の いぬ、さる、きじ がいない（＝ 桃メイト全員オープン後）(前提：エイムサイトが自分ではない)
                 {
                     PushedBtnFlg = 0;  // 処理を実施したかどうか ：一旦フラグを初期化（リセット）
                     Debug.Log("【CPU】kooni：桃チームがすべてオープン済みである → ので、残る選択肢は攻撃のみ");
@@ -3736,7 +3736,7 @@ public class SiteManager : MonoBehaviour
                     {
                         Debug.Log("【CPU】kooni-2");
                         UkkariAte();  // うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）
-                        if (PushedBtnFlg == 1)
+                        if (PushedBtnFlg == 1)  // (前提：エイムサイトが自分ではない)
                         {
                             Debug.Log("うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）");
                         }
@@ -3747,7 +3747,7 @@ public class SiteManager : MonoBehaviour
                     {
                         Debug.Log("【CPU】kooni-3");
                         KifudaOnMomojiAte();  // 桃太郎が 木札ON（ステータス2）なら 役割当て or 条件を満たさなければスルー
-                        if (PushedBtnFlg == 1)
+                        if (PushedBtnFlg == 1)  // (前提：エイムサイトが自分ではない)
                         {
                             Debug.Log("ももたろうが 木札ONなら → 役割当て");
                         }
@@ -3757,7 +3757,7 @@ public class SiteManager : MonoBehaviour
                     if (PushedBtnFlg == 0)  // 処理を実施したかどうか
                     {
                         Debug.Log("【CPU】kooni-4");
-                        MomoMateYakuwariAte_WithConviction(); // *桃メイト を役割当て
+                        MomoMateYakuwariAte_WithConviction(); // *桃メイト を役割当て (前提：エイムサイトが自分ではない)
                         if (PushedBtnFlg == 1)
                         {
                             Debug.Log("ステータスが2以下である 桃メイト → 条件を満たせば 役割当て :その役割だと確定し、迷いなく処理する");
@@ -3768,7 +3768,7 @@ public class SiteManager : MonoBehaviour
                     if (PushedBtnFlg == 0)  // 処理を実施したかどうか
                     {
                         Debug.Log("【CPU】kooni-5");
-                        MomotaroYakuwariAte_WithConviction(); // * 桃太郎 を 役割当て
+                        MomotaroYakuwariAte_WithConviction(); // * 桃太郎 を 役割当て (前提：エイムサイトが自分ではない)
                         if (PushedBtnFlg == 1)
                         {
                             Debug.Log("桃太郎が 木札無し → 条件を満たせば 役割当て :その役割だと確定し、迷いなく処理する");
@@ -3780,7 +3780,7 @@ public class SiteManager : MonoBehaviour
                     {
                         Debug.Log("【CPU】kooni-6");
                         MaybeMomoMate_Ate();  // 桃メイトのうち、少なくとも1人オープン前（ステータス2以下）のキャラが存在するならば
-                        if (PushedBtnFlg == 1)  // 条件に合う 桃メイト と思われるキャラ が見つかったら
+                        if (PushedBtnFlg == 1)  // 条件に合う 桃メイト と思われるキャラ が見つかったら  (前提：エイムサイトが自分ではない)
                         {
                             Debug.Log("*メイビーパラメータを元に、桃メイト と思われるキャラを1人選ぶ(役割当て)");
                         }
@@ -3791,7 +3791,7 @@ public class SiteManager : MonoBehaviour
                     {
                         Debug.Log("【CPU】kooni-6.5");
                         MaybeMomotaro_Ate();  // 桃太郎のうち、少なくとも1人オープン前（ステータス2以下）のキャラが存在するならば
-                        if (PushedBtnFlg == 1)  // 条件に合う 桃太郎 と思われるキャラ が見つかったら
+                        if (PushedBtnFlg == 1)  // 条件に合う 桃太郎 と思われるキャラ が見つかったら  (前提：エイムサイトが自分ではない)
                         {
                             Debug.Log("*メイビーパラメータを元に、桃太郎 と思われるキャラを1人選ぶ(役割当て)");
                         }
@@ -3833,7 +3833,7 @@ public class SiteManager : MonoBehaviour
                             {
                                 Debug.Log("【CPU】kooni-7-4");
                                 SearchMomoOniCommon(2);  // ステータスが2（木札ON）＆ 役割が いぬ・さる・きじ・こおにたち  のキャラがいるか探す 「RollFNum：現在エイムされているサイトの役わり」が上書きされる
-                                if (PushedBtnFlg == 1)  // ステータスが2（木札ON）の いぬ、さる、きじ、こおにたち が 少なくとも一人以上いれば
+                                if (PushedBtnFlg == 1)  // ステータスが2（木札ON）の いぬ、さる、きじ、こおにたち が 少なくとも一人以上いれば  (前提：エイムサイトが自分ではない)
                                 {
                                     Debug.Log("チャレンジアクション：おやぶん・ももたろう以外で木札ONのキャラから ランダムで一人選ぶ(役割当て)");
                                     // RollFNum に いぬ、さる、きじ、こおにたち のいずれかが入っている
@@ -3866,14 +3866,14 @@ public class SiteManager : MonoBehaviour
                 {
                     Debug.Log("【CPU】kooni-9");
                     SearchMomoMateCommon(4);  // ステータスが4（役割カードオープン） ＆ 役割が いぬ・さる・きじ のキャラがいるか探す （3ターン目で、行動済みのキャラに対してエイムしない）
-                    if (PushedBtnFlg == 1)  // オープンしている いぬ、さる、きじ が見つかったら
+                    if (PushedBtnFlg == 1)  // オープンしている いぬ、さる、きじ が見つかったら (前提：エイムサイトが自分ではない)
                     {
                         AttackToMomoMate();  // ももたろうの仲間 に攻撃(CPU)
                         Debug.Log("桃メイトが 役割オープンなら → 攻撃");
                     }
                 }
 
-                // 桃太郎が   役割オープン（HP2：ももじ）なら → 攻撃
+                // 桃太郎が 役割オープン（HP2：ももじ）なら → 攻撃
                 if (PushedBtnFlg == 0)  // 処理を実施したかどうか
                 {
                     Debug.Log("【CPU】kooni-10");
@@ -3907,7 +3907,7 @@ public class SiteManager : MonoBehaviour
                 {
                     Debug.Log("【CPU】kooni-12");
                     SearchMomoOniCommon(2);  // ステータスが2（木札ON）＆ 役割が いぬ・さる・きじ・こおにたち  のキャラがいるか探す 「RollFNum：現在エイムされているサイトの役わり」が上書きされる
-                    if (PushedBtnFlg == 1)  // ステータスが2（木札ON）の いぬ、さる、きじ、こおにたち が 少なくとも一人以上いれば
+                    if (PushedBtnFlg == 1)  // ステータスが2（木札ON）の いぬ、さる、きじ、こおにたち が 少なくとも一人以上いれば  (前提：エイムサイトが自分ではない)
                     {
                         Debug.Log("おやぶん・ももたろう以外で木札ONのキャラから ランダムで一人選ぶ(役割当て)");
                         // RollFNum に いぬ、さる、きじ、こおにたち のいずれかが入っている
@@ -3939,7 +3939,7 @@ public class SiteManager : MonoBehaviour
                 {
                     Debug.Log("【CPU】kooni-15");
                     SearchMomoMateCommon(4);  // ステータスが4（役割カードオープン） ＆ 役割が いぬ・さる・きじ のキャラがいるか探す （3ターン目で、行動済みのキャラに対してエイムしない）
-                    if (PushedBtnFlg == 1)  // オープンしている いぬ、さる、きじ が見つかったら
+                    if (PushedBtnFlg == 1)  // オープンしている いぬ、さる、きじ が見つかったら (前提：エイムサイトが自分ではない)
                     {
                         AttackToMomoMate();  // ももたろうの仲間 に攻撃(CPU)
                         Debug.Log("桃メイトが 役割オープンなら → 攻撃");
@@ -3961,7 +3961,7 @@ public class SiteManager : MonoBehaviour
                 if (PushedBtnFlg == 0)  // 処理を実施したかどうか
                 {
                     Debug.Log("【CPU】kooni-17");
-                    UkkariAte();  // うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）
+                    UkkariAte();  // うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て） (前提：エイムサイトが自分ではない)
                     if (PushedBtnFlg == 1)
                     {
                         Debug.Log("うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）");
@@ -3973,7 +3973,7 @@ public class SiteManager : MonoBehaviour
                 {
                     Debug.Log("【CPU】kooni-18");
                     KifudaOnMomojiAte();  // 桃太郎が 木札ON（ステータス2）なら 役割当て or 条件を満たさなければスルー
-                    if (PushedBtnFlg == 1)
+                    if (PushedBtnFlg == 1)  // (前提：エイムサイトが自分ではない)
                     {
                         Debug.Log("ももたろうが 木札ONなら → 役割当て");
                     }
@@ -3983,7 +3983,7 @@ public class SiteManager : MonoBehaviour
                 if (PushedBtnFlg == 0)  // 処理を実施したかどうか
                 {
                     Debug.Log("【CPU】kooni-19");
-                    MomoMateYakuwariAte_WithConviction(); // *桃メイト を役割当て
+                    MomoMateYakuwariAte_WithConviction(); // *桃メイト を役割当て (前提：エイムサイトが自分ではない)
                     if (PushedBtnFlg == 1)
                     {
                         Debug.Log("ステータスが2以下である 桃メイト → 条件を満たせば 役割当て :その役割だと確定し、迷いなく処理する");
@@ -3994,7 +3994,7 @@ public class SiteManager : MonoBehaviour
                 if (PushedBtnFlg == 0)  // 処理を実施したかどうか
                 {
                     Debug.Log("【CPU】kooni-20");
-                    MomotaroYakuwariAte_WithConviction(); // * 桃太郎 を 役割当て
+                    MomotaroYakuwariAte_WithConviction(); // * 桃太郎 を 役割当て (前提：エイムサイトが自分ではない)
                     if (PushedBtnFlg == 1)
                     {
                         Debug.Log("桃太郎が 木札無し → 条件を満たせば 役割当て :その役割だと確定し、迷いなく処理する");
@@ -4006,7 +4006,7 @@ public class SiteManager : MonoBehaviour
                 {
                     Debug.Log("【CPU】kooni-21");
                     MaybeMomoMate_Ate();  // 桃メイトのうち、少なくとも1人オープン前（ステータス2以下）のキャラが存在するならば
-                    if (PushedBtnFlg == 1)  // 条件に合う 桃メイト と思われるキャラ が見つかったら
+                    if (PushedBtnFlg == 1)  // 条件に合う 桃メイト と思われるキャラ が見つかったら  (前提：エイムサイトが自分ではない)
                     {
                         Debug.Log("*メイビーパラメータを元に、桃メイト と思われるキャラを1人選ぶ(役割当て)");
                     }
@@ -4035,7 +4035,7 @@ public class SiteManager : MonoBehaviour
                 {
                     Debug.Log("【CPU】kooni-23");
                     SearchMomoOniCommon(2);  // ステータスが2（木札ON）＆ 役割が いぬ・さる・きじ・こおにたち  のキャラがいるか探す 「RollFNum：現在エイムされているサイトの役わり」が上書きされる
-                    if (PushedBtnFlg == 1)  // ステータスが2（木札ON）の いぬ、さる、きじ、こおにたち が 少なくとも一人以上いれば
+                    if (PushedBtnFlg == 1)  // ステータスが2（木札ON）の いぬ、さる、きじ、こおにたち が 少なくとも一人以上いれば  (前提：エイムサイトが自分ではない)
                     {
                         Debug.Log("おやぶん・ももたろう以外で木札ONのキャラから ランダムで一人選ぶ(役割当て)");
                         // RollFNum に いぬ、さる、きじ、こおにたち のいずれかが入っている
@@ -4071,7 +4071,7 @@ public class SiteManager : MonoBehaviour
         CheckKurunProgressTotal();  // 役割カードがオープンになったキャラが どれだけいるか の進捗状況 確認
         SearchMomoMateCommon(1);  // ステータスが1（札無し） ＆ 役割が いぬ・さる・きじ のキャラがいるか探す （3ターン目で、行動済みのキャラに対してエイムしない）
         SearchMomoMateCommon(2);  // ステータスが2（木札ON） ＆ 役割が いぬ・さる・きじ のキャラがいるか探す。 「RollFNum：現在エイムされているサイトの役わり」が上書きされる
-        if (PushedBtnFlg == 1)    // ステータスが2以下の いぬ、さる、きじ が見つかったら
+        if (PushedBtnFlg == 1)    // ステータスが2以下の いぬ、さる、きじ が見つかったら (前提：エイムサイトが自分ではない)
         {
             PushedBtnFlg = 0;  // 処理を実施したかどうか ：一旦フラグを初期化（リセット）
             if (KurunProgressTotal == 7) // 他のキャラが全部オープン済みで 一つだけステータスが2以下 で残っている ◆場の全体を見て その役割 だと判明した場合
@@ -4403,7 +4403,7 @@ public class SiteManager : MonoBehaviour
             {
                 Debug.Log("【CPU】MomotaroYakuwariAte-2");
                 SearchMomotaroCommon(1);  // 札無しももたろう（ももじ）のサイト位置をサーチ → 見つかったら、RollFNum を そのサイトの番号に上書き （3ターン目で、行動済みのキャラに対してはエイムしない）
-                if (PushedBtnFlg == 1)  // ももじ が見つかったら
+                if (PushedBtnFlg == 1)  // ももじ が見つかったら  (前提：エイムサイトが自分ではない)
                 {
                     Debug.Log("他のキャラが全部 木札ONで 、その役割カード（ももたろう）だけ 札無しで残っている");
                     PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン： その役割だと確定し、迷いなく処理する
@@ -4416,7 +4416,7 @@ public class SiteManager : MonoBehaviour
                 {
                     Debug.Log("【CPU】MomotaroYakuwariAte-4");
                     SearchMomotaroCommon(1);  // 札無しももたろう（ももじ）のサイト位置をサーチ → 見つかったら、RollFNum を そのサイトの番号に上書き （3ターン目で、行動済みのキャラに対してはエイムしない）
-                    if (PushedBtnFlg == 1)  // ももじ が見つかったら
+                    if (PushedBtnFlg == 1)  // ももじ が見つかったら  (前提：エイムサイトが自分ではない)
                     {
                         Debug.Log("札無し が自分(こおに)と ももたろうう である（他のキャラは全部 木札ON）");
                         PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン： その役割だと確定し、迷いなく処理する
@@ -4428,7 +4428,7 @@ public class SiteManager : MonoBehaviour
                     if ((UkkariSite[1] == 1) || (UkkariSite[2] == 1) || (UkkariSite[3] == 1) || (UkkariSite[4] == 1) || (UkkariSite[5] == 1) || (UkkariSite[6] == 1) || (UkkariSite[7] == 1) || (UkkariSite[8] == 1))
                     {
                         SearchMomotaroCommon(1);  // 札無しももたろう（ももじ）のサイト位置をサーチ → 見つかったら、RollFNum を そのサイトの番号に上書き （3ターン目で、行動済みのキャラに対してはエイムしない）
-                        if (PushedBtnFlg == 1)  // ももじ が見つかったら
+                        if (PushedBtnFlg == 1)  // ももじ が見つかったら  (前提：エイムサイトが自分ではない)
                         {
                             Debug.Log("自分(こおに)は木札ON以上で 札無しが ももたろうう と もう一人である（他のキャラは全部 木札ON）");
                             PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン： その役割だと確定し、迷いなく処理する
@@ -4437,7 +4437,7 @@ public class SiteManager : MonoBehaviour
                     else if (Maybe_MomoMate[1] > 25 || Maybe_MomoMate[2] > 25 || Maybe_MomoMate[3] > 25 || Maybe_MomoMate[4] > 25 || Maybe_MomoMate[5] > 25 || Maybe_MomoMate[6] > 25 || Maybe_MomoMate[7] > 25 || Maybe_MomoMate[8] > 25)
                     {
                         SearchMomotaroCommon(1);  // 札無しももたろう（ももじ）のサイト位置をサーチ → 見つかったら、RollFNum を そのサイトの番号に上書き （3ターン目で、行動済みのキャラに対してはエイムしない）
-                        if (PushedBtnFlg == 1)  // ももじ が見つかったら
+                        if (PushedBtnFlg == 1)  // ももじ が見つかったら  (前提：エイムサイトが自分ではない)
                         {
                             Debug.Log("自分(こおに)は木札ON以上で 札無しが ももたろうう と もう一人である（他のキャラは全部 木札ON）");
                             PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン : メイビーパラメータを元に予想して当てにいく
@@ -4446,7 +4446,7 @@ public class SiteManager : MonoBehaviour
                     else if (Maybe_Kooni[1] > 25 || Maybe_Kooni[2] > 25 || Maybe_Kooni[3] > 25 || Maybe_Kooni[4] > 25 || Maybe_Kooni[5] > 25 || Maybe_Kooni[6] > 25 || Maybe_Kooni[7] > 25 || Maybe_Kooni[8] > 25)
                     {
                         SearchMomotaroCommon(1);  // 札無しももたろう（ももじ）のサイト位置をサーチ → 見つかったら、RollFNum を そのサイトの番号に上書き （3ターン目で、行動済みのキャラに対してはエイムしない）
-                        if (PushedBtnFlg == 1)  // ももじ が見つかったら
+                        if (PushedBtnFlg == 1)  // ももじ が見つかったら  (前提：エイムサイトが自分ではない)
                         {
                             Debug.Log("自分(こおに)は木札ON以上で 札無しが ももたろうう と もう一人である（他のキャラは全部 木札ON）");
                             PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン : メイビーパラメータを元に予想して当てにいく
@@ -4455,7 +4455,7 @@ public class SiteManager : MonoBehaviour
                     else if (Maybe_Oyabun[1] > 25 || Maybe_Oyabun[2] > 25 || Maybe_Oyabun[3] > 25 || Maybe_Oyabun[4] > 25 || Maybe_Oyabun[5] > 25 || Maybe_Oyabun[6] > 25 || Maybe_Oyabun[7] > 25 || Maybe_Oyabun[8] > 25)
                     {
                         SearchMomotaroCommon(1);  // 札無しももたろう（ももじ）のサイト位置をサーチ → 見つかったら、RollFNum を そのサイトの番号に上書き （3ターン目で、行動済みのキャラに対してはエイムしない）
-                        if (PushedBtnFlg == 1)  // ももじ が見つかったら
+                        if (PushedBtnFlg == 1)  // ももじ が見つかったら  (前提：エイムサイトが自分ではない)
                         {
                             Debug.Log("自分(こおに)は木札ON以上で 札無しが ももたろうう と もう一人である（他のキャラは全部 木札ON）");
                             PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン : メイビーパラメータを元に予想して当てにいく
@@ -4466,145 +4466,167 @@ public class SiteManager : MonoBehaviour
         }
     }
 
-
-
     public void MaybeOyabun_Ate()  // おやぶん と思われるキャラを1人選ぶ(役割当て) （前提：おやぶん 木札無し：ステータス1）（メイビーパラメータが初期値ならば このフェーズはスルー）
     {
         var sequence = DOTween.Sequence();
         Debug.Log("おやぶんの位置は確定していない：おやぶん 木札無し");
         if (PushedBtnFlg == 0)  // 処理を実施したかどうか
         {
-            if (Maybe_Oyabun[8] > 25)  // おやぶん である可能性値 が一定以上（初期値より上）
+            if (NowActiveSiteN != 8)  // 選択したのが自分自身でなければ
             {
-                if (StatusSiteH == 1)  // メイビーサイトのステータスが 1 である（木札無し）
+                if (Maybe_Oyabun[8] > 25)  // おやぶん である可能性値 が一定以上（初期値より上）
                 {
-                    PushedBtnFlg = 1;  // 処理を実施したかどうか
-                    ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
-                    CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                    sequence.InsertCallback(MessageOkuriTime*2f, () => SiteH_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                    sequence.InsertCallback(MessageOkuriTime*2f, () => CharaMSC.ShowSiteH_Aimed());    // 場から該当のサイトを エイムでセレクト
-                    sequence.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Unmask(5));  // 役割当て画面で おやぶん のアイコンを クリック
-                    sequence.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
-                    Maybe_Oyabun[8] = -1;  // メイビー当て処理を実施済み のしるし
+                    if (StatusSiteH == 1)  // メイビーサイトのステータスが 1 である（木札無し）
+                    {
+                        PushedBtnFlg = 1;  // 処理を実施したかどうか
+                        ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
+                        CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteH_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteH_Aimed());    // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(5));  // 役割当て画面で おやぶん のアイコンを クリック
+                        sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                        Maybe_Oyabun[8] = -1;  // メイビー当て処理を実施済み のしるし
+                    }
                 }
             }
         }
         if (PushedBtnFlg == 0)  // 処理を実施したかどうか
         {
-            if (Maybe_Oyabun[7] > 25)  // おやぶん である可能性値 が一定以上（初期値より上）
+            if (NowActiveSiteN != 7)  // 選択したのが自分自身でなければ
             {
-                if (StatusSiteG == 1)  // メイビーサイトのステータスが 1 である（木札無し）
+                if (Maybe_Oyabun[7] > 25)  // おやぶん である可能性値 が一定以上（初期値より上）
                 {
-                    PushedBtnFlg = 1;  // 処理を実施したかどうか
-                    ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
-                    CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                    sequence.InsertCallback(MessageOkuriTime*2f, () => SiteG_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                    sequence.InsertCallback(MessageOkuriTime*2f, () => CharaMSC.ShowSiteG_Aimed());    // 場から該当のサイトを エイムでセレクト
-                    sequence.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Unmask(5));  // 役割当て画面で おやぶん のアイコンを クリック
-                    sequence.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
-                    Maybe_Oyabun[7] = -1;  // メイビー当て処理を実施済み のしるし
+                    if (StatusSiteG == 1)  // メイビーサイトのステータスが 1 である（木札無し）
+                    {
+                        PushedBtnFlg = 1;  // 処理を実施したかどうか
+                        ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
+                        CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteG_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteG_Aimed());    // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(5));  // 役割当て画面で おやぶん のアイコンを クリック
+                        sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                        Maybe_Oyabun[7] = -1;  // メイビー当て処理を実施済み のしるし
+                    }
                 }
             }
         }
         if (PushedBtnFlg == 0)  // 処理を実施したかどうか
         {
-            if (Maybe_Oyabun[6] > 25)  // おやぶん である可能性値 が一定以上（初期値より上）
+            if (NowActiveSiteN != 6)  // 選択したのが自分自身でなければ
             {
-                if (StatusSiteF == 1)  // メイビーサイトのステータスが 1 である（木札無し）
+                if (Maybe_Oyabun[6] > 25)  // おやぶん である可能性値 が一定以上（初期値より上）
                 {
-                    PushedBtnFlg = 1;  // 処理を実施したかどうか
-                    ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
-                    CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                    sequence.InsertCallback(MessageOkuriTime*2f, () => SiteF_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                    sequence.InsertCallback(MessageOkuriTime*2f, () => CharaMSC.ShowSiteF_Aimed());    // 場から該当のサイトを エイムでセレクト
-                    sequence.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Unmask(5));  // 役割当て画面で おやぶん のアイコンを クリック
-                    sequence.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
-                    Maybe_Oyabun[6] = -1;  // メイビー当て処理を実施済み のしるし
+                    if (StatusSiteF == 1)  // メイビーサイトのステータスが 1 である（木札無し）
+                    {
+                        PushedBtnFlg = 1;  // 処理を実施したかどうか
+                        ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
+                        CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteF_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteF_Aimed());    // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(5));  // 役割当て画面で おやぶん のアイコンを クリック
+                        sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                        Maybe_Oyabun[6] = -1;  // メイビー当て処理を実施済み のしるし
+                    }
                 }
             }
         }
         if (PushedBtnFlg == 0)  // 処理を実施したかどうか
         {
-            if (Maybe_Oyabun[5] > 25)  // おやぶん である可能性値 が一定以上（初期値より上）
+            if (NowActiveSiteN != 5)  // 選択したのが自分自身でなければ
             {
-                if (StatusSiteE == 1)  // メイビーサイトのステータスが 1 である（木札無し）
+                if (Maybe_Oyabun[5] > 25)  // おやぶん である可能性値 が一定以上（初期値より上）
                 {
-                    PushedBtnFlg = 1;  // 処理を実施したかどうか
-                    ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
-                    CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                    sequence.InsertCallback(MessageOkuriTime*2f, () => SiteE_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                    sequence.InsertCallback(MessageOkuriTime*2f, () => CharaMSC.ShowSiteE_Aimed());    // 場から該当のサイトを エイムでセレクト
-                    sequence.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Unmask(5));  // 役割当て画面で おやぶん のアイコンを クリック
-                    sequence.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
-                    Maybe_Oyabun[5] = -1;  // メイビー当て処理を実施済み のしるし
+                    if (StatusSiteE == 1)  // メイビーサイトのステータスが 1 である（木札無し）
+                    {
+                        PushedBtnFlg = 1;  // 処理を実施したかどうか
+                        ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
+                        CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteE_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteE_Aimed());    // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(5));  // 役割当て画面で おやぶん のアイコンを クリック
+                        sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                        Maybe_Oyabun[5] = -1;  // メイビー当て処理を実施済み のしるし
+                    }
                 }
             }
         }
         if (PushedBtnFlg == 0)  // 処理を実施したかどうか
         {
-            if (Maybe_Oyabun[4] > 25)  // おやぶん である可能性値 が一定以上（初期値より上）
+            if (NowActiveSiteN != 4)  // 選択したのが自分自身でなければ
             {
-                if (StatusSiteD == 1)  // メイビーサイトのステータスが 1 である（木札無し）
+                if (Maybe_Oyabun[4] > 25)  // おやぶん である可能性値 が一定以上（初期値より上）
                 {
-                    PushedBtnFlg = 1;  // 処理を実施したかどうか
-                    ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
-                    CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                    sequence.InsertCallback(MessageOkuriTime*2f, () => SiteD_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                    sequence.InsertCallback(MessageOkuriTime*2f, () => CharaMSC.ShowSiteD_Aimed());    // 場から該当のサイトを エイムでセレクト
-                    sequence.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Unmask(5));  // 役割当て画面で おやぶん のアイコンを クリック
-                    sequence.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
-                    Maybe_Oyabun[4] = -1;  // メイビー当て処理を実施済み のしるし
+                    if (StatusSiteD == 1)  // メイビーサイトのステータスが 1 である（木札無し）
+                    {
+                        PushedBtnFlg = 1;  // 処理を実施したかどうか
+                        ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
+                        CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteD_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteD_Aimed());    // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(5));  // 役割当て画面で おやぶん のアイコンを クリック
+                        sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                        Maybe_Oyabun[4] = -1;  // メイビー当て処理を実施済み のしるし
+                    }
                 }
             }
         }
         if (PushedBtnFlg == 0)  // 処理を実施したかどうか
         {
-            if (Maybe_Oyabun[3] > 25)  // おやぶん である可能性値 が一定以上（初期値より上）
+            if (NowActiveSiteN != 3)  // 選択したのが自分自身でなければ
             {
-                if (StatusSiteC == 1)  // メイビーサイトのステータスが 1 である（木札無し）
+                if (Maybe_Oyabun[3] > 25)  // おやぶん である可能性値 が一定以上（初期値より上）
                 {
-                    PushedBtnFlg = 1;  // 処理を実施したかどうか
-                    ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
-                    CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                    sequence.InsertCallback(MessageOkuriTime*2f, () => SiteC_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                    sequence.InsertCallback(MessageOkuriTime*2f, () => CharaMSC.ShowSiteC_Aimed());    // 場から該当のサイトを エイムでセレクト
-                    sequence.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Unmask(5));  // 役割当て画面で おやぶん のアイコンを クリック
-                    sequence.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
-                    Maybe_Oyabun[3] = -1;  // メイビー当て処理を実施済み のしるし
+                    if (StatusSiteC == 1)  // メイビーサイトのステータスが 1 である（木札無し）
+                    {
+                        PushedBtnFlg = 1;  // 処理を実施したかどうか
+                        ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
+                        CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteC_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteC_Aimed());    // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(5));  // 役割当て画面で おやぶん のアイコンを クリック
+                        sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                        Maybe_Oyabun[3] = -1;  // メイビー当て処理を実施済み のしるし
+                    }
                 }
             }
         }
         if (PushedBtnFlg == 0)  // 処理を実施したかどうか
         {
-            if (Maybe_Oyabun[2] > 25)  // おやぶん である可能性値 が一定以上（初期値より上）
+            if (NowActiveSiteN != 2)  // 選択したのが自分自身でなければ
             {
-                if (StatusSiteB == 1)  // メイビーサイトのステータスが 1 である（木札無し）
+                if (Maybe_Oyabun[2] > 25)  // おやぶん である可能性値 が一定以上（初期値より上）
                 {
-                    PushedBtnFlg = 1;  // 処理を実施したかどうか
-                    ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
-                    CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                    sequence.InsertCallback(MessageOkuriTime*2f, () => SiteB_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                    sequence.InsertCallback(MessageOkuriTime*2f, () => CharaMSC.ShowSiteB_Aimed());    // 場から該当のサイトを エイムでセレクト
-                    sequence.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Unmask(5));  // 役割当て画面で おやぶん のアイコンを クリック
-                    sequence.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
-                    Maybe_Oyabun[2] = -1;  // メイビー当て処理を実施済み のしるし
+                    if (StatusSiteB == 1)  // メイビーサイトのステータスが 1 である（木札無し）
+                    {
+                        PushedBtnFlg = 1;  // 処理を実施したかどうか
+                        ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
+                        CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteB_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteB_Aimed());    // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(5));  // 役割当て画面で おやぶん のアイコンを クリック
+                        sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                        Maybe_Oyabun[2] = -1;  // メイビー当て処理を実施済み のしるし
+                    }
                 }
             }
         }
         if (PushedBtnFlg == 0)  // 処理を実施したかどうか
         {
-            if (Maybe_Oyabun[1] > 25)  // おやぶん である可能性値 が一定以上（初期値より上）
+            if (NowActiveSiteN != 1)  // 選択したのが自分自身でなければ
             {
-                if (StatusSiteA == 1)  // メイビーサイトのステータスが 1 である（木札無し）
+                if (Maybe_Oyabun[1] > 25)  // おやぶん である可能性値 が一定以上（初期値より上）
                 {
-                    PushedBtnFlg = 1;  // 処理を実施したかどうか
-                    ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
-                    CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                    sequence.InsertCallback(MessageOkuriTime*2f, () => SiteA_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                    sequence.InsertCallback(MessageOkuriTime*2f, () => CharaMSC.ShowSiteA_Aimed());    // 場から該当のサイトを エイムでセレクト
-                    sequence.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Unmask(5));  // 役割当て画面で おやぶん のアイコンを クリック
-                    sequence.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
-                    Maybe_Oyabun[1] = -1;  // メイビー当て処理を実施済み のしるし
+                    if (StatusSiteA == 1)  // メイビーサイトのステータスが 1 である（木札無し）
+                    {
+                        PushedBtnFlg = 1;  // 処理を実施したかどうか
+                        ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
+                        CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteA_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteA_Aimed());    // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(5));  // 役割当て画面で おやぶん のアイコンを クリック
+                        sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                        Maybe_Oyabun[1] = -1;  // メイビー当て処理を実施済み のしるし
+                    }
                 }
             }
         }
@@ -4616,114 +4638,138 @@ public class SiteManager : MonoBehaviour
         Debug.Log("おやぶんの位置は確定していない（ノーヒント）：おやぶん 木札無し");
         if (PushedBtnFlg == 0)  // 処理を実施したかどうか
         {
-            if (StatusSiteH == 1)  // 当てずっぽうサイトのステータスが 1 である（木札無し）
+            if (NowActiveSiteN != 8)  // 選択したのが自分自身でなければ
             {
-                PushedBtnFlg = 1;  // 処理を実施したかどうか
-                ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (ノーヒントで当てずっぽう)
-                CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteH_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteH_Aimed());    // 場から該当のサイトを エイムでセレクト
-                sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(5));  // 役割当て画面で おやぶん のアイコンを クリック
-                sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
-                Maybe_Oyabun[8] = -1;  // メイビーパラメータを更新
+                if (StatusSiteH == 1)  // 当てずっぽうサイトのステータスが 1 である（木札無し）
+                {
+                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (ノーヒントで当てずっぽう)
+                    CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                    sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteH_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                    sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteH_Aimed());    // 場から該当のサイトを エイムでセレクト
+                    sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(5));  // 役割当て画面で おやぶん のアイコンを クリック
+                    sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                    Maybe_Oyabun[8] = -1;  // メイビーパラメータを更新
+                }
             }
         }
         if (PushedBtnFlg == 0)  // 処理を実施したかどうか
         {
-            if (StatusSiteG == 1)  // 当てずっぽうサイトのステータスが 1 である（木札無し）
+            if (NowActiveSiteN != 7)  // 選択したのが自分自身でなければ
             {
-                PushedBtnFlg = 1;  // 処理を実施したかどうか
-                ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (ノーヒントで当てずっぽう)
-                CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteG_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteG_Aimed());    // 場から該当のサイトを エイムでセレクト
-                sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(5));  // 役割当て画面で おやぶん のアイコンを クリック
-                sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
-                Maybe_Oyabun[7] = -1;  // メイビーパラメータを更新
+                if (StatusSiteG == 1)  // 当てずっぽうサイトのステータスが 1 である（木札無し）
+                {
+                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (ノーヒントで当てずっぽう)
+                    CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                    sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteG_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                    sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteG_Aimed());    // 場から該当のサイトを エイムでセレクト
+                    sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(5));  // 役割当て画面で おやぶん のアイコンを クリック
+                    sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                    Maybe_Oyabun[7] = -1;  // メイビーパラメータを更新
+                }
             }
         }
         if (PushedBtnFlg == 0)  // 処理を実施したかどうか
         {
-            if (StatusSiteF == 1)  // 当てずっぽうサイトのステータスが 1 である（木札無し）
+            if (NowActiveSiteN != 6)  // 選択したのが自分自身でなければ
             {
-                PushedBtnFlg = 1;  // 処理を実施したかどうか
-                ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (ノーヒントで当てずっぽう)
-                CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteF_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteF_Aimed());    // 場から該当のサイトを エイムでセレクト
-                sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(5));  // 役割当て画面で おやぶん のアイコンを クリック
-                sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
-                Maybe_Oyabun[6] = -1;  // メイビーパラメータを更新
+                if (StatusSiteF == 1)  // 当てずっぽうサイトのステータスが 1 である（木札無し）
+                {
+                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (ノーヒントで当てずっぽう)
+                    CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                    sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteF_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                    sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteF_Aimed());    // 場から該当のサイトを エイムでセレクト
+                    sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(5));  // 役割当て画面で おやぶん のアイコンを クリック
+                    sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                    Maybe_Oyabun[6] = -1;  // メイビーパラメータを更新
+                }
             }
         }
         if (PushedBtnFlg == 0)  // 処理を実施したかどうか
         {
-            if (StatusSiteE == 1)  // 当てずっぽうサイトのステータスが 1 である（木札無し）
+            if (NowActiveSiteN != 5)  // 選択したのが自分自身でなければ
             {
-                PushedBtnFlg = 1;  // 処理を実施したかどうか
-                ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (ノーヒントで当てずっぽう)
-                CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteE_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteE_Aimed());    // 場から該当のサイトを エイムでセレクト
-                sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(5));  // 役割当て画面で おやぶん のアイコンを クリック
-                sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
-                Maybe_Oyabun[5] = -1;  // メイビーパラメータを更新
+                if (StatusSiteE == 1)  // 当てずっぽうサイトのステータスが 1 である（木札無し）
+                {
+                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (ノーヒントで当てずっぽう)
+                    CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                    sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteE_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                    sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteE_Aimed());    // 場から該当のサイトを エイムでセレクト
+                    sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(5));  // 役割当て画面で おやぶん のアイコンを クリック
+                    sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                    Maybe_Oyabun[5] = -1;  // メイビーパラメータを更新
+                }
             }
         }
         if (PushedBtnFlg == 0)  // 処理を実施したかどうか
         {
-            if (StatusSiteD == 1)  // 当てずっぽうサイトのステータスが 1 である（木札無し）
+            if (NowActiveSiteN != 4)  // 選択したのが自分自身でなければ
             {
-                PushedBtnFlg = 1;  // 処理を実施したかどうか
-                ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (ノーヒントで当てずっぽう)
-                CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteD_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteD_Aimed());    // 場から該当のサイトを エイムでセレクト
-                sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(5));  // 役割当て画面で おやぶん のアイコンを クリック
-                sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
-                Maybe_Oyabun[4] = -1;  // メイビーパラメータを更新
+                if (StatusSiteD == 1)  // 当てずっぽうサイトのステータスが 1 である（木札無し）
+                {
+                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (ノーヒントで当てずっぽう)
+                    CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                    sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteD_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                    sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteD_Aimed());    // 場から該当のサイトを エイムでセレクト
+                    sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(5));  // 役割当て画面で おやぶん のアイコンを クリック
+                    sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                    Maybe_Oyabun[4] = -1;  // メイビーパラメータを更新
+                }
             }
         }
         if (PushedBtnFlg == 0)  // 処理を実施したかどうか
         {
-            if (StatusSiteC == 1)  // 当てずっぽうサイトのステータスが 1 である（木札無し）
+            if (NowActiveSiteN != 3)  // 選択したのが自分自身でなければ
             {
-                PushedBtnFlg = 1;  // 処理を実施したかどうか
-                ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (ノーヒントで当てずっぽう)
-                CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteC_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteC_Aimed());    // 場から該当のサイトを エイムでセレクト
-                sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(5));  // 役割当て画面で おやぶん のアイコンを クリック
-                sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
-                Maybe_Oyabun[3] = -1;  // メイビーパラメータを更新
+                if (StatusSiteC == 1)  // 当てずっぽうサイトのステータスが 1 である（木札無し）
+                {
+                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (ノーヒントで当てずっぽう)
+                    CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                    sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteC_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                    sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteC_Aimed());    // 場から該当のサイトを エイムでセレクト
+                    sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(5));  // 役割当て画面で おやぶん のアイコンを クリック
+                    sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                    Maybe_Oyabun[3] = -1;  // メイビーパラメータを更新
+                }
             }
         }
         if (PushedBtnFlg == 0)  // 処理を実施したかどうか
         {
-            if (StatusSiteB == 1)  // 当てずっぽうサイトのステータスが 1 である（木札無し）
+            if (NowActiveSiteN != 2)  // 選択したのが自分自身でなければ
             {
-                PushedBtnFlg = 1;  // 処理を実施したかどうか
-                ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (ノーヒントで当てずっぽう)
-                CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteB_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteB_Aimed());    // 場から該当のサイトを エイムでセレクト
-                sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(5));  // 役割当て画面で おやぶん のアイコンを クリック
-                sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
-                Maybe_Oyabun[2] = -1;  // メイビーパラメータを更新
+                if (StatusSiteB == 1)  // 当てずっぽうサイトのステータスが 1 である（木札無し）
+                {
+                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (ノーヒントで当てずっぽう)
+                    CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                    sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteB_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                    sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteB_Aimed());    // 場から該当のサイトを エイムでセレクト
+                    sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(5));  // 役割当て画面で おやぶん のアイコンを クリック
+                    sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                    Maybe_Oyabun[2] = -1;  // メイビーパラメータを更新
+                }
             }
         }
         if (PushedBtnFlg == 0)  // 処理を実施したかどうか
         {
-            if (StatusSiteA == 1)  // 当てずっぽうサイトのステータスが 1 である（木札無し）
+            if (NowActiveSiteN != 1)  // 選択したのが自分自身でなければ
             {
-                PushedBtnFlg = 1;  // 処理を実施したかどうか
-                ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (ノーヒントで当てずっぽう)
-                CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteA_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteA_Aimed());    // 場から該当のサイトを エイムでセレクト
-                sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(5));  // 役割当て画面で おやぶん のアイコンを クリック
-                sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
-                Maybe_Oyabun[1] = -1;  // メイビーパラメータを更新
+                if (StatusSiteA == 1)  // 当てずっぽうサイトのステータスが 1 である（木札無し）
+                {
+                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (ノーヒントで当てずっぽう)
+                    CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                    sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteA_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                    sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteA_Aimed());    // 場から該当のサイトを エイムでセレクト
+                    sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(5));  // 役割当て画面で おやぶん のアイコンを クリック
+                    sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                    Maybe_Oyabun[1] = -1;  // メイビーパラメータを更新
+                }
             }
         }
     }
@@ -4733,7 +4779,7 @@ public class SiteManager : MonoBehaviour
         var sequence = DOTween.Sequence();
         SearchKooniCommon(1);  // ステータスが1（札無し） ＆ 役割が こおに のキャラがいるか探す （該当者居れば PushedBtnFlg = 1 になる） （3ターン目で、行動済みのキャラに対してエイムしない）
         SearchKooniCommon(2);  // ステータスが2（木札ON） ＆ 役割が こおに のキャラがいるか探す （該当者居れば PushedBtnFlg = 1 になる）
-        if (PushedBtnFlg == 1)    // ステータスが2以下の こおに が見つかったら
+        if (PushedBtnFlg == 1)    // ステータスが2以下の こおに が見つかったら (前提：エイムサイトが自分ではない)
         {
             PushedBtnFlg = 0;  // 処理を実施したかどうか（一旦初期化）
             Debug.Log("*ステータスが2以下の こおに が存在する");
@@ -4880,143 +4926,167 @@ public class SiteManager : MonoBehaviour
     {
         var sequence = DOTween.Sequence();
         SearchMomotaroCommon(1);  // 桃太郎 の ステータスが1（札無し）であるかチェックする （該当すれば PushedBtnFlg = 1 になる） （3ターン目で、行動済みのキャラに対してエイムしない）
-        if (PushedBtnFlg == 1)    // ステータスが1 の 桃太郎 が見つかったら
+        if (PushedBtnFlg == 1)    // ステータスが1 の 桃太郎 が見つかったら  (前提：エイムサイトが自分ではない)
         {
             PushedBtnFlg = 0;  // 処理を実施したかどうか（一旦初期化）
             Debug.Log("*ステータスが1 の 桃太郎 が存在する");
             if (PushedBtnFlg == 0)  // 処理を実施したかどうか
             {
-                if (Maybe_Momotaro[8] > 25)  // 桃太郎 である可能性値 が一定以上（初期値より上）
+                if (NowActiveSiteN != 8)  // 選択したのが自分自身でなければ
                 {
-                    if (StatusSiteH == 1)  // メイビーサイトのステータスが 1である
+                    if (Maybe_Momotaro[8] > 25)  // 桃太郎 である可能性値 が一定以上（初期値より上）
                     {
-                        PushedBtnFlg = 1;  // 処理を実施したかどうか
-                        ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
-                        CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => SiteH_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => CharaMSC.ShowSiteH_Aimed());    // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Unmask(1));  // 役割当て画面で 桃太郎 のアイコンを クリック
-                        sequence.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
-                        Maybe_Momotaro[8] = -1;  // メイビー当て処理を実施済み のしるし
+                        if (StatusSiteH == 1)  // メイビーサイトのステータスが 1である
+                        {
+                            PushedBtnFlg = 1;  // 処理を実施したかどうか
+                            ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
+                            CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                            sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteH_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                            sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteH_Aimed());    // 場から該当のサイトを エイムでセレクト
+                            sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(1));  // 役割当て画面で 桃太郎 のアイコンを クリック
+                            sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                            Maybe_Momotaro[8] = -1;  // メイビー当て処理を実施済み のしるし
+                        }
                     }
                 }
             }
             if (PushedBtnFlg == 0)  // 処理を実施したかどうか
             {
-                if (Maybe_Momotaro[7] > 25)  // 桃太郎 である可能性値 が一定以上（初期値より上）
+                if (NowActiveSiteN != 7)  // 選択したのが自分自身でなければ
                 {
-                    if (StatusSiteG == 1)  // メイビーサイトのステータスが 1である
+                    if (Maybe_Momotaro[7] > 25)  // 桃太郎 である可能性値 が一定以上（初期値より上）
                     {
-                        PushedBtnFlg = 1;  // 処理を実施したかどうか
-                        ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
-                        CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => SiteG_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => CharaMSC.ShowSiteG_Aimed());    // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Unmask(1));  // 役割当て画面で 桃太郎 のアイコンを クリック
-                        sequence.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
-                        Maybe_Momotaro[7] = -1;  // メイビー当て処理を実施済み のしるし
+                        if (StatusSiteG == 1)  // メイビーサイトのステータスが 1である
+                        {
+                            PushedBtnFlg = 1;  // 処理を実施したかどうか
+                            ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
+                            CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                            sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteG_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                            sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteG_Aimed());    // 場から該当のサイトを エイムでセレクト
+                            sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(1));  // 役割当て画面で 桃太郎 のアイコンを クリック
+                            sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                            Maybe_Momotaro[7] = -1;  // メイビー当て処理を実施済み のしるし
+                        }
                     }
                 }
             }
             if (PushedBtnFlg == 0)  // 処理を実施したかどうか
             {
-                if (Maybe_Momotaro[6] > 25)  // 桃太郎 である可能性値 が一定以上（初期値より上）
+                if (NowActiveSiteN != 6)  // 選択したのが自分自身でなければ
                 {
-                    if (StatusSiteF == 1)  // メイビーサイトのステータスが 1である
+                    if (Maybe_Momotaro[6] > 25)  // 桃太郎 である可能性値 が一定以上（初期値より上）
                     {
-                        PushedBtnFlg = 1;  // 処理を実施したかどうか
-                        ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
-                        CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => SiteF_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => CharaMSC.ShowSiteF_Aimed());    // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Unmask(1));  // 役割当て画面で 桃太郎 のアイコンを クリック
-                        sequence.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
-                        Maybe_Momotaro[6] = -1;  // メイビー当て処理を実施済み のしるし
+                        if (StatusSiteF == 1)  // メイビーサイトのステータスが 1である
+                        {
+                            PushedBtnFlg = 1;  // 処理を実施したかどうか
+                            ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
+                            CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                            sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteF_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                            sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteF_Aimed());    // 場から該当のサイトを エイムでセレクト
+                            sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(1));  // 役割当て画面で 桃太郎 のアイコンを クリック
+                            sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                            Maybe_Momotaro[6] = -1;  // メイビー当て処理を実施済み のしるし
+                        }
                     }
                 }
             }
             if (PushedBtnFlg == 0)  // 処理を実施したかどうか
             {
-                if (Maybe_Momotaro[5] > 25)  // 桃太郎 である可能性値 が一定以上（初期値より上）
+                if (NowActiveSiteN != 5)  // 選択したのが自分自身でなければ
                 {
-                    if (StatusSiteE == 1)  // メイビーサイトのステータスが 1である
+                    if (Maybe_Momotaro[5] > 25)  // 桃太郎 である可能性値 が一定以上（初期値より上）
                     {
-                        PushedBtnFlg = 1;  // 処理を実施したかどうか
-                        ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
-                        CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => SiteE_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => CharaMSC.ShowSiteE_Aimed());    // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Unmask(1));  // 役割当て画面で 桃太郎 のアイコンを クリック
-                        sequence.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
-                        Maybe_Momotaro[5] = -1;  // メイビー当て処理を実施済み のしるし
+                        if (StatusSiteE == 1)  // メイビーサイトのステータスが 1である
+                        {
+                            PushedBtnFlg = 1;  // 処理を実施したかどうか
+                            ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
+                            CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                            sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteE_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                            sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteE_Aimed());    // 場から該当のサイトを エイムでセレクト
+                            sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(1));  // 役割当て画面で 桃太郎 のアイコンを クリック
+                            sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                            Maybe_Momotaro[5] = -1;  // メイビー当て処理を実施済み のしるし
+                        }
                     }
                 }
             }
             if (PushedBtnFlg == 0)  // 処理を実施したかどうか
             {
-                if (Maybe_Momotaro[4] > 25)  // 桃太郎 である可能性値 が一定以上（初期値より上）
+                if (NowActiveSiteN != 4)  // 選択したのが自分自身でなければ
                 {
-                    if (StatusSiteD == 1)  // メイビーサイトのステータスが 1である
+                    if (Maybe_Momotaro[4] > 25)  // 桃太郎 である可能性値 が一定以上（初期値より上）
                     {
-                        PushedBtnFlg = 1;  // 処理を実施したかどうか
-                        ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
-                        CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => SiteD_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => CharaMSC.ShowSiteD_Aimed());    // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Unmask(1));  // 役割当て画面で 桃太郎 のアイコンを クリック
-                        sequence.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
-                        Maybe_Momotaro[4] = -1;  // メイビー当て処理を実施済み のしるし
+                        if (StatusSiteD == 1)  // メイビーサイトのステータスが 1である
+                        {
+                            PushedBtnFlg = 1;  // 処理を実施したかどうか
+                            ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
+                            CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                            sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteD_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                            sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteD_Aimed());    // 場から該当のサイトを エイムでセレクト
+                            sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(1));  // 役割当て画面で 桃太郎 のアイコンを クリック
+                            sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                            Maybe_Momotaro[4] = -1;  // メイビー当て処理を実施済み のしるし
+                        }
                     }
                 }
             }
             if (PushedBtnFlg == 0)  // 処理を実施したかどうか
             {
-                if (Maybe_Momotaro[3] > 25)  // 桃太郎 である可能性値 が一定以上（初期値より上）
+                if (NowActiveSiteN != 3)  // 選択したのが自分自身でなければ
                 {
-                    if (StatusSiteC == 1)  // メイビーサイトのステータスが 1である
+                    if (Maybe_Momotaro[3] > 25)  // 桃太郎 である可能性値 が一定以上（初期値より上）
                     {
-                        PushedBtnFlg = 1;  // 処理を実施したかどうか
-                        ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
-                        CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => SiteC_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => CharaMSC.ShowSiteC_Aimed());    // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Unmask(1));  // 役割当て画面で 桃太郎 のアイコンを クリック
-                        sequence.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
-                        Maybe_Momotaro[3] = -1;  // メイビー当て処理を実施済み のしるし
+                        if (StatusSiteC == 1)  // メイビーサイトのステータスが 1である
+                        {
+                            PushedBtnFlg = 1;  // 処理を実施したかどうか
+                            ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
+                            CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                            sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteC_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                            sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteC_Aimed());    // 場から該当のサイトを エイムでセレクト
+                            sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(1));  // 役割当て画面で 桃太郎 のアイコンを クリック
+                            sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                            Maybe_Momotaro[3] = -1;  // メイビー当て処理を実施済み のしるし
+                        }
                     }
                 }
             }
             if (PushedBtnFlg == 0)  // 処理を実施したかどうか
             {
-                if (Maybe_Momotaro[2] > 25)  // 桃太郎 である可能性値 が一定以上（初期値より上）
+                if (NowActiveSiteN != 2)  // 選択したのが自分自身でなければ
                 {
-                    if (StatusSiteB == 1)  // メイビーサイトのステータスが 1である
+                    if (Maybe_Momotaro[2] > 25)  // 桃太郎 である可能性値 が一定以上（初期値より上）
                     {
-                        PushedBtnFlg = 1;  // 処理を実施したかどうか
-                        ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
-                        CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => SiteB_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => CharaMSC.ShowSiteB_Aimed());    // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Unmask(1));  // 役割当て画面で 桃太郎 のアイコンを クリック
-                        sequence.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
-                        Maybe_Momotaro[2] = -1;  // メイビー当て処理を実施済み のしるし
+                        if (StatusSiteB == 1)  // メイビーサイトのステータスが 1である
+                        {
+                            PushedBtnFlg = 1;  // 処理を実施したかどうか
+                            ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
+                            CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                            sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteB_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                            sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteB_Aimed());    // 場から該当のサイトを エイムでセレクト
+                            sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(1));  // 役割当て画面で 桃太郎 のアイコンを クリック
+                            sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                            Maybe_Momotaro[2] = -1;  // メイビー当て処理を実施済み のしるし
+                        }
                     }
                 }
             }
             if (PushedBtnFlg == 0)  // 処理を実施したかどうか
             {
-                if (Maybe_Momotaro[1] > 25)  // 桃太郎 である可能性値 が一定以上（初期値より上）
+                if (NowActiveSiteN != 1)  // 選択したのが自分自身でなければ
                 {
-                    if (StatusSiteA == 1)  // メイビーサイトのステータスが 1である
+                    if (Maybe_Momotaro[1] > 25)  // 桃太郎 である可能性値 が一定以上（初期値より上）
                     {
-                        PushedBtnFlg = 1;  // 処理を実施したかどうか
-                        ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
-                        CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => SiteA_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => CharaMSC.ShowSiteA_Aimed());    // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Unmask(1));  // 役割当て画面で 桃太郎 のアイコンを クリック
-                        sequence.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
-                        Maybe_Momotaro[1] = -1;  // メイビー当て処理を実施済み のしるし
+                        if (StatusSiteA == 1)  // メイビーサイトのステータスが 1である
+                        {
+                            PushedBtnFlg = 1;  // 処理を実施したかどうか
+                            ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
+                            CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                            sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteA_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                            sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteA_Aimed());    // 場から該当のサイトを エイムでセレクト
+                            sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(1));  // 役割当て画面で 桃太郎 のアイコンを クリック
+                            sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                            Maybe_Momotaro[1] = -1;  // メイビー当て処理を実施済み のしるし
+                        }
                     }
                 }
             }
@@ -5028,8 +5098,8 @@ public class SiteManager : MonoBehaviour
     {
         var sequence = DOTween.Sequence();
         SearchMomoMateCommon(1);  // ステータスが1（札無し） ＆ 役割が いぬ・さる・きじ のキャラがいるか探す （該当者居れば PushedBtnFlg = 1 になる） （3ターン目で、行動済みのキャラに対してエイムしない）
-        SearchMomoMateCommon(2);  // ステータスが2（木札ON） ＆ 役割が いぬ・さる・きじ のキャラがいるか探す （該当者居れば PushedBtnFlg = 1 になる）
-        if (PushedBtnFlg == 1)    // ステータスが2以下の いぬ、さる、きじ が見つかったら
+        SearchMomoMateCommon(2);  // ステータスが2（木札ON） ＆ 役割が いぬ・さる・きじ のキャラがいるか探す （該当者居れば PushedBtnFlg = 1 になる）(前提：エイムサイトが自分ではない)
+        if (PushedBtnFlg == 1)    // ステータスが2以下の いぬ、さる、きじ が見つかったら (前提：エイムサイトが自分ではない)
         {
             PushedBtnFlg = 0;  // 処理を実施したかどうか（一旦初期化）
             Debug.Log("*ステータスが2以下の いぬ、さる、きじ が存在する");
@@ -5522,128 +5592,152 @@ public class SiteManager : MonoBehaviour
         {
             if (TurnChip_A == TN)       // サイトAの順番マーカーがTN番である
             {
-                if (rollF[1] >= 2 && rollF[1] <= 4) // いぬ、さる、きじ
+                if (NowActiveSiteN != 1)  // 選択したのが自分自身でなければ
                 {
-                    if (StatusSiteA == StatusSiteNum)  // 桃メイトが 指定のステータスである
+                    if (rollF[1] >= 2 && rollF[1] <= 4) // いぬ、さる、きじ
                     {
-                        TargetSiteOrderNum = TurnChip_A;  // 今狙われているエイムサイトは SiteA
-                        HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
-                        if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                        if (StatusSiteA == StatusSiteNum)  // 桃メイトが 指定のステータスである
                         {
-                            RollFNum = rollF[1];  // 現在エイムされているサイトの役わり が サイトA の役割 に上書きあれる
-                            TN = -1;
+                            TargetSiteOrderNum = TurnChip_A;  // 今狙われているエイムサイトは SiteA
+                            HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
+                            if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                            {
+                                RollFNum = rollF[1];  // 現在エイムされているサイトの役わり が サイトA の役割 に上書きあれる
+                                TN = -1;
+                            }
                         }
                     }
                 }
             }
             else if (TurnChip_B == TN)
             {
-                if (rollF[2] >= 2 && rollF[2] <= 4) // いぬ、さる、きじ
+                if (NowActiveSiteN != 2)  // 選択したのが自分自身でなければ
                 {
-                    if (StatusSiteB == StatusSiteNum)
+                    if (rollF[2] >= 2 && rollF[2] <= 4) // いぬ、さる、きじ
                     {
-                        TargetSiteOrderNum = TurnChip_B;  // 今狙われているエイムサイトは SiteB
-                        HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
-                        if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                        if (StatusSiteB == StatusSiteNum)
                         {
-                            RollFNum = rollF[2];  // 現在エイムされているサイトの役わり が サイトB の役割 に上書きあれる
-                            TN = -1;
+                            TargetSiteOrderNum = TurnChip_B;  // 今狙われているエイムサイトは SiteB
+                            HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
+                            if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                            {
+                                RollFNum = rollF[2];  // 現在エイムされているサイトの役わり が サイトB の役割 に上書きあれる
+                                TN = -1;
+                            }
                         }
                     }
                 }
             }
             else if (TurnChip_C == TN)
             {
-                if (rollF[3] >= 2 && rollF[3] <= 4) // いぬ、さる、きじ
+                if (NowActiveSiteN != 3)  // 選択したのが自分自身でなければ
                 {
-                    if (StatusSiteC == StatusSiteNum)
+                    if (rollF[3] >= 2 && rollF[3] <= 4) // いぬ、さる、きじ
                     {
-                        TargetSiteOrderNum = TurnChip_C;  // 今狙われているエイムサイトは SiteC
-                        HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
-                        if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                        if (StatusSiteC == StatusSiteNum)
                         {
-                            RollFNum = rollF[3];  // 現在エイムされているサイトの役わり が サイトC の役割 に上書きあれる
-                            TN = -1;
+                            TargetSiteOrderNum = TurnChip_C;  // 今狙われているエイムサイトは SiteC
+                            HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
+                            if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                            {
+                                RollFNum = rollF[3];  // 現在エイムされているサイトの役わり が サイトC の役割 に上書きあれる
+                                TN = -1;
+                            }
                         }
                     }
                 }
             }
             else if (TurnChip_D == TN)
             {
-                if (rollF[4] >= 2 && rollF[4] <= 4) // いぬ、さる、きじ
+                if (NowActiveSiteN != 4)  // 選択したのが自分自身でなければ
                 {
-                    if (StatusSiteD == StatusSiteNum)
+                    if (rollF[4] >= 2 && rollF[4] <= 4) // いぬ、さる、きじ
                     {
-                        TargetSiteOrderNum = TurnChip_D;  // 今狙われているエイムサイトは SiteD
-                        HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
-                        if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                        if (StatusSiteD == StatusSiteNum)
                         {
-                            RollFNum = rollF[4];  // 現在エイムされているサイトの役わり が サイトD の役割 に上書きあれる
-                            TN = -1;
+                            TargetSiteOrderNum = TurnChip_D;  // 今狙われているエイムサイトは SiteD
+                            HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
+                            if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                            {
+                                RollFNum = rollF[4];  // 現在エイムされているサイトの役わり が サイトD の役割 に上書きあれる
+                                TN = -1;
+                            }
                         }
                     }
                 }
             }
             else if (TurnChip_E == TN)
             {
-                if (rollF[5] >= 2 && rollF[5] <= 4) // いぬ、さる、きじ
+                if (NowActiveSiteN != 5)  // 選択したのが自分自身でなければ
                 {
-                    if (StatusSiteE == StatusSiteNum)
+                    if (rollF[5] >= 2 && rollF[5] <= 4) // いぬ、さる、きじ
                     {
-                        TargetSiteOrderNum = TurnChip_E;  // 今狙われているエイムサイトは SiteE
-                        HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
-                        if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                        if (StatusSiteE == StatusSiteNum)
                         {
-                            RollFNum = rollF[5];  // 現在エイムされているサイトの役わり が サイトE の役割 に上書きあれる
-                            TN = -1;
+                            TargetSiteOrderNum = TurnChip_E;  // 今狙われているエイムサイトは SiteE
+                            HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
+                            if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                            {
+                                RollFNum = rollF[5];  // 現在エイムされているサイトの役わり が サイトE の役割 に上書きあれる
+                                TN = -1;
+                            }
                         }
                     }
                 }
             }
             else if (TurnChip_F == TN)
             {
-                if (rollF[6] >= 2 && rollF[6] <= 4) // いぬ、さる、きじ
+                if (NowActiveSiteN != 6)  // 選択したのが自分自身でなければ
                 {
-                    if (StatusSiteF == StatusSiteNum)
+                    if (rollF[6] >= 2 && rollF[6] <= 4) // いぬ、さる、きじ
                     {
-                        TargetSiteOrderNum = TurnChip_F;  // 今狙われているエイムサイトは SiteF
-                        HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
-                        if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                        if (StatusSiteF == StatusSiteNum)
                         {
-                            RollFNum = rollF[6];  // 現在エイムされているサイトの役わり が サイトF の役割 に上書きあれる
-                            TN = -1;
+                            TargetSiteOrderNum = TurnChip_F;  // 今狙われているエイムサイトは SiteF
+                            HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
+                            if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                            {
+                                RollFNum = rollF[6];  // 現在エイムされているサイトの役わり が サイトF の役割 に上書きあれる
+                                TN = -1;
+                            }
                         }
                     }
                 }
             }
             else if (TurnChip_G == TN)
             {
-                if (rollF[7] >= 2 && rollF[7] <= 4) // いぬ、さる、きじ
+                if (NowActiveSiteN != 7)  // 選択したのが自分自身でなければ
                 {
-                    if (StatusSiteG == StatusSiteNum)
+                    if (rollF[7] >= 2 && rollF[7] <= 4) // いぬ、さる、きじ
                     {
-                        TargetSiteOrderNum = TurnChip_G;  // 今狙われているエイムサイトは SiteG
-                        HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
-                        if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                        if (StatusSiteG == StatusSiteNum)
                         {
-                            RollFNum = rollF[7];  // 現在エイムされているサイトの役わり が サイトG の役割 に上書きあれる
-                            TN = -1;
+                            TargetSiteOrderNum = TurnChip_G;  // 今狙われているエイムサイトは SiteG
+                            HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
+                            if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                            {
+                                RollFNum = rollF[7];  // 現在エイムされているサイトの役わり が サイトG の役割 に上書きあれる
+                                TN = -1;
+                            }
                         }
                     }
                 }
             }
             else if (TurnChip_H == TN)
             {
-                if (rollF[8] >= 2 && rollF[8] <= 4) // いぬ、さる、きじ
+                if (NowActiveSiteN != 8)  // 選択したのが自分自身でなければ
                 {
-                    if (StatusSiteH == StatusSiteNum)
+                    if (rollF[8] >= 2 && rollF[8] <= 4) // いぬ、さる、きじ
                     {
-                        TargetSiteOrderNum = TurnChip_H;  // 今狙われているエイムサイトは SiteH
-                        HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
-                        if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                        if (StatusSiteH == StatusSiteNum)
                         {
-                            RollFNum = rollF[8];  // 現在エイムされているサイトの役わり が サイトH の役割 に上書きあれる
-                            TN = -1;
+                            TargetSiteOrderNum = TurnChip_H;  // 今狙われているエイムサイトは SiteH
+                            HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
+                            if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                            {
+                                RollFNum = rollF[8];  // 現在エイムされているサイトの役わり が サイトH の役割 に上書きあれる
+                                TN = -1;
+                            }
                         }
                     }
                 }
@@ -5656,134 +5750,158 @@ public class SiteManager : MonoBehaviour
         }
     }
 
-    public void SearchKooniCommon(int StatusSiteNum)  // 役割が こおに のキャラがいるか探す （3ターン目で、行動済みのキャラに対してはエイムしない）
+    public void SearchKooniCommon(int StatusSiteNum)  // 役割が こおに のキャラがいるか探す （3ターン目で、行動済みのキャラに対してはエイムしない）(前提：エイムサイトが自分ではない)
     {
         for (int TN = 8; TN > 0; TN--)  // 順番マーカーが 8 のものからチェック
         {
             if (TurnChip_A == TN)       // サイトAの順番マーカーがTN番である
             {
-                if (rollF[1] >= 6 && rollF[1] <= 8) // こおに
+                if (NowActiveSiteN != 1)  // 選択したのが自分自身でなければ
                 {
-                    if (StatusSiteA == StatusSiteNum)  // こおにが 指定のステータスである
+                    if (rollF[1] >= 6 && rollF[1] <= 8) // こおに
                     {
-                        TargetSiteOrderNum = TurnChip_A;  // 今狙われているエイムサイトは SiteA
-                        HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
-                        if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                        if (StatusSiteA == StatusSiteNum)  // こおにが 指定のステータスである
                         {
-                            RollFNum = rollF[1];  // 現在エイムされているサイトの役わり が サイトA の役割 に上書きあれる
-                            TN = -1;
+                            TargetSiteOrderNum = TurnChip_A;  // 今狙われているエイムサイトは SiteA
+                            HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
+                            if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                            {
+                                RollFNum = rollF[1];  // 現在エイムされているサイトの役わり が サイトA の役割 に上書きあれる
+                                TN = -1;
+                            }
                         }
                     }
                 }
             }
             else if (TurnChip_B == TN)
             {
-                if (rollF[2] >= 6 && rollF[2] <= 8) // こおに
+                if (NowActiveSiteN != 2)  // 選択したのが自分自身でなければ
                 {
-                    if (StatusSiteB == StatusSiteNum)
+                    if (rollF[2] >= 6 && rollF[2] <= 8) // こおに
                     {
-                        TargetSiteOrderNum = TurnChip_B;  // 今狙われているエイムサイトは SiteB
-                        HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
-                        if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                        if (StatusSiteB == StatusSiteNum)
                         {
-                            RollFNum = rollF[2];  // 現在エイムされているサイトの役わり が サイトB の役割 に上書きあれる
-                            TN = -1;
+                            TargetSiteOrderNum = TurnChip_B;  // 今狙われているエイムサイトは SiteB
+                            HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
+                            if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                            {
+                                RollFNum = rollF[2];  // 現在エイムされているサイトの役わり が サイトB の役割 に上書きあれる
+                                TN = -1;
+                            }
                         }
                     }
                 }
             }
             else if (TurnChip_C == TN)
             {
-                if (rollF[3] >= 6 && rollF[3] <= 8) // こおに
+                if (NowActiveSiteN != 3)  // 選択したのが自分自身でなければ
                 {
-                    if (StatusSiteC == StatusSiteNum)
+                    if (rollF[3] >= 6 && rollF[3] <= 8) // こおに
                     {
-                        TargetSiteOrderNum = TurnChip_C;  // 今狙われているエイムサイトは SiteC
-                        HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
-                        if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                        if (StatusSiteC == StatusSiteNum)
                         {
-                            RollFNum = rollF[3];  // 現在エイムされているサイトの役わり が サイトC の役割 に上書きあれる
-                            TN = -1;
+                            TargetSiteOrderNum = TurnChip_C;  // 今狙われているエイムサイトは SiteC
+                            HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
+                            if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                            {
+                                RollFNum = rollF[3];  // 現在エイムされているサイトの役わり が サイトC の役割 に上書きあれる
+                                TN = -1;
+                            }
                         }
                     }
                 }
             }
             else if (TurnChip_D == TN)
             {
-                if (rollF[4] >= 6 && rollF[4] <= 8) // こおに
+                if (NowActiveSiteN != 4)  // 選択したのが自分自身でなければ
                 {
-                    if (StatusSiteD == StatusSiteNum)
+                    if (rollF[4] >= 6 && rollF[4] <= 8) // こおに
                     {
-                        TargetSiteOrderNum = TurnChip_D;  // 今狙われているエイムサイトは SiteD
-                        HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
-                        if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                        if (StatusSiteD == StatusSiteNum)
                         {
-                            RollFNum = rollF[4];  // 現在エイムされているサイトの役わり が サイトD の役割 に上書きあれる
-                            TN = -1;
+                            TargetSiteOrderNum = TurnChip_D;  // 今狙われているエイムサイトは SiteD
+                            HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
+                            if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                            {
+                                RollFNum = rollF[4];  // 現在エイムされているサイトの役わり が サイトD の役割 に上書きあれる
+                                TN = -1;
+                            }
                         }
                     }
                 }
             }
             else if (TurnChip_E == TN)
             {
-                if (rollF[5] >= 6 && rollF[5] <= 8) // こおに
+                if (NowActiveSiteN != 5)  // 選択したのが自分自身でなければ
                 {
-                    if (StatusSiteE == StatusSiteNum)
+                    if (rollF[5] >= 6 && rollF[5] <= 8) // こおに
                     {
-                        TargetSiteOrderNum = TurnChip_E;  // 今狙われているエイムサイトは SiteE
-                        HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
-                        if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                        if (StatusSiteE == StatusSiteNum)
                         {
-                            RollFNum = rollF[5];  // 現在エイムされているサイトの役わり が サイトE の役割 に上書きあれる
-                            TN = -1;
+                            TargetSiteOrderNum = TurnChip_E;  // 今狙われているエイムサイトは SiteE
+                            HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
+                            if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                            {
+                                RollFNum = rollF[5];  // 現在エイムされているサイトの役わり が サイトE の役割 に上書きあれる
+                                TN = -1;
+                            }
                         }
                     }
                 }
             }
             else if (TurnChip_F == TN)
             {
-                if (rollF[6] >= 6 && rollF[6] <= 8) // こおに
+                if (NowActiveSiteN != 6)  // 選択したのが自分自身でなければ
                 {
-                    if (StatusSiteF == StatusSiteNum)
+                    if (rollF[6] >= 6 && rollF[6] <= 8) // こおに
                     {
-                        TargetSiteOrderNum = TurnChip_F;  // 今狙われているエイムサイトは SiteF
-                        HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
-                        if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                        if (StatusSiteF == StatusSiteNum)
                         {
-                            RollFNum = rollF[6];  // 現在エイムされているサイトの役わり が サイトF の役割 に上書きあれる
-                            TN = -1;
+                            TargetSiteOrderNum = TurnChip_F;  // 今狙われているエイムサイトは SiteF
+                            HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
+                            if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                            {
+                                RollFNum = rollF[6];  // 現在エイムされているサイトの役わり が サイトF の役割 に上書きあれる
+                                TN = -1;
+                            }
                         }
                     }
                 }
             }
             else if (TurnChip_G == TN)
             {
-                if (rollF[7] >= 6 && rollF[7] <= 8) // こおに
+                if (NowActiveSiteN != 7)  // 選択したのが自分自身でなければ
                 {
-                    if (StatusSiteG == StatusSiteNum)
+                    if (rollF[7] >= 6 && rollF[7] <= 8) // こおに
                     {
-                        TargetSiteOrderNum = TurnChip_G;  // 今狙われているエイムサイトは SiteG
-                        HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
-                        if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                        if (StatusSiteG == StatusSiteNum)
                         {
-                            RollFNum = rollF[7];  // 現在エイムされているサイトの役わり が サイトG の役割 に上書きあれる
-                            TN = -1;
+                            TargetSiteOrderNum = TurnChip_G;  // 今狙われているエイムサイトは SiteG
+                            HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
+                            if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                            {
+                                RollFNum = rollF[7];  // 現在エイムされているサイトの役わり が サイトG の役割 に上書きあれる
+                                TN = -1;
+                            }
                         }
                     }
                 }
             }
             else if (TurnChip_H == TN)
             {
-                if (rollF[8] >= 6 && rollF[8] <= 8) // こおに
+                if (NowActiveSiteN != 8)  // 選択したのが自分自身でなければ
                 {
-                    if (StatusSiteH == StatusSiteNum)
+                    if (rollF[8] >= 6 && rollF[8] <= 8) // こおに
                     {
-                        TargetSiteOrderNum = TurnChip_H;  // 今狙われているエイムサイトは SiteH
-                        HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
-                        if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                        if (StatusSiteH == StatusSiteNum)
                         {
-                            RollFNum = rollF[8];  // 現在エイムされているサイトの役わり が サイトH の役割 に上書きあれる
-                            TN = -1;
+                            TargetSiteOrderNum = TurnChip_H;  // 今狙われているエイムサイトは SiteH
+                            HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
+                            if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                            {
+                                RollFNum = rollF[8];  // 現在エイムされているサイトの役わり が サイトH の役割 に上書きあれる
+                                TN = -1;
+                            }
                         }
                     }
                 }
@@ -5801,129 +5919,153 @@ public class SiteManager : MonoBehaviour
         Debug.Log("【CPU】SearchMomotaroCommon-0");
         if (rollF[1] == 1) // ももたろう
         {
-            Debug.Log("【CPU】SearchMomotaroCommon-1-1");
-            if (StatusSiteA == StatusSiteNum)  // ももたろう が 指定されたステータス である
+            if (NowActiveSiteN != 1)  // 選択したのが自分自身でなければ
             {
-                Debug.Log("【CPU】SearchMomotaroCommon-1-2");
-                TargetSiteOrderNum = TurnChip_A;  // 今狙われているエイムサイトは SiteA
-                HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
-                if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                Debug.Log("【CPU】SearchMomotaroCommon-1-1");
+                if (StatusSiteA == StatusSiteNum)  // ももたろう が 指定されたステータス である
                 {
-                    Debug.Log("【CPU】SearchMomotaroCommon-1-3");
-                    RollFNum = rollF[1];  // 現在エイムされているサイトの役わり が サイトA の役割 に上書きあれる
-                    PushedBtnFlg = 1;  // 処理を実施したかどうか → オンにする
+                    Debug.Log("【CPU】SearchMomotaroCommon-1-2");
+                    TargetSiteOrderNum = TurnChip_A;  // 今狙われているエイムサイトは SiteA
+                    HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
+                    if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                    {
+                        Debug.Log("【CPU】SearchMomotaroCommon-1-3");
+                        RollFNum = rollF[1];  // 現在エイムされているサイトの役わり が サイトA の役割 に上書きあれる
+                        PushedBtnFlg = 1;  // 処理を実施したかどうか → オンにする
+                    }
                 }
             }
         }
         else if (rollF[2] == 1) // ももたろう
         {
-            Debug.Log("【CPU】SearchMomotaroCommon-2-1");
-            if (StatusSiteB == StatusSiteNum)
+            if (NowActiveSiteN != 2)  // 選択したのが自分自身でなければ
             {
-                Debug.Log("【CPU】SearchMomotaroCommon-2-2");
-                TargetSiteOrderNum = TurnChip_B;  // 今狙われているエイムサイトは SiteB
-                HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
-                if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                Debug.Log("【CPU】SearchMomotaroCommon-2-1");
+                if (StatusSiteB == StatusSiteNum)
                 {
-                    Debug.Log("【CPU】SearchMomotaroCommon-2-3");
-                    RollFNum = rollF[2];
-                    PushedBtnFlg = 1;  // 処理を実施したかどうか → オンにする
+                    Debug.Log("【CPU】SearchMomotaroCommon-2-2");
+                    TargetSiteOrderNum = TurnChip_B;  // 今狙われているエイムサイトは SiteB
+                    HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
+                    if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                    {
+                        Debug.Log("【CPU】SearchMomotaroCommon-2-3");
+                        RollFNum = rollF[2];
+                        PushedBtnFlg = 1;  // 処理を実施したかどうか → オンにする
+                    }
                 }
             }
         }
         else if (rollF[3] == 1) // ももたろう
         {
-            Debug.Log("【CPU】SearchMomotaroCommon-3-1");
-            if (StatusSiteC == StatusSiteNum)
+            if (NowActiveSiteN != 3)  // 選択したのが自分自身でなければ
             {
-                Debug.Log("【CPU】SearchMomotaroCommon-3-2");
-                TargetSiteOrderNum = TurnChip_C;  // 今狙われているエイムサイトは SiteC
-                HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
-                if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                Debug.Log("【CPU】SearchMomotaroCommon-3-1");
+                if (StatusSiteC == StatusSiteNum)
                 {
-                    Debug.Log("【CPU】SearchMomotaroCommon-3-3");
-                    RollFNum = rollF[3];
-                    PushedBtnFlg = 1;  // 処理を実施したかどうか → オンにする
+                    Debug.Log("【CPU】SearchMomotaroCommon-3-2");
+                    TargetSiteOrderNum = TurnChip_C;  // 今狙われているエイムサイトは SiteC
+                    HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
+                    if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                    {
+                        Debug.Log("【CPU】SearchMomotaroCommon-3-3");
+                        RollFNum = rollF[3];
+                        PushedBtnFlg = 1;  // 処理を実施したかどうか → オンにする
+                    }
                 }
             }
         }
         else if (rollF[4] == 1) // ももたろう
         {
-            Debug.Log("【CPU】SearchMomotaroCommon-4-1");
-            if (StatusSiteD == StatusSiteNum)
+            if (NowActiveSiteN != 4)  // 選択したのが自分自身でなければ
             {
-                Debug.Log("【CPU】SearchMomotaroCommon-4-2");
-                TargetSiteOrderNum = TurnChip_D;  // 今狙われているエイムサイトは SiteD
-                HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
-                if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                Debug.Log("【CPU】SearchMomotaroCommon-4-1");
+                if (StatusSiteD == StatusSiteNum)
                 {
-                    Debug.Log("【CPU】SearchMomotaroCommon-4-3");
-                    RollFNum = rollF[4];
-                    PushedBtnFlg = 1;  // 処理を実施したかどうか → オンにする
+                    Debug.Log("【CPU】SearchMomotaroCommon-4-2");
+                    TargetSiteOrderNum = TurnChip_D;  // 今狙われているエイムサイトは SiteD
+                    HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
+                    if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                    {
+                        Debug.Log("【CPU】SearchMomotaroCommon-4-3");
+                        RollFNum = rollF[4];
+                        PushedBtnFlg = 1;  // 処理を実施したかどうか → オンにする
+                    }
                 }
             }
         }
         else if (rollF[5] == 1) // ももたろう
         {
-            Debug.Log("【CPU】SearchMomotaroCommon-5-1");
-            if (StatusSiteE == StatusSiteNum)
+            if (NowActiveSiteN != 5)  // 選択したのが自分自身でなければ
             {
-                Debug.Log("【CPU】SearchMomotaroCommon-5-2");
-                TargetSiteOrderNum = TurnChip_E;  // 今狙われているエイムサイトは SiteE
-                HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
-                if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                Debug.Log("【CPU】SearchMomotaroCommon-5-1");
+                if (StatusSiteE == StatusSiteNum)
                 {
-                    Debug.Log("【CPU】SearchMomotaroCommon-5-3");
-                    RollFNum = rollF[5];
-                    PushedBtnFlg = 1;  // 処理を実施したかどうか → オンにする
+                    Debug.Log("【CPU】SearchMomotaroCommon-5-2");
+                    TargetSiteOrderNum = TurnChip_E;  // 今狙われているエイムサイトは SiteE
+                    HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
+                    if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                    {
+                        Debug.Log("【CPU】SearchMomotaroCommon-5-3");
+                        RollFNum = rollF[5];
+                        PushedBtnFlg = 1;  // 処理を実施したかどうか → オンにする
+                    }
                 }
             }
         }
         else if (rollF[6] == 1) // ももたろう
         {
-            Debug.Log("【CPU】SearchMomotaroCommon-6-1");
-            if (StatusSiteF == StatusSiteNum)
+            if (NowActiveSiteN != 6)  // 選択したのが自分自身でなければ
             {
-                Debug.Log("【CPU】SearchMomotaroCommon-6-2");
-                TargetSiteOrderNum = TurnChip_F;  // 今狙われているエイムサイトは SiteF
-                HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
-                if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                Debug.Log("【CPU】SearchMomotaroCommon-6-1");
+                if (StatusSiteF == StatusSiteNum)
                 {
-                    Debug.Log("【CPU】SearchMomotaroCommon-6-3");
-                    RollFNum = rollF[6];
-                    PushedBtnFlg = 1;  // 処理を実施したかどうか → オンにする
+                    Debug.Log("【CPU】SearchMomotaroCommon-6-2");
+                    TargetSiteOrderNum = TurnChip_F;  // 今狙われているエイムサイトは SiteF
+                    HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
+                    if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                    {
+                        Debug.Log("【CPU】SearchMomotaroCommon-6-3");
+                        RollFNum = rollF[6];
+                        PushedBtnFlg = 1;  // 処理を実施したかどうか → オンにする
+                    }
                 }
             }
         }
         else if (rollF[7] == 1) // ももたろう
         {
-            Debug.Log("【CPU】SearchMomotaroCommon-7-1");
-            if (StatusSiteG == StatusSiteNum)
+            if (NowActiveSiteN != 7)  // 選択したのが自分自身でなければ
             {
-                Debug.Log("【CPU】SearchMomotaroCommon-7-2");
-                TargetSiteOrderNum = TurnChip_G;  // 今狙われているエイムサイトは SiteG
-                HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
-                if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                Debug.Log("【CPU】SearchMomotaroCommon-7-1");
+                if (StatusSiteG == StatusSiteNum)
                 {
-                    Debug.Log("【CPU】SearchMomotaroCommon-7-3");
-                    RollFNum = rollF[7];
-                    PushedBtnFlg = 1;  // 処理を実施したかどうか → オンにする
+                    Debug.Log("【CPU】SearchMomotaroCommon-7-2");
+                    TargetSiteOrderNum = TurnChip_G;  // 今狙われているエイムサイトは SiteG
+                    HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
+                    if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                    {
+                        Debug.Log("【CPU】SearchMomotaroCommon-7-3");
+                        RollFNum = rollF[7];
+                        PushedBtnFlg = 1;  // 処理を実施したかどうか → オンにする
+                    }
                 }
             }
         }
         else if (rollF[8] == 1) // ももたろう
         {
-            Debug.Log("【CPU】SearchMomotaroCommon-8-1");
-            if (StatusSiteH == StatusSiteNum)
+            if (NowActiveSiteN != 8)  // 選択したのが自分自身でなければ
             {
-                Debug.Log("【CPU】SearchMomotaroCommon-8-2");
-                TargetSiteOrderNum = TurnChip_H;  // 今狙われているエイムサイトは SiteH
-                HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
-                if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                Debug.Log("【CPU】SearchMomotaroCommon-8-1");
+                if (StatusSiteH == StatusSiteNum)
                 {
-                    Debug.Log("【CPU】SearchMomotaroCommon-8-3");
-                    RollFNum = rollF[8];
-                    PushedBtnFlg = 1;  // 処理を実施したかどうか → オンにする
+                    Debug.Log("【CPU】SearchMomotaroCommon-8-2");
+                    TargetSiteOrderNum = TurnChip_H;  // 今狙われているエイムサイトは SiteH
+                    HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
+                    if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                    {
+                        Debug.Log("【CPU】SearchMomotaroCommon-8-3");
+                        RollFNum = rollF[8];
+                        PushedBtnFlg = 1;  // 処理を実施したかどうか → オンにする
+                    }
                 }
             }
         }
@@ -6053,25 +6195,28 @@ public class SiteManager : MonoBehaviour
     }
 
 
-    public void UkkariAte()   // うっかり桃メイト（木札ON） がいるなら → 役割当て （3ターン目で、行動済みのキャラに対してはエイムしない）
+    public void UkkariAte()   // うっかり桃メイト（木札ON） がいるなら → 役割当て （3ターン目で、行動済みのキャラに対してはエイムしない）(前提：エイムサイトが自分ではない)
     {
         Debug.Log("【CPU】UkkariAte-0");
         if (PushedBtnFlg == 0)  // 処理を実施したかどうか
         {
             if (UkkariSite[1] == 1)    // *うっかりフラグが1のものが 存在する
             {
-                if (StatusSiteA == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
+                if (NowActiveSiteN != 1)  // 選択したのが自分自身でなければ
                 {
-                    if (rollF[1] >= 2 && rollF[1] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                    if (StatusSiteA == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
                     {
-                        TargetSiteOrderNum = TurnChip_A;  // 今狙われているエイムサイトは SiteA
-                        HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
-                        if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                        if (rollF[1] >= 2 && rollF[1] <= 4) // 役割が いぬ、さる、きじ のどれかである
                         {
-                            Debug.Log("【CPU】UkkariAte-1");
-                            PushedBtnFlg = 1;  // 処理を実施したかどうか
-                            PushYakuwariBtn_Common(rollF[1]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
-                            UkkariSite[1] = -1;  // うっかり当て処理を実施済み のしるし
+                            TargetSiteOrderNum = TurnChip_A;  // 今狙われているエイムサイトは SiteA
+                            HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
+                            if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                            {
+                                Debug.Log("【CPU】UkkariAte-1");
+                                PushedBtnFlg = 1;  // 処理を実施したかどうか
+                                PushYakuwariBtn_Common(rollF[1]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
+                                UkkariSite[1] = -1;  // うっかり当て処理を実施済み のしるし
+                            }
                         }
                     }
                 }
@@ -6081,18 +6226,21 @@ public class SiteManager : MonoBehaviour
         {
             if (UkkariSite[2] == 1)    // *うっかりフラグが1のものが 存在する
             {
-                if (StatusSiteB == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
+                if (NowActiveSiteN != 2)  // 選択したのが自分自身でなければ
                 {
-                    if (rollF[2] >= 2 && rollF[2] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                    if (StatusSiteB == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
                     {
-                        TargetSiteOrderNum = TurnChip_B;  // 今狙われているエイムサイトは SiteB
-                        HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
-                        if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                        if (rollF[2] >= 2 && rollF[2] <= 4) // 役割が いぬ、さる、きじ のどれかである
                         {
-                            Debug.Log("【CPU】UkkariAte-2");
-                            PushedBtnFlg = 1;  // 処理を実施したかどうか
-                            PushYakuwariBtn_Common(rollF[2]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
-                            UkkariSite[2] = -1;  // うっかり当て処理を実施済み のしるし
+                            TargetSiteOrderNum = TurnChip_B;  // 今狙われているエイムサイトは SiteB
+                            HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
+                            if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                            {
+                                Debug.Log("【CPU】UkkariAte-2");
+                                PushedBtnFlg = 1;  // 処理を実施したかどうか
+                                PushYakuwariBtn_Common(rollF[2]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
+                                UkkariSite[2] = -1;  // うっかり当て処理を実施済み のしるし
+                            }
                         }
                     }
                 }
@@ -6102,18 +6250,21 @@ public class SiteManager : MonoBehaviour
         {
             if (UkkariSite[3] == 1)    // *うっかりフラグが1のものが 存在する
             {
-                if (StatusSiteC == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
+                if (NowActiveSiteN != 3)  // 選択したのが自分自身でなければ
                 {
-                    if (rollF[3] >= 2 && rollF[3] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                    if (StatusSiteC == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
                     {
-                        TargetSiteOrderNum = TurnChip_C;  // 今狙われているエイムサイトは SiteC
-                        HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
-                        if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                        if (rollF[3] >= 2 && rollF[3] <= 4) // 役割が いぬ、さる、きじ のどれかである
                         {
-                            Debug.Log("【CPU】UkkariAte-3");
-                            PushedBtnFlg = 1;  // 処理を実施したかどうか
-                            PushYakuwariBtn_Common(rollF[3]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
-                            UkkariSite[3] = -1;  // うっかり当て処理を実施済み のしるし
+                            TargetSiteOrderNum = TurnChip_C;  // 今狙われているエイムサイトは SiteC
+                            HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
+                            if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                            {
+                                Debug.Log("【CPU】UkkariAte-3");
+                                PushedBtnFlg = 1;  // 処理を実施したかどうか
+                                PushYakuwariBtn_Common(rollF[3]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
+                                UkkariSite[3] = -1;  // うっかり当て処理を実施済み のしるし
+                            }
                         }
                     }
                 }
@@ -6123,18 +6274,21 @@ public class SiteManager : MonoBehaviour
         {
             if (UkkariSite[4] == 1)    // *うっかりフラグが1のものが 存在する
             {
-                if (StatusSiteD == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
+                if (NowActiveSiteN != 4)  // 選択したのが自分自身でなければ
                 {
-                    if (rollF[4] >= 2 && rollF[4] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                    if (StatusSiteD == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
                     {
-                        TargetSiteOrderNum = TurnChip_D;  // 今狙われているエイムサイトは SiteD
-                        HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
-                        if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                        if (rollF[4] >= 2 && rollF[4] <= 4) // 役割が いぬ、さる、きじ のどれかである
                         {
-                            Debug.Log("【CPU】UkkariAte-4");
-                            PushedBtnFlg = 1;  // 処理を実施したかどうか
-                            PushYakuwariBtn_Common(rollF[4]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
-                            UkkariSite[4] = -1;  // うっかり当て処理を実施済み のしるし
+                            TargetSiteOrderNum = TurnChip_D;  // 今狙われているエイムサイトは SiteD
+                            HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
+                            if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                            {
+                                Debug.Log("【CPU】UkkariAte-4");
+                                PushedBtnFlg = 1;  // 処理を実施したかどうか
+                                PushYakuwariBtn_Common(rollF[4]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
+                                UkkariSite[4] = -1;  // うっかり当て処理を実施済み のしるし
+                            }
                         }
                     }
                 }
@@ -6144,18 +6298,21 @@ public class SiteManager : MonoBehaviour
         {
             if (UkkariSite[5] == 1)    // *うっかりフラグが1のものが 存在する
             {
-                if (StatusSiteE == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
+                if (NowActiveSiteN != 5)  // 選択したのが自分自身でなければ
                 {
-                    if (rollF[5] >= 2 && rollF[5] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                    if (StatusSiteE == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
                     {
-                        TargetSiteOrderNum = TurnChip_E;  // 今狙われているエイムサイトは SiteE
-                        HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
-                        if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                        if (rollF[5] >= 2 && rollF[5] <= 4) // 役割が いぬ、さる、きじ のどれかである
                         {
-                            Debug.Log("【CPU】UkkariAte-5");
-                            PushedBtnFlg = 1;  // 処理を実施したかどうか
-                            PushYakuwariBtn_Common(rollF[5]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
-                            UkkariSite[5] = -1;  // うっかり当て処理を実施済み のしるし
+                            TargetSiteOrderNum = TurnChip_E;  // 今狙われているエイムサイトは SiteE
+                            HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
+                            if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                            {
+                                Debug.Log("【CPU】UkkariAte-5");
+                                PushedBtnFlg = 1;  // 処理を実施したかどうか
+                                PushYakuwariBtn_Common(rollF[5]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
+                                UkkariSite[5] = -1;  // うっかり当て処理を実施済み のしるし
+                            }
                         }
                     }
                 }
@@ -6165,18 +6322,21 @@ public class SiteManager : MonoBehaviour
         {
             if (UkkariSite[6] == 1)    // *うっかりフラグが1のものが 存在する
             {
-                if (StatusSiteF == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
+                if (NowActiveSiteN != 6)  // 選択したのが自分自身でなければ
                 {
-                    if (rollF[6] >= 2 && rollF[6] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                    if (StatusSiteF == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
                     {
-                        TargetSiteOrderNum = TurnChip_F;  // 今狙われているエイムサイトは SiteF
-                        HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
-                        if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                        if (rollF[6] >= 2 && rollF[6] <= 4) // 役割が いぬ、さる、きじ のどれかである
                         {
-                            Debug.Log("【CPU】UkkariAte-6");
-                            PushedBtnFlg = 1;  // 処理を実施したかどうか
-                            PushYakuwariBtn_Common(rollF[6]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
-                            UkkariSite[6] = -1;  // うっかり当て処理を実施済み のしるし
+                            TargetSiteOrderNum = TurnChip_F;  // 今狙われているエイムサイトは SiteF
+                            HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
+                            if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                            {
+                                Debug.Log("【CPU】UkkariAte-6");
+                                PushedBtnFlg = 1;  // 処理を実施したかどうか
+                                PushYakuwariBtn_Common(rollF[6]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
+                                UkkariSite[6] = -1;  // うっかり当て処理を実施済み のしるし
+                            }
                         }
                     }
                 }
@@ -6186,18 +6346,21 @@ public class SiteManager : MonoBehaviour
         {
             if (UkkariSite[7] == 1)    // *うっかりフラグが1のものが 存在する
             {
-                if (StatusSiteG == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
+                if (NowActiveSiteN != 7)  // 選択したのが自分自身でなければ
                 {
-                    if (rollF[7] >= 2 && rollF[7] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                    if (StatusSiteG == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
                     {
-                        TargetSiteOrderNum = TurnChip_G;  // 今狙われているエイムサイトは SiteG
-                        HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
-                        if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                        if (rollF[7] >= 2 && rollF[7] <= 4) // 役割が いぬ、さる、きじ のどれかである
                         {
-                            Debug.Log("【CPU】UkkariAte-7");
-                            PushedBtnFlg = 1;  // 処理を実施したかどうか
-                            PushYakuwariBtn_Common(rollF[7]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
-                            UkkariSite[7] = -1;  // うっかり当て処理を実施済み のしるし
+                            TargetSiteOrderNum = TurnChip_G;  // 今狙われているエイムサイトは SiteG
+                            HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
+                            if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                            {
+                                Debug.Log("【CPU】UkkariAte-7");
+                                PushedBtnFlg = 1;  // 処理を実施したかどうか
+                                PushYakuwariBtn_Common(rollF[7]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
+                                UkkariSite[7] = -1;  // うっかり当て処理を実施済み のしるし
+                            }
                         }
                     }
                 }
@@ -6207,18 +6370,21 @@ public class SiteManager : MonoBehaviour
         {
             if (UkkariSite[8] == 1)    // *うっかりフラグが1のものが 存在する
             {
-                if (StatusSiteH == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
+                if (NowActiveSiteN != 8)  // 選択したのが自分自身でなければ
                 {
-                    if (rollF[8] >= 2 && rollF[8] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                    if (StatusSiteH == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
                     {
-                        TargetSiteOrderNum = TurnChip_H;  // 今狙われているエイムサイトは SiteH
-                        HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
-                        if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                        if (rollF[8] >= 2 && rollF[8] <= 4) // 役割が いぬ、さる、きじ のどれかである
                         {
-                            Debug.Log("【CPU】UkkariAte-8");
-                            PushedBtnFlg = 1;  // 処理を実施したかどうか
-                            PushYakuwariBtn_Common(rollF[8]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
-                            UkkariSite[8] = -1;  // うっかり当て処理を実施済み のしるし
+                            TargetSiteOrderNum = TurnChip_H;  // 今狙われているエイムサイトは SiteH
+                            HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
+                            if (WorthAiming == 1)  // エイムする二段階目の条件を満たしている
+                            {
+                                Debug.Log("【CPU】UkkariAte-8");
+                                PushedBtnFlg = 1;  // 処理を実施したかどうか
+                                PushYakuwariBtn_Common(rollF[8]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
+                                UkkariSite[8] = -1;  // うっかり当て処理を実施済み のしるし
+                            }
                         }
                     }
                 }
@@ -6226,7 +6392,7 @@ public class SiteManager : MonoBehaviour
         }
     }
 
-    public void HanteiWorthAiming()  // そのエイムサイトが、もう手番を終えているか確認 →終えていたら攻撃する価値なし
+    public void HanteiWorthAiming()  // そのエイムサイトが、もう手番を終えているか確認 →終えていたら攻撃する価値なし (前提：選択したのが自分自身でない)
     {
         WorthAiming = 1;  // そのエイムサイトが、狙う（攻撃する）価値があるか → ある に初期化
         if (preventTurnNum == 3)  //  現在、3ターン目であるならば
@@ -6293,58 +6459,82 @@ public class SiteManager : MonoBehaviour
             TargetSiteOrderNum = 0;  // オーダーナンバーを初期化（0のままでは意味をなさない）
             if (rollF[1] == 1) // ももたろう
             {
-                if (StatusSiteA == 2)  // ももたろう が 木札ON
+                if (NowActiveSiteN != 1)  // 選択したのが自分自身でなければ
                 {
-                    TargetSiteOrderNum = TurnChip_A;  // 今狙われているエイムサイトは SiteA
+                    if (StatusSiteA == 2)  // ももたろう が 木札ON
+                    {
+                        TargetSiteOrderNum = TurnChip_A;  // 今狙われているエイムサイトは SiteA
+                    }
                 }
             }
             else if (rollF[2] == 1) // ももたろう
             {
-                if (StatusSiteB == 2)
+                if (NowActiveSiteN != 2)  // 選択したのが自分自身でなければ
                 {
-                    TargetSiteOrderNum = TurnChip_B;  // 今狙われているエイムサイトは SiteB
+                    if (StatusSiteB == 2)
+                    {
+                        TargetSiteOrderNum = TurnChip_B;  // 今狙われているエイムサイトは SiteB
+                    }
                 }
             }
             else if (rollF[3] == 1) // ももたろう
             {
-                if (StatusSiteC == 2)
+                if (NowActiveSiteN != 3)  // 選択したのが自分自身でなければ
                 {
-                    TargetSiteOrderNum = TurnChip_C;  // 今狙われているエイムサイトは SiteC
+                    if (StatusSiteC == 2)
+                    {
+                        TargetSiteOrderNum = TurnChip_C;  // 今狙われているエイムサイトは SiteC
+                    }
                 }
             }
             else if (rollF[4] == 1) // ももたろう
             {
-                if (StatusSiteD == 2)
+                if (NowActiveSiteN != 4)  // 選択したのが自分自身でなければ
                 {
-                    TargetSiteOrderNum = TurnChip_D;  // 今狙われているエイムサイトは SiteD
+                    if (StatusSiteD == 2)
+                    {
+                        TargetSiteOrderNum = TurnChip_D;  // 今狙われているエイムサイトは SiteD
+                    }
                 }
             }
             else if (rollF[5] == 1) // ももたろう
             {
-                if (StatusSiteE == 2)
+                if (NowActiveSiteN != 5)  // 選択したのが自分自身でなければ
                 {
-                    TargetSiteOrderNum = TurnChip_E;  // 今狙われているエイムサイトは SiteE
+                    if (StatusSiteE == 2)
+                    {
+                        TargetSiteOrderNum = TurnChip_E;  // 今狙われているエイムサイトは SiteE
+                    }
                 }
             }
             else if (rollF[6] == 1) // ももたろう
             {
-                if (StatusSiteF == 2)
+                if (NowActiveSiteN != 6)  // 選択したのが自分自身でなければ
                 {
-                    TargetSiteOrderNum = TurnChip_F;  // 今狙われているエイムサイトは SiteF
+                    if (StatusSiteF == 2)
+                    {
+                        TargetSiteOrderNum = TurnChip_F;  // 今狙われているエイムサイトは SiteF
+                    }
                 }
             }
             else if (rollF[7] == 1) // ももたろう
             {
-                if (StatusSiteG == 2)
+                if (NowActiveSiteN != 7)  // 選択したのが自分自身でなければ
                 {
-                    TargetSiteOrderNum = TurnChip_G;  // 今狙われているエイムサイトは SiteG
+                    if (StatusSiteG == 2)
+                    {
+                        TargetSiteOrderNum = TurnChip_G;  // 今狙われているエイムサイトは SiteG
+                    }
                 }
             }
             else if (rollF[8] == 1) // ももたろう
             {
-                if (StatusSiteH == 2)
+                if (NowActiveSiteN != 8)  // 選択したのが自分自身でなければ
                 {
-                    TargetSiteOrderNum = TurnChip_H;  // 今狙われているエイムサイトは SiteH
+                    if (StatusSiteH == 2)
+                    {
+                        TargetSiteOrderNum = TurnChip_H;  // 今狙われているエイムサイトは SiteH
+                    }
                 }
             }
 

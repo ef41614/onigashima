@@ -14,8 +14,18 @@ public class MainFlow : MonoBehaviour {
     public GameObject ShiaiNumCenter;    // 現在、第〇試合目かを画面中央に表示する
     public GameObject ShiaiNumMekuri;    // 現在、第〇試合目かを めくり に表示する
     public GameObject CanvasShiaiNum;
+    public int GenShiaiNum = 1;
 
 
+    //####################################  Awake  ###################################
+
+    void Awake()
+    {
+        Debug.Log("MainFlow Awake");
+        GenShiaiNum = preventShiaiNum;
+        Debug.Log("GenShiaiNum :"+ GenShiaiNum);
+        Debug.Log("preventShiaiNum :" + preventShiaiNum);
+    }
 
     //☆################☆################  Start  ################☆################☆
 

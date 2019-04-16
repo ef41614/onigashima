@@ -318,13 +318,10 @@ public class SiteManager : MonoBehaviour
         AppearEyecatch();
         ResetStatusAllSites();  // すべてのサイトのステータスをリセットする（初期化）        
         NowOyabunStatus = 1;  // 現在の おやぶんの ステータスをリセット
-        OniLevel = SelectManager.getOniStrong(); // ゲッター関数を呼び出し、値を引き継ぐ
         KabaiKooniPositon = KabaiKooni.transform.position;  // かばいこおにの現在位置をPositionに代入
-        GuideLevel = SelectManager.getGuideMode(); // ゲッター関数を呼び出し、値を引き継ぐ
 
         ButtonCscr.ResetGuideText();
         MainFlowScr = MainFlow.GetComponent<MainFlow>();
-        FirstCheckGuideLevel();
         WinFlgON = 0;  // // 0で勝利フラグ初期化
         CloseHomeButton_Box();
         CloseHaguruma_Box();
@@ -351,11 +348,18 @@ public class SiteManager : MonoBehaviour
         CardR_BaGSC = Yaku_G.GetComponent<CardReverse_Ba>();
         CardR_BaHSC = Yaku_H.GetComponent<CardReverse_Ba>();
 
-        ResetSelectMessageLevel();  // メッセージ送りスピードを更新する
         // SelectMesSpeed02();  // 初期設定「ふつう」にする
-        MessageLevel = SelectManager.getMessageSpeed(); // ゲッター関数を呼び出し、値を引き継ぐ
-        ReflectMessageLevel();  // MessageLevel を元に、MessageOkuriTime を決める（メッセージ送りスピードを更新する）
+        if (MainFlowScr.GenShiaiNum == 1)  // 第一試合開始時のみ実施
+        {
+            ResetSelectMessageLevel();  // メッセージ送りスピードを更新する
+            MessageLevel = SelectManager.getMessageSpeed(); // ゲッター関数を呼び出し、値を引き継ぐ
+            GuideLevel = SelectManager.getGuideMode(); // ゲッター関数を呼び出し、値を引き継ぐ
+            OniLevel = SelectManager.getOniStrong(); // ゲッター関数を呼び出し、値を引き継ぐ
+            ReflectMessageLevel();  // MessageLevel を元に、MessageOkuriTime を決める（メッセージ送りスピードを更新する）
+        }
         CheckSelectedMesSpeed();  // 選択されているスピードをアピールする（黄色背景点滅）
+        FirstCheckGuideLevel();
+
     }
 
 
@@ -1385,37 +1389,37 @@ public class SiteManager : MonoBehaviour
         }
         else if (NowActiveSiteN == 2)
         {
-            StatusSiteA = 4;
+            StatusSiteB = 4;
             YakuMSC.OpenYakuCardB();
         }
         else if (NowActiveSiteN == 3)
         {
-            StatusSiteA = 4;
+            StatusSiteC = 4;
             YakuMSC.OpenYakuCardC();
         }
         else if (NowActiveSiteN == 4)
         {
-            StatusSiteA = 4;
+            StatusSiteD = 4;
             YakuMSC.OpenYakuCardD();
         }
         else if (NowActiveSiteN == 5)
         {
-            StatusSiteA = 4;
+            StatusSiteE = 4;
             YakuMSC.OpenYakuCardE();
         }
         else if (NowActiveSiteN == 6)
         {
-            StatusSiteA = 4;
+            StatusSiteF = 4;
             YakuMSC.OpenYakuCardF();
         }
         else if (NowActiveSiteN == 7)
         {
-            StatusSiteA = 4;
+            StatusSiteG = 4;
             YakuMSC.OpenYakuCardG();
         }
         else if (NowActiveSiteN == 8)
         {
-            StatusSiteA = 4;
+            StatusSiteH = 4;
             YakuMSC.OpenYakuCardH();
         }
         CheckNowOyabunStatus();  // おやぶんのステータス確認
@@ -1900,9 +1904,12 @@ public class SiteManager : MonoBehaviour
         Debug.Log("◆◎OniLevel：" + OniLevel);   // この値が3以上なら、「かばう」発動する
         if (OniLevel >= 3)
         {
+            int accuracy = 0;
             if (rollF[TargetSiteNum] == 5)       // 狙われた人の役割が「オニのおやぶんである」
             {
-                int accuracy = UnityEngine.Random.Range(1, 7); // カウンターが成功するかどうかのランダム数値  
+                CounterFlg = false;  // カウンターフラグを初期化
+                accuracy = UnityEngine.Random.Range(1, 7); // カウンターが成功するかどうかのランダム数値  
+                Debug.Log("カウンターパラメータ ◎accuracy：" + accuracy);   // この値が3以上なら、「かばう」発動する
                 if (1 <= accuracy && accuracy <= 2)   // ★7だと100％カウンター成功
                 {
                     CounterFlg = true;  // カウンター条件を満たしている →カウンターフラグをON → 「カウンター」発動！
@@ -2272,6 +2279,7 @@ public class SiteManager : MonoBehaviour
                 StatusSiteH = 7;  // もうこれ以降手番なし
             }
         }
+        HPMSC.HP_check();  // HPの残りに応じて、プレイ画面を更新
     }
 
     public void GoToNextTurn()  // そのターンがすべて終わり、次のターンに行く

@@ -234,6 +234,7 @@ public class SiteManager : MonoBehaviour
 
     public bool CounterFlg = false;  // 「カウンター」の発動フラグ
 
+    public static int GuideMode = 1;  // 1 でガイド文 ON
     public int GuideLevel;  // 1 でガイド文 ON
 
     public GameObject Haguruma_Box;
@@ -349,11 +350,21 @@ public class SiteManager : MonoBehaviour
         CardR_BaHSC = Yaku_H.GetComponent<CardReverse_Ba>();
 
         // SelectMesSpeed02();  // 初期設定「ふつう」にする
-        if (MainFlowScr.GenShiaiNum == 1)  // 第一試合開始時のみ実施
+        if (MainFlowScr.GenShiaiNum == 1)  // 第1試合開始時のみ実施
         {
+            Debug.Log("第1試合開始時のみ実施：" + MainFlowScr.GenShiaiNum);
             ResetSelectMessageLevel();  // メッセージ送りスピードを更新する
             MessageLevel = SelectManager.getMessageSpeed(); // ゲッター関数を呼び出し、値を引き継ぐ
             GuideLevel = SelectManager.getGuideMode(); // ゲッター関数を呼び出し、値を引き継ぐ
+            OniLevel = SelectManager.getOniStrong(); // ゲッター関数を呼び出し、値を引き継ぐ
+            ReflectMessageLevel();  // MessageLevel を元に、MessageOkuriTime を決める（メッセージ送りスピードを更新する）
+        }
+        if (MainFlowScr.GenShiaiNum >= 2)  // 第2試合以降に実施
+        {
+            Debug.Log("第2試合以降に実施：" + MainFlowScr.GenShiaiNum);
+            ResetSelectMessageLevel();  // メッセージ送りスピードを更新する
+            MessageLevel = MessageSpeed; // static な変数より、全試合にて設定した値を引き継ぐ
+            GuideLevel = GuideMode; // ゲッター関数を呼び出し、値を引き継ぐ
             OniLevel = SelectManager.getOniStrong(); // ゲッター関数を呼び出し、値を引き継ぐ
             ReflectMessageLevel();  // MessageLevel を元に、MessageOkuriTime を決める（メッセージ送りスピードを更新する）
         }
@@ -2794,6 +2805,12 @@ public class SiteManager : MonoBehaviour
         CharaMSC.AppearWinTeam(T, teamSiteF, SiteFWinAppearFlg, CharaMSC.SiteF_charaF, YakuMSC.SiteF_rollF);
         CharaMSC.AppearWinTeam(T, teamSiteG, SiteGWinAppearFlg, CharaMSC.SiteG_charaF, YakuMSC.SiteG_rollF);
         CharaMSC.AppearWinTeam(T, teamSiteH, SiteHWinAppearFlg, CharaMSC.SiteH_charaF, YakuMSC.SiteH_rollF);
+    }
+
+    public void NextGameAtaiHoji()  // 次の試合に進む際、現在の設定を持ち越す
+    {
+        GuideMode = GuideLevel;  // static な変数に値を保存
+        MessageSpeed = MessageLevel;  // static な変数に値を保存
     }
 
 

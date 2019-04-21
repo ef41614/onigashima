@@ -241,6 +241,7 @@ public class SiteManager : MonoBehaviour
     public GameObject GuideCheckBox2;
     public GameObject GuideCheckMark2; // チェックマーク2。
     public GameObject HomeButton_Box;
+    public GameObject Seiseki_Box;  // 総合成績を見る
 
     public int WinFlgON = 0;  // 0で勝利フラグまだ立っていない
     public Image ImageP_WinMessage;
@@ -325,6 +326,7 @@ public class SiteManager : MonoBehaviour
         MainFlowScr = MainFlow.GetComponent<MainFlow>();
         WinFlgON = 0;  // // 0で勝利フラグ初期化
         CloseHomeButton_Box();
+        CloseSeiseki_Box();
         CloseHaguruma_Box();
         CloseInfoCPU();
         KifudaProgressTotal = 0;  // 木札ONの進捗状況 初期化
@@ -2890,6 +2892,15 @@ public class SiteManager : MonoBehaviour
         HomeButton_Box.SetActive(false);
     }
 
+    public void OpenSeiseki_Box()  // 総合成績を見る
+    {
+        Seiseki_Box.SetActive(true);
+    }
+
+    public void CloseSeiseki_Box()
+    {
+        Seiseki_Box.SetActive(false);
+    }
 
     public void GoToHome()
     {
@@ -3329,16 +3340,33 @@ public class SiteManager : MonoBehaviour
                     }
                 }
 
-                // *メイビーパラメータを元に、こおに と思われるキャラを1人選ぶ(役割当て) ※ 木札の有無は問わない （メイビーパラメータが初期値ならば このフェーズはスルー）
+                // うっかりこおに（木札ON） がいるなら → 役割当て
                 if (PushedBtnFlg == 0)  // 処理を実施したかどうか
                 {
                     Debug.Log("【CPU】Momo-2");
-                    MaybeKooni_Ate();  // こおにのうち、少なくとも1人オープン前（ステータス2以下）のキャラが存在するならば
-                    if (PushedBtnFlg == 1)  // 条件に合う こおに と思われるキャラ が見つかったら  (前提：エイムサイトが自分ではない)
+                    UkkariAte(6); // うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）
+                    if (PushedBtnFlg == 1)  // (前提：エイムサイトが自分ではない)
                     {
-                        Debug.Log("*メイビーパラメータを元に、こおに と思われるキャラを1人選ぶ(役割当て)");
+                        Debug.Log("うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）");
                     }
                 }
+
+                // *メイビーパラメータを元に、こおに と思われるキャラを1人選ぶ(役割当て) ※ 木札の有無は問わない （メイビーパラメータが初期値ならば このフェーズはスルー）
+                if (PushedBtnFlg == 0)  // 処理を実施したかどうか
+                {
+                    Debug.Log("【CPU】Momo-2.5");
+                    int RndAct = UnityEngine.Random.Range(1, 7);  // メイビー当てするか、スルーするか、ランダムで決定
+                    Debug.Log("RndAct ： " + RndAct);
+                    if (RndAct <= 3) // メイビーこおに当て しよう
+                    {
+                        MaybeKooni_Ate();  // こおにのうち、少なくとも1人オープン前（ステータス2以下）のキャラが存在するならば
+                        if (PushedBtnFlg == 1)  // 条件に合う こおに と思われるキャラ が見つかったら  (前提：エイムサイトが自分ではない)
+                        {
+                            Debug.Log("*メイビーパラメータを元に、こおに と思われるキャラを1人選ぶ(役割当て)");
+                        }
+                    }
+                }
+
 
                 if (PushedBtnFlg == 0) // 処理を実施したかどうか
                 {
@@ -3397,24 +3425,13 @@ public class SiteManager : MonoBehaviour
             if (PushedBtnFlg == 0)  // 処理を実施したかどうか
             {
                 Debug.Log("【CPU】Oya-4");
-                UkkariAte(); // うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）
+                UkkariAte(2); // うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）
                 if (PushedBtnFlg == 1)  // (前提：エイムサイトが自分ではない)
                 {
                     Debug.Log("うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）");
                 }
             }
-
-            // 桃太郎が   木札ON(ももじ)なら → 役割当て
-            if (PushedBtnFlg == 0)  // 処理を実施したかどうか
-            {
-                Debug.Log("【CPU】Oya-5");
-                KifudaOnMomojiAte();  // 桃太郎が 木札ON（ステータス2）なら 役割当て or 条件を満たさなければスルー
-                if (PushedBtnFlg == 1)  // (前提：エイムサイトが自分ではない)
-                {
-                    Debug.Log("ももたろうが 木札ONなら → 役割当て");
-                }
-            }
-
+            
             // ステータスが2以下である 桃メイト がいれば  → 条件を満たせば 役割当て (その役割だと確定し、迷いなく処理する)
             if (PushedBtnFlg == 0)  // 処理を実施したかどうか
             {
@@ -3580,17 +3597,20 @@ public class SiteManager : MonoBehaviour
                         {
                             if (InokoriMate == 3)   // 残りのサイト（ステータスが2以下）が、ももたろう と 桃メイト×3
                             {
-                                CheckKifudaProgressTotal();  // 木札ONの進捗状況
-                                if (KifudaProgressTotal >= 5)  // 居残り組4人中、 木札ON 1枚以上
+                                if (InokoriKooni == 0)  // 居残りこおにがゼロ（＝後の居残りは ももたろう）
                                 {
-                                    PushedBtnFlg = 1;  // 処理を実施したかどうか → 実施済み
-                                    Debug.Log("残りのサイト（ステータスが2以下）が、ももたろう と 桃メイト×3（他のキャラは全部オープン済み）");
-                                    PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン ・・・その役割だと確定し、迷いなく処理する
+                                    CheckKifudaProgressTotal();  // 木札ONの進捗状況
+                                    if (KifudaProgressTotal >= 5)  // 居残り組4人中、 木札ON 1枚以上
+                                    {
+                                        PushedBtnFlg = 1;  // 処理を実施したかどうか → 実施済み
+                                        Debug.Log("残りのサイト（ステータスが2以下）が、ももたろう と 桃メイト×3（他のキャラは全部オープン済み）");
+                                        PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン ・・・その役割だと確定し、迷いなく処理する
+                                    }
                                 }
                             }
                         }
                     }
-                    else if (KurunProgressTotal == 3) // 自分がおやぶんで、ステータスが2以下が 4人いる（他のキャラは全部オープン済み） ◆場の全体を見て その役割 だと判明した場合
+                    else if (KurunProgressTotal == 3) // 自分がおやぶんで、ステータスが2以下が 5人いる（他のキャラは全部オープン済み） ◆場の全体を見て その役割 だと判明した場合
                     {
                         Sum_InokoriMate();   // 居残りメイトの合計を求める
                         Sum_InokoriKooni();   // 居残りこおにの合計を求める
@@ -3626,6 +3646,17 @@ public class SiteManager : MonoBehaviour
                 }
             }
 
+            // 桃太郎が   木札ON(ももじ)なら → 役割当て
+            if (PushedBtnFlg == 0)  // 処理を実施したかどうか
+            {
+                Debug.Log("【CPU】Oya-5");
+                KifudaOnMomojiAte();  // 桃太郎が 木札ON（ステータス2）なら 役割当て or 条件を満たさなければスルー
+                if (PushedBtnFlg == 1)  // (前提：エイムサイトが自分ではない)
+                {
+                    Debug.Log("ももたろうが 木札ONなら → 役割当て");
+                }
+            }
+            
             // 桃太郎が 木札無しなら → 条件を満たせば 役割当て
             if (PushedBtnFlg == 0)  // 処理を実施したかどうか
             {
@@ -3760,21 +3791,10 @@ public class SiteManager : MonoBehaviour
                     if (PushedBtnFlg == 0)  // 処理を実施したかどうか
                     {
                         Debug.Log("【CPU】kooni-2");
-                        UkkariAte();  // うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）
+                        UkkariAte(2);  // うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）
                         if (PushedBtnFlg == 1)  // (前提：エイムサイトが自分ではない)
                         {
                             Debug.Log("うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）");
-                        }
-                    }
-
-                    // 桃太郎が   木札ON(ももじ)なら → 役割当て
-                    if (PushedBtnFlg == 0)  // 処理を実施したかどうか
-                    {
-                        Debug.Log("【CPU】kooni-3");
-                        KifudaOnMomojiAte();  // 桃太郎が 木札ON（ステータス2）なら 役割当て or 条件を満たさなければスルー
-                        if (PushedBtnFlg == 1)  // (前提：エイムサイトが自分ではない)
-                        {
-                            Debug.Log("ももたろうが 木札ONなら → 役割当て");
                         }
                     }
 
@@ -3786,6 +3806,17 @@ public class SiteManager : MonoBehaviour
                         if (PushedBtnFlg == 1)
                         {
                             Debug.Log("ステータスが2以下である 桃メイト → 条件を満たせば 役割当て :その役割だと確定し、迷いなく処理する");
+                        }
+                    }
+
+                    // 桃太郎が   木札ON(ももじ)なら → 役割当て
+                    if (PushedBtnFlg == 0)  // 処理を実施したかどうか
+                    {
+                        Debug.Log("【CPU】kooni-3");
+                        KifudaOnMomojiAte();  // 桃太郎が 木札ON（ステータス2）なら 役割当て or 条件を満たさなければスルー
+                        if (PushedBtnFlg == 1)  // (前提：エイムサイトが自分ではない)
+                        {
+                            Debug.Log("ももたろうが 木札ONなら → 役割当て");
                         }
                     }
 
@@ -3986,21 +4017,10 @@ public class SiteManager : MonoBehaviour
                 if (PushedBtnFlg == 0)  // 処理を実施したかどうか
                 {
                     Debug.Log("【CPU】kooni-17");
-                    UkkariAte();  // うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て） (前提：エイムサイトが自分ではない)
+                    UkkariAte(2);  // うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て） (前提：エイムサイトが自分ではない)
                     if (PushedBtnFlg == 1)
                     {
                         Debug.Log("うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）");
-                    }
-                }
-
-                // 桃太郎が   木札ON(ももじ)なら → 役割当て
-                if (PushedBtnFlg == 0)  // 処理を実施したかどうか
-                {
-                    Debug.Log("【CPU】kooni-18");
-                    KifudaOnMomojiAte();  // 桃太郎が 木札ON（ステータス2）なら 役割当て or 条件を満たさなければスルー
-                    if (PushedBtnFlg == 1)  // (前提：エイムサイトが自分ではない)
-                    {
-                        Debug.Log("ももたろうが 木札ONなら → 役割当て");
                     }
                 }
 
@@ -4012,6 +4032,17 @@ public class SiteManager : MonoBehaviour
                     if (PushedBtnFlg == 1)
                     {
                         Debug.Log("ステータスが2以下である 桃メイト → 条件を満たせば 役割当て :その役割だと確定し、迷いなく処理する");
+                    }
+                }
+
+                // 桃太郎が   木札ON(ももじ)なら → 役割当て
+                if (PushedBtnFlg == 0)  // 処理を実施したかどうか
+                {
+                    Debug.Log("【CPU】kooni-18");
+                    KifudaOnMomojiAte();  // 桃太郎が 木札ON（ステータス2）なら 役割当て or 条件を満たさなければスルー
+                    if (PushedBtnFlg == 1)  // (前提：エイムサイトが自分ではない)
+                    {
+                        Debug.Log("ももたろうが 木札ONなら → 役割当て");
                     }
                 }
 
@@ -6220,7 +6251,7 @@ public class SiteManager : MonoBehaviour
     }
 
 
-    public void UkkariAte()   // うっかり桃メイト（木札ON） がいるなら → 役割当て （3ターン目で、行動済みのキャラに対してはエイムしない）(前提：エイムサイトが自分ではない)
+    public void UkkariAte(int UKRroll)   // うっかり桃メイト or うっかりこおに（木札ON） がいるなら → 役割当て （3ターン目で、行動済みのキャラに対してはエイムしない）(前提：エイムサイトが自分ではない)
     {
         Debug.Log("【CPU】UkkariAte-0");
         if (PushedBtnFlg == 0)  // 処理を実施したかどうか
@@ -6231,7 +6262,7 @@ public class SiteManager : MonoBehaviour
                 {
                     if (StatusSiteA == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
                     {
-                        if (rollF[1] >= 2 && rollF[1] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                        if (rollF[1] >= UKRroll && rollF[1] <= (UKRroll + 2)) // 役割が [いぬ、さる、きじ] or [こおに] のどれかである
                         {
                             TargetSiteOrderNum = TurnChip_A;  // 今狙われているエイムサイトは SiteA
                             HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
@@ -6239,7 +6270,7 @@ public class SiteManager : MonoBehaviour
                             {
                                 Debug.Log("【CPU】UkkariAte-1");
                                 PushedBtnFlg = 1;  // 処理を実施したかどうか
-                                PushYakuwariBtn_Common(rollF[1]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
+                                PushYakuwariBtn_Common(rollF[1]);     // その木札ONのサイトの役割を当てる([2,3,4] か[6,7,8] の いずれかが入る)
                                 UkkariSite[1] = -1;  // うっかり当て処理を実施済み のしるし
                             }
                         }
@@ -6255,7 +6286,7 @@ public class SiteManager : MonoBehaviour
                 {
                     if (StatusSiteB == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
                     {
-                        if (rollF[2] >= 2 && rollF[2] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                        if (rollF[2] >= UKRroll && rollF[2] <= (UKRroll + 2)) // 役割が [いぬ、さる、きじ] or [こおに] のどれかである
                         {
                             TargetSiteOrderNum = TurnChip_B;  // 今狙われているエイムサイトは SiteB
                             HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
@@ -6263,7 +6294,7 @@ public class SiteManager : MonoBehaviour
                             {
                                 Debug.Log("【CPU】UkkariAte-2");
                                 PushedBtnFlg = 1;  // 処理を実施したかどうか
-                                PushYakuwariBtn_Common(rollF[2]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
+                                PushYakuwariBtn_Common(rollF[2]);     // その木札ONのサイトの役割を当てる([2,3,4] か[6,7,8] の いずれかが入る)
                                 UkkariSite[2] = -1;  // うっかり当て処理を実施済み のしるし
                             }
                         }
@@ -6279,7 +6310,7 @@ public class SiteManager : MonoBehaviour
                 {
                     if (StatusSiteC == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
                     {
-                        if (rollF[3] >= 2 && rollF[3] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                        if (rollF[3] >= UKRroll && rollF[3] <= (UKRroll + 2)) // 役割が [いぬ、さる、きじ] or [こおに] のどれかである
                         {
                             TargetSiteOrderNum = TurnChip_C;  // 今狙われているエイムサイトは SiteC
                             HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
@@ -6287,7 +6318,7 @@ public class SiteManager : MonoBehaviour
                             {
                                 Debug.Log("【CPU】UkkariAte-3");
                                 PushedBtnFlg = 1;  // 処理を実施したかどうか
-                                PushYakuwariBtn_Common(rollF[3]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
+                                PushYakuwariBtn_Common(rollF[3]);     // その木札ONのサイトの役割を当てる([2,3,4] か[6,7,8] の いずれかが入る)
                                 UkkariSite[3] = -1;  // うっかり当て処理を実施済み のしるし
                             }
                         }
@@ -6303,7 +6334,7 @@ public class SiteManager : MonoBehaviour
                 {
                     if (StatusSiteD == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
                     {
-                        if (rollF[4] >= 2 && rollF[4] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                        if (rollF[4] >= UKRroll && rollF[4] <= (UKRroll + 2)) // 役割が [いぬ、さる、きじ] or [こおに] のどれかである
                         {
                             TargetSiteOrderNum = TurnChip_D;  // 今狙われているエイムサイトは SiteD
                             HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
@@ -6311,7 +6342,7 @@ public class SiteManager : MonoBehaviour
                             {
                                 Debug.Log("【CPU】UkkariAte-4");
                                 PushedBtnFlg = 1;  // 処理を実施したかどうか
-                                PushYakuwariBtn_Common(rollF[4]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
+                                PushYakuwariBtn_Common(rollF[4]);     // その木札ONのサイトの役割を当てる([2,3,4] か[6,7,8] の いずれかが入る)
                                 UkkariSite[4] = -1;  // うっかり当て処理を実施済み のしるし
                             }
                         }
@@ -6327,7 +6358,7 @@ public class SiteManager : MonoBehaviour
                 {
                     if (StatusSiteE == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
                     {
-                        if (rollF[5] >= 2 && rollF[5] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                        if (rollF[5] >= UKRroll && rollF[5] <= (UKRroll + 2)) // 役割が [いぬ、さる、きじ] or [こおに] のどれかである
                         {
                             TargetSiteOrderNum = TurnChip_E;  // 今狙われているエイムサイトは SiteE
                             HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
@@ -6335,7 +6366,7 @@ public class SiteManager : MonoBehaviour
                             {
                                 Debug.Log("【CPU】UkkariAte-5");
                                 PushedBtnFlg = 1;  // 処理を実施したかどうか
-                                PushYakuwariBtn_Common(rollF[5]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
+                                PushYakuwariBtn_Common(rollF[5]);     // その木札ONのサイトの役割を当てる([2,3,4] か[6,7,8] の いずれかが入る)
                                 UkkariSite[5] = -1;  // うっかり当て処理を実施済み のしるし
                             }
                         }
@@ -6351,7 +6382,7 @@ public class SiteManager : MonoBehaviour
                 {
                     if (StatusSiteF == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
                     {
-                        if (rollF[6] >= 2 && rollF[6] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                        if (rollF[6] >= UKRroll && rollF[6] <= (UKRroll + 2)) // 役割が [いぬ、さる、きじ] or [こおに] のどれかである
                         {
                             TargetSiteOrderNum = TurnChip_F;  // 今狙われているエイムサイトは SiteF
                             HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
@@ -6359,7 +6390,7 @@ public class SiteManager : MonoBehaviour
                             {
                                 Debug.Log("【CPU】UkkariAte-6");
                                 PushedBtnFlg = 1;  // 処理を実施したかどうか
-                                PushYakuwariBtn_Common(rollF[6]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
+                                PushYakuwariBtn_Common(rollF[6]);     // その木札ONのサイトの役割を当てる([2,3,4] か[6,7,8] の いずれかが入る)
                                 UkkariSite[6] = -1;  // うっかり当て処理を実施済み のしるし
                             }
                         }
@@ -6375,7 +6406,7 @@ public class SiteManager : MonoBehaviour
                 {
                     if (StatusSiteG == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
                     {
-                        if (rollF[7] >= 2 && rollF[7] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                        if (rollF[7] >= UKRroll && rollF[7] <= (UKRroll + 2)) // 役割が [いぬ、さる、きじ] or [こおに] のどれかである
                         {
                             TargetSiteOrderNum = TurnChip_G;  // 今狙われているエイムサイトは SiteG
                             HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
@@ -6383,7 +6414,7 @@ public class SiteManager : MonoBehaviour
                             {
                                 Debug.Log("【CPU】UkkariAte-7");
                                 PushedBtnFlg = 1;  // 処理を実施したかどうか
-                                PushYakuwariBtn_Common(rollF[7]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
+                                PushYakuwariBtn_Common(rollF[7]);     // その木札ONのサイトの役割を当てる([2,3,4] か[6,7,8] の いずれかが入る)
                                 UkkariSite[7] = -1;  // うっかり当て処理を実施済み のしるし
                             }
                         }
@@ -6399,7 +6430,7 @@ public class SiteManager : MonoBehaviour
                 {
                     if (StatusSiteH == 2)  // うっかりサイトのステータスが木札ON（ステータス2）である
                     {
-                        if (rollF[8] >= 2 && rollF[8] <= 4) // 役割が いぬ、さる、きじ のどれかである
+                        if (rollF[8] >= UKRroll && rollF[8] <= (UKRroll + 2)) // 役割が [いぬ、さる、きじ] or [こおに] のどれかである
                         {
                             TargetSiteOrderNum = TurnChip_H;  // 今狙われているエイムサイトは SiteH
                             HanteiWorthAiming();  // そのエイムサイトが、もう手番を終えているか確認 →終えていたらエイムする価値なし
@@ -6407,7 +6438,7 @@ public class SiteManager : MonoBehaviour
                             {
                                 Debug.Log("【CPU】UkkariAte-8");
                                 PushedBtnFlg = 1;  // 処理を実施したかどうか
-                                PushYakuwariBtn_Common(rollF[8]);     // その木札ONのサイトの役割を当てる(2,3,4 の いずれかが入る)
+                                PushYakuwariBtn_Common(rollF[8]);     // その木札ONのサイトの役割を当てる([2,3,4] か[6,7,8] の いずれかが入る)
                                 UkkariSite[8] = -1;  // うっかり当て処理を実施済み のしるし
                             }
                         }

@@ -119,6 +119,24 @@ public class CharaManager : MonoBehaviour {
     public GameObject siteG_WinNumText;
     public GameObject siteH_WinNumText;
 
+    public static string Star_A;
+    public static string Star_B;
+    public static string Star_C;
+    public static string Star_D;
+    public static string Star_E;
+    public static string Star_F;
+    public static string Star_G;
+    public static string Star_H;
+
+    public GameObject siteA_WinStar;
+    public GameObject siteB_WinStar;
+    public GameObject siteC_WinStar;
+    public GameObject siteD_WinStar;
+    public GameObject siteE_WinStar;
+    public GameObject siteF_WinStar;
+    public GameObject siteG_WinStar;
+    public GameObject siteH_WinStar;
+
     //☆################☆################  Start  ################☆################☆
 
     void Start()
@@ -546,34 +564,42 @@ public class CharaManager : MonoBehaviour {
                 if (WinS == 1)
                 {
                     AddSiteA_WinNum();
+                    AddSiteA_WinStar();
                 }
                 else if (WinS == 2)
                 {
                     AddSiteB_WinNum();
+                    AddSiteB_WinStar();
                 }
                 else if (WinS == 3)
                 {
                     AddSiteC_WinNum();
+                    AddSiteC_WinStar();
                 }
                 else if (WinS == 4)
                 {
                     AddSiteD_WinNum();
+                    AddSiteD_WinStar();
                 }
                 else if (WinS == 5)
                 {
                     AddSiteE_WinNum();
+                    AddSiteE_WinStar();
                 }
                 else if (WinS == 6)
                 {
                     AddSiteF_WinNum();
+                    AddSiteF_WinStar();
                 }
                 else if (WinS == 7)
                 {
                     AddSiteG_WinNum();
+                    AddSiteG_WinStar();
                 }
                 else if (WinS == 8)
                 {
                     AddSiteH_WinNum();
+                    AddSiteH_WinStar();
                 }
             }
 
@@ -615,6 +641,7 @@ public class CharaManager : MonoBehaviour {
         SiteH_charaNametext_Seiseki.GetComponent<Text>().text = SiteH_charaNametext;
     }
 
+
     public void AppearSiteWinNum_Seiseki() // キャラ別 勝利数を表示させる
     {
         Debug.Log("キャラ別 勝利数を表示させる");
@@ -627,6 +654,20 @@ public class CharaManager : MonoBehaviour {
         siteG_WinNumText.GetComponent<Text>().text = siteG_WinNum.ToString();
         siteH_WinNumText.GetComponent<Text>().text = siteH_WinNum.ToString();
     }
+
+    public void AppearSiteWinStar_Seiseki() // キャラ別 勝利数を ★ で表示させる
+    {
+        Debug.Log("キャラ別 勝利数を ★ で表示させる");
+        siteA_WinStar.GetComponent<Text>().text = Star_A;
+        siteB_WinStar.GetComponent<Text>().text = Star_B;
+        siteC_WinStar.GetComponent<Text>().text = Star_C;
+        siteD_WinStar.GetComponent<Text>().text = Star_D;
+        siteE_WinStar.GetComponent<Text>().text = Star_E;
+        siteF_WinStar.GetComponent<Text>().text = Star_F;
+        siteG_WinStar.GetComponent<Text>().text = Star_G;
+        siteH_WinStar.GetComponent<Text>().text = Star_H;
+    }
+
 
     public void ResetSiteWinNum_Seiseki() // キャラ勝利数を0にリセット
     {
@@ -641,6 +682,18 @@ public class CharaManager : MonoBehaviour {
         siteH_WinNum = 0;
     }
 
+    public void ResetSiteWinStar_Seiseki() // 勝利数★を0にリセット
+    {
+        Debug.Log("勝利数★を0にリセット");
+        Star_A = "";
+        Star_B = "";
+        Star_C = "";
+        Star_D = "";
+        Star_E = "";
+        Star_F = "";
+        Star_G = "";
+        Star_H = "";
+    }
 
 
     #region(AddSites_WinNumPhase)  // 勝利回数をプラス1する
@@ -685,6 +738,49 @@ public class CharaManager : MonoBehaviour {
     }
     #endregion
 
+    #region(AddSites_WinStarPhase)  // 勝利数★ をプラス1する
+    public void AddSiteA_WinStar()
+    {
+        Star_A = Star_A + "★";
+    }
+
+    public void AddSiteB_WinStar()
+    {
+        Star_B = Star_B + "★";
+    }
+
+    public void AddSiteC_WinStar()
+    {
+        Star_C = Star_C + "★";
+    }
+
+    public void AddSiteD_WinStar()
+    {
+        Star_D = Star_D + "★";
+    }
+
+    public void AddSiteE_WinStar()
+    {
+        Star_E = Star_E + "★";
+    }
+
+    public void AddSiteF_WinStar()
+    {
+        Star_F = Star_F + "★";
+    }
+
+    public void AddSiteG_WinStar()
+    {
+        Star_G = Star_G + "★";
+    }
+
+    public void AddSiteH_WinStar()
+    {
+        Star_H = Star_H + "★";
+    }
+    #endregion
+
+
     public void CheckAddWinSite(int WinS)  // ゲームの勝利確定時、勝ったサイトの勝利数にプラス1する
     {
         if (WinS == 1)
@@ -718,6 +814,42 @@ public class CharaManager : MonoBehaviour {
         else if (WinS == 8)
         {
             AddSiteH_WinNum();
+        }
+    }
+
+    public void CheckAddWinStar(int WinS)  // ゲームの勝利確定時、勝ったサイトに ★ をプラス1する
+    {
+        if (WinS == 1)
+        {
+            AddSiteA_WinStar();
+        }
+        else if (WinS == 2)
+        {
+            AddSiteB_WinStar();
+        }
+        else if (WinS == 3)
+        {
+            AddSiteC_WinStar();
+        }
+        else if (WinS == 4)
+        {
+            AddSiteD_WinStar();
+        }
+        else if (WinS == 5)
+        {
+            AddSiteE_WinStar();
+        }
+        else if (WinS == 6)
+        {
+            AddSiteF_WinStar();
+        }
+        else if (WinS == 7)
+        {
+            AddSiteG_WinStar();
+        }
+        else if (WinS == 8)
+        {
+            AddSiteH_WinStar();
         }
     }
 

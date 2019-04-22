@@ -359,7 +359,9 @@ public class SiteManager : MonoBehaviour
             MessageLevel = SelectManager.getMessageSpeed(); // ゲッター関数を呼び出し、値を引き継ぐ
             GuideLevel = SelectManager.getGuideMode(); // ゲッター関数を呼び出し、値を引き継ぐ
             CharaMSC.ResetSiteWinNum_Seiseki();  // キャラ勝利数を0にリセット
+            CharaMSC.ResetSiteWinStar_Seiseki();  // 勝利数★を0にリセット
         }
+
         if (MainFlowScr.GenShiaiNum >= 2)  // 第2試合以降に実施
         {
             Debug.Log("第2試合以降に実施：" + MainFlowScr.GenShiaiNum);

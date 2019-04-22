@@ -762,6 +762,22 @@ MonoBehaviour:
   siteF_WinNumText: {fileID: 0}
   siteG_WinNumText: {fileID: 0}
   siteH_WinNumText: {fileID: 0}
+  Star_A: 
+  Star_B: 
+  Star_C: 
+  Star_D: 
+  Star_E: 
+  Star_F: 
+  Star_G: 
+  Star_H: 
+  siteA_WinStar: {fileID: 0}
+  siteB_WinStar: {fileID: 0}
+  siteC_WinStar: {fileID: 0}
+  siteD_WinStar: {fileID: 0}
+  siteE_WinStar: {fileID: 0}
+  siteF_WinStar: {fileID: 0}
+  siteG_WinStar: {fileID: 0}
+  siteH_WinStar: {fileID: 0}
 --- !u!114 &17061059
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2159,6 +2175,22 @@ MonoBehaviour:
   siteF_WinNumText: {fileID: 128526857}
   siteG_WinNumText: {fileID: 1492211756}
   siteH_WinNumText: {fileID: 892351175}
+  Star_A: 
+  Star_B: 
+  Star_C: 
+  Star_D: 
+  Star_E: 
+  Star_F: 
+  Star_G: 
+  Star_H: 
+  siteA_WinStar: {fileID: 1796024723}
+  siteB_WinStar: {fileID: 1932400336}
+  siteC_WinStar: {fileID: 1332321887}
+  siteD_WinStar: {fileID: 1625850256}
+  siteE_WinStar: {fileID: 969318687}
+  siteF_WinStar: {fileID: 943459102}
+  siteG_WinStar: {fileID: 194158915}
+  siteH_WinStar: {fileID: 400643730}
 --- !u!1 &66433317
 GameObject:
   m_ObjectHideFlags: 0
@@ -2514,7 +2546,7 @@ RectTransform:
   m_Children:
   - {fileID: 1405025825}
   m_Father: {fileID: 1757015519}
-  m_RootOrder: 17
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -4008,6 +4040,22 @@ MonoBehaviour:
   siteF_WinNumText: {fileID: 0}
   siteG_WinNumText: {fileID: 0}
   siteH_WinNumText: {fileID: 0}
+  Star_A: 
+  Star_B: 
+  Star_C: 
+  Star_D: 
+  Star_E: 
+  Star_F: 
+  Star_G: 
+  Star_H: 
+  siteA_WinStar: {fileID: 0}
+  siteB_WinStar: {fileID: 0}
+  siteC_WinStar: {fileID: 0}
+  siteD_WinStar: {fileID: 0}
+  siteE_WinStar: {fileID: 0}
+  siteF_WinStar: {fileID: 0}
+  siteG_WinStar: {fileID: 0}
+  siteH_WinStar: {fileID: 0}
 --- !u!114 &110194086
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6331,7 +6379,7 @@ GameObject:
   - component: {fileID: 194158918}
   - component: {fileID: 194158917}
   m_Layer: 5
-  m_Name: Player07_Win
+  m_Name: Player07_WinStar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13270,7 +13318,7 @@ GameObject:
   - component: {fileID: 400643733}
   - component: {fileID: 400643732}
   m_Layer: 5
-  m_Name: Player08_Win
+  m_Name: Player08_WinStar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24107,6 +24155,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 56574420}
+        m_MethodName: AppearSiteWinStar_Seiseki
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &598536157
@@ -25596,6 +25655,22 @@ MonoBehaviour:
   siteF_WinNumText: {fileID: 0}
   siteG_WinNumText: {fileID: 0}
   siteH_WinNumText: {fileID: 0}
+  Star_A: 
+  Star_B: 
+  Star_C: 
+  Star_D: 
+  Star_E: 
+  Star_F: 
+  Star_G: 
+  Star_H: 
+  siteA_WinStar: {fileID: 0}
+  siteB_WinStar: {fileID: 0}
+  siteC_WinStar: {fileID: 0}
+  siteD_WinStar: {fileID: 0}
+  siteE_WinStar: {fileID: 0}
+  siteF_WinStar: {fileID: 0}
+  siteG_WinStar: {fileID: 0}
+  siteH_WinStar: {fileID: 0}
 --- !u!114 &653325099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26450,6 +26525,22 @@ MonoBehaviour:
   siteF_WinNumText: {fileID: 0}
   siteG_WinNumText: {fileID: 0}
   siteH_WinNumText: {fileID: 0}
+  Star_A: 
+  Star_B: 
+  Star_C: 
+  Star_D: 
+  Star_E: 
+  Star_F: 
+  Star_G: 
+  Star_H: 
+  siteA_WinStar: {fileID: 0}
+  siteB_WinStar: {fileID: 0}
+  siteC_WinStar: {fileID: 0}
+  siteD_WinStar: {fileID: 0}
+  siteE_WinStar: {fileID: 0}
+  siteF_WinStar: {fileID: 0}
+  siteG_WinStar: {fileID: 0}
+  siteH_WinStar: {fileID: 0}
 --- !u!114 &674425997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28927,6 +29018,22 @@ MonoBehaviour:
   siteF_WinNumText: {fileID: 0}
   siteG_WinNumText: {fileID: 0}
   siteH_WinNumText: {fileID: 0}
+  Star_A: 
+  Star_B: 
+  Star_C: 
+  Star_D: 
+  Star_E: 
+  Star_F: 
+  Star_G: 
+  Star_H: 
+  siteA_WinStar: {fileID: 0}
+  siteB_WinStar: {fileID: 0}
+  siteC_WinStar: {fileID: 0}
+  siteD_WinStar: {fileID: 0}
+  siteE_WinStar: {fileID: 0}
+  siteF_WinStar: {fileID: 0}
+  siteG_WinStar: {fileID: 0}
+  siteH_WinStar: {fileID: 0}
 --- !u!114 &764951435
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29167,6 +29274,22 @@ MonoBehaviour:
   siteF_WinNumText: {fileID: 0}
   siteG_WinNumText: {fileID: 0}
   siteH_WinNumText: {fileID: 0}
+  Star_A: 
+  Star_B: 
+  Star_C: 
+  Star_D: 
+  Star_E: 
+  Star_F: 
+  Star_G: 
+  Star_H: 
+  siteA_WinStar: {fileID: 0}
+  siteB_WinStar: {fileID: 0}
+  siteC_WinStar: {fileID: 0}
+  siteD_WinStar: {fileID: 0}
+  siteE_WinStar: {fileID: 0}
+  siteF_WinStar: {fileID: 0}
+  siteG_WinStar: {fileID: 0}
+  siteH_WinStar: {fileID: 0}
 --- !u!114 &775029466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32786,7 +32909,7 @@ GameObject:
   - component: {fileID: 943459105}
   - component: {fileID: 943459104}
   m_Layer: 5
-  m_Name: Player06_Win
+  m_Name: Player06_WinStar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32979,7 +33102,7 @@ RectTransform:
   - {fileID: 1724612668}
   - {fileID: 846082723}
   m_Father: {fileID: 1757015519}
-  m_RootOrder: 18
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -33440,7 +33563,7 @@ GameObject:
   - component: {fileID: 969318690}
   - component: {fileID: 969318689}
   m_Layer: 5
-  m_Name: Player05_Win
+  m_Name: Player05_WinStar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35325,6 +35448,22 @@ MonoBehaviour:
   siteF_WinNumText: {fileID: 0}
   siteG_WinNumText: {fileID: 0}
   siteH_WinNumText: {fileID: 0}
+  Star_A: 
+  Star_B: 
+  Star_C: 
+  Star_D: 
+  Star_E: 
+  Star_F: 
+  Star_G: 
+  Star_H: 
+  siteA_WinStar: {fileID: 0}
+  siteB_WinStar: {fileID: 0}
+  siteC_WinStar: {fileID: 0}
+  siteD_WinStar: {fileID: 0}
+  siteE_WinStar: {fileID: 0}
+  siteF_WinStar: {fileID: 0}
+  siteG_WinStar: {fileID: 0}
+  siteH_WinStar: {fileID: 0}
 --- !u!114 &1035792610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36197,6 +36336,22 @@ MonoBehaviour:
   siteF_WinNumText: {fileID: 0}
   siteG_WinNumText: {fileID: 0}
   siteH_WinNumText: {fileID: 0}
+  Star_A: 
+  Star_B: 
+  Star_C: 
+  Star_D: 
+  Star_E: 
+  Star_F: 
+  Star_G: 
+  Star_H: 
+  siteA_WinStar: {fileID: 0}
+  siteB_WinStar: {fileID: 0}
+  siteC_WinStar: {fileID: 0}
+  siteD_WinStar: {fileID: 0}
+  siteE_WinStar: {fileID: 0}
+  siteF_WinStar: {fileID: 0}
+  siteG_WinStar: {fileID: 0}
+  siteH_WinStar: {fileID: 0}
 --- !u!114 &1065629585
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37916,6 +38071,22 @@ MonoBehaviour:
   siteF_WinNumText: {fileID: 0}
   siteG_WinNumText: {fileID: 0}
   siteH_WinNumText: {fileID: 0}
+  Star_A: 
+  Star_B: 
+  Star_C: 
+  Star_D: 
+  Star_E: 
+  Star_F: 
+  Star_G: 
+  Star_H: 
+  siteA_WinStar: {fileID: 0}
+  siteB_WinStar: {fileID: 0}
+  siteC_WinStar: {fileID: 0}
+  siteD_WinStar: {fileID: 0}
+  siteE_WinStar: {fileID: 0}
+  siteF_WinStar: {fileID: 0}
+  siteG_WinStar: {fileID: 0}
+  siteH_WinStar: {fileID: 0}
 --- !u!1 &1136102590
 GameObject:
   m_ObjectHideFlags: 0
@@ -40478,6 +40649,22 @@ MonoBehaviour:
   siteF_WinNumText: {fileID: 0}
   siteG_WinNumText: {fileID: 0}
   siteH_WinNumText: {fileID: 0}
+  Star_A: 
+  Star_B: 
+  Star_C: 
+  Star_D: 
+  Star_E: 
+  Star_F: 
+  Star_G: 
+  Star_H: 
+  siteA_WinStar: {fileID: 0}
+  siteB_WinStar: {fileID: 0}
+  siteC_WinStar: {fileID: 0}
+  siteD_WinStar: {fileID: 0}
+  siteE_WinStar: {fileID: 0}
+  siteF_WinStar: {fileID: 0}
+  siteG_WinStar: {fileID: 0}
+  siteH_WinStar: {fileID: 0}
 --- !u!114 &1229870548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42838,6 +43025,22 @@ MonoBehaviour:
   siteF_WinNumText: {fileID: 0}
   siteG_WinNumText: {fileID: 0}
   siteH_WinNumText: {fileID: 0}
+  Star_A: 
+  Star_B: 
+  Star_C: 
+  Star_D: 
+  Star_E: 
+  Star_F: 
+  Star_G: 
+  Star_H: 
+  siteA_WinStar: {fileID: 0}
+  siteB_WinStar: {fileID: 0}
+  siteC_WinStar: {fileID: 0}
+  siteD_WinStar: {fileID: 0}
+  siteE_WinStar: {fileID: 0}
+  siteF_WinStar: {fileID: 0}
+  siteG_WinStar: {fileID: 0}
+  siteH_WinStar: {fileID: 0}
 --- !u!114 &1317709647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43361,7 +43564,7 @@ GameObject:
   - component: {fileID: 1332321890}
   - component: {fileID: 1332321889}
   m_Layer: 5
-  m_Name: Player03_Win
+  m_Name: Player03_WinStar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47699,7 +47902,7 @@ RectTransform:
   - {fileID: 463395398}
   - {fileID: 598536155}
   m_Father: {fileID: 1757015519}
-  m_RootOrder: 19
+  m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -59411,7 +59614,7 @@ GameObject:
   - component: {fileID: 1625850259}
   - component: {fileID: 1625850258}
   m_Layer: 5
-  m_Name: Player04_Win
+  m_Name: Player04_WinStar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61902,7 +62105,7 @@ RectTransform:
   - {fileID: 2035367313}
   - {fileID: 1154916684}
   m_Father: {fileID: 1757015519}
-  m_RootOrder: 15
+  m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -64162,7 +64365,7 @@ RectTransform:
   - {fileID: 1557511840}
   - {fileID: 2103864349}
   m_Father: {fileID: 1757015519}
-  m_RootOrder: 16
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -64520,11 +64723,11 @@ RectTransform:
   - {fileID: 1695640376}
   - {fileID: 700268780}
   - {fileID: 1481619034}
-  - {fileID: 1681815297}
   - {fileID: 1754975137}
   - {fileID: 72278032}
   - {fileID: 946197470}
   - {fileID: 1472695805}
+  - {fileID: 1681815297}
   - {fileID: 1569263793}
   - {fileID: 2023398569}
   - {fileID: 1117714564}
@@ -65394,7 +65597,7 @@ GameObject:
   - component: {fileID: 1796024726}
   - component: {fileID: 1796024725}
   m_Layer: 5
-  m_Name: Player01_Win
+  m_Name: Player01_WinStar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -68100,6 +68303,22 @@ MonoBehaviour:
   siteF_WinNumText: {fileID: 0}
   siteG_WinNumText: {fileID: 0}
   siteH_WinNumText: {fileID: 0}
+  Star_A: 
+  Star_B: 
+  Star_C: 
+  Star_D: 
+  Star_E: 
+  Star_F: 
+  Star_G: 
+  Star_H: 
+  siteA_WinStar: {fileID: 0}
+  siteB_WinStar: {fileID: 0}
+  siteC_WinStar: {fileID: 0}
+  siteD_WinStar: {fileID: 0}
+  siteE_WinStar: {fileID: 0}
+  siteF_WinStar: {fileID: 0}
+  siteG_WinStar: {fileID: 0}
+  siteH_WinStar: {fileID: 0}
 --- !u!114 &1863904787
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70160,7 +70379,7 @@ GameObject:
   - component: {fileID: 1932400339}
   - component: {fileID: 1932400338}
   m_Layer: 5
-  m_Name: Player02_Win
+  m_Name: Player02_WinStar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -72387,6 +72606,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 56574420}
+        m_MethodName: AppearSiteWinStar_Seiseki
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &2011863741
@@ -72848,6 +73078,22 @@ MonoBehaviour:
   siteF_WinNumText: {fileID: 0}
   siteG_WinNumText: {fileID: 0}
   siteH_WinNumText: {fileID: 0}
+  Star_A: 
+  Star_B: 
+  Star_C: 
+  Star_D: 
+  Star_E: 
+  Star_F: 
+  Star_G: 
+  Star_H: 
+  siteA_WinStar: {fileID: 0}
+  siteB_WinStar: {fileID: 0}
+  siteC_WinStar: {fileID: 0}
+  siteD_WinStar: {fileID: 0}
+  siteE_WinStar: {fileID: 0}
+  siteF_WinStar: {fileID: 0}
+  siteG_WinStar: {fileID: 0}
+  siteH_WinStar: {fileID: 0}
 --- !u!1 &2019309494
 GameObject:
   m_ObjectHideFlags: 0
@@ -74364,6 +74610,22 @@ MonoBehaviour:
   siteF_WinNumText: {fileID: 0}
   siteG_WinNumText: {fileID: 0}
   siteH_WinNumText: {fileID: 0}
+  Star_A: 
+  Star_B: 
+  Star_C: 
+  Star_D: 
+  Star_E: 
+  Star_F: 
+  Star_G: 
+  Star_H: 
+  siteA_WinStar: {fileID: 0}
+  siteB_WinStar: {fileID: 0}
+  siteC_WinStar: {fileID: 0}
+  siteD_WinStar: {fileID: 0}
+  siteE_WinStar: {fileID: 0}
+  siteF_WinStar: {fileID: 0}
+  siteG_WinStar: {fileID: 0}
+  siteH_WinStar: {fileID: 0}
 --- !u!114 &2067292845
 MonoBehaviour:
   m_ObjectHideFlags: 0

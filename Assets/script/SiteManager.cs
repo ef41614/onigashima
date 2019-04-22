@@ -352,24 +352,22 @@ public class SiteManager : MonoBehaviour
         CardR_BaHSC = Yaku_H.GetComponent<CardReverse_Ba>();
 
         // SelectMesSpeed02();  // 初期設定「ふつう」にする
+        ResetSelectMessageLevel();  // メッセージ送りスピードを更新する
         if (MainFlowScr.GenShiaiNum == 1)  // 第1試合開始時のみ実施
         {
             Debug.Log("第1試合開始時のみ実施：" + MainFlowScr.GenShiaiNum);
-            ResetSelectMessageLevel();  // メッセージ送りスピードを更新する
             MessageLevel = SelectManager.getMessageSpeed(); // ゲッター関数を呼び出し、値を引き継ぐ
             GuideLevel = SelectManager.getGuideMode(); // ゲッター関数を呼び出し、値を引き継ぐ
-            OniLevel = SelectManager.getOniStrong(); // ゲッター関数を呼び出し、値を引き継ぐ
-            ReflectMessageLevel();  // MessageLevel を元に、MessageOkuriTime を決める（メッセージ送りスピードを更新する）
+            CharaMSC.ResetSiteWinNum_Seiseki();  // キャラ勝利数を0にリセット
         }
         if (MainFlowScr.GenShiaiNum >= 2)  // 第2試合以降に実施
         {
             Debug.Log("第2試合以降に実施：" + MainFlowScr.GenShiaiNum);
-            ResetSelectMessageLevel();  // メッセージ送りスピードを更新する
             MessageLevel = MessageSpeed; // static な変数より、全試合にて設定した値を引き継ぐ
             GuideLevel = GuideMode; // ゲッター関数を呼び出し、値を引き継ぐ
-            OniLevel = SelectManager.getOniStrong(); // ゲッター関数を呼び出し、値を引き継ぐ
-            ReflectMessageLevel();  // MessageLevel を元に、MessageOkuriTime を決める（メッセージ送りスピードを更新する）
         }
+        OniLevel = SelectManager.getOniStrong(); // ゲッター関数を呼び出し、値を引き継ぐ
+        ReflectMessageLevel();  // MessageLevel を元に、MessageOkuriTime を決める（メッセージ送りスピードを更新する）
         CheckSelectedMesSpeed();  // 選択されているスピードをアピールする（黄色背景点滅）
         FirstCheckGuideLevel();
 
@@ -2799,14 +2797,14 @@ public class SiteManager : MonoBehaviour
 
     public void CheckWinTeam(int T)  // ゲームの勝利確定時、勝ったチームのキャラを表示させる
     {
-        CharaMSC.AppearWinTeam(T, teamSiteA, SiteAWinAppearFlg, CharaMSC.SiteA_charaF, YakuMSC.SiteA_rollF);
-        CharaMSC.AppearWinTeam(T, teamSiteB, SiteBWinAppearFlg, CharaMSC.SiteB_charaF, YakuMSC.SiteB_rollF);
-        CharaMSC.AppearWinTeam(T, teamSiteC, SiteCWinAppearFlg, CharaMSC.SiteC_charaF, YakuMSC.SiteC_rollF);
-        CharaMSC.AppearWinTeam(T, teamSiteD, SiteDWinAppearFlg, CharaMSC.SiteD_charaF, YakuMSC.SiteD_rollF);
-        CharaMSC.AppearWinTeam(T, teamSiteE, SiteEWinAppearFlg, CharaMSC.SiteE_charaF, YakuMSC.SiteE_rollF);
-        CharaMSC.AppearWinTeam(T, teamSiteF, SiteFWinAppearFlg, CharaMSC.SiteF_charaF, YakuMSC.SiteF_rollF);
-        CharaMSC.AppearWinTeam(T, teamSiteG, SiteGWinAppearFlg, CharaMSC.SiteG_charaF, YakuMSC.SiteG_rollF);
-        CharaMSC.AppearWinTeam(T, teamSiteH, SiteHWinAppearFlg, CharaMSC.SiteH_charaF, YakuMSC.SiteH_rollF);
+        CharaMSC.AppearWinTeam(T, teamSiteA, SiteAWinAppearFlg, CharaMSC.SiteA_charaF, YakuMSC.SiteA_rollF, 1);
+        CharaMSC.AppearWinTeam(T, teamSiteB, SiteBWinAppearFlg, CharaMSC.SiteB_charaF, YakuMSC.SiteB_rollF, 2);
+        CharaMSC.AppearWinTeam(T, teamSiteC, SiteCWinAppearFlg, CharaMSC.SiteC_charaF, YakuMSC.SiteC_rollF, 3);
+        CharaMSC.AppearWinTeam(T, teamSiteD, SiteDWinAppearFlg, CharaMSC.SiteD_charaF, YakuMSC.SiteD_rollF, 4);
+        CharaMSC.AppearWinTeam(T, teamSiteE, SiteEWinAppearFlg, CharaMSC.SiteE_charaF, YakuMSC.SiteE_rollF, 5);
+        CharaMSC.AppearWinTeam(T, teamSiteF, SiteFWinAppearFlg, CharaMSC.SiteF_charaF, YakuMSC.SiteF_rollF, 6);
+        CharaMSC.AppearWinTeam(T, teamSiteG, SiteGWinAppearFlg, CharaMSC.SiteG_charaF, YakuMSC.SiteG_rollF, 7);
+        CharaMSC.AppearWinTeam(T, teamSiteH, SiteHWinAppearFlg, CharaMSC.SiteH_charaF, YakuMSC.SiteH_rollF, 8);
     }
 
     public void NextGameAtaiHoji()  // 次の試合に進む際、現在の設定を持ち越す

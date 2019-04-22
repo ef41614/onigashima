@@ -14,6 +14,8 @@ public class MainFlow : MonoBehaviour {
     public GameObject ShiaiNumCenter;    // 現在、第〇試合目かを画面中央に表示する
     public GameObject ShiaiNumMekuri;    // 現在、第〇試合目かを めくり に表示する
     public GameObject CanvasShiaiNum;
+    public GameObject ShiaiNumSeiseki;    // 現在、第〇試合目かを 総合成績 に表示する
+
     public int GenShiaiNum = 1;
 
 
@@ -59,10 +61,15 @@ public class MainFlow : MonoBehaviour {
         SceneManager.LoadScene("GameScene");
     }
 
-//    public void SetShiaiNumUe()  //ターン開始時に画面上部に「現在、第〇試合目か」 を表示させる 
-//    {
-//        ShiaiNumUe.GetComponent<Text>().text = "だい" + preventShiaiNum.ToString() + "しあい";
-//    }
+    public void SetShiaiNumSeiseki_end()  // 現在、第〇試合目かを 総合成績 に表示する_しあい しゅうりょう
+    {
+        ShiaiNumSeiseki.GetComponent<Text>().text = "だい" + preventShiaiNum.ToString() + "しあい しゅうりょう";
+    }
+
+    public void SetShiaiNumSeiseki_during()  // 現在、第〇試合目かを 総合成績 に表示する_しあい中
+    {
+        ShiaiNumSeiseki.GetComponent<Text>().text = "だい" + preventShiaiNum.ToString() + "しあい ちゅう";
+    }
 
     public void SetShiaiNumCenter()  //ターン開始時に画面中央に「現在、第〇試合目か」 を表示させる 
     {

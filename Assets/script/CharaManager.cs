@@ -63,6 +63,24 @@ public class CharaManager : MonoBehaviour {
     public GameObject CharaNameText;
     public int countX = 1;
 
+    public Image SiteA_charaF_Seiseki;
+    public Image SiteB_charaF_Seiseki;
+    public Image SiteC_charaF_Seiseki;
+    public Image SiteD_charaF_Seiseki;
+    public Image SiteE_charaF_Seiseki;
+    public Image SiteF_charaF_Seiseki;
+    public Image SiteG_charaF_Seiseki;
+    public Image SiteH_charaF_Seiseki;
+
+    public GameObject SiteA_charaNametext_Seiseki;
+    public GameObject SiteB_charaNametext_Seiseki;
+    public GameObject SiteC_charaNametext_Seiseki;
+    public GameObject SiteD_charaNametext_Seiseki;
+    public GameObject SiteE_charaNametext_Seiseki;
+    public GameObject SiteF_charaNametext_Seiseki;
+    public GameObject SiteG_charaNametext_Seiseki;
+    public GameObject SiteH_charaNametext_Seiseki;
+
     public Image NowActiveCharaFace;
     public Image NowActiveCharaFace2;
     public GameObject NowActiveCharaNameText;
@@ -83,7 +101,23 @@ public class CharaManager : MonoBehaviour {
     public int Win03AppearFlg = 0;
     public int Win04AppearFlg = 0;
 
+    public static int siteA_WinNum = 0;  // 勝利回数
+    public static int siteB_WinNum = 0;
+    public static int siteC_WinNum = 0;
+    public static int siteD_WinNum = 0;
+    public static int siteE_WinNum = 0;
+    public static int siteF_WinNum = 0;
+    public static int siteG_WinNum = 0;
+    public static int siteH_WinNum = 0;
 
+    public GameObject siteA_WinNumText;
+    public GameObject siteB_WinNumText;
+    public GameObject siteC_WinNumText;
+    public GameObject siteD_WinNumText;
+    public GameObject siteE_WinNumText;
+    public GameObject siteF_WinNumText;
+    public GameObject siteG_WinNumText;
+    public GameObject siteH_WinNumText;
 
     //☆################☆################  Start  ################☆################☆
 
@@ -449,8 +483,9 @@ public class CharaManager : MonoBehaviour {
     }
 
     
-    public void AppearWinTeam(int TeamNum, int x, int y, Image img, Image imgRole) // 【ゲーム終了後】勝ったチームのキャラを表示させる
+    public void AppearWinTeam(int TeamNum, int x, int y, Image img, Image imgRole, int WinS) // 【ゲーム終了後】勝ったチームのキャラを表示させる
     {
+        Debug.Log("【ゲーム終了後】勝ったチームのキャラを表示させる ");
         if (x == TeamNum)  // そのキャラが[3]桃チーム/[1]おにチームであるならば、
         {
             if (y == 0)  // そのSite（キャラ）がまだ表示されていなければ、
@@ -504,6 +539,44 @@ public class CharaManager : MonoBehaviour {
                     Win04AppearFlg = 1;
                 }
             }
+
+            if (y == 1)   // ゲームの勝利確定時、勝ったサイトの勝利数にプラス1する
+            {
+                Debug.Log("勝ったサイトの勝利数にプラス1する " + WinS);
+                if (WinS == 1)
+                {
+                    AddSiteA_WinNum();
+                }
+                else if (WinS == 2)
+                {
+                    AddSiteB_WinNum();
+                }
+                else if (WinS == 3)
+                {
+                    AddSiteC_WinNum();
+                }
+                else if (WinS == 4)
+                {
+                    AddSiteD_WinNum();
+                }
+                else if (WinS == 5)
+                {
+                    AddSiteE_WinNum();
+                }
+                else if (WinS == 6)
+                {
+                    AddSiteF_WinNum();
+                }
+                else if (WinS == 7)
+                {
+                    AddSiteG_WinNum();
+                }
+                else if (WinS == 8)
+                {
+                    AddSiteH_WinNum();
+                }
+            }
+
         }
     }
 
@@ -515,7 +588,141 @@ public class CharaManager : MonoBehaviour {
         Win04AppearFlg = 0;
     }
 
-        //#################################################################################
+    public void AppearSiteInfo_Seiseki() // 総合成績画面に各サイトのキャラ情報を表示させる
+    {
+        SiteA_charaF_Seiseki.sprite = SiteA_charaF.sprite;
+        SiteA_charaNametext_Seiseki.GetComponent<Text>().text = SiteA_charaNametext;
 
+        SiteB_charaF_Seiseki.sprite = SiteB_charaF.sprite;
+        SiteB_charaNametext_Seiseki.GetComponent<Text>().text = SiteB_charaNametext;
+
+        SiteC_charaF_Seiseki.sprite = SiteC_charaF.sprite;
+        SiteC_charaNametext_Seiseki.GetComponent<Text>().text = SiteC_charaNametext;
+
+        SiteD_charaF_Seiseki.sprite = SiteD_charaF.sprite;
+        SiteD_charaNametext_Seiseki.GetComponent<Text>().text = SiteD_charaNametext;
+
+        SiteE_charaF_Seiseki.sprite = SiteE_charaF.sprite;
+        SiteE_charaNametext_Seiseki.GetComponent<Text>().text = SiteE_charaNametext;
+
+        SiteF_charaF_Seiseki.sprite = SiteF_charaF.sprite;
+        SiteF_charaNametext_Seiseki.GetComponent<Text>().text = SiteF_charaNametext;
+
+        SiteG_charaF_Seiseki.sprite = SiteG_charaF.sprite;
+        SiteG_charaNametext_Seiseki.GetComponent<Text>().text = SiteG_charaNametext;
+
+        SiteH_charaF_Seiseki.sprite = SiteH_charaF.sprite;
+        SiteH_charaNametext_Seiseki.GetComponent<Text>().text = SiteH_charaNametext;
     }
+
+    public void AppearSiteWinNum_Seiseki() // キャラ別 勝利数を表示させる
+    {
+        Debug.Log("キャラ別 勝利数を表示させる");
+        siteA_WinNumText.GetComponent<Text>().text = siteA_WinNum.ToString();
+        siteB_WinNumText.GetComponent<Text>().text = siteB_WinNum.ToString();
+        siteC_WinNumText.GetComponent<Text>().text = siteC_WinNum.ToString();
+        siteD_WinNumText.GetComponent<Text>().text = siteD_WinNum.ToString();
+        siteE_WinNumText.GetComponent<Text>().text = siteE_WinNum.ToString();
+        siteF_WinNumText.GetComponent<Text>().text = siteF_WinNum.ToString();
+        siteG_WinNumText.GetComponent<Text>().text = siteG_WinNum.ToString();
+        siteH_WinNumText.GetComponent<Text>().text = siteH_WinNum.ToString();
+    }
+
+    public void ResetSiteWinNum_Seiseki() // キャラ勝利数を0にリセット
+    {
+        Debug.Log("キャラ勝利数を0にリセット");
+        siteA_WinNum = 0;  // 勝利回数を0にリセット
+        siteB_WinNum = 0;
+        siteC_WinNum = 0;
+        siteD_WinNum = 0;
+        siteE_WinNum = 0;
+        siteF_WinNum = 0;
+        siteG_WinNum = 0;
+        siteH_WinNum = 0;
+    }
+
+
+
+    #region(AddSites_WinNumPhase)  // 勝利回数をプラス1する
+    public void AddSiteA_WinNum()
+    {
+        siteA_WinNum++;
+    }
+
+    public void AddSiteB_WinNum()
+    {
+        siteB_WinNum++;
+    }
+
+    public void AddSiteC_WinNum()
+    {
+        siteC_WinNum++;
+    }
+
+    public void AddSiteD_WinNum()
+    {
+        siteD_WinNum++;
+    }
+
+    public void AddSiteE_WinNum()
+    {
+        siteE_WinNum++;
+    }
+
+    public void AddSiteF_WinNum()
+    {
+        siteF_WinNum++;
+    }
+
+    public void AddSiteG_WinNum()
+    {
+        siteG_WinNum++;
+    }
+
+    public void AddSiteH_WinNum()
+    {
+        siteH_WinNum++;
+    }
+    #endregion
+
+    public void CheckAddWinSite(int WinS)  // ゲームの勝利確定時、勝ったサイトの勝利数にプラス1する
+    {
+        if (WinS == 1)
+        {
+            AddSiteA_WinNum();
+        }
+        else if (WinS == 2)
+        {
+            AddSiteB_WinNum();
+        }
+        else if (WinS == 3)
+        {
+            AddSiteC_WinNum();
+        }
+        else if (WinS == 4)
+        {
+            AddSiteD_WinNum();
+        }
+        else if (WinS == 5)
+        {
+            AddSiteE_WinNum();
+        }
+        else if (WinS == 6)
+        {
+            AddSiteF_WinNum();
+        }
+        else if (WinS == 7)
+        {
+            AddSiteG_WinNum();
+        }
+        else if (WinS == 8)
+        {
+            AddSiteH_WinNum();
+        }
+    }
+
+
+    //#################################################################################
+
+}
 // End

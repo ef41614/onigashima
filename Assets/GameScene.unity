@@ -762,14 +762,6 @@ MonoBehaviour:
   siteF_WinNumText: {fileID: 0}
   siteG_WinNumText: {fileID: 0}
   siteH_WinNumText: {fileID: 0}
-  Star_A: 
-  Star_B: 
-  Star_C: 
-  Star_D: 
-  Star_E: 
-  Star_F: 
-  Star_G: 
-  Star_H: 
   siteA_WinStar: {fileID: 0}
   siteB_WinStar: {fileID: 0}
   siteC_WinStar: {fileID: 0}
@@ -2175,14 +2167,6 @@ MonoBehaviour:
   siteF_WinNumText: {fileID: 128526857}
   siteG_WinNumText: {fileID: 1492211756}
   siteH_WinNumText: {fileID: 892351175}
-  Star_A: 
-  Star_B: 
-  Star_C: 
-  Star_D: 
-  Star_E: 
-  Star_F: 
-  Star_G: 
-  Star_H: 
   siteA_WinStar: {fileID: 1796024723}
   siteB_WinStar: {fileID: 1932400336}
   siteC_WinStar: {fileID: 1332321887}
@@ -2546,7 +2530,7 @@ RectTransform:
   m_Children:
   - {fileID: 1405025825}
   m_Father: {fileID: 1757015519}
-  m_RootOrder: 16
+  m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -4040,14 +4024,6 @@ MonoBehaviour:
   siteF_WinNumText: {fileID: 0}
   siteG_WinNumText: {fileID: 0}
   siteH_WinNumText: {fileID: 0}
-  Star_A: 
-  Star_B: 
-  Star_C: 
-  Star_D: 
-  Star_E: 
-  Star_F: 
-  Star_G: 
-  Star_H: 
   siteA_WinStar: {fileID: 0}
   siteB_WinStar: {fileID: 0}
   siteC_WinStar: {fileID: 0}
@@ -19949,7 +19925,7 @@ RectTransform:
   - {fileID: 1437643060}
   - {fileID: 1517863538}
   m_Father: {fileID: 1472695805}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -24188,7 +24164,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 1112efc9a1868ae468ecddafd45fc7e4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 759f7788ab2d45442a085ea6cf0a8d79, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -25655,14 +25631,6 @@ MonoBehaviour:
   siteF_WinNumText: {fileID: 0}
   siteG_WinNumText: {fileID: 0}
   siteH_WinNumText: {fileID: 0}
-  Star_A: 
-  Star_B: 
-  Star_C: 
-  Star_D: 
-  Star_E: 
-  Star_F: 
-  Star_G: 
-  Star_H: 
   siteA_WinStar: {fileID: 0}
   siteB_WinStar: {fileID: 0}
   siteC_WinStar: {fileID: 0}
@@ -26525,14 +26493,6 @@ MonoBehaviour:
   siteF_WinNumText: {fileID: 0}
   siteG_WinNumText: {fileID: 0}
   siteH_WinNumText: {fileID: 0}
-  Star_A: 
-  Star_B: 
-  Star_C: 
-  Star_D: 
-  Star_E: 
-  Star_F: 
-  Star_G: 
-  Star_H: 
   siteA_WinStar: {fileID: 0}
   siteB_WinStar: {fileID: 0}
   siteC_WinStar: {fileID: 0}
@@ -29018,14 +28978,6 @@ MonoBehaviour:
   siteF_WinNumText: {fileID: 0}
   siteG_WinNumText: {fileID: 0}
   siteH_WinNumText: {fileID: 0}
-  Star_A: 
-  Star_B: 
-  Star_C: 
-  Star_D: 
-  Star_E: 
-  Star_F: 
-  Star_G: 
-  Star_H: 
   siteA_WinStar: {fileID: 0}
   siteB_WinStar: {fileID: 0}
   siteC_WinStar: {fileID: 0}
@@ -29274,14 +29226,6 @@ MonoBehaviour:
   siteF_WinNumText: {fileID: 0}
   siteG_WinNumText: {fileID: 0}
   siteH_WinNumText: {fileID: 0}
-  Star_A: 
-  Star_B: 
-  Star_C: 
-  Star_D: 
-  Star_E: 
-  Star_F: 
-  Star_G: 
-  Star_H: 
   siteA_WinStar: {fileID: 0}
   siteB_WinStar: {fileID: 0}
   siteC_WinStar: {fileID: 0}
@@ -33102,7 +33046,7 @@ RectTransform:
   - {fileID: 1724612668}
   - {fileID: 846082723}
   m_Father: {fileID: 1757015519}
-  m_RootOrder: 17
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -35448,14 +35392,6 @@ MonoBehaviour:
   siteF_WinNumText: {fileID: 0}
   siteG_WinNumText: {fileID: 0}
   siteH_WinNumText: {fileID: 0}
-  Star_A: 
-  Star_B: 
-  Star_C: 
-  Star_D: 
-  Star_E: 
-  Star_F: 
-  Star_G: 
-  Star_H: 
   siteA_WinStar: {fileID: 0}
   siteB_WinStar: {fileID: 0}
   siteC_WinStar: {fileID: 0}
@@ -36336,14 +36272,6 @@ MonoBehaviour:
   siteF_WinNumText: {fileID: 0}
   siteG_WinNumText: {fileID: 0}
   siteH_WinNumText: {fileID: 0}
-  Star_A: 
-  Star_B: 
-  Star_C: 
-  Star_D: 
-  Star_E: 
-  Star_F: 
-  Star_G: 
-  Star_H: 
   siteA_WinStar: {fileID: 0}
   siteB_WinStar: {fileID: 0}
   siteC_WinStar: {fileID: 0}
@@ -38071,14 +37999,6 @@ MonoBehaviour:
   siteF_WinNumText: {fileID: 0}
   siteG_WinNumText: {fileID: 0}
   siteH_WinNumText: {fileID: 0}
-  Star_A: 
-  Star_B: 
-  Star_C: 
-  Star_D: 
-  Star_E: 
-  Star_F: 
-  Star_G: 
-  Star_H: 
   siteA_WinStar: {fileID: 0}
   siteB_WinStar: {fileID: 0}
   siteC_WinStar: {fileID: 0}
@@ -40649,14 +40569,6 @@ MonoBehaviour:
   siteF_WinNumText: {fileID: 0}
   siteG_WinNumText: {fileID: 0}
   siteH_WinNumText: {fileID: 0}
-  Star_A: 
-  Star_B: 
-  Star_C: 
-  Star_D: 
-  Star_E: 
-  Star_F: 
-  Star_G: 
-  Star_H: 
   siteA_WinStar: {fileID: 0}
   siteB_WinStar: {fileID: 0}
   siteC_WinStar: {fileID: 0}
@@ -43025,14 +42937,6 @@ MonoBehaviour:
   siteF_WinNumText: {fileID: 0}
   siteG_WinNumText: {fileID: 0}
   siteH_WinNumText: {fileID: 0}
-  Star_A: 
-  Star_B: 
-  Star_C: 
-  Star_D: 
-  Star_E: 
-  Star_F: 
-  Star_G: 
-  Star_H: 
   siteA_WinStar: {fileID: 0}
   siteB_WinStar: {fileID: 0}
   siteC_WinStar: {fileID: 0}
@@ -47898,11 +47802,11 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.8738966, y: 0.8738966, z: 0.8738966}
   m_Children:
-  - {fileID: 1922788405}
   - {fileID: 463395398}
+  - {fileID: 1922788405}
   - {fileID: 598536155}
   m_Father: {fileID: 1757015519}
-  m_RootOrder: 18
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -62105,7 +62009,7 @@ RectTransform:
   - {fileID: 2035367313}
   - {fileID: 1154916684}
   m_Father: {fileID: 1757015519}
-  m_RootOrder: 19
+  m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -64724,10 +64628,10 @@ RectTransform:
   - {fileID: 700268780}
   - {fileID: 1481619034}
   - {fileID: 1754975137}
-  - {fileID: 72278032}
   - {fileID: 946197470}
   - {fileID: 1472695805}
   - {fileID: 1681815297}
+  - {fileID: 72278032}
   - {fileID: 1569263793}
   - {fileID: 2023398569}
   - {fileID: 1117714564}
@@ -68303,14 +68207,6 @@ MonoBehaviour:
   siteF_WinNumText: {fileID: 0}
   siteG_WinNumText: {fileID: 0}
   siteH_WinNumText: {fileID: 0}
-  Star_A: 
-  Star_B: 
-  Star_C: 
-  Star_D: 
-  Star_E: 
-  Star_F: 
-  Star_G: 
-  Star_H: 
   siteA_WinStar: {fileID: 0}
   siteB_WinStar: {fileID: 0}
   siteC_WinStar: {fileID: 0}
@@ -70169,7 +70065,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1472695805}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -70260,7 +70156,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 610101b1571444f449c7e4f9f3abe34f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7ed75b93f771f5e479a9e93b2d46f690, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -73078,14 +72974,6 @@ MonoBehaviour:
   siteF_WinNumText: {fileID: 0}
   siteG_WinNumText: {fileID: 0}
   siteH_WinNumText: {fileID: 0}
-  Star_A: 
-  Star_B: 
-  Star_C: 
-  Star_D: 
-  Star_E: 
-  Star_F: 
-  Star_G: 
-  Star_H: 
   siteA_WinStar: {fileID: 0}
   siteB_WinStar: {fileID: 0}
   siteC_WinStar: {fileID: 0}
@@ -74610,14 +74498,6 @@ MonoBehaviour:
   siteF_WinNumText: {fileID: 0}
   siteG_WinNumText: {fileID: 0}
   siteH_WinNumText: {fileID: 0}
-  Star_A: 
-  Star_B: 
-  Star_C: 
-  Star_D: 
-  Star_E: 
-  Star_F: 
-  Star_G: 
-  Star_H: 
   siteA_WinStar: {fileID: 0}
   siteB_WinStar: {fileID: 0}
   siteC_WinStar: {fileID: 0}

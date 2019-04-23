@@ -469,6 +469,7 @@ public class SiteManager : MonoBehaviour
             sequence.InsertCallback(1.5f, () => SlideRightPanelMAKU());  // 幕を右へオープン
             sequence.InsertCallback(1.5f, () => AppearCanvasPlayPlace());
             sequence.InsertCallback(3.8f, () => CheckYourTurn());
+            sequence.InsertCallback(4.4f, () => ClosePanelCheckEnd());
             sequence.InsertCallback(4.5f, () => CloseCanvasRollCheck());
             HandOfTime--;
         }
@@ -2184,42 +2185,42 @@ public class SiteManager : MonoBehaviour
 
     public void KizetuMarkAppear()  // きぜつマーク を役割カードの上に表示させる
     {
-        if (StatusSiteA <= 5 && HPMSC.HP_A <= 0)
+        if (HPMSC.HP_A <= 0)
         {
             KizetuA.SetActive(true);
             StatusSiteA = 6;
         }
-        if (StatusSiteB <= 5 && HPMSC.HP_B <= 0)
+        if (HPMSC.HP_B <= 0)
         {
             KizetuB.SetActive(true);
             StatusSiteB = 6;
         }
-        if (StatusSiteC <= 5 && HPMSC.HP_C <= 0)
+        if (HPMSC.HP_C <= 0)
         {
             KizetuC.SetActive(true);
             StatusSiteC = 6;
         }
-        if (StatusSiteD <= 5 && HPMSC.HP_D <= 0)
+        if (HPMSC.HP_D <= 0)
         {
             KizetuD.SetActive(true);
             StatusSiteD = 6;
         }
-        if (StatusSiteE <= 5 && HPMSC.HP_E <= 0)
+        if (HPMSC.HP_E <= 0)
         {
             KizetuE.SetActive(true);
             StatusSiteE = 6;
         }
-        if (StatusSiteF <= 5 && HPMSC.HP_F <= 0)
+        if (HPMSC.HP_F <= 0)
         {
             KizetuF.SetActive(true);
             StatusSiteF = 6;
         }
-        if (StatusSiteG <= 5 && HPMSC.HP_G <= 0)
+        if (HPMSC.HP_G <= 0)
         {
             KizetuG.SetActive(true);
             StatusSiteG = 6;
         }
-        if (StatusSiteH <= 5 && HPMSC.HP_H <= 0)
+        if (HPMSC.HP_H <= 0)
         {
             KizetuH.SetActive(true);
             StatusSiteH = 6;

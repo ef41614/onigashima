@@ -12,11 +12,16 @@ public class SelectManager : MonoBehaviour
     public GameObject SEManager;
     SEManager SEMSC;
 
+    public GameObject BGMManager;
+    BGMManager BGMMSC;
+
     public GameObject PanelCheck;
     public GameObject PanelCheck_numberOfPersons;
     public Image CharaFace;
     public GameObject CharaNameText;
     public GameObject PanelNextToScene;
+    public GameObject PanelTitle;
+    public GameObject Credit_Box;
 
     public GameObject Cover_01;
     public GameObject Cover_02;
@@ -55,7 +60,6 @@ public class SelectManager : MonoBehaviour
     public static int siteH = 0;
 
     int charaNum = 0;
-//    Image image;
 
     public static int hito_num = 1;
     public int robo_num = 0;
@@ -108,9 +112,11 @@ public class SelectManager : MonoBehaviour
 
     void Start()
     {
+        AppearPanelTitle();
+        CloseCredit_Box();
         SEMSC = SEManager.GetComponent<SEManager>();
-        //       CloseWindow();
-        //       CloseWindow2();
+        BGMMSC = BGMManager.GetComponent<BGMManager>();
+
         KesuCover_01();
         KesuCover_02();
         KesuCover_03();
@@ -125,7 +131,6 @@ public class SelectManager : MonoBehaviour
         KesuCover_11();
         KesuCover_12();
 
-//        image = this.GetComponent<Image>();
         Check_numberOfPersons();
 
         ResetSelectOniStrong();  // おにチームの強さを一旦リセットする
@@ -137,6 +142,7 @@ public class SelectManager : MonoBehaviour
         CheckSelectedMesSpeed();  // 選択されているスピードをアピールする（黄色背景点滅）
 
         CloseHaguruma_Box();
+        BGMMSC.Play_Opening_BGM();
     }
 
 
@@ -144,7 +150,6 @@ public class SelectManager : MonoBehaviour
 
     void Update()
     {
- //       Debug.Log("OniStrong == " + OniStrong);
 
     }
 
@@ -1014,6 +1019,25 @@ public class SelectManager : MonoBehaviour
         Haguruma_Box.SetActive(false);
     }
 
+    public void AppearPanelTitle()
+    {
+        PanelTitle.SetActive(true);
+    }
+
+    public void ClosePanelTitle()
+    {
+        PanelTitle.SetActive(false);
+    }
+
+    public void AppearCredit_Box()
+    {
+        Credit_Box.SetActive(true);
+    }
+
+    public void CloseCredit_Box()
+    {
+        Credit_Box.SetActive(false);
+    }
 
     //#################################################################################
 

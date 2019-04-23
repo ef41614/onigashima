@@ -161,6 +161,8 @@ public class SiteManager : MonoBehaviour
     ButtonController ButtonCscr;
     public GameObject MainFlow;
     MainFlow MainFlowScr;
+    public GameObject BGMManager;
+    BGMManager BGMMSC;
 
     public GameObject Yaku_A;
     CardReverse_Ba CardR_BaASC;
@@ -288,7 +290,6 @@ public class SiteManager : MonoBehaviour
     {
 
         shakeTurnMark();
-        //       shakeCharaN();
         convertSiteInfo();
         shakeRollFace();
     }
@@ -310,6 +311,7 @@ public class SiteManager : MonoBehaviour
         TurnMarkMSC = TurnMarkManager.GetComponent<TurnMarkManager>();
         KifudaMSC = KifudaManager.GetComponent<KifudaManager>();
         ButtonCscr = ButtonController.GetComponent<ButtonController>();
+        BGMMSC = BGMManager.GetComponent<BGMManager>();
         StartTurnNum();
         ReloadTurnNumUe();
         ClosePanelWinner();

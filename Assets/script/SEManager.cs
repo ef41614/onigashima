@@ -163,7 +163,6 @@ public class SEManager : MonoBehaviour {
     {
         Debug.Log("エンディングBGM開始");
         BGMMSC.StopBGM();
-//        audioSource2.volume = 1.0f;
         audioSource3.clip = Ending;
         audioSource.loop = true;
         audioSource3.Play();

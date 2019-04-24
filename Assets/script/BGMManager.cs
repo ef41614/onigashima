@@ -5,11 +5,15 @@ using UnityEngine.UI;
 using DG.Tweening;
 using System.Linq;
 using System;
+using UnityEngine.Audio;
+
 
 public class BGMManager : MonoBehaviour
 {
     AudioSource audioSource;
     AudioSource audioSource2;
+    AudioSource audioSource3;
+
 
     public AudioClip NatsuMatsuri;
     public AudioClip Wakizashi;
@@ -22,6 +26,7 @@ public class BGMManager : MonoBehaviour
     {
         audioSource = this.gameObject.GetComponent<AudioSource>();
         audioSource2 = this.gameObject.GetComponent<AudioSource>();
+        audioSource3 = this.gameObject.GetComponent<AudioSource>();
     }
 
     //☆################☆################  Start  ################☆################☆
@@ -44,6 +49,7 @@ public class BGMManager : MonoBehaviour
 
     public void Play_CharaSelect_BGM()
     {
+        Debug.Log("Play_CharaSelect_BGM 開始");
         StopBGM();
         audioSource.clip = NatsuMatsuri;
         audioSource.Play();
@@ -51,13 +57,15 @@ public class BGMManager : MonoBehaviour
 
     public void Play_Battle_BGM()
     {
-        StopBGM();
-        audioSource.clip = Wakizashi;
-        audioSource.Play();
+        Debug.Log("Play_Battle_BGM 開始");
+  //      StopBGM();
+        audioSource3.clip = Wakizashi;
+        audioSource3.Play();
     }
 
     public void Play_Opening_BGM()
     {
+        Debug.Log("Play_Opening_BGM 開始");
         StopBGM();
         audioSource.clip = Yuuchou;
         audioSource.Play();
@@ -65,7 +73,7 @@ public class BGMManager : MonoBehaviour
 
     public void Play_Ending_BGM()
     {
-        Debug.Log("エンディングBGM開始");
+        Debug.Log("エンディングBGM 開始");
         StopBGM();
         audioSource2.volume = 1.0f;
  //       audioSource2.clip = Ending;
@@ -85,7 +93,6 @@ public class BGMManager : MonoBehaviour
 
     public void FadeoutBGM()
     {
-//        audioSource.DOFade(0f, 5f).SetEase(Ease.Linear);
         audioSource.DOFade(0f, 5f);
     }
 

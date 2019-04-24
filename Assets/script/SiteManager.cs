@@ -282,6 +282,7 @@ public class SiteManager : MonoBehaviour
 
     public int InokoriMate = 0;  // ステータス2以下 & 桃メイト の総数
     public int InokoriKooni = 0;   // ステータス2以下 & こおに の総数
+    int BGMFlg = 0;
 
     #endregion
 
@@ -374,7 +375,7 @@ public class SiteManager : MonoBehaviour
         ReflectMessageLevel();  // MessageLevel を元に、MessageOkuriTime を決める（メッセージ送りスピードを更新する）
         CheckSelectedMesSpeed();  // 選択されているスピードをアピールする（黄色背景点滅）
         FirstCheckGuideLevel();
-
+        // BGMMSC.Play_Battle_BGM();  // バトルBGM開始
     }
 
 
@@ -554,7 +555,7 @@ public class SiteManager : MonoBehaviour
         RollInfo.SetActive(false);
     }
 
-    public void AppearPanelCheckEnd()
+    public void AppearPanelCheckEnd()  // 「がんばって 相手チームに 勝ちましょう」 の表示
     {
         PanelCheckEnd.SetActive(true);
         FirstTimeCheck = false;
@@ -563,6 +564,7 @@ public class SiteManager : MonoBehaviour
 
     public void ClosePanelCheckEnd()
     {
+        Debug.Log("がんばって 相手チームに 勝ちましょう」 を 消す");
         PanelCheckEnd.SetActive(false);
     }
 
@@ -594,6 +596,16 @@ public class SiteManager : MonoBehaviour
     public void CloseCanvasPlayPlace()
     {
         CanvasPlayPlace.SetActive(false);
+    }
+
+    public void PlayWakizashi()
+    {
+        if (BGMFlg == 0)
+        {
+            BGMFlg = 1;
+            BGMMSC.Play_Battle_BGM();  // バトルBGM開始
+            Debug.Log("バトルBGM開始");
+        }
     }
 
     public void CheckYourTurn()

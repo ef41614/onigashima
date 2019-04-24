@@ -143,6 +143,8 @@ public class SelectManager : MonoBehaviour
 
         CloseHaguruma_Box();
         BGMMSC.Play_Opening_BGM();
+        // BGMMSC.Play_Battle_BGM();  // バトルBGM開始
+
     }
 
 

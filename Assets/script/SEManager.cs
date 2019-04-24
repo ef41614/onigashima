@@ -10,6 +10,8 @@ public class SEManager : MonoBehaviour {
 
     AudioSource audioSource;
     AudioSource audioSource2;
+    AudioSource audioSource3;
+
     public AudioClip OK_SE;
     public AudioClip OK2_SE;
     public AudioClip cancelSE;
@@ -31,13 +33,19 @@ public class SEManager : MonoBehaviour {
     public AudioClip checkOFF;
     public AudioClip NoSelect;
 
+    public AudioClip Ending;
+
+    public GameObject BGMManager;
+    BGMManager BGMMSC;
+
     //☆################☆################  Start  ################☆################☆
 
     void Start()
     {
+        BGMMSC = BGMManager.GetComponent<BGMManager>();
         audioSource = this.gameObject.GetComponent<AudioSource>();
         audioSource2 = this.gameObject.GetComponent<AudioSource>();
-
+        audioSource3 = this.gameObject.GetComponent<AudioSource>();
     }
 
 
@@ -149,6 +157,16 @@ public class SEManager : MonoBehaviour {
     public void NoSelect_SE()
     {
         audioSource.PlayOneShot(NoSelect);
+    }
+
+    public void Play_Ending_BGM()
+    {
+        Debug.Log("エンディングBGM開始");
+        BGMMSC.StopBGM();
+//        audioSource2.volume = 1.0f;
+        audioSource3.clip = Ending;
+        audioSource.loop = true;
+        audioSource3.Play();
     }
 
     //#################################################################################

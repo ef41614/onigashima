@@ -473,6 +473,7 @@ public class SiteManager : MonoBehaviour
             sequence.InsertCallback(3.8f, () => CheckYourTurn());
             sequence.InsertCallback(4.4f, () => ClosePanelCheckEnd());
             sequence.InsertCallback(4.5f, () => CloseCanvasRollCheck());
+            sequence.InsertCallback(5.0f, () => BGMMSC.Play_Battle_BGM());  // バトルBGM開始
             HandOfTime--;
         }
         else
@@ -2718,6 +2719,8 @@ public class SiteManager : MonoBehaviour
         sequence.InsertCallback(5.8f, () => ApperPanelWinner());  // 数秒後、win画面表示
         CloseCheckBoxes();
         AppearP_WINimage();
+        BGMMSC.FadeoutBGM();  // BGMをフェードアウト
+        sequence.InsertCallback(5.8f, () => SEMSC.Play_Ending_BGM());  // 数秒後、エンディングBGM開始
     }
 
     public void AppearP_WINimage()

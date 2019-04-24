@@ -1385,6 +1385,7 @@ MonoBehaviour:
   NatsuMatsuri: {fileID: 8300000, guid: 9e3de183253ef98448343424848cb0cf, type: 3}
   Wakizashi: {fileID: 8300000, guid: 8cde4ffe4ba533d448c7f04b06d59581, type: 3}
   Yuuchou: {fileID: 8300000, guid: 0d4440b8b15064b4da7ed43b0bb6495a, type: 3}
+  Ending: {fileID: 0}
 --- !u!1 &69713791
 GameObject:
   m_ObjectHideFlags: 0
@@ -2801,7 +2802,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 56, y: -143}
+  m_AnchoredPosition: {x: 56, y: -148}
   m_SizeDelta: {x: 70, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &183264079
@@ -4352,7 +4353,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 300810036}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -900027084, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
@@ -6826,10 +6827,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.4
-  m_Text: "\u3010 BGM\u30FB\u52B9\u679C\u97F3 \u3011\r\n\u25A0Music is VFR\r\n\u25A0\u9B54\u738B\u9B42\r\n\u25A0\u52B9\u679C\u97F3\u30E9\u30DC\r\n\u25A0\u97F3\u306E\u5712\r\n\u30FB\u52C7\u8ABF\r\n\u30FB\u8107\u5DEE\r\n\u30FB\u590F\u796D\u308A\r\n\u25A0VSQ\r\n\u25A0\u30D5\u30EA\u30FC\u52B9\u679C\u97F3\u7D20\u6750
+  m_Text: "\u3010 BGM\u30FB\u52B9\u679C\u97F3 \u3011\r\n\u25A0OtoLogic\r\n\u25A0\u9B54\u738B\u9B42\r\n\u25A0\u52B9\u679C\u97F3\u30E9\u30DC\r\n\u25A0\u97F3\u306E\u5712\r\n\u30FB\u52C7\u8ABF\r\n\u30FB\u8107\u5DEE\r\n\u30FB\u590F\u796D\u308A\r\n\u30FB\u967D\u6C17\r\n\u25A0VSQ\r\n\u25A0\u52B9\u679C\u97F3
     \u304F\u3089\u3052\u5DE5\u5320\r\n\r\n\u3010 \u305D\u306E\u4ED6 \u3011\r\n\u25A0mob-sakai\r\n\u25A0ParticleEffectForUGUI\r\n\u25A0azixMcAze
-    \r\n\u30FBUnity-UIGradient\r\n\u25A0\u5408\u540C\u4F1A\u793E \u30D7\u30ED\u751F\r\n\r
-    \            \uFF08\u656C\u79F0\u7565\uFF09"
+    \r\n\u30FBUnity-UIGradient\r\n\u25A0\u5408\u540C\u4F1A\u793E \u30D7\u30ED\u751F\r\n\uFF08\u656C\u79F0\u7565\uFF09"
 --- !u!222 &529479810
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11623,7 +11623,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -74, y: 38}
+  m_AnchoredPosition: {x: -74, y: 26}
   m_SizeDelta: {x: 100, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1064018389
@@ -11678,7 +11678,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1064018387}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -900027084, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
@@ -19840,7 +19840,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -2.199997, y: -3.9164429}
+  m_AnchoredPosition: {x: -2.2000122, y: -3.9164429}
   m_SizeDelta: {x: 32.18, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1799225435
@@ -20487,6 +20487,8 @@ MonoBehaviour:
   checkON: {fileID: 8300000, guid: eb12994ce31c44b4d87eaf0f9c069ad4, type: 3}
   checkOFF: {fileID: 8300000, guid: e8c45d7255865d249be9a27c0ce8ef9a, type: 3}
   NoSelect: {fileID: 0}
+  Ending: {fileID: 8300000, guid: 9b13d29b6491694498d2dc72317e652f, type: 3}
+  BGMManager: {fileID: 54596117}
 --- !u!4 &1832516946
 Transform:
   m_ObjectHideFlags: 0
@@ -21560,8 +21562,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 8.5}
+  m_SizeDelta: {x: 0, y: 16.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1871306322
 MonoBehaviour:

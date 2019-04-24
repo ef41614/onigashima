@@ -9,16 +9,19 @@ using System;
 public class BGMManager : MonoBehaviour
 {
     AudioSource audioSource;
+    AudioSource audioSource2;
+
     public AudioClip NatsuMatsuri;
     public AudioClip Wakizashi;
     public AudioClip Yuuchou;
+ //   public AudioClip Ending;
 
 
     // --------------------------------------------
     private void Awake()
     {
         audioSource = this.gameObject.GetComponent<AudioSource>();
-        audioSource.clip = Yuuchou;
+        audioSource2 = this.gameObject.GetComponent<AudioSource>();
     }
 
     //☆################☆################  Start  ################☆################☆
@@ -60,9 +63,30 @@ public class BGMManager : MonoBehaviour
         audioSource.Play();
     }
 
+    public void Play_Ending_BGM()
+    {
+        Debug.Log("エンディングBGM開始");
+        StopBGM();
+        audioSource2.volume = 1.0f;
+ //       audioSource2.clip = Ending;
+        audioSource2.Play();
+    }
+
     public void StopBGM()
     {
         audioSource.Stop();
+    }
+
+    public void Continue_BattleBGM()
+    {
+        // Sceneを遷移してもオブジェクトが消えないようにする
+        DontDestroyOnLoad(this);
+    }
+
+    public void FadeoutBGM()
+    {
+//        audioSource.DOFade(0f, 5f).SetEase(Ease.Linear);
+        audioSource.DOFade(0f, 5f);
     }
 
 

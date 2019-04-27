@@ -7,10 +7,11 @@ public class VolumeManager : MonoBehaviour
 {
     public AudioMixer mixer;
     public Slider BGMslider;
+    public Slider SEslider;
 
     public static float Eternal_BGMvol = 0.8f;
-    float NowBGMvol;
-
+    public static float Eternal_SEvol = 0.8f;
+    
     float currentTime = 0f;  //〇秒間に一度する処理用
 
 
@@ -26,9 +27,12 @@ public class VolumeManager : MonoBehaviour
     {
         Debug.Log("VolumeManager 出席");
         Debug.Log("Eternal_BGMvol" + Eternal_BGMvol.ToString());
+        Debug.Log("Eternal_BGMvol" + Eternal_SEvol.ToString());
 
-        NowBGMvol = Eternal_BGMvol;
-        BGMslider.value = NowBGMvol;
+
+        BGMslider.value = Eternal_BGMvol;
+        SEslider.value = Eternal_SEvol;
+
         BGMVolume2();
     }
 
@@ -39,9 +43,10 @@ public class VolumeManager : MonoBehaviour
     {
         currentTime += Time.deltaTime;
 
-        if (currentTime > 1)
+        if (currentTime > 2)
         {
-            Debug.Log("BGMslider.value" + BGMslider.value.ToString());
+            // Debug.Log("BGMslider.value" + BGMslider.value.ToString());
+            // Debug.Log("SEslider.value" + SEslider.value.ToString());
 
             currentTime = 0f;
         }
@@ -49,24 +54,14 @@ public class VolumeManager : MonoBehaviour
 
     //####################################  other  ####################################
 
-    public void ChangeBGMVolume(float vol)
-    {
-        mixer.SetFloat("BGMVolume", vol);
-    }
-
-    public void ChangeSEVolume(float vol)
-    {
-        mixer.SetFloat("SEVolume", vol);
-    }
-
-    public void BGMVolume(Slider slider)
-    {
-        mixer.SetFloat("BGMVolume", (slider.value*60)-50);
-    }
-
     public void BGMVolume2()
     {
         mixer.SetFloat("BGMVolume", (BGMslider.value * 60) - 50);
+    }
+
+    public void SEVolume2()
+    {
+        mixer.SetFloat("SEVolume", (SEslider.value * 60) - 50);
     }
 
     public void SaveBGMvol()
@@ -74,6 +69,13 @@ public class VolumeManager : MonoBehaviour
         Debug.Log("Eternal_BGMvol セーブ前 " + Eternal_BGMvol.ToString());
         Eternal_BGMvol = BGMslider.value;
         Debug.Log("Eternal_BGMvol セーブ後 " + Eternal_BGMvol.ToString());
+    }
+
+    public void SaveSEvol()
+    {
+        Debug.Log("Eternal_SEvol セーブ前 " + Eternal_SEvol.ToString());
+        Eternal_SEvol = SEslider.value;
+        Debug.Log("Eternal_SEvol セーブ後 " + Eternal_SEvol.ToString());
     }
 
     //#################################################################################

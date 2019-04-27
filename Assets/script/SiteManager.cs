@@ -388,7 +388,7 @@ public class SiteManager : MonoBehaviour
 
         if (currentTime > 3)
         {
-            Debug.Log("◆◎NowOyabunStatus：" + NowOyabunStatus);
+ //           Debug.Log("◆◎NowOyabunStatus：" + NowOyabunStatus);
             currentTime = 0f;
         }
 

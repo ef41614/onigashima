@@ -244,6 +244,7 @@ public class SiteManager : MonoBehaviour
     public GameObject GuideCheckMark2; // チェックマーク2。
     public GameObject HomeButton_Box;
     public GameObject Seiseki_Box;  // 総合成績を見る
+    public GameObject OniLevelText;  // 設定画面におにチームの強さ（レベル）を表示
 
     public int WinFlgON = 0;  // 0で勝利フラグまだ立っていない
     public Image ImageP_WinMessage;
@@ -376,6 +377,7 @@ public class SiteManager : MonoBehaviour
         CheckSelectedMesSpeed();  // 選択されているスピードをアピールする（黄色背景点滅）
         FirstCheckGuideLevel();
         // BGMMSC.Play_Battle_BGM();  // バトルBGM開始
+        SetOniLevelText();
     }
 
 
@@ -2898,7 +2900,27 @@ public class SiteManager : MonoBehaviour
         GuideCheckMark2.SetActive(false);
     }
 
-
+    public void SetOniLevelText()  // おにチームの強さを表示
+    {
+        switch (OniLevel)
+        {
+            case 1: //
+                OniLevelText.GetComponent<Text>().text = "よわい";
+                break;
+            case 2: //
+                OniLevelText.GetComponent<Text>().text = "ふつう";
+                break;
+            case 3: //
+                OniLevelText.GetComponent<Text>().text = "つよい";
+                break;
+            case 4: //
+                OniLevelText.GetComponent<Text>().text = "ちょつよ";
+                break;
+            default:
+                // その他処理
+                break;
+        }
+    }
 
     public void OpenHomeButton_Box()
     {

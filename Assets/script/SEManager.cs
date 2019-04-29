@@ -37,12 +37,16 @@ public class SEManager : MonoBehaviour {
 
     public GameObject BGMManager;
     BGMManager BGMMSC;
+    public GameObject VolumeManager;
+    VolumeManager VolumeMSC;
 
     //☆################☆################  Start  ################☆################☆
 
     void Start()
     {
         BGMMSC = BGMManager.GetComponent<BGMManager>();
+        VolumeMSC = VolumeManager.GetComponent<VolumeManager>();
+
         audioSource = this.gameObject.GetComponent<AudioSource>();
         audioSource2 = this.gameObject.GetComponent<AudioSource>();
         audioSource3 = this.gameObject.GetComponent<AudioSource>();
@@ -162,6 +166,7 @@ public class SEManager : MonoBehaviour {
     public void Play_Ending_BGM()
     {
         Debug.Log("エンディングBGM開始");
+        audioSource3.volume = VolumeMSC.ForEnding_BGMvol;  // 現在のBGM音量を audioSource3 に適応させる
         BGMMSC.StopBGM();
         audioSource3.clip = Ending;
         audioSource.loop = true;

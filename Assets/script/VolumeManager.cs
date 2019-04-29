@@ -11,7 +11,9 @@ public class VolumeManager : MonoBehaviour
 
     public static float Eternal_BGMvol = 0.8f;
     public static float Eternal_SEvol = 0.8f;
-    
+
+    public float ForEnding_BGMvol = 0.8f;
+
     float currentTime = 0f;  //〇秒間に一度する処理用
 
 
@@ -34,6 +36,8 @@ public class VolumeManager : MonoBehaviour
         SEslider.value = Eternal_SEvol;
 
         BGMVolume2();
+        SEVolume2();
+        ForEnding_BGMvol = Eternal_BGMvol;
     }
 
 
@@ -68,6 +72,7 @@ public class VolumeManager : MonoBehaviour
     {
         Debug.Log("Eternal_BGMvol セーブ前 " + Eternal_BGMvol.ToString());
         Eternal_BGMvol = BGMslider.value;
+        ForEnding_BGMvol = Eternal_BGMvol;
         Debug.Log("Eternal_BGMvol セーブ後 " + Eternal_BGMvol.ToString());
     }
 

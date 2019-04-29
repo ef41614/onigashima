@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using DG.Tweening;
 using System.Linq;
 using System;
+using UnityEngine.SceneManagement;
+
 
 public class SiteManager : MonoBehaviour
 {
@@ -44,6 +46,7 @@ public class SiteManager : MonoBehaviour
     public int[] Maybe_MomoMate = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };    // ももたろうの仲間 である可能性値
     public int[] Maybe_Kooni = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };       // こおに           である可能性値
     public int[] Maybe_Oyabun = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };      // おにのおやぶん   である可能性値
+    public int[] UsedYosouPara = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };    // 役割予想パラメータを使用済みかどうか
 
     int RollFNum = 0;   // 現在エイムされているサイトの役わり
     public int DEX = 0; //命中力
@@ -163,6 +166,8 @@ public class SiteManager : MonoBehaviour
     MainFlow MainFlowScr;
     public GameObject BGMManager;
     BGMManager BGMMSC;
+    public GameObject EndBGMManager;
+    EndBGMManager EndBGMMSC;
 
     public GameObject Yaku_A;
     CardReverse_Ba CardR_BaASC;
@@ -227,6 +232,7 @@ public class SiteManager : MonoBehaviour
 
     public GameObject CheckBoxes;
 
+    public static int OniStrong = 2;  // 鬼チームの強さ： 2（デフォルト）が「ふつう」
     public int OniLevel;  // SelectM で選択した「おにの強さ」を引き継いだもの
     public bool KabauFlg = false;  // 「かばう」の発動フラグ
     int OyabunHP = 3;
@@ -314,6 +320,7 @@ public class SiteManager : MonoBehaviour
         KifudaMSC = KifudaManager.GetComponent<KifudaManager>();
         ButtonCscr = ButtonController.GetComponent<ButtonController>();
         BGMMSC = BGMManager.GetComponent<BGMManager>();
+        EndBGMMSC = EndBGMManager.GetComponent<EndBGMManager>();
         StartTurnNum();
         ReloadTurnNumUe();
         ClosePanelWinner();
@@ -378,6 +385,8 @@ public class SiteManager : MonoBehaviour
         FirstCheckGuideLevel();
         // BGMMSC.Play_Battle_BGM();  // バトルBGM開始
         SetOniLevelText();
+        ResetUsedYosouParaFlg();  // 役割予想パラメータ使用済みフラグをOFF（リセット）
+
     }
 
 
@@ -666,6 +675,7 @@ public class SiteManager : MonoBehaviour
             preventPlayerOrderNum++;
         }
         KizetuSkipTurn();
+        ExcludeYosouPara();  // 不要となったうっかりパラ、メイビーパラを-1に修正する
         ButtonCscr.ResetGuideText();  // 毎回キャラの順番が進むごとにリセット 
         CheckCanPushMenuButtons();  // 各行動ボタンを押せるかどうかの確認をする
         var sequence2 = DOTween.Sequence();
@@ -1237,19 +1247,22 @@ public class SiteManager : MonoBehaviour
         // おやぶんが 確定なのに、おやぶんを狙わない  ⇒ スルーして「しつもん」をしたキャラ(今のアクティブプレーヤー)は こおにの 可能性大！
         if (NowOyabunStatus >= 2)
         {
-            if (rollF[NowActiveSiteN] != 5)  // 今のアクティブプレーヤーが おやぶん 以外
+            if (NowActiveSiteStatus <= 2)  // 今のアクティブサイトのステータスが2以下（役割オープン前）なら → メイビーパラメータ加算処理実施
             {
-                Maybe_Momotaro[NowActiveSiteN] = -2;
-                Maybe_MomoMate[NowActiveSiteN] = -2;
-                Maybe_Oyabun[NowActiveSiteN] = 0;
-                Maybe_Kooni[NowActiveSiteN] = Maybe_Kooni[NowActiveSiteN] + 50;
-            }
-            else  // 今のアクティブプレーヤーが おやぶん
-            {
-                Maybe_Momotaro[NowActiveSiteN] = -2;
-                Maybe_MomoMate[NowActiveSiteN] = -2;
-                Maybe_Oyabun[NowActiveSiteN] = 98;
-                Maybe_Kooni[NowActiveSiteN] = 2;
+                if (rollF[NowActiveSiteN] != 5)  // 今のアクティブプレーヤーが おやぶん 以外
+                {
+                    Maybe_Momotaro[NowActiveSiteN] = -2;
+                    Maybe_MomoMate[NowActiveSiteN] = -2;
+                    Maybe_Oyabun[NowActiveSiteN] = 0;
+                    Maybe_Kooni[NowActiveSiteN] = Maybe_Kooni[NowActiveSiteN] + 50;
+                }
+                else  // 今のアクティブプレーヤーが おやぶん
+                {
+                    Maybe_Momotaro[NowActiveSiteN] = -2;
+                    Maybe_MomoMate[NowActiveSiteN] = -2;
+                    Maybe_Oyabun[NowActiveSiteN] = 98;
+                    Maybe_Kooni[NowActiveSiteN] = 2;
+                }
             }
         }
     }
@@ -1595,20 +1608,106 @@ public class SiteManager : MonoBehaviour
     public void JudgeMaybe_Parameter()  // メイビーパラメータ (キャラがこの役割ではないか？の可能性を数値化したもの) を判定する
     {
         Debug.Log("今アクティブなサイトは" + NowActiveSiteN);
-        if ((rollF[TargetSiteNum] >= 5) && (rollF[TargetSiteNum] <= 8))  // 狙った相手が おにチーム である → 今のアクティブプレーヤーは  桃チーム である可能性が高い
+        if (NowActiveSiteStatus <= 2)  // 今のアクティブサイトのステータスが2以下（役割オープン前）なら → メイビーパラメータ加算処理実施
         {
-            Maybe_Momotaro[NowActiveSiteN] = Maybe_Momotaro[NowActiveSiteN] + 25;
-            Maybe_MomoMate[NowActiveSiteN] = Maybe_MomoMate[NowActiveSiteN] + 25;
-            Maybe_Oyabun[NowActiveSiteN] = -2;
-            Maybe_Kooni[NowActiveSiteN] = -2;
+            if ((rollF[TargetSiteNum] >= 5) && (rollF[TargetSiteNum] <= 8))  // 狙った相手が おにチーム である → 今のアクティブプレーヤーは  桃チーム である可能性が高い
+            {
+                Maybe_Momotaro[NowActiveSiteN] = Maybe_Momotaro[NowActiveSiteN] + 25;
+                Maybe_MomoMate[NowActiveSiteN] = Maybe_MomoMate[NowActiveSiteN] + 25;
+                Maybe_Oyabun[NowActiveSiteN] = -2;
+                Maybe_Kooni[NowActiveSiteN] = -2;
+            }
+            else if ((rollF[TargetSiteNum] >= 1) && (rollF[TargetSiteNum] <= 4))  // 狙った相手が 桃チームチーム である → 今のアクティブプレーヤーは  おにチーム である可能性が高い
+            {
+                Maybe_Momotaro[NowActiveSiteN] = -2;
+                Maybe_MomoMate[NowActiveSiteN] = -2;
+                Maybe_Oyabun[NowActiveSiteN] = Maybe_Oyabun[NowActiveSiteN] + 25;
+                Maybe_Kooni[NowActiveSiteN] = Maybe_Kooni[NowActiveSiteN] + 25;
+            }
         }
-        else if ((rollF[TargetSiteNum] >= 1) && (rollF[TargetSiteNum] <= 4))  // 狙った相手が 桃チームチーム である → 今のアクティブプレーヤーは  おにチーム である可能性が高い
+    }
+
+    public void ExcludeYosouPara()  // 不要となったうっかりパラ、メイビーパラを-1に修正する
+    {
+        if (UsedYosouPara[1] == 0)  // まだ予想パラを未使用
         {
-            Maybe_Momotaro[NowActiveSiteN] = -2;
-            Maybe_MomoMate[NowActiveSiteN] = -2;
-            Maybe_Oyabun[NowActiveSiteN] = Maybe_Oyabun[NowActiveSiteN] + 25;
-            Maybe_Kooni[NowActiveSiteN] = Maybe_Kooni[NowActiveSiteN] + 25;
+            if (StatusSiteA >= 3)  // 役割オープン後であるなら
+            {
+                ProcessYosouPara(1);
+            }
         }
+        if (UsedYosouPara[2] == 0)  // まだ予想パラを未使用
+        {
+            if (StatusSiteB >= 3)  // 役割オープン後であるなら
+            {
+                ProcessYosouPara(2);
+            }
+        }
+        if (UsedYosouPara[3] == 0)  // まだ予想パラを未使用
+        {
+            if (StatusSiteC >= 3)  // 役割オープン後であるなら
+            {
+                ProcessYosouPara(3);
+            }
+        }
+        if (UsedYosouPara[4] == 0)  // まだ予想パラを未使用
+        {
+            if (StatusSiteD >= 3)  // 役割オープン後であるなら
+            {
+                ProcessYosouPara(4);
+            }
+        }
+        if (UsedYosouPara[5] == 0)  // まだ予想パラを未使用
+        {
+            if (StatusSiteE >= 3)  // 役割オープン後であるなら
+            {
+                ProcessYosouPara(5);
+            }
+        }
+        if (UsedYosouPara[6] == 0)  // まだ予想パラを未使用
+        {
+            if (StatusSiteF >= 3)  // 役割オープン後であるなら
+            {
+                ProcessYosouPara(6);
+            }
+        }
+        if (UsedYosouPara[7] == 0)  // まだ予想パラを未使用
+        {
+            if (StatusSiteG >= 3)  // 役割オープン後であるなら
+            {
+                ProcessYosouPara(7);
+            }
+        }
+        if (UsedYosouPara[8] == 0)  // まだ予想パラを未使用
+        {
+            if (StatusSiteH >= 3)  // 役割オープン後であるなら
+            {
+                ProcessYosouPara(8);
+            }
+        }
+    }
+
+
+    public void ProcessYosouPara(int SN)  // 予想パラを使用済み（以後不要）にする
+    {
+        UkkariSite[SN] = -1;
+        Maybe_Momotaro[SN] = -1;
+        Maybe_MomoMate[SN] = -1;
+        Maybe_Oyabun[SN] = -1;
+        Maybe_Kooni[SN] = -1;
+        UsedYosouPara[SN] = 1;
+    }
+
+    public void ResetUsedYosouParaFlg()  // 役割予想パラメータ使用済みフラグをOFF（リセット）
+    {
+        UsedYosouPara[1] = 0;
+        UsedYosouPara[2] = 0;
+        UsedYosouPara[3] = 0;
+        UsedYosouPara[4] = 0;
+        UsedYosouPara[5] = 0;
+        UsedYosouPara[6] = 0;
+        UsedYosouPara[7] = 0;
+        UsedYosouPara[8] = 0;
     }
 
     public void CheckOyabunHP()  // おやぶんの残り体力を確認する
@@ -2734,7 +2833,8 @@ public class SiteManager : MonoBehaviour
         CloseCheckBoxes();
         AppearP_WINimage();
         BGMMSC.FadeoutBGM();  // BGMをフェードアウト
-        sequence.InsertCallback(5.8f, () => SEMSC.Play_Ending_BGM());  // 数秒後、エンディングBGM開始
+ //       sequence.InsertCallback(5.8f, () => SEMSC.Play_Ending_BGM());  // 数秒後、エンディングBGM開始
+        sequence.InsertCallback(5.8f, () => EndBGMMSC.Play_Ending_BGM());  // 数秒後、エンディングBGM開始
     }
 
     public void AppearP_WINimage()
@@ -2833,8 +2933,23 @@ public class SiteManager : MonoBehaviour
     {
         GuideMode = GuideLevel;  // static な変数に値を保存
         MessageSpeed = MessageLevel;  // static な変数に値を保存
+        OniStrong = OniLevel;    // static な変数に値を保存
     }
 
+    public static int getGuideMode()
+    { // ゲッターの関数
+        return GuideMode;
+    }
+
+    public static int getOniStrong()  // ゲッターの関数
+    {
+        return OniStrong;
+    }
+
+    public static int getMessageSpeed()  // ゲッターの関数
+    {
+        return MessageSpeed;
+    }
 
     public void OpenHaguruma_Box()
     {
@@ -4520,41 +4635,57 @@ public class SiteManager : MonoBehaviour
                 }
                 else  // こおに（自分）が 木札ON （ステータス2）以上
                 {
-                    Debug.Log("【CPU】MomotaroYakuwariAte-5");    // *うっかりフラグが1のものが 存在する
-                    if ((UkkariSite[1] == 1) || (UkkariSite[2] == 1) || (UkkariSite[3] == 1) || (UkkariSite[4] == 1) || (UkkariSite[5] == 1) || (UkkariSite[6] == 1) || (UkkariSite[7] == 1) || (UkkariSite[8] == 1))
+                    Debug.Log("【CPU】MomotaroYakuwariAte-5");
+                    PushedBtnFlg = 0;  // 処理を実施したかどうか：初期化
+
+                    // うっかりフラグから桃太郎を役割当てする（まだ桃太郎の手番が残っていれば）
+                    if (PushedBtnFlg == 0)  // 処理を実施したかどうか
                     {
-                        SearchMomotaroCommon(1);  // 札無しももたろう（ももじ）のサイト位置をサーチ → 見つかったら、RollFNum を そのサイトの番号に上書き （3ターン目で、行動済みのキャラに対してはエイムしない）
-                        if (PushedBtnFlg == 1)  // ももじ が見つかったら  (前提：エイムサイトが自分ではない)
+                        if ((UkkariSite[1] == 1) || (UkkariSite[2] == 1) || (UkkariSite[3] == 1) || (UkkariSite[4] == 1) || (UkkariSite[5] == 1) || (UkkariSite[6] == 1) || (UkkariSite[7] == 1) || (UkkariSite[8] == 1))
                         {
-                            Debug.Log("自分(こおに)は木札ON以上で 札無しが ももたろうう と もう一人である（他のキャラは全部 木札ON）");
-                            PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン： その役割だと確定し、迷いなく処理する
+                            SearchMomotaroCommon(1);  // 札無しももたろう（ももじ）のサイト位置をサーチ → 見つかったら、RollFNum を そのサイトの番号に上書き （3ターン目で、行動済みのキャラに対してはエイムしない）
+                            if (PushedBtnFlg == 1)  // ももじ が見つかったら  (前提：エイムサイトが自分ではない)  & うっかりフラグが1のものが存在する
+                            {
+                                Debug.Log("自分(こおに)は木札ON以上で 札無しが ももたろうう と もう一人である（他のキャラは全部 木札ON）");
+                                PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン： その役割だと確定し、迷いなく処理する
+                            }
                         }
                     }
-                    else if (Maybe_MomoMate[1] > 25 || Maybe_MomoMate[2] > 25 || Maybe_MomoMate[3] > 25 || Maybe_MomoMate[4] > 25 || Maybe_MomoMate[5] > 25 || Maybe_MomoMate[6] > 25 || Maybe_MomoMate[7] > 25 || Maybe_MomoMate[8] > 25)
+
+                    // 2種類のメイビーパラメータから桃太郎を役割当てする（まだ桃太郎の手番が残っていれば）
+                    if (PushedBtnFlg == 0)  // 処理を実施したかどうか
                     {
-                        SearchMomotaroCommon(1);  // 札無しももたろう（ももじ）のサイト位置をサーチ → 見つかったら、RollFNum を そのサイトの番号に上書き （3ターン目で、行動済みのキャラに対してはエイムしない）
-                        if (PushedBtnFlg == 1)  // ももじ が見つかったら  (前提：エイムサイトが自分ではない)
+                        if (Maybe_Kooni[1] > 25 || Maybe_Kooni[2] > 25 || Maybe_Kooni[3] > 25 || Maybe_Kooni[4] > 25 || Maybe_Kooni[5] > 25 || Maybe_Kooni[6] > 25 || Maybe_Kooni[7] > 25 || Maybe_Kooni[8] > 25)
                         {
-                            Debug.Log("自分(こおに)は木札ON以上で 札無しが ももたろうう と もう一人である（他のキャラは全部 木札ON）");
-                            PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン : メイビーパラメータを元に予想して当てにいく
+                            MaybeMomotaro_Ate();  // 桃太郎が札無し（ステータス1）ならば → メイビーパラメータを元に役割当て（3ターン目で、行動済みのキャラに対してはエイムしない）
+                            if (PushedBtnFlg == 1)  // 条件に合う 桃太郎 と思われるキャラ が見つかったら  (前提：エイムサイトが自分ではない)
+                            {
+                                Debug.Log("自分(こおに)は木札ON以上で 札無しが ももたろうう と もう一人である（他のキャラは全部 木札ON）");
+                            }
                         }
                     }
-                    else if (Maybe_Kooni[1] > 25 || Maybe_Kooni[2] > 25 || Maybe_Kooni[3] > 25 || Maybe_Kooni[4] > 25 || Maybe_Kooni[5] > 25 || Maybe_Kooni[6] > 25 || Maybe_Kooni[7] > 25 || Maybe_Kooni[8] > 25)
+
+                    if (PushedBtnFlg == 0)  // 処理を実施したかどうか
                     {
-                        SearchMomotaroCommon(1);  // 札無しももたろう（ももじ）のサイト位置をサーチ → 見つかったら、RollFNum を そのサイトの番号に上書き （3ターン目で、行動済みのキャラに対してはエイムしない）
-                        if (PushedBtnFlg == 1)  // ももじ が見つかったら  (前提：エイムサイトが自分ではない)
+                        if (Maybe_Oyabun[1] > 25 || Maybe_Oyabun[2] > 25 || Maybe_Oyabun[3] > 25 || Maybe_Oyabun[4] > 25 || Maybe_Oyabun[5] > 25 || Maybe_Oyabun[6] > 25 || Maybe_Oyabun[7] > 25 || Maybe_Oyabun[8] > 25)
                         {
-                            Debug.Log("自分(こおに)は木札ON以上で 札無しが ももたろうう と もう一人である（他のキャラは全部 木札ON）");
-                            PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン : メイビーパラメータを元に予想して当てにいく
+                            MaybeMomotaro_Ate();  // 桃太郎が札無し（ステータス1）ならば → メイビーパラメータを元に役割当て（3ターン目で、行動済みのキャラに対してはエイムしない）
+                            if (PushedBtnFlg == 1)  // 条件に合う 桃太郎 と思われるキャラ が見つかったら  (前提：エイムサイトが自分ではない)
+                            {
+                                Debug.Log("自分(こおに)は木札ON以上で 札無しが ももたろうう と もう一人である（他のキャラは全部 木札ON）");
+                            }
                         }
                     }
-                    else if (Maybe_Oyabun[1] > 25 || Maybe_Oyabun[2] > 25 || Maybe_Oyabun[3] > 25 || Maybe_Oyabun[4] > 25 || Maybe_Oyabun[5] > 25 || Maybe_Oyabun[6] > 25 || Maybe_Oyabun[7] > 25 || Maybe_Oyabun[8] > 25)
+
+                    if (PushedBtnFlg == 0)  // 処理を実施したかどうか
                     {
-                        SearchMomotaroCommon(1);  // 札無しももたろう（ももじ）のサイト位置をサーチ → 見つかったら、RollFNum を そのサイトの番号に上書き （3ターン目で、行動済みのキャラに対してはエイムしない）
-                        if (PushedBtnFlg == 1)  // ももじ が見つかったら  (前提：エイムサイトが自分ではない)
+                        if (Maybe_MomoMate[1] > 25 || Maybe_MomoMate[2] > 25 || Maybe_MomoMate[3] > 25 || Maybe_MomoMate[4] > 25 || Maybe_MomoMate[5] > 25 || Maybe_MomoMate[6] > 25 || Maybe_MomoMate[7] > 25 || Maybe_MomoMate[8] > 25)
                         {
-                            Debug.Log("自分(こおに)は木札ON以上で 札無しが ももたろうう と もう一人である（他のキャラは全部 木札ON）");
-                            PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン : メイビーパラメータを元に予想して当てにいく
+                            MaybeMomotaro_Ate();  // 桃太郎が札無し（ステータス1）ならば → メイビーパラメータを元に役割当て（3ターン目で、行動済みのキャラに対してはエイムしない）
+                            if (PushedBtnFlg == 1)  // 条件に合う 桃太郎 と思われるキャラ が見つかったら  (前提：エイムサイトが自分ではない)
+                            {
+                                Debug.Log("自分(こおに)は木札ON以上で 札無しが ももたろうう と もう一人である（他のキャラは全部 木札ON）");
+                            }
                         }
                     }
                 }

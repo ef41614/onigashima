@@ -14,6 +14,8 @@ public class SelectManager : MonoBehaviour
 
     public GameObject BGMManager;
     BGMManager BGMMSC;
+    // public GameObject SiteManager;
+    // SiteManager SiteMSC;
 
     public GameObject PanelCheck;
     public GameObject PanelCheck_numberOfPersons;
@@ -84,7 +86,7 @@ public class SelectManager : MonoBehaviour
     public static int OniStrong = 2;  // 鬼チームの強さ： 2（デフォルト）が「ふつう」
 
     bool SelectedFlgOni01 = false;  // よわい
-    bool SelectedFlgOni02 = false;  // ふつう
+    bool SelectedFlgOni02 = true;  // ふつう
     bool SelectedFlgOni03 = false;  // つよい
     bool SelectedFlgOni04 = false;  // ちょつよ
 
@@ -96,7 +98,7 @@ public class SelectManager : MonoBehaviour
     public static int MessageSpeed = 2;  // メッセージスピード： 2（デフォルト）が「ふつう」
 
     bool SelectedFlgSpeed01 = false;  // おそい
-    bool SelectedFlgSpeed02 = false;  // ふつう
+    bool SelectedFlgSpeed02 = true;  // ふつう
     bool SelectedFlgSpeed03 = false;  // はやい
 
     public GameObject ImageMesSpeed01;
@@ -105,6 +107,8 @@ public class SelectManager : MonoBehaviour
 
     public GameObject GuideCheckMark; // チェックマーク。初期値は表示（チェック入り）にしておく（ゲーム毎にはしない）
     public static int GuideMode = 1;  // 1 でガイド文 ON
+    public int GuideLevel;  // 1 でガイド文 ON
+
 
     public GameObject Haguruma_Box;  // メッセージスピードや音量などを調整する設定画面
 
@@ -116,6 +120,7 @@ public class SelectManager : MonoBehaviour
         CloseCredit_Box();
         SEMSC = SEManager.GetComponent<SEManager>();
         BGMMSC = BGMManager.GetComponent<BGMManager>();
+//        SiteMSC = SiteManager.GetComponent<SiteManager>();
 
         KesuCover_01();
         KesuCover_02();
@@ -133,18 +138,24 @@ public class SelectManager : MonoBehaviour
 
         Check_numberOfPersons();
 
-        ResetSelectOniStrong();  // おにチームの強さを一旦リセットする
-        SelectOnistr02();   // 初期設定「ふつう」にする
+        //        ResetSelectOniStrong();  // おにチームの強さを一旦リセットする
+        //        SelectOnistr02();   // 初期設定「ふつう」にする
+        OniStrong = SiteManager.getOniStrong(); // ゲッター関数を呼び出し、値を引き継ぐ
+        Switch_OniStrong();
         CheckSelectedOniStr();  // 選択されている強さをアピールする（黄色背景点滅）
 
-        ResetSelectMessageSpeed();  // メッセージスピードを一旦リセットする
-        SelectMesSpeed02();  // 初期設定「ふつう」にする
+        //        ResetSelectMessageSpeed();  // メッセージスピードを一旦リセットする
+        //        SelectMesSpeed02();  // 初期設定「ふつう」にする
+        MessageSpeed = SiteManager.getMessageSpeed(); // ゲッター関数を呼び出し、値を引き継ぐ
+        Switch_MessageSpeed();
         CheckSelectedMesSpeed();  // 選択されているスピードをアピールする（黄色背景点滅）
+
+        GuideLevel = SiteManager.getGuideMode(); // ゲッター関数を呼び出し、値を引き継ぐ
+        RouteGuideMode();
 
         CloseHaguruma_Box();
         BGMMSC.Play_Opening_BGM();
         // BGMMSC.Play_Battle_BGM();  // バトルBGM開始
-
     }
 
 
@@ -841,6 +852,29 @@ public class SelectManager : MonoBehaviour
         SelectedFlgOni04 = false;
     }
 
+    public void Switch_OniStrong()
+    {
+        ResetSelectOniStrong();
+        switch (OniStrong)
+        {
+            case 1: //
+                SelectOnistr01();
+                break;
+            case 2: //
+                SelectOnistr02();
+                break;
+            case 3: //
+                SelectOnistr03();
+                break;
+            case 4: //
+                SelectOnistr04();
+                break;
+            default:
+                // その他処理
+                break;
+        }
+    }
+
     public void SelectOnistr01()
     {
         SelectedFlgOni01 = true;
@@ -913,6 +947,26 @@ public class SelectManager : MonoBehaviour
         SelectedFlgSpeed03 = false;
     }
 
+    public void Switch_MessageSpeed()
+    {
+        ResetSelectMessageSpeed();
+        switch (MessageSpeed)
+        {
+            case 1: //
+                SelectMesSpeed01();
+                break;
+            case 2: //
+                SelectMesSpeed02();
+                break;
+            case 3: //
+                SelectMesSpeed03();
+                break;
+            default:
+                // その他処理
+                break;
+        }
+    }
+
     public void SelectMesSpeed01()
     {
         SelectedFlgSpeed01 = true;
@@ -967,6 +1021,17 @@ public class SelectManager : MonoBehaviour
     }
     #endregion
 
+    public void RouteGuideMode()
+    {
+        if (GuideLevel == 1)  // 現在 「GuideMode == 1」だったなら、
+        {
+            AppearGuideCheckMark(); // チェックマークを表示する
+        }
+        else if (GuideLevel == 0)
+        {
+            CloseGuideCheckMark();  // チェックマークを非表示にする
+        }
+    }
 
     public void SwitchGuideMode()
     {

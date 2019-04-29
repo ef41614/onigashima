@@ -4816,6 +4816,7 @@ MonoBehaviour:
   mixer: {fileID: 24100000, guid: 82949f816b36665469645674998e2a7c, type: 2}
   BGMslider: {fileID: 1735826566}
   SEslider: {fileID: 728545075}
+  ForEnding_BGMvol: 0.8
 --- !u!4 &345632273
 Transform:
   m_ObjectHideFlags: 0
@@ -12806,6 +12807,7 @@ MonoBehaviour:
   mixer: {fileID: 24100000, guid: 82949f816b36665469645674998e2a7c, type: 2}
   BGMslider: {fileID: 0}
   SEslider: {fileID: 0}
+  ForEnding_BGMvol: 0.8
 --- !u!1 &1100160225
 GameObject:
   m_ObjectHideFlags: 0
@@ -21603,6 +21605,7 @@ MonoBehaviour:
   NoSelect: {fileID: 0}
   Ending: {fileID: 8300000, guid: 9b13d29b6491694498d2dc72317e652f, type: 3}
   BGMManager: {fileID: 54596117}
+  VolumeManager: {fileID: 345632271}
 --- !u!4 &1832516946
 Transform:
   m_ObjectHideFlags: 0

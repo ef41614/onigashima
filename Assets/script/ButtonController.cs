@@ -29,6 +29,18 @@ public class ButtonController : MonoBehaviour {
     public Sprite ImageP_cry;
     public Sprite ImageP_gakkari;
 
+    public Image ActButtonRireki_1;
+    public Image ActButtonRireki_2;
+    public Image ActButtonRireki_3;
+    public Image ActButtonRireki_4;
+    public Image ActButtonRireki_5;
+
+    public GameObject Rireki_Box;  // 直近5手順の行動履歴を見る
+
+    public Sprite Question_icon;
+    public Sprite Unmask_icon;
+    public Sprite Attack_icon;
+
     //☆################☆################  Start  ################☆################☆
 
     void Start()
@@ -39,6 +51,7 @@ public class ButtonController : MonoBehaviour {
         ResetGuideText();
         ResetActButtonTen();  // 一旦、すべての行動ボタンの点滅を解除
         ClosePanelCannotSelect();
+        CloseRireki_Box();
     }
 
 
@@ -312,6 +325,41 @@ public class ButtonController : MonoBehaviour {
         Scroll_Ten.SetActive(false);
     }
 
+    public void OverwriteActButtonRireki() // 直近5手順の行動ボタン履歴を上書き
+    {
+        ActButtonRireki_5.sprite = ActButtonRireki_4.sprite;
+        ActButtonRireki_4.sprite = ActButtonRireki_3.sprite;
+        ActButtonRireki_3.sprite = ActButtonRireki_2.sprite;
+        ActButtonRireki_2.sprite = ActButtonRireki_1.sprite;
+
+        Debug.Log("◎●SiteMSC.MenuButtonMode: " + SiteMSC.MenuButtonMode);
+        switch (SiteMSC.MenuButtonMode)
+        {
+            case 1:
+                ActButtonRireki_1.sprite = Question_icon;
+                break;
+            case 2:
+                ActButtonRireki_1.sprite = Unmask_icon;
+                break;
+            case 3:
+                ActButtonRireki_1.sprite = Attack_icon;
+                break;
+            default:
+                // 処理３
+                break;
+        }
+    }
+
+
+    public void OpenRireki_Box()  // 行動履歴パネルを開く
+    {
+        Rireki_Box.SetActive(true);
+    }
+
+    public void CloseRireki_Box()
+    {
+        Rireki_Box.SetActive(false);
+    }
 
     //#################################################################################
 

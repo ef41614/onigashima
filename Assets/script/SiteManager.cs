@@ -232,6 +232,12 @@ public class SiteManager : MonoBehaviour
 
     public GameObject CheckBoxes;
 
+    public GameObject RirekiGroup1;
+    public GameObject RirekiGroup2;
+    public GameObject RirekiGroup3;
+    public GameObject RirekiGroup4;
+    public GameObject RirekiGroup5;
+
     public static int OniStrong = 2;  // 鬼チームの強さ： 2（デフォルト）が「ふつう」
     public int OniLevel;  // SelectM で選択した「おにの強さ」を引き継いだもの
     public bool KabauFlg = false;  // 「かばう」の発動フラグ
@@ -340,6 +346,7 @@ public class SiteManager : MonoBehaviour
         CloseSeiseki_Box();
         CloseHaguruma_Box();
         CloseInfoCPU();
+        CloseRirekiGroups();
         KifudaProgressTotal = 0;  // 木札ONの進捗状況 初期化
 
         PoleRightPos = ImagePole_Right.gameObject.transform.position;
@@ -621,6 +628,7 @@ public class SiteManager : MonoBehaviour
 
     public void CheckYourTurn()
     {
+        Debug.Log(preventTurnNum+"◆ ◆CheckYourTurn◆ ◆" + preventPlayerOrderNum);
         KizetuMarkAppear();  // きぜつマーク を役割カードの上に表示させる
         TeamHanteiByKihuda();
         CheckKifudaProgressTotal();  // 木札ONの進捗状況
@@ -750,6 +758,111 @@ public class SiteManager : MonoBehaviour
         CharaMSC.AppearNowActiveSite();
         CheckYourTurn();
     }
+
+    #region RirekiGroup
+
+    public void OverwriteRirekiGroup() // 直近5手順の行動履歴を上書き
+    {
+        Debug.Log("◆OverwriteRirekiGroup() // 直近5手順の行動履歴を上書き");
+        CharaMSC.OverwriteActiveRireki();
+        CharaMSC.OverwriteAimedRireki();
+        ButtonCscr.OverwriteActButtonRireki();
+    }
+    
+    public void OpenRirekiGroups()
+    {
+        if (MainFlowScr.GenShiaiNum == 1)  // 第1試合開始時のみ実施
+        {
+            Debug.Log("今このターンで何人目か？" + preventPlayerOrderNum);
+            if (preventPlayerOrderNum == 2)
+            {
+                OpenRirekiGroup1();
+                Debug.Log("◆OpenRirekiGroup1() //行動履歴グループ1 オープン");
+            }
+            else if (preventPlayerOrderNum == 3)
+            {
+                OpenRirekiGroup2();
+                Debug.Log("◆OpenRirekiGroup1() //行動履歴グループ2 オープン");
+            }
+            else if (preventPlayerOrderNum == 4)
+            {
+                OpenRirekiGroup3();
+                Debug.Log("◆OpenRirekiGroup1() //行動履歴グループ3 オープン");
+            }
+            else if (preventPlayerOrderNum == 5)
+            {
+                OpenRirekiGroup4();
+                Debug.Log("◆OpenRirekiGroup1() //行動履歴グループ4 オープン");
+            }
+            else if (preventPlayerOrderNum == 6)
+            {
+                OpenRirekiGroup5();
+                Debug.Log("◆OpenRirekiGroup1() //行動履歴グループ5 オープン");
+            }
+        }
+    }
+
+
+    public void CloseRirekiGroups()
+    {
+        CloseRirekiGroup1();
+        CloseRirekiGroup2();
+        CloseRirekiGroup3();
+        CloseRirekiGroup4();
+        CloseRirekiGroup5();
+    }
+
+    public void OpenRirekiGroup1()  // 行動履歴グループ1 を開く
+    {
+        RirekiGroup1.SetActive(true);
+    }
+
+    public void CloseRirekiGroup1()
+    {
+        RirekiGroup1.SetActive(false);
+    }
+
+    public void OpenRirekiGroup2()  // 行動履歴グループ2 を開く
+    {
+        RirekiGroup2.SetActive(true);
+    }
+
+    public void CloseRirekiGroup2()
+    {
+        RirekiGroup2.SetActive(false);
+    }
+
+    public void OpenRirekiGroup3()  // 行動履歴グループ3 を開く
+    {
+        RirekiGroup3.SetActive(true);
+    }
+
+    public void CloseRirekiGroup3()
+    {
+        RirekiGroup3.SetActive(false);
+    }
+
+    public void OpenRirekiGroup4()  // 行動履歴グループ4 を開く
+    {
+        RirekiGroup4.SetActive(true);
+    }
+
+    public void CloseRirekiGroup4()
+    {
+        RirekiGroup4.SetActive(false);
+    }
+
+    public void OpenRirekiGroup5()  // 行動履歴グループ5 を開く
+    {
+        RirekiGroup5.SetActive(true);
+    }
+
+    public void CloseRirekiGroup5()
+    {
+        RirekiGroup5.SetActive(false);
+    }
+
+    #endregion
 
     #region  Site_Aimed
     public void SiteAimedHantei(int x, int y)
@@ -2346,6 +2459,17 @@ public class SiteManager : MonoBehaviour
         faintingOccured = false; // すべての処理が終わったところで、ステータスを「気絶後」に変更する
     }
 
+    public void AfterPushActButtonCommon()  // 各行動ボタン押下後の共通処理（CPU・人間操作 共通部分）
+    {
+        OverwriteRirekiGroup();     // 直近5手順の行動履歴を上書き
+        ClosePanelBattleFieldBox();
+        selectTimeEnd();
+        AddplayerOrderNum();
+        CharaMSC.OpenPanelYourTurn();
+        CharaMSC.AppearNowActiveSite();
+        CheckYourTurn();
+        OpenRirekiGroups();     // 直近5手順の行動履歴、順次オープン
+    }
 
     public void AddplayerOrderNum()  // その人のプレイ終わった後に、プレイヤー番号をプラスする
     {
@@ -7151,17 +7275,6 @@ public class SiteManager : MonoBehaviour
         sequence.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Attack());  // OKボタン 押下で 攻撃
         sequence.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Attack());  // OKボタン 押下で ウインドウ 閉じる
     }
-
-    public void AfterPushActButtonCommon()  // 各行動ボタン押下後の共通処理
-    {
-        ClosePanelBattleFieldBox();
-        selectTimeEnd();
-        AddplayerOrderNum();
-        CharaMSC.OpenPanelYourTurn();
-        CharaMSC.AppearNowActiveSite();
-        CheckYourTurn();
-    }
-
 
     public void AppearNext_InfoCPUWillOperate()  //  CPUがこれから操作する旨を画面中央にメッセージ表示（予告）
     {

@@ -107,7 +107,6 @@ public class SelectManager : MonoBehaviour
 
     public GameObject GuideCheckMark; // チェックマーク。初期値は表示（チェック入り）にしておく（ゲーム毎にはしない）
     public static int GuideMode = 1;  // 1 でガイド文 ON
-    public int GuideLevel;  // 1 でガイド文 ON
 
 
     public GameObject Haguruma_Box;  // メッセージスピードや音量などを調整する設定画面
@@ -150,7 +149,7 @@ public class SelectManager : MonoBehaviour
         Switch_MessageSpeed();
         CheckSelectedMesSpeed();  // 選択されているスピードをアピールする（黄色背景点滅）
 
-        GuideLevel = SiteManager.getGuideMode(); // ゲッター関数を呼び出し、値を引き継ぐ
+        GuideMode = SiteManager.getGuideMode(); // ゲッター関数を呼び出し、値を引き継ぐ
         RouteGuideMode();
 
         CloseHaguruma_Box();
@@ -1023,11 +1022,11 @@ public class SelectManager : MonoBehaviour
 
     public void RouteGuideMode()
     {
-        if (GuideLevel == 1)  // 現在 「GuideMode == 1」だったなら、
+        if (GuideMode == 1)  // 現在 「GuideMode == 1」だったなら、
         {
             AppearGuideCheckMark(); // チェックマークを表示する
         }
-        else if (GuideLevel == 0)
+        else if (GuideMode == 0)
         {
             CloseGuideCheckMark();  // チェックマークを非表示にする
         }
@@ -1059,7 +1058,7 @@ public class SelectManager : MonoBehaviour
         AppearGuideCheckMark(); // チェックマークを表示する
         SEMSC.checkON_SE();     // SEも入れる （決定音、押下音）
     }
-
+   
     public static int getGuideMode()
     { // ゲッターの関数
         return GuideMode;

@@ -91,6 +91,18 @@ public class CharaManager : MonoBehaviour {
     public GameObject AimedCharaNameText;
     //    public GameObject NowActiveCharaNameText;
 
+    public Image ActiveCharaRireki_1;
+    public Image ActiveCharaRireki_2;
+    public Image ActiveCharaRireki_3;
+    public Image ActiveCharaRireki_4;
+    public Image ActiveCharaRireki_5;
+
+    public Image AimedCharaRireki_1;
+    public Image AimedCharaRireki_2;
+    public Image AimedCharaRireki_3;
+    public Image AimedCharaRireki_4;
+    public Image AimedCharaRireki_5;
+
     public Image Winner01;  // 結果画面に勝利者を表示
     public Image Winner02;
     public Image Winner03;
@@ -500,7 +512,87 @@ public class CharaManager : MonoBehaviour {
         SiteH_charaF_Copy.sprite = SiteH_charaF.sprite;
     }
 
-    
+    public void OverwriteActiveRireki() // 直近5手順のアクティブサイトの履歴を上書き
+    {
+        ActiveCharaRireki_5.sprite = ActiveCharaRireki_4.sprite;
+        ActiveCharaRireki_4.sprite = ActiveCharaRireki_3.sprite;
+        ActiveCharaRireki_3.sprite = ActiveCharaRireki_2.sprite;
+        ActiveCharaRireki_2.sprite = ActiveCharaRireki_1.sprite;
+
+        Debug.Log("◎●SiteMSC.NowActiveSiteN: " + SiteMSC.NowActiveSiteN);
+        switch (SiteMSC.NowActiveSiteN)
+        {
+            case 1:
+                ActiveCharaRireki_1.sprite = SiteA_charaF.sprite;
+                break;
+            case 2:
+                ActiveCharaRireki_1.sprite = SiteB_charaF.sprite;
+                break;
+            case 3:
+                ActiveCharaRireki_1.sprite = SiteC_charaF.sprite;
+                break;
+            case 4:
+                ActiveCharaRireki_1.sprite = SiteD_charaF.sprite;
+                break;
+            case 5:
+                ActiveCharaRireki_1.sprite = SiteE_charaF.sprite;
+                break;
+            case 6:
+                ActiveCharaRireki_1.sprite = SiteF_charaF.sprite;
+                break;
+            case 7:
+                ActiveCharaRireki_1.sprite = SiteG_charaF.sprite;
+                break;
+            case 8:
+                ActiveCharaRireki_1.sprite = SiteH_charaF.sprite;
+                break;
+            default:
+                // 処理３
+                break;
+        }
+    }
+
+
+    public void OverwriteAimedRireki() // 直近5手順のエイムド（ターゲット）サイト履歴を上書き
+    {
+        AimedCharaRireki_5.sprite = AimedCharaRireki_4.sprite;
+        AimedCharaRireki_4.sprite = AimedCharaRireki_3.sprite;
+        AimedCharaRireki_3.sprite = AimedCharaRireki_2.sprite;
+        AimedCharaRireki_2.sprite = AimedCharaRireki_1.sprite;
+
+        Debug.Log("◎●SiteMSC.TargetSiteNum: " + SiteMSC.TargetSiteNum);
+        switch (SiteMSC.TargetSiteNum)
+        {
+            case 1:
+                AimedCharaRireki_1.sprite = SiteA_charaF.sprite;
+                break;
+            case 2:
+                AimedCharaRireki_1.sprite = SiteB_charaF.sprite;
+                break;
+            case 3:
+                AimedCharaRireki_1.sprite = SiteC_charaF.sprite;
+                break;
+            case 4:
+                AimedCharaRireki_1.sprite = SiteD_charaF.sprite;
+                break;
+            case 5:
+                AimedCharaRireki_1.sprite = SiteE_charaF.sprite;
+                break;
+            case 6:
+                AimedCharaRireki_1.sprite = SiteF_charaF.sprite;
+                break;
+            case 7:
+                AimedCharaRireki_1.sprite = SiteG_charaF.sprite;
+                break;
+            case 8:
+                AimedCharaRireki_1.sprite = SiteH_charaF.sprite;
+                break;
+            default:
+                // 処理３
+                break;
+        }
+    }
+
     public void AppearWinTeam(int TeamNum, int x, int y, Image img, Image imgRole, int WinS) // 【ゲーム終了後】勝ったチームのキャラを表示させる
     {
         Debug.Log("【ゲーム終了後】勝ったチームのキャラを表示させる ");

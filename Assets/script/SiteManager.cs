@@ -771,8 +771,6 @@ public class SiteManager : MonoBehaviour
     
     public void OpenRirekiGroups()
     {
-        if (MainFlowScr.GenShiaiNum == 1)  // 第1試合開始時のみ実施
-        {
             Debug.Log("今このターンで何人目か？" + preventPlayerOrderNum);
             if (preventPlayerOrderNum == 2)
             {
@@ -799,7 +797,6 @@ public class SiteManager : MonoBehaviour
                 OpenRirekiGroup5();
                 Debug.Log("◆OpenRirekiGroup1() //行動履歴グループ5 オープン");
             }
-        }
     }
 
 
@@ -6430,12 +6427,15 @@ public class SiteManager : MonoBehaviour
             {
                 if (NowActiveSiteN != 1)  // 選択したのが自分自身でなければ（ アクティブサイト＝自分 はサイトAではない）
                 {
-                    if (rollF[1] != 1 && rollF[1] != 5) // 役割が いぬ・さる・きじ・こおにたち
+                    if (UkkariSite[1] == 0)  // うっかりフラグは無い
                     {
-                        if (StatusSiteA == StatusSiteNum)  // ステータスが 指定された状態である (2:木札ON)
+                        if (rollF[1] != 1 && rollF[1] != 5) // 役割が いぬ・さる・きじ・こおにたち
                         {
-                            RollFNum = rollF[1];  // 現在エイムされているサイトの役わり が サイトA の役割 に上書きあれる
-                            TN = -1;
+                            if (StatusSiteA == StatusSiteNum)  // ステータスが 指定された状態である (2:木札ON)
+                            {
+                                RollFNum = rollF[1];  // 現在エイムされているサイトの役わり が サイトA の役割 に上書きあれる
+                                TN = -1;
+                            }
                         }
                     }
                 }
@@ -6444,12 +6444,15 @@ public class SiteManager : MonoBehaviour
             {
                 if (NowActiveSiteN != 2)  // 選択したのが自分自身でなければ
                 {
-                    if (rollF[2] != 1 && rollF[2] != 5) // 役割が いぬ・さる・きじ・こおにたち
+                    if (UkkariSite[2] == 0)  // うっかりフラグは無い
                     {
-                        if (StatusSiteB == StatusSiteNum)
+                        if (rollF[2] != 1 && rollF[2] != 5) // 役割が いぬ・さる・きじ・こおにたち
                         {
-                            RollFNum = rollF[2];
-                            TN = -1;
+                            if (StatusSiteB == StatusSiteNum)
+                            {
+                                RollFNum = rollF[2];
+                                TN = -1;
+                            }
                         }
                     }
                 }
@@ -6458,12 +6461,15 @@ public class SiteManager : MonoBehaviour
             {
                 if (NowActiveSiteN != 3)  // 選択したのが自分自身でなければ
                 {
-                    if (rollF[3] != 1 && rollF[3] != 5) // 役割が いぬ・さる・きじ・こおにたち
+                    if (UkkariSite[3] == 0)  // うっかりフラグは無い
                     {
-                        if (StatusSiteC == StatusSiteNum)
+                        if (rollF[3] != 1 && rollF[3] != 5) // 役割が いぬ・さる・きじ・こおにたち
                         {
-                            RollFNum = rollF[3];
-                            TN = -1;
+                            if (StatusSiteC == StatusSiteNum)
+                            {
+                                RollFNum = rollF[3];
+                                TN = -1;
+                            }
                         }
                     }
                 }
@@ -6472,12 +6478,15 @@ public class SiteManager : MonoBehaviour
             {
                 if (NowActiveSiteN != 4)  // 選択したのが自分自身でなければ
                 {
-                    if (rollF[4] != 1 && rollF[4] != 5) // 役割が いぬ・さる・きじ・こおにたち
+                    if (UkkariSite[4] == 0)  // うっかりフラグは無い
                     {
-                        if (StatusSiteD == StatusSiteNum)
+                        if (rollF[4] != 1 && rollF[4] != 5) // 役割が いぬ・さる・きじ・こおにたち
                         {
-                            RollFNum = rollF[4];
-                            TN = -1;
+                            if (StatusSiteD == StatusSiteNum)
+                            {
+                                RollFNum = rollF[4];
+                                TN = -1;
+                            }
                         }
                     }
                 }
@@ -6486,12 +6495,15 @@ public class SiteManager : MonoBehaviour
             {
                 if (NowActiveSiteN != 5)  // 選択したのが自分自身でなければ
                 {
-                    if (rollF[5] != 1 && rollF[5] != 5) // 役割が いぬ・さる・きじ・こおにたち
+                    if (UkkariSite[5] == 0)  // うっかりフラグは無い
                     {
-                        if (StatusSiteE == StatusSiteNum)
+                        if (rollF[5] != 1 && rollF[5] != 5) // 役割が いぬ・さる・きじ・こおにたち
                         {
-                            RollFNum = rollF[5];
-                            TN = -1;
+                            if (StatusSiteE == StatusSiteNum)
+                            {
+                                RollFNum = rollF[5];
+                                TN = -1;
+                            }
                         }
                     }
                 }
@@ -6500,12 +6512,15 @@ public class SiteManager : MonoBehaviour
             {
                 if (NowActiveSiteN != 6)  // 選択したのが自分自身でなければ
                 {
-                    if (rollF[6] != 1 && rollF[6] != 5) // 役割が いぬ・さる・きじ・こおにたち
+                    if (UkkariSite[6] == 0)  // うっかりフラグは無い
                     {
-                        if (StatusSiteF == StatusSiteNum)
+                        if (rollF[6] != 1 && rollF[6] != 5) // 役割が いぬ・さる・きじ・こおにたち
                         {
-                            RollFNum = rollF[6];
-                            TN = -1;
+                            if (StatusSiteF == StatusSiteNum)
+                            {
+                                RollFNum = rollF[6];
+                                TN = -1;
+                            }
                         }
                     }
                 }
@@ -6514,12 +6529,15 @@ public class SiteManager : MonoBehaviour
             {
                 if (NowActiveSiteN != 7)  // 選択したのが自分自身でなければ
                 {
-                    if (rollF[7] != 1 && rollF[7] != 5) // 役割が いぬ・さる・きじ・こおにたち
+                    if (UkkariSite[7] == 0)  // うっかりフラグは無い
                     {
-                        if (StatusSiteG == StatusSiteNum)
+                        if (rollF[7] != 1 && rollF[7] != 5) // 役割が いぬ・さる・きじ・こおにたち
                         {
-                            RollFNum = rollF[7];
-                            TN = -1;
+                            if (StatusSiteG == StatusSiteNum)
+                            {
+                                RollFNum = rollF[7];
+                                TN = -1;
+                            }
                         }
                     }
                 }
@@ -6528,12 +6546,15 @@ public class SiteManager : MonoBehaviour
             {
                 if (NowActiveSiteN != 8)  // 選択したのが自分自身でなければ
                 {
-                    if (rollF[8] != 1 && rollF[8] != 5) // 役割が いぬ・さる・きじ・こおにたち
+                    if (UkkariSite[8] == 0)  // うっかりフラグは無い
                     {
-                        if (StatusSiteH == StatusSiteNum)
+                        if (rollF[8] != 1 && rollF[8] != 5) // 役割が いぬ・さる・きじ・こおにたち
                         {
-                            RollFNum = rollF[8];
-                            TN = -1;
+                            if (StatusSiteH == StatusSiteNum)
+                            {
+                                RollFNum = rollF[8];
+                                TN = -1;
+                            }
                         }
                     }
                 }

@@ -7261,7 +7261,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: f9b7839ece18b864a9d5b4fabb8ed79f, type: 3}
-    m_FontSize: 9
+    m_FontSize: 8
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
@@ -7274,7 +7274,8 @@ MonoBehaviour:
     m_LineSpacing: 1.4
   m_Text: "\u3010 BGM\u30FB\u52B9\u679C\u97F3 \u3011\r\n\u25A0OtoLogic\r\n\u25A0\u9B54\u738B\u9B42\r\n\u25A0\u52B9\u679C\u97F3\u30E9\u30DC\r\n\u25A0\u97F3\u306E\u5712\r\n\u30FB\u52C7\u8ABF\r\n\u30FB\u8107\u5DEE\r\n\u30FB\u590F\u796D\u308A\r\n\u30FB\u967D\u6C17\r\n\u25A0VSQ\r\n\u25A0\u52B9\u679C\u97F3
     \u304F\u3089\u3052\u5DE5\u5320\r\n\r\n\u3010 \u305D\u306E\u4ED6 \u3011\r\n\u25A0mob-sakai\r\n\u25A0ParticleEffectForUGUI\r\n\u25A0azixMcAze
-    \r\n\u30FBUnity-UIGradient\r\n\u25A0\u5408\u540C\u4F1A\u793E \u30D7\u30ED\u751F\r\n\uFF08\u656C\u79F0\u7565\uFF09"
+    \r\n\u30FBUnity-UIGradient\r\n\u25A0\u30AB\u30CA\u30A4\u30BB\u30A4\u30B8\r\n\u30FBSecret
+    Moon\n\u25A0\u5408\u540C\u4F1A\u793E \u30D7\u30ED\u751F\r\n\uFF08\u656C\u79F0\u7565\uFF09"
 --- !u!222 &529479810
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7939,7 +7940,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: f9b7839ece18b864a9d5b4fabb8ed79f, type: 3}
-    m_FontSize: 9
+    m_FontSize: 8
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
@@ -12752,7 +12753,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -2.2000122, y: 4.5835266}
+  m_AnchoredPosition: {x: -2.2000122, y: 4.583496}
   m_SizeDelta: {x: 32.18, y: 16.899994}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1094790959
@@ -21421,7 +21422,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: f9b7839ece18b864a9d5b4fabb8ed79f, type: 3}
-    m_FontSize: 9
+    m_FontSize: 8
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
@@ -22664,7 +22665,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1871306321
 RectTransform:
   m_ObjectHideFlags: 0

@@ -7274,7 +7274,7 @@ MonoBehaviour:
     m_LineSpacing: 1.4
   m_Text: "\u3010 BGM\u30FB\u52B9\u679C\u97F3 \u3011\r\n\u25A0OtoLogic\r\n\u25A0\u9B54\u738B\u9B42\r\n\u25A0\u52B9\u679C\u97F3\u30E9\u30DC\r\n\u25A0\u97F3\u306E\u5712\r\n\u30FB\u52C7\u8ABF\r\n\u30FB\u8107\u5DEE\r\n\u30FB\u590F\u796D\u308A\r\n\u30FB\u967D\u6C17\r\n\u25A0VSQ\r\n\u25A0\u52B9\u679C\u97F3
     \u304F\u3089\u3052\u5DE5\u5320\r\n\r\n\u3010 \u305D\u306E\u4ED6 \u3011\r\n\u25A0mob-sakai\r\n\u25A0ParticleEffectForUGUI\r\n\u25A0azixMcAze
-    \r\n\u30FBUnity-UIGradient\r\n\u25A0\u30AB\u30CA\u30A4\u30BB\u30A4\u30B8\r\n\u30FBSecret
+    \r\n\u30FBUnity-UIGradient\r\n\u25A0\u682A\u5F0F\u4F1A\u793E\u30A2\u30FC\u30AF\u30E9\u30A4\u30C8\n\u30FBSecret
     Moon\n\u25A0\u5408\u540C\u4F1A\u793E \u30D7\u30ED\u751F\r\n\uFF08\u656C\u79F0\u7565\uFF09"
 --- !u!222 &529479810
 CanvasRenderer:
@@ -7951,8 +7951,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.4
-  m_Text: "\u3010 \u753B\u50CF \u3011\r\n\u25A0\u30A4\u30E9\u30B9\u30C8AC\r\n\u30FB\u30AD\u30E9\u30FCT\u7D30\u80DE\r\n\u30FBrei\r\n\u30FBacworks\r\n\u30FB\u732B\u5CF6\u5546\u4F1A\r\n\u30FB\u3057\u308D\u3061\u3073\r\n\u30FB\u308F\u3073\u3055\u3073\r\n\u30FB\u30F4\u30A3\u30C0\u30EB\r\n\u30FB\u3088\u3057\u3057\u3083\u3093\r\n\u30FB\u30EF\u30BF\u30EA(WATARI)\r\n\u30FB\u30E9\u30D9\u30F3\u30C0\u30FC\r\n\u30FBSunGraphics\r\n\u25A0\u3044\u3089\u3059\u3068\u3084\r\n\u25A0\u30D5\u30EC\u30FC\u30E0\u307D\u3051\u3063\u3068\r\n\u25A0Adobe
-    Stock \r\n\u25A0\u65E5\u672C\u306E\u4F1D\u7D71\u6587\u69D8\r\n\u25A0ICOOON MONO\r\n\u25A0\u30D1\u30BD\u30AB\u30D5\u30A7\uFF01"
+  m_Text: "\u3010 \u753B\u50CF \u3011\r\n\u25A0\u30A4\u30E9\u30B9\u30C8AC\r\n\u30FB\u30AD\u30E9\u30FCT\u7D30\u80DE\r\n\u30FBrei\r\n\u30FBacworks\r\n\u30FB\u732B\u5CF6\u5546\u4F1A\r\n\u30FB\u3057\u308D\u3061\u3073\r\n\u30FB\u308F\u3073\u3055\u3073\r\n\u30FB\u30F4\u30A3\u30C0\u30EB\r\n\u30FB\u3088\u3057\u3057\u3083\u3093\r\n\u30FB\u30EF\u30BF\u30EA(WATARI)\r\n\u30FB\u30E9\u30D9\u30F3\u30C0\u30FC\r\n\u30FBSunGraphics\r\n\u25A0\u3044\u3089\u3059\u3068\u3084\r\n\u25A0\u30D5\u30EC\u30FC\u30E0\u307D\u3051\u3063\u3068\r\n\u25A0\u65E5\u672C\u306E\u4F1D\u7D71\u6587\u69D8\r\n\u25A0ICOOON
+    MONO\r\n\u25A0\u30D1\u30BD\u30AB\u30D5\u30A7\uFF01"
 --- !u!222 &572863276
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -12753,7 +12753,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -2.2000122, y: 4.583496}
+  m_AnchoredPosition: {x: -2.2001953, y: 4.5839844}
   m_SizeDelta: {x: 32.18, y: 16.899994}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1094790959
@@ -20933,7 +20933,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1799225434
 RectTransform:
   m_ObjectHideFlags: 0
@@ -20957,7 +20957,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -2.1999512, y: -3.916504}
+  m_AnchoredPosition: {x: -2.2001953, y: -3.9169922}
   m_SizeDelta: {x: 32.18, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1799225435

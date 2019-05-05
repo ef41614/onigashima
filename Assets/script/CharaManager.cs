@@ -102,6 +102,9 @@ public class CharaManager : MonoBehaviour {
     public Image AimedCharaRireki_3;
     public Image AimedCharaRireki_4;
     public Image AimedCharaRireki_5;
+    public Image OriginalAimedCharaRireki;  // カウンター発動する前の、本来のエイムサイト
+
+    public bool CounterSkipRireki = false;
 
     public Image Winner01;  // 結果画面に勝利者を表示
     public Image Winner02;
@@ -555,7 +558,18 @@ public class CharaManager : MonoBehaviour {
 
     public void OverwriteAimedRireki() // 直近5手順のエイムド（ターゲット）サイト履歴を上書き
     {
-        AimedCharaRireki_5.sprite = AimedCharaRireki_4.sprite;
+        Debug.Log("直近5手順のエイムド（ターゲット）サイト履歴を上書き " + CounterSkipRireki);
+        if (CounterSkipRireki)  // カウンター発動時の処理はこちら
+        {
+            Debug.Log("カウンター発動時の処理はこちら " + CounterSkipRireki);
+            AimedCharaRireki_5.sprite = OriginalAimedCharaRireki.sprite;
+            CounterSkipRireki = false; //フラグをリセット（OFFにする）
+        }
+        else  // カウンター無し（通常時）の処理
+        {
+            Debug.Log("カウンター無し（通常時）の処理 " + CounterSkipRireki);
+            AimedCharaRireki_5.sprite = AimedCharaRireki_4.sprite;
+        }
         AimedCharaRireki_4.sprite = AimedCharaRireki_3.sprite;
         AimedCharaRireki_3.sprite = AimedCharaRireki_2.sprite;
         AimedCharaRireki_2.sprite = AimedCharaRireki_1.sprite;
@@ -586,6 +600,43 @@ public class CharaManager : MonoBehaviour {
                 break;
             case 8:
                 AimedCharaRireki_1.sprite = SiteH_charaF.sprite;
+                break;
+            default:
+                // 処理３
+                break;
+        }
+    }
+
+    public void SaveOriginalAimedCharaRireki() // カウンター発動する前の、本来のエイムサイトを保存しておく
+    {
+        Debug.Log("カウンター発動する前の、本来のエイムサイトを保存しておく");
+        Debug.Log("SiteMSC.TargetSiteNum "+ SiteMSC.TargetSiteNum);
+        CounterSkipRireki = true; // フラグをON
+        switch (SiteMSC.rollF[SiteMSC.TargetSiteNum])
+        {
+            case 1:
+                OriginalAimedCharaRireki = SiteA_charaF;
+                break;
+            case 2:
+                OriginalAimedCharaRireki = SiteB_charaF;
+                break;
+            case 3:
+                OriginalAimedCharaRireki = SiteC_charaF;
+                break;
+            case 4:
+                OriginalAimedCharaRireki = SiteD_charaF;
+                break;
+            case 5:
+                OriginalAimedCharaRireki = SiteE_charaF;
+                break;
+            case 6:
+                OriginalAimedCharaRireki = SiteF_charaF;
+                break;
+            case 7:
+                OriginalAimedCharaRireki = SiteG_charaF;
+                break;
+            case 8:
+                OriginalAimedCharaRireki = SiteH_charaF;
                 break;
             default:
                 // 処理３

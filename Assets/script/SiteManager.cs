@@ -238,6 +238,8 @@ public class SiteManager : MonoBehaviour
     public GameObject RirekiGroup4;
     public GameObject RirekiGroup5;
 
+    public int OpenRirekiChecker = 0;
+
     public static int OniStrong = 2;  // 鬼チームの強さ： 2（デフォルト）が「ふつう」
     public int OniLevel;  // SelectM で選択した「おにの強さ」を引き継いだもの
     public bool KabauFlg = false;  // 「かばう」の発動フラグ
@@ -406,7 +408,7 @@ public class SiteManager : MonoBehaviour
 
         if (currentTime > 3)
         {
- //           Debug.Log("◆◎NowOyabunStatus：" + NowOyabunStatus);
+            //           Debug.Log("◆◎NowOyabunStatus：" + NowOyabunStatus);
             currentTime = 0f;
         }
 
@@ -628,7 +630,7 @@ public class SiteManager : MonoBehaviour
 
     public void CheckYourTurn()
     {
-        Debug.Log(preventTurnNum+"◆ ◆CheckYourTurn◆ ◆" + preventPlayerOrderNum);
+        Debug.Log(preventTurnNum + "◆ ◆CheckYourTurn◆ ◆" + preventPlayerOrderNum);
         KizetuMarkAppear();  // きぜつマーク を役割カードの上に表示させる
         TeamHanteiByKihuda();
         CheckKifudaProgressTotal();  // 木札ONの進捗状況
@@ -768,35 +770,53 @@ public class SiteManager : MonoBehaviour
         CharaMSC.OverwriteAimedRireki();
         ButtonCscr.OverwriteActButtonRireki();
     }
-    
+
     public void OpenRirekiGroups()
     {
-            Debug.Log("今このターンで何人目か？" + preventPlayerOrderNum);
+        Debug.Log("今このターンで何人目か？" + preventPlayerOrderNum);
+        if (OpenRirekiChecker < 5)
+        {
             if (preventPlayerOrderNum == 2)
             {
                 OpenRirekiGroup1();
                 Debug.Log("◆OpenRirekiGroup1() //行動履歴グループ1 オープン");
+                OpenRirekiChecker++;
             }
             else if (preventPlayerOrderNum == 3)
             {
+                OpenRirekiGroup1();
                 OpenRirekiGroup2();
                 Debug.Log("◆OpenRirekiGroup1() //行動履歴グループ2 オープン");
+                OpenRirekiChecker++;
             }
             else if (preventPlayerOrderNum == 4)
             {
+                OpenRirekiGroup1();
+                OpenRirekiGroup2();
                 OpenRirekiGroup3();
                 Debug.Log("◆OpenRirekiGroup1() //行動履歴グループ3 オープン");
+                OpenRirekiChecker++;
             }
             else if (preventPlayerOrderNum == 5)
             {
+                OpenRirekiGroup1();
+                OpenRirekiGroup2();
+                OpenRirekiGroup3();
                 OpenRirekiGroup4();
                 Debug.Log("◆OpenRirekiGroup1() //行動履歴グループ4 オープン");
+                OpenRirekiChecker++;
             }
-            else if (preventPlayerOrderNum == 6)
+            else if (preventPlayerOrderNum >= 6)
             {
+                OpenRirekiGroup1();
+                OpenRirekiGroup2();
+                OpenRirekiGroup3();
+                OpenRirekiGroup4();
                 OpenRirekiGroup5();
                 Debug.Log("◆OpenRirekiGroup1() //行動履歴グループ5 オープン");
+                OpenRirekiChecker++;
             }
+        }
     }
 
 
@@ -2150,7 +2170,7 @@ public class SiteManager : MonoBehaviour
                 CounterFlg = false;  // カウンターフラグを初期化
                 accuracy = UnityEngine.Random.Range(1, 7); // カウンターが成功するかどうかのランダム数値  
                 Debug.Log("カウンターパラメータ ◎accuracy：" + accuracy);   // この値が3以上なら、「かばう」発動する
-                if (1 <= accuracy && accuracy <= 2)   // ★7だと100％カウンター成功
+                if (1 <= accuracy && accuracy <= 7)   // ★7だと100％カウンター成功
                 {
                     CounterFlg = true;  // カウンター条件を満たしている →カウンターフラグをON → 「カウンター」発動！
                 }
@@ -2162,6 +2182,7 @@ public class SiteManager : MonoBehaviour
     #region CounterAttackGroup    「カウンター」発動動作の本丸フェーズ
     public void CounterAttack()  // 「カウンター」発動条件に合致している → 「カウンター」発動！
     {
+        CharaMSC.SaveOriginalAimedCharaRireki(); // カウンター発動する前の、本来のエイムサイトを保存しておく
         var sequence = DOTween.Sequence();
         Debug.Log("◆◎「カウンター」発動！");
         SEMSC.jidai_SE();
@@ -2954,7 +2975,7 @@ public class SiteManager : MonoBehaviour
         CloseCheckBoxes();
         AppearP_WINimage();
         BGMMSC.FadeoutBGM();  // BGMをフェードアウト
- //       sequence.InsertCallback(5.8f, () => SEMSC.Play_Ending_BGM());  // 数秒後、エンディングBGM開始
+                              //       sequence.InsertCallback(5.8f, () => SEMSC.Play_Ending_BGM());  // 数秒後、エンディングBGM開始
         sequence.InsertCallback(5.8f, () => EndBGMMSC.Play_Ending_BGM());  // 数秒後、エンディングBGM開始
     }
 
@@ -3501,17 +3522,17 @@ public class SiteManager : MonoBehaviour
         CheckMyRole();           // 自身の役割確認:  rollF[NowActiveSiteN] 
                                  // 他人がどちらのチームか？どの役割か？予想するフェーズ。
 
-        sequence.InsertCallback(MessageOkuriTime*2f, () => PushActButton_byCPU());   // 行動ボタン、いずれか押下(●可能性値に基づき行動を選択する)
-                                                                    // 行動ボタンBoxひらいて、Box内の操作
-                                                                    // 行動ボタンBox 閉じる
-                                                                    // （CPU操作 ここまで）
-                                                                    // （適宜、SEも）
+        sequence.InsertCallback(MessageOkuriTime * 2f, () => PushActButton_byCPU());   // 行動ボタン、いずれか押下(●可能性値に基づき行動を選択する)
+                                                                                       // 行動ボタンBoxひらいて、Box内の操作
+                                                                                       // 行動ボタンBox 閉じる
+                                                                                       // （CPU操作 ここまで）
+                                                                                       // （適宜、SEも）
     }
 
     public void FinishCPU_Operation()  // CPU操作終了
     {
         // CloseInfoCPU();  // 「CPU そうさ中」のメッセージを非表示（OFF）
-                         //  ターン終わり（何か処理あれば）
+        //  ターン終わり（何か処理あれば）
         // NowActiveSite_isCPU = true;  // 初期化（一旦 true にしておく）
     }
 
@@ -3707,7 +3728,7 @@ public class SiteManager : MonoBehaviour
                     Debug.Log("うっかりフラグが1 & ステータス2 のものがあれば、それを当てる（役割当て）");
                 }
             }
-            
+
             // ステータスが2以下である 桃メイト がいれば  → 条件を満たせば 役割当て (その役割だと確定し、迷いなく処理する)
             if (PushedBtnFlg == 0)  // 処理を実施したかどうか
             {
@@ -3932,7 +3953,7 @@ public class SiteManager : MonoBehaviour
                     Debug.Log("ももたろうが 木札ONなら → 役割当て");
                 }
             }
-            
+
             // 桃太郎が 木札無しなら → 条件を満たせば 役割当て
             if (PushedBtnFlg == 0)  // 処理を実施したかどうか
             {
@@ -4008,7 +4029,7 @@ public class SiteManager : MonoBehaviour
                         Debug.Log("◆*桃チームに 対して しつもん (自分以外で一人は札無しがいる) ");
                         ButtonCscr.BranchOpenQuestion();  // M-1：この場合は「しつもん」ボタン  // 行動ボタン押せるかのチェック ＆ BrownBoxを開く
                         CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => WhatIsYourFavorite_Question());  // 【しつもんモード】エイムセレクト画面で ランダム で選択する（条件：選択したのが自分自身ではない） （3ターン目で、行動済みのキャラに対してエイムしない）
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => WhatIsYourFavorite_Question());  // 【しつもんモード】エイムセレクト画面で ランダム で選択する（条件：選択したのが自分自身ではない） （3ターン目で、行動済みのキャラに対してエイムしない）
                     }
                 }
             }
@@ -4017,18 +4038,29 @@ public class SiteManager : MonoBehaviour
             if (PushedBtnFlg == 0)  // 処理を実施したかどうか
             {
                 Debug.Log("【CPU】Oya-11");
-                SearchMomoOniCommon(2);  // ステータスが2（木札ON）＆ 役割が いぬ・さる・きじ・こおにたち  のキャラがいるか探す 「RollFNum：現在エイムされているサイトの役わり」が上書きされる
-                if (PushedBtnFlg == 1)  // ステータスが2（木札ON）の いぬ、さる、きじ、こおにたち が 少なくとも一人以上いれば  (前提：エイムサイトが自分ではない)
+                Sum_InokoriMate();   // 居残りメイトの合計を求める
+                if (InokoriMate >= 1)   // 居残り組に桃メイトが1人以上いる
                 {
-                    Debug.Log("おやぶん・ももたろう以外で木札ONのキャラから ランダムで一人選ぶ(役割当て)");
-                    // RollFNum に いぬ、さる、きじ、こおにたち のいずれかが入っている
-                    var sequence2 = DOTween.Sequence();
-                    ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン
-                    CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                    sequence2.InsertCallback(MessageOkuriTime*2f, () => YouAreHoge(RollFNum));     // 木札ONの キャラ を探して エイムでセレクト
-                    sequence2.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Unmask(2));  // 役割当て画面で 「桃メイト」 のアイコンを クリック（自分がおやぶんなので、こおにを選ぶことはしない）
-                    sequence2.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Unmask());  // 役割当て画面クローズ
+                    SearchMomoOniCommon(2);  // ステータスが2（木札ON）＆ 役割が いぬ・さる・きじ・こおにたち  のキャラがいるか探す 「RollFNum：現在エイムされているサイトの役わり」が上書きされる
+                    if (PushedBtnFlg == 1)  // ステータスが2（木札ON）の いぬ、さる、きじ、こおにたち が 少なくとも一人以上いれば  (前提：エイムサイトが自分ではない)
+                    {
+                        Debug.Log("おやぶん・ももたろう以外で木札ONのキャラから ランダムで一人選ぶ(役割当て)");
+                        // RollFNum に いぬ、さる、きじ、こおにたち のいずれかが入っている
+                        var sequence2 = DOTween.Sequence();
+                        ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン
+                        CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                        sequence2.InsertCallback(MessageOkuriTime * 2f, () => YouAreHoge(RollFNum));     // 木札ONの キャラ を探して エイムでセレクト
+                        sequence2.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(2));  // 役割当て画面で 「桃メイト」 のアイコンを クリック（自分がおやぶんなので、こおにを選ぶことはしない）
+                        sequence2.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());  // 役割当て画面クローズ
+                    }
                 }
+            }
+
+            // 桃メイトはすべてオープン後だが、ももたろうは札無し（ステータス1）である
+            if (PushedBtnFlg == 0)  // 処理を実施したかどうか
+            {
+                Debug.Log("【CPU】Oya-11.5");
+                AtezuppoMomotaro_Ate();  // ももたろう と思われるキャラを 当てずっぽうで 1人選ぶ(役割当て) （前提：ももたろう 木札無し：ステータス1）もう何もヒント無し
             }
 
             // 3ターン目：行動条件すべて該当なし → もうこれ以降、ももチームの手番は無いので、ただいまをもって おにチームの勝ち
@@ -4053,7 +4085,7 @@ public class SiteManager : MonoBehaviour
                 Debug.Log("【CPU】kooni：桃チームがすべてオープン済みかチェックする");
                 SearchMomoMateCommon(1);  // ステータスが1（札無し） ＆ 役割が いぬ・さる・きじ のキャラがいるか探す （3ターン目で、行動済みのキャラに対してエイムしない）
                 SearchMomoMateCommon(2);  // ステータスが2（木札ON） ＆ 役割が いぬ・さる・きじ のキャラがいるか探す。 「RollFNum：現在エイムされているサイトの役わり」が上書きされる
-                if ((NowMomotaroStatus >=3) && (PushedBtnFlg == 0))    // ももたろう が オープン後 && ステータスが2以下の いぬ、さる、きじ がいない（＝ 桃メイト全員オープン後）(前提：エイムサイトが自分ではない)
+                if ((NowMomotaroStatus >= 3) && (PushedBtnFlg == 0))    // ももたろう が オープン後 && ステータスが2以下の いぬ、さる、きじ がいない（＝ 桃メイト全員オープン後）(前提：エイムサイトが自分ではない)
                 {
                     PushedBtnFlg = 0;  // 処理を実施したかどうか ：一旦フラグを初期化（リセット）
                     Debug.Log("【CPU】kooni：桃チームがすべてオープン済みである → ので、残る選択肢は攻撃のみ");
@@ -4154,7 +4186,7 @@ public class SiteManager : MonoBehaviour
                                             PushedBtnFlg = 1;  // 処理を実施したかどうか (便宜上、一旦ここでONにする)
                                             ButtonCscr.BranchOpenQuestion();  // M-1：この場合は「しつもん」ボタン  // 行動ボタン押せるかのチェック ＆ BrownBoxを開く
                                             CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                                            sequence.InsertCallback(MessageOkuriTime*2f, () => WhatIsYourFavorite_Question());  // 【しつもんモード】エイムセレクト画面で ランダム で選択する（条件：選択したのが自分自身ではない） （3ターン目で、行動済みのキャラに対してエイムしない）
+                                            sequence.InsertCallback(MessageOkuriTime * 2f, () => WhatIsYourFavorite_Question());  // 【しつもんモード】エイムセレクト画面で ランダム で選択する（条件：選択したのが自分自身ではない） （3ターン目で、行動済みのキャラに対してエイムしない）
                                         }
                                     }
                                 }
@@ -4164,17 +4196,32 @@ public class SiteManager : MonoBehaviour
                             if (PushedBtnFlg == 0)  // 処理を実施したかどうか
                             {
                                 Debug.Log("【CPU】kooni-7-4");
-                                SearchMomoOniCommon(2);  // ステータスが2（木札ON）＆ 役割が いぬ・さる・きじ・こおにたち  のキャラがいるか探す 「RollFNum：現在エイムされているサイトの役わり」が上書きされる
-                                if (PushedBtnFlg == 1)  // ステータスが2（木札ON）の いぬ、さる、きじ、こおにたち が 少なくとも一人以上いれば  (前提：エイムサイトが自分ではない)
+                                Sum_InokoriMate();   // 居残りメイトの合計を求める
+                                if (InokoriMate >= 1)   // 居残り組に桃メイトが1人以上いる
                                 {
-                                    Debug.Log("チャレンジアクション：おやぶん・ももたろう以外で木札ONのキャラから ランダムで一人選ぶ(役割当て)");
-                                    // RollFNum に いぬ、さる、きじ、こおにたち のいずれかが入っている
-                                    var sequence2 = DOTween.Sequence();
-                                    ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン
-                                    CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                                    sequence2.InsertCallback(MessageOkuriTime*2f, () => YouAreHoge(RollFNum));     // 木札ONの キャラ を探して エイムでセレクト
-                                    sequence2.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Unmask(2));  // 役割当て画面で 「桃メイト」 のアイコンを クリック（自分がおやぶんなので、こおにを選ぶことはしない）
-                                    sequence2.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Unmask());  // 役割当て画面クローズ
+                                    SearchMomoOniCommon(2);  // ステータスが2（木札ON）＆ 役割が いぬ・さる・きじ・こおにたち  のキャラがいるか探す 「RollFNum：現在エイムされているサイトの役わり」が上書きされる
+                                    if (PushedBtnFlg == 1)  // ステータスが2（木札ON）の いぬ、さる、きじ、こおにたち が 少なくとも一人以上いれば  (前提：エイムサイトが自分ではない)
+                                    {
+                                        Debug.Log("チャレンジアクション：おやぶん・ももたろう以外で木札ONのキャラから ランダムで一人選ぶ(役割当て)");
+                                        // RollFNum に いぬ、さる、きじ、こおにたち のいずれかが入っている
+                                        var sequence2 = DOTween.Sequence();
+                                        ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン
+                                        CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                                        sequence2.InsertCallback(MessageOkuriTime * 2f, () => YouAreHoge(RollFNum));     // 木札ONの キャラ を探して エイムでセレクト
+                                        sequence2.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(2));  // 役割当て画面で 「桃メイト」 のアイコンを クリック（自分がおやぶんなので、こおにを選ぶことはしない）
+                                        sequence2.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());  // 役割当て画面クローズ
+                                    }
+                                }
+                            }
+
+                            // 桃メイトはすべてオープン後だが、ももたろうは札無し（ステータス1）である
+                            if (PushedBtnFlg == 0)  // 処理を実施したかどうか
+                            {
+                                Debug.Log("【CPU】kooni-7-4.5");
+                                Sum_InokoriMate();   // 居残りメイトの合計を求める
+                                if (InokoriMate == 0)   // 居残り組に桃メイトが居ない
+                                {
+                                    AtezuppoMomotaro_Ate();  // ももたろう と思われるキャラを 当てずっぽうで 1人選ぶ(役割当て) （前提：ももたろう 木札無し：ステータス1）もう何もヒント無し
                                 }
                             }
                         }
@@ -4229,7 +4276,7 @@ public class SiteManager : MonoBehaviour
                             PushedBtnFlg = 1;  // 処理を実施したかどうか (便宜上、一旦ここでONにする)
                             ButtonCscr.BranchOpenQuestion();  // M-1：この場合は「しつもん」ボタン  // 行動ボタン押せるかのチェック ＆ BrownBoxを開く
                             CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                            sequence.InsertCallback(MessageOkuriTime*2f, () => WhatIsYourFavorite_Question());  // 【しつもんモード】エイムセレクト画面で ランダム で選択する（条件：選択したのが自分自身ではない） （3ターン目で、行動済みのキャラに対してエイムしない）
+                            sequence.InsertCallback(MessageOkuriTime * 2f, () => WhatIsYourFavorite_Question());  // 【しつもんモード】エイムセレクト画面で ランダム で選択する（条件：選択したのが自分自身ではない） （3ターン目で、行動済みのキャラに対してエイムしない）
                         }
                     }
                 }
@@ -4238,18 +4285,29 @@ public class SiteManager : MonoBehaviour
                 if (PushedBtnFlg == 0)  // 処理を実施したかどうか
                 {
                     Debug.Log("【CPU】kooni-12");
-                    SearchMomoOniCommon(2);  // ステータスが2（木札ON）＆ 役割が いぬ・さる・きじ・こおにたち  のキャラがいるか探す 「RollFNum：現在エイムされているサイトの役わり」が上書きされる
-                    if (PushedBtnFlg == 1)  // ステータスが2（木札ON）の いぬ、さる、きじ、こおにたち が 少なくとも一人以上いれば  (前提：エイムサイトが自分ではない)
+                    Sum_InokoriMate();   // 居残りメイトの合計を求める
+                    if (InokoriMate >= 1)   // 居残り組に桃メイトが1人以上いる
                     {
-                        Debug.Log("おやぶん・ももたろう以外で木札ONのキャラから ランダムで一人選ぶ(役割当て)");
-                        // RollFNum に いぬ、さる、きじ、こおにたち のいずれかが入っている
-                        var sequence2 = DOTween.Sequence();
-                        ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン
-                        CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                        sequence2.InsertCallback(MessageOkuriTime*2f, () => YouAreHoge(RollFNum));     // 木札ONの キャラ を探して エイムでセレクト
-                        sequence2.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Unmask(2));  // 役割当て画面で 「桃メイト」 のアイコンを クリック（自分がおやぶんなので、こおにを選ぶことはしない）
-                        sequence2.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Unmask());  // 役割当て画面クローズ
+                        SearchMomoOniCommon(2);  // ステータスが2（木札ON）＆ 役割が いぬ・さる・きじ・こおにたち  のキャラがいるか探す 「RollFNum：現在エイムされているサイトの役わり」が上書きされる
+                        if (PushedBtnFlg == 1)  // ステータスが2（木札ON）の いぬ、さる、きじ、こおにたち が 少なくとも一人以上いれば  (前提：エイムサイトが自分ではない)
+                        {
+                            Debug.Log("おやぶん・ももたろう以外で木札ONのキャラから ランダムで一人選ぶ(役割当て)");
+                            // RollFNum に いぬ、さる、きじ、こおにたち のいずれかが入っている
+                            var sequence2 = DOTween.Sequence();
+                            ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン
+                            CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                            sequence2.InsertCallback(MessageOkuriTime * 2f, () => YouAreHoge(RollFNum));     // 木札ONの キャラ を探して エイムでセレクト
+                            sequence2.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(2));  // 役割当て画面で 「桃メイト」 のアイコンを クリック（自分がおやぶんなので、こおにを選ぶことはしない）
+                            sequence2.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());  // 役割当て画面クローズ
+                        }
                     }
+                }
+
+                // 桃メイトはすべてオープン後だが、ももたろうは札無し（ステータス1）である
+                if (PushedBtnFlg == 0)  // 処理を実施したかどうか
+                {
+                    Debug.Log("【CPU】kooni-12.5");
+                    AtezuppoMomotaro_Ate();  // ももたろう と思われるキャラを 当てずっぽうで 1人選ぶ(役割当て) （前提：ももたろう 木札無し：ステータス1）もう何もヒント無し
                 }
             }
             else if (preventTurnNum >= 3) // こおに 3ターン目
@@ -4357,7 +4415,7 @@ public class SiteManager : MonoBehaviour
                             PushedBtnFlg = 1;  // 処理を実施したかどうか (便宜上、一旦ここでONにする)
                             ButtonCscr.BranchOpenQuestion();  // M-1：この場合は「しつもん」ボタン  // 行動ボタン押せるかのチェック ＆ BrownBoxを開く
                             CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                            sequence.InsertCallback(MessageOkuriTime*2f, () => WhatIsYourFavorite_Question());  // 【しつもんモード】エイムセレクト画面で ランダム で選択する（条件：選択したのが自分自身ではない） （3ターン目で、行動済みのキャラに対してエイムしない）
+                            sequence.InsertCallback(MessageOkuriTime * 2f, () => WhatIsYourFavorite_Question());  // 【しつもんモード】エイムセレクト画面で ランダム で選択する（条件：選択したのが自分自身ではない） （3ターン目で、行動済みのキャラに対してエイムしない）
                         }
                     }
                 }
@@ -4366,18 +4424,29 @@ public class SiteManager : MonoBehaviour
                 if (PushedBtnFlg == 0)  // 処理を実施したかどうか
                 {
                     Debug.Log("【CPU】kooni-23");
-                    SearchMomoOniCommon(2);  // ステータスが2（木札ON）＆ 役割が いぬ・さる・きじ・こおにたち  のキャラがいるか探す 「RollFNum：現在エイムされているサイトの役わり」が上書きされる
-                    if (PushedBtnFlg == 1)  // ステータスが2（木札ON）の いぬ、さる、きじ、こおにたち が 少なくとも一人以上いれば  (前提：エイムサイトが自分ではない)
+                    Sum_InokoriMate();   // 居残りメイトの合計を求める
+                    if (InokoriMate >= 1)   // 居残り組に桃メイトが1人以上いる
                     {
-                        Debug.Log("おやぶん・ももたろう以外で木札ONのキャラから ランダムで一人選ぶ(役割当て)");
-                        // RollFNum に いぬ、さる、きじ、こおにたち のいずれかが入っている
-                        var sequence2 = DOTween.Sequence();
-                        ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン
-                        CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                        sequence2.InsertCallback(MessageOkuriTime*2f, () => YouAreHoge(RollFNum));     // 木札ONの キャラ を探して エイムでセレクト
-                        sequence2.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Unmask(2));  // 役割当て画面で 「桃メイト」 のアイコンを クリック（自分がおやぶんなので、こおにを選ぶことはしない）
-                        sequence2.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Unmask());  // 役割当て画面クローズ
+                        SearchMomoOniCommon(2);  // ステータスが2（木札ON）＆ 役割が いぬ・さる・きじ・こおにたち  のキャラがいるか探す 「RollFNum：現在エイムされているサイトの役わり」が上書きされる
+                        if (PushedBtnFlg == 1)  // ステータスが2（木札ON）の いぬ、さる、きじ、こおにたち が 少なくとも一人以上いれば  (前提：エイムサイトが自分ではない)
+                        {
+                            Debug.Log("おやぶん・ももたろう以外で木札ONのキャラから ランダムで一人選ぶ(役割当て)");
+                            // RollFNum に いぬ、さる、きじ、こおにたち のいずれかが入っている
+                            var sequence2 = DOTween.Sequence();
+                            ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン
+                            CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                            sequence2.InsertCallback(MessageOkuriTime * 2f, () => YouAreHoge(RollFNum));     // 木札ONの キャラ を探して エイムでセレクト
+                            sequence2.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(2));  // 役割当て画面で 「桃メイト」 のアイコンを クリック（自分がおやぶんなので、こおにを選ぶことはしない）
+                            sequence2.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());  // 役割当て画面クローズ
+                        }
                     }
+                }
+
+                // 桃メイトはすべてオープン後だが、ももたろうは札無し（ステータス1）である
+                if (PushedBtnFlg == 0)  // 処理を実施したかどうか
+                {
+                    Debug.Log("【CPU】kooni-23.5");
+                    AtezuppoMomotaro_Ate();  // ももたろう と思われるキャラを 当てずっぽうで 1人選ぶ(役割当て) （前提：ももたろう 木札無し：ステータス1）もう何もヒント無し
                 }
 
                 // 3ターン目：行動条件すべて該当なし → もうこれ以降、ももチームの手番は無いので、ただいまをもって おにチームの勝ち
@@ -4759,20 +4828,6 @@ public class SiteManager : MonoBehaviour
                     Debug.Log("【CPU】MomotaroYakuwariAte-5");
                     PushedBtnFlg = 0;  // 処理を実施したかどうか：初期化
 
-                    // うっかりフラグから桃太郎を役割当てする（まだ桃太郎の手番が残っていれば）
-                    if (PushedBtnFlg == 0)  // 処理を実施したかどうか
-                    {
-                        if ((UkkariSite[1] == 1) || (UkkariSite[2] == 1) || (UkkariSite[3] == 1) || (UkkariSite[4] == 1) || (UkkariSite[5] == 1) || (UkkariSite[6] == 1) || (UkkariSite[7] == 1) || (UkkariSite[8] == 1))
-                        {
-                            SearchMomotaroCommon(1);  // 札無しももたろう（ももじ）のサイト位置をサーチ → 見つかったら、RollFNum を そのサイトの番号に上書き （3ターン目で、行動済みのキャラに対してはエイムしない）
-                            if (PushedBtnFlg == 1)  // ももじ が見つかったら  (前提：エイムサイトが自分ではない)  & うっかりフラグが1のものが存在する
-                            {
-                                Debug.Log("自分(こおに)は木札ON以上で 札無しが ももたろうう と もう一人である（他のキャラは全部 木札ON）");
-                                PushYakuwariBtn_Common(RollFNum);  // M-2：この場合は「役割あて」ボタン： その役割だと確定し、迷いなく処理する
-                            }
-                        }
-                    }
-
                     // 2種類のメイビーパラメータから桃太郎を役割当てする（まだ桃太郎の手番が残っていれば）
                     if (PushedBtnFlg == 0)  // 処理を実施したかどうか
                     {
@@ -5122,6 +5177,149 @@ public class SiteManager : MonoBehaviour
         }
     }
 
+    public void AtezuppoMomotaro_Ate()  // ももたろう と思われるキャラを 当てずっぽうで 1人選ぶ(役割当て) （前提：ももたろう 木札無し：ステータス1）もう何もヒント無し
+    {
+        var sequence = DOTween.Sequence();
+        Debug.Log("ももたろうの位置は確定していない（ノーヒント）：ももたろう 木札無し");
+        if (PushedBtnFlg == 0)  // 処理を実施したかどうか
+        {
+            if (NowActiveSiteN != 8)  // 選択したのが自分自身でなければ
+            {
+                if (StatusSiteH == 1)  // 当てずっぽうサイトのステータスが 1 である（木札無し）
+                {
+                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (ノーヒントで当てずっぽう)
+                    CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                    sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteH_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                    sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteH_Aimed());    // 場から該当のサイトを エイムでセレクト
+                    sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(1));  // 役割当て画面で ももたろう のアイコンを クリック
+                    sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                    Maybe_Momotaro[8] = -1;  // メイビーパラメータを更新
+                }
+            }
+        }
+        if (PushedBtnFlg == 0)  // 処理を実施したかどうか
+        {
+            if (NowActiveSiteN != 7)  // 選択したのが自分自身でなければ
+            {
+                if (StatusSiteG == 1)  // 当てずっぽうサイトのステータスが 1 である（木札無し）
+                {
+                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (ノーヒントで当てずっぽう)
+                    CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                    sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteG_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                    sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteG_Aimed());    // 場から該当のサイトを エイムでセレクト
+                    sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(1));  // 役割当て画面で ももたろう のアイコンを クリック
+                    sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                    Maybe_Momotaro[7] = -1;  // メイビーパラメータを更新
+                }
+            }
+        }
+        if (PushedBtnFlg == 0)  // 処理を実施したかどうか
+        {
+            if (NowActiveSiteN != 6)  // 選択したのが自分自身でなければ
+            {
+                if (StatusSiteF == 1)  // 当てずっぽうサイトのステータスが 1 である（木札無し）
+                {
+                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (ノーヒントで当てずっぽう)
+                    CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                    sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteF_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                    sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteF_Aimed());    // 場から該当のサイトを エイムでセレクト
+                    sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(1));  // 役割当て画面で ももたろう のアイコンを クリック
+                    sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                    Maybe_Momotaro[6] = -1;  // メイビーパラメータを更新
+                }
+            }
+        }
+        if (PushedBtnFlg == 0)  // 処理を実施したかどうか
+        {
+            if (NowActiveSiteN != 5)  // 選択したのが自分自身でなければ
+            {
+                if (StatusSiteE == 1)  // 当てずっぽうサイトのステータスが 1 である（木札無し）
+                {
+                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (ノーヒントで当てずっぽう)
+                    CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                    sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteE_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                    sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteE_Aimed());    // 場から該当のサイトを エイムでセレクト
+                    sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(1));  // 役割当て画面で ももたろう のアイコンを クリック
+                    sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                    Maybe_Momotaro[5] = -1;  // メイビーパラメータを更新
+                }
+            }
+        }
+        if (PushedBtnFlg == 0)  // 処理を実施したかどうか
+        {
+            if (NowActiveSiteN != 4)  // 選択したのが自分自身でなければ
+            {
+                if (StatusSiteD == 1)  // 当てずっぽうサイトのステータスが 1 である（木札無し）
+                {
+                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (ノーヒントで当てずっぽう)
+                    CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                    sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteD_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                    sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteD_Aimed());    // 場から該当のサイトを エイムでセレクト
+                    sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(1));  // 役割当て画面で ももたろう のアイコンを クリック
+                    sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                    Maybe_Momotaro[4] = -1;  // メイビーパラメータを更新
+                }
+            }
+        }
+        if (PushedBtnFlg == 0)  // 処理を実施したかどうか
+        {
+            if (NowActiveSiteN != 3)  // 選択したのが自分自身でなければ
+            {
+                if (StatusSiteC == 1)  // 当てずっぽうサイトのステータスが 1 である（木札無し）
+                {
+                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (ノーヒントで当てずっぽう)
+                    CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                    sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteC_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                    sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteC_Aimed());    // 場から該当のサイトを エイムでセレクト
+                    sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(1));  // 役割当て画面で ももたろう のアイコンを クリック
+                    sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                    Maybe_Momotaro[3] = -1;  // メイビーパラメータを更新
+                }
+            }
+        }
+        if (PushedBtnFlg == 0)  // 処理を実施したかどうか
+        {
+            if (NowActiveSiteN != 2)  // 選択したのが自分自身でなければ
+            {
+                if (StatusSiteB == 1)  // 当てずっぽうサイトのステータスが 1 である（木札無し）
+                {
+                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (ノーヒントで当てずっぽう)
+                    CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                    sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteB_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                    sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteB_Aimed());    // 場から該当のサイトを エイムでセレクト
+                    sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(1));  // 役割当て画面で ももたろう のアイコンを クリック
+                    sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                    Maybe_Momotaro[2] = -1;  // メイビーパラメータを更新
+                }
+            }
+        }
+        if (PushedBtnFlg == 0)  // 処理を実施したかどうか
+        {
+            if (NowActiveSiteN != 1)  // 選択したのが自分自身でなければ
+            {
+                if (StatusSiteA == 1)  // 当てずっぽうサイトのステータスが 1 である（木札無し）
+                {
+                    PushedBtnFlg = 1;  // 処理を実施したかどうか
+                    ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (ノーヒントで当てずっぽう)
+                    CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
+                    sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteA_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                    sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteA_Aimed());    // 場から該当のサイトを エイムでセレクト
+                    sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(1));  // 役割当て画面で ももたろう のアイコンを クリック
+                    sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                    Maybe_Momotaro[1] = -1;  // メイビーパラメータを更新
+                }
+            }
+        }
+    }
+
+
     public void MaybeKooni_Ate()  // こおにのうち、少なくとも1人オープン前（ステータス2以下）のキャラが存在するならば
     {
         var sequence = DOTween.Sequence();
@@ -5140,10 +5338,10 @@ public class SiteManager : MonoBehaviour
                         PushedBtnFlg = 1;  // 処理を実施したかどうか
                         ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
                         CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => SiteH_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => CharaMSC.ShowSiteH_Aimed());    // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Unmask(6));  // 役割当て画面で こおに のアイコンを クリック
-                        sequence.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteH_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteH_Aimed());    // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(6));  // 役割当て画面で こおに のアイコンを クリック
+                        sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
                         Maybe_Kooni[8] = -1;  // メイビー当て処理を実施済み のしるし
                     }
                 }
@@ -5157,10 +5355,10 @@ public class SiteManager : MonoBehaviour
                         PushedBtnFlg = 1;  // 処理を実施したかどうか
                         ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
                         CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => SiteG_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => CharaMSC.ShowSiteG_Aimed());    // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Unmask(6));  // 役割当て画面で こおに のアイコンを クリック
-                        sequence.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteG_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteG_Aimed());    // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(6));  // 役割当て画面で こおに のアイコンを クリック
+                        sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
                         Maybe_Kooni[7] = -1;  // メイビー当て処理を実施済み のしるし
                     }
                 }
@@ -5174,10 +5372,10 @@ public class SiteManager : MonoBehaviour
                         PushedBtnFlg = 1;  // 処理を実施したかどうか
                         ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
                         CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => SiteF_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => CharaMSC.ShowSiteF_Aimed());    // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Unmask(6));  // 役割当て画面で こおに のアイコンを クリック
-                        sequence.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteF_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteF_Aimed());    // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(6));  // 役割当て画面で こおに のアイコンを クリック
+                        sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
                         Maybe_Kooni[6] = -1;  // メイビー当て処理を実施済み のしるし
                     }
                 }
@@ -5191,10 +5389,10 @@ public class SiteManager : MonoBehaviour
                         PushedBtnFlg = 1;  // 処理を実施したかどうか
                         ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
                         CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => SiteE_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => CharaMSC.ShowSiteE_Aimed());    // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Unmask(6));  // 役割当て画面で こおに のアイコンを クリック
-                        sequence.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteE_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteE_Aimed());    // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(6));  // 役割当て画面で こおに のアイコンを クリック
+                        sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
                         Maybe_Kooni[5] = -1;  // メイビー当て処理を実施済み のしるし
                     }
                 }
@@ -5208,10 +5406,10 @@ public class SiteManager : MonoBehaviour
                         PushedBtnFlg = 1;  // 処理を実施したかどうか
                         ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
                         CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => SiteD_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => CharaMSC.ShowSiteD_Aimed());    // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Unmask(6));  // 役割当て画面で こおに のアイコンを クリック
-                        sequence.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteD_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteD_Aimed());    // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(6));  // 役割当て画面で こおに のアイコンを クリック
+                        sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
                         Maybe_Kooni[4] = -1;  // メイビー当て処理を実施済み のしるし
                     }
                 }
@@ -5225,10 +5423,10 @@ public class SiteManager : MonoBehaviour
                         PushedBtnFlg = 1;  // 処理を実施したかどうか
                         ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
                         CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => SiteC_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => CharaMSC.ShowSiteC_Aimed());    // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Unmask(6));  // 役割当て画面で こおに のアイコンを クリック
-                        sequence.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteC_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteC_Aimed());    // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(6));  // 役割当て画面で こおに のアイコンを クリック
+                        sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
                         Maybe_Kooni[3] = -1;  // メイビー当て処理を実施済み のしるし
                     }
                 }
@@ -5242,10 +5440,10 @@ public class SiteManager : MonoBehaviour
                         PushedBtnFlg = 1;  // 処理を実施したかどうか
                         ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
                         CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => SiteB_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => CharaMSC.ShowSiteB_Aimed());    // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Unmask(6));  // 役割当て画面で こおに のアイコンを クリック
-                        sequence.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteB_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteB_Aimed());    // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(6));  // 役割当て画面で こおに のアイコンを クリック
+                        sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
                         Maybe_Kooni[2] = -1;  // メイビー当て処理を実施済み のしるし
                     }
                 }
@@ -5259,10 +5457,10 @@ public class SiteManager : MonoBehaviour
                         PushedBtnFlg = 1;  // 処理を実施したかどうか
                         ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
                         CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => SiteA_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => CharaMSC.ShowSiteA_Aimed());    // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Unmask(6));  // 役割当て画面で こおに のアイコンを クリック
-                        sequence.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteA_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteA_Aimed());    // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(6));  // 役割当て画面で こおに のアイコンを クリック
+                        sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
                         Maybe_Kooni[1] = -1;  // メイビー当て処理を実施済み のしるし
                     }
                 }
@@ -5460,10 +5658,10 @@ public class SiteManager : MonoBehaviour
                         PushedBtnFlg = 1;  // 処理を実施したかどうか
                         ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
                         CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => SiteH_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => CharaMSC.ShowSiteH_Aimed());    // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Unmask(2));  // 役割当て画面で 桃メイト のアイコンを クリック
-                        sequence.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteH_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteH_Aimed());    // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(2));  // 役割当て画面で 桃メイト のアイコンを クリック
+                        sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
                         Maybe_MomoMate[8] = -1;  // メイビー当て処理を実施済み のしるし
                     }
                 }
@@ -5477,10 +5675,10 @@ public class SiteManager : MonoBehaviour
                         PushedBtnFlg = 1;  // 処理を実施したかどうか
                         ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
                         CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => SiteG_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => CharaMSC.ShowSiteG_Aimed());    // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Unmask(2));  // 役割当て画面で 桃メイト のアイコンを クリック
-                        sequence.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteG_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteG_Aimed());    // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(2));  // 役割当て画面で 桃メイト のアイコンを クリック
+                        sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
                         Maybe_MomoMate[7] = -1;  // メイビー当て処理を実施済み のしるし
                     }
                 }
@@ -5494,10 +5692,10 @@ public class SiteManager : MonoBehaviour
                         PushedBtnFlg = 1;  // 処理を実施したかどうか
                         ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
                         CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => SiteF_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => CharaMSC.ShowSiteF_Aimed());    // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Unmask(2));  // 役割当て画面で 桃メイト のアイコンを クリック
-                        sequence.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteF_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteF_Aimed());    // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(2));  // 役割当て画面で 桃メイト のアイコンを クリック
+                        sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
                         Maybe_MomoMate[6] = -1;  // メイビー当て処理を実施済み のしるし
                     }
                 }
@@ -5511,10 +5709,10 @@ public class SiteManager : MonoBehaviour
                         PushedBtnFlg = 1;  // 処理を実施したかどうか
                         ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
                         CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => SiteE_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => CharaMSC.ShowSiteE_Aimed());    // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Unmask(2));  // 役割当て画面で 桃メイト のアイコンを クリック
-                        sequence.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteE_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteE_Aimed());    // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(2));  // 役割当て画面で 桃メイト のアイコンを クリック
+                        sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
                         Maybe_MomoMate[5] = -1;  // メイビー当て処理を実施済み のしるし
                     }
                 }
@@ -5528,10 +5726,10 @@ public class SiteManager : MonoBehaviour
                         PushedBtnFlg = 1;  // 処理を実施したかどうか
                         ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
                         CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => SiteD_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => CharaMSC.ShowSiteD_Aimed());    // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Unmask(2));  // 役割当て画面で 桃メイト のアイコンを クリック
-                        sequence.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteD_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteD_Aimed());    // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(2));  // 役割当て画面で 桃メイト のアイコンを クリック
+                        sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
                         Maybe_MomoMate[4] = -1;  // メイビー当て処理を実施済み のしるし
                     }
                 }
@@ -5545,10 +5743,10 @@ public class SiteManager : MonoBehaviour
                         PushedBtnFlg = 1;  // 処理を実施したかどうか
                         ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
                         CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => SiteC_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => CharaMSC.ShowSiteC_Aimed());    // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Unmask(2));  // 役割当て画面で 桃メイト のアイコンを クリック
-                        sequence.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteC_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteC_Aimed());    // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(2));  // 役割当て画面で 桃メイト のアイコンを クリック
+                        sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
                         Maybe_MomoMate[3] = -1;  // メイビー当て処理を実施済み のしるし
                     }
                 }
@@ -5562,10 +5760,10 @@ public class SiteManager : MonoBehaviour
                         PushedBtnFlg = 1;  // 処理を実施したかどうか
                         ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
                         CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => SiteB_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => CharaMSC.ShowSiteB_Aimed());    // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Unmask(2));  // 役割当て画面で 桃メイト のアイコンを クリック
-                        sequence.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteB_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteB_Aimed());    // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(2));  // 役割当て画面で 桃メイト のアイコンを クリック
+                        sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
                         Maybe_MomoMate[2] = -1;  // メイビー当て処理を実施済み のしるし
                     }
                 }
@@ -5579,10 +5777,10 @@ public class SiteManager : MonoBehaviour
                         PushedBtnFlg = 1;  // 処理を実施したかどうか
                         ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン押下 (確証はない、多分そうで予想する)
                         CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => SiteA_Aimed());                 // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*2f, () => CharaMSC.ShowSiteA_Aimed());    // 場から該当のサイトを エイムでセレクト
-                        sequence.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Unmask(2));  // 役割当て画面で 桃メイト のアイコンを クリック
-                        sequence.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => SiteA_Aimed());                 // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 2f, () => CharaMSC.ShowSiteA_Aimed());    // 場から該当のサイトを エイムでセレクト
+                        sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(2));  // 役割当て画面で 桃メイト のアイコンを クリック
+                        sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());   // 役割当て画面クローズ
                         Maybe_MomoMate[1] = -1;  // メイビー当て処理を実施済み のしるし
                     }
                 }
@@ -5594,8 +5792,8 @@ public class SiteManager : MonoBehaviour
     public void CloseBrownBoxCommon()
     {
         var sequence = DOTween.Sequence();
-        sequence.InsertCallback(MessageOkuriTime*0.2f, () => ButtonCscr.CloseBrownBox());  // OKボタン 押下で BrownBox 閉じる
-        sequence.InsertCallback(MessageOkuriTime*0.2f, () => ButtonCscr.JudgeGoSelectTime());   // セレクト画面に行けるか、エラーかを判定する
+        sequence.InsertCallback(MessageOkuriTime * 0.2f, () => ButtonCscr.CloseBrownBox());  // OKボタン 押下で BrownBox 閉じる
+        sequence.InsertCallback(MessageOkuriTime * 0.2f, () => ButtonCscr.JudgeGoSelectTime());   // セレクト画面に行けるか、エラーかを判定する
     }
 
     public void WhatIsYourFavorite_Question()  // 【しつもんモード】エイムセレクト画面で ランダム で選択する （条件：選択したのが自分自身ではない） （3ターン目で、行動済みのキャラに対してはエイムしない）
@@ -5827,9 +6025,9 @@ public class SiteManager : MonoBehaviour
         var sequence = DOTween.Sequence();
         ButtonCscr.BranchOpenUnmask();  // M-2：この場合は「役割あて」ボタン
         CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-        sequence.InsertCallback(MessageOkuriTime*2f, () => YouAreHoge(rollNum_Um));     // 木札ONの キャラ を探して エイムでセレクト  ・・・その役割だと確定し、迷いなく処理する
-        sequence.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Unmask(rollNum_Um));  // 役割当て画面で 該当キャラ のアイコンを クリック
-        sequence.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Unmask());  // 役割当て画面クローズ
+        sequence.InsertCallback(MessageOkuriTime * 2f, () => YouAreHoge(rollNum_Um));     // 木札ONの キャラ を探して エイムでセレクト  ・・・その役割だと確定し、迷いなく処理する
+        sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Unmask(rollNum_Um));  // 役割当て画面で 該当キャラ のアイコンを クリック
+        sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Unmask());  // 役割当て画面クローズ
     }
 
     public void YouAreHoge(int cnum)  // エイムセレクト画面で 1:ももたろう、2:いぬ、3:さる、4:きじ、5:おやぶん、6:こおに を選択する
@@ -7292,9 +7490,9 @@ public class SiteManager : MonoBehaviour
         var sequence = DOTween.Sequence();
         ButtonCscr.BranchOpenAttack();  // M-3：この場合は「こうげき」ボタン
         CloseBrownBoxCommon();  // OKボタン 押下で BrownBox 閉じる
-        sequence.InsertCallback(MessageOkuriTime*2f, () => YouAreHoge(AiteTeamMate));  // エイムセレクト画面で 相手 を選択する
-        sequence.InsertCallback(MessageOkuriTime*4f, () => YouAreHoge2_Attack());  // OKボタン 押下で 攻撃
-        sequence.InsertCallback(MessageOkuriTime*8f, () => YouAreHoge3_Attack());  // OKボタン 押下で ウインドウ 閉じる
+        sequence.InsertCallback(MessageOkuriTime * 2f, () => YouAreHoge(AiteTeamMate));  // エイムセレクト画面で 相手 を選択する
+        sequence.InsertCallback(MessageOkuriTime * 4f, () => YouAreHoge2_Attack());  // OKボタン 押下で 攻撃
+        sequence.InsertCallback(MessageOkuriTime * 8f, () => YouAreHoge3_Attack());  // OKボタン 押下で ウインドウ 閉じる
     }
 
     public void AppearNext_InfoCPUWillOperate()  //  CPUがこれから操作する旨を画面中央にメッセージ表示（予告）

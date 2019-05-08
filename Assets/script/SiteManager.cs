@@ -2170,12 +2170,11 @@ public class SiteManager : MonoBehaviour
                 CounterFlg = false;  // カウンターフラグを初期化
                 accuracy = UnityEngine.Random.Range(1, 7); // カウンターが成功するかどうかのランダム数値  
                 Debug.Log("カウンターパラメータ ◎accuracy：" + accuracy);   // この値が3以上なら、「かばう」発動する
-                if (1 <= accuracy && accuracy <= 7)   // ★7だと100％カウンター成功
+                if (1 <= accuracy && accuracy <= 2)   // ★7だと100％カウンター成功
                 {
                     CounterFlg = true;  // カウンター条件を満たしている →カウンターフラグをON → 「カウンター」発動！
                 }
             }
-
         }
     }
 
@@ -2483,6 +2482,9 @@ public class SiteManager : MonoBehaviour
         ClosePanelBattleFieldBox();
         selectTimeEnd();
         AddplayerOrderNum();
+        Debug.Log(preventPlayerOrderNum + "■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
+        Debug.Log(preventPlayerOrderNum + "■■■■■■■■■■■■■■■■手番切り替わり■■■■■■■■■■■■■■■■■■");
+        Debug.Log(preventPlayerOrderNum + "■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
         CharaMSC.OpenPanelYourTurn();
         CharaMSC.AppearNowActiveSite();
         CheckYourTurn();

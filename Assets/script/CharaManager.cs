@@ -559,21 +559,26 @@ public class CharaManager : MonoBehaviour {
     public void OverwriteAimedRireki() // 直近5手順のエイムド（ターゲット）サイト履歴を上書き
     {
         Debug.Log("直近5手順のエイムド（ターゲット）サイト履歴を上書き " + CounterSkipRireki);
+        AimedCharaRireki_5.sprite = AimedCharaRireki_4.sprite;
+        AimedCharaRireki_4.sprite = AimedCharaRireki_3.sprite;
+        AimedCharaRireki_3.sprite = AimedCharaRireki_2.sprite;
+        AimedCharaRireki_2.sprite = AimedCharaRireki_1.sprite;
+
         if (CounterSkipRireki)  // カウンター発動時の処理はこちら
         {
             Debug.Log("カウンター発動時の処理はこちら " + CounterSkipRireki);
-            AimedCharaRireki_5.sprite = OriginalAimedCharaRireki.sprite;
+            AimedCharaRireki_1.sprite = OriginalAimedCharaRireki.sprite;
             CounterSkipRireki = false; //フラグをリセット（OFFにする）
         }
         else  // カウンター無し（通常時）の処理
         {
             Debug.Log("カウンター無し（通常時）の処理 " + CounterSkipRireki);
-            AimedCharaRireki_5.sprite = AimedCharaRireki_4.sprite;
+            OverwriteNormalAimedCharaRireki_1(); // カウンター無し時（通常時）のエイムサイト上書き処理
         }
-        AimedCharaRireki_4.sprite = AimedCharaRireki_3.sprite;
-        AimedCharaRireki_3.sprite = AimedCharaRireki_2.sprite;
-        AimedCharaRireki_2.sprite = AimedCharaRireki_1.sprite;
+    }
 
+    public void OverwriteNormalAimedCharaRireki_1() // カウンター無し時（通常時）のエイムサイト上書き処理
+    {
         Debug.Log("◎●SiteMSC.TargetSiteNum: " + SiteMSC.TargetSiteNum);
         switch (SiteMSC.TargetSiteNum)
         {
@@ -610,9 +615,9 @@ public class CharaManager : MonoBehaviour {
     public void SaveOriginalAimedCharaRireki() // カウンター発動する前の、本来のエイムサイトを保存しておく
     {
         Debug.Log("カウンター発動する前の、本来のエイムサイトを保存しておく");
-        Debug.Log("SiteMSC.TargetSiteNum "+ SiteMSC.TargetSiteNum);
+        Debug.Log("SiteMSC.TargetSiteNum " + SiteMSC.TargetSiteNum);
         CounterSkipRireki = true; // フラグをON
-        switch (SiteMSC.rollF[SiteMSC.TargetSiteNum])
+        switch (SiteMSC.TargetSiteNum)
         {
             case 1:
                 OriginalAimedCharaRireki = SiteA_charaF;
@@ -643,6 +648,7 @@ public class CharaManager : MonoBehaviour {
                 break;
         }
     }
+
 
     public void AppearWinTeam(int TeamNum, int x, int y, Image img, Image imgRole, int WinS) // 【ゲーム終了後】勝ったチームのキャラを表示させる
     {

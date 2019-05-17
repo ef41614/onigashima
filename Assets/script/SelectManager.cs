@@ -24,6 +24,9 @@ public class SelectManager : MonoBehaviour
     public GameObject PanelNextToScene;
     public GameObject PanelTitle;
     public GameObject Credit_Box;
+    public GameObject Setumei_Box;
+
+    string url = "http://onigashima.starfree.jp/";
 
     public GameObject Cover_01;
     public GameObject Cover_02;
@@ -153,6 +156,7 @@ public class SelectManager : MonoBehaviour
         RouteGuideMode();
 
         CloseHaguruma_Box();
+        CloseSetumei_Box();
         BGMMSC.Play_Opening_BGM();
         // BGMMSC.Play_Battle_BGM();  // バトルBGM開始
     }
@@ -1103,6 +1107,27 @@ public class SelectManager : MonoBehaviour
     public void CloseCredit_Box()
     {
         Credit_Box.SetActive(false);
+    }
+
+    public void AppearSetumei_Box()
+    {
+        Setumei_Box.SetActive(true);
+    }
+       
+    public void CloseSetumei_Box()
+    {
+        Setumei_Box.SetActive(false);
+    }
+
+    public void GoToWebsite()
+    {
+#if UNITY_EDITOR
+        Application.OpenURL(url);
+#elif UNITY_WEBGL
+		Application.ExternalEval(string.Format("window.open('{0}','_blank')", url));
+#else
+		Application.OpenURL(url);
+#endif
     }
 
     //#################################################################################

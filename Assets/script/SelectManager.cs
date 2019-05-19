@@ -122,7 +122,17 @@ public class SelectManager : MonoBehaviour
         CloseCredit_Box();
         SEMSC = SEManager.GetComponent<SEManager>();
         BGMMSC = BGMManager.GetComponent<BGMManager>();
-//        SiteMSC = SiteManager.GetComponent<SiteManager>();
+        //        SiteMSC = SiteManager.GetComponent<SiteManager>();
+
+        // サイト情報の初期化
+        siteA = 0;
+        siteB = 0;
+        siteC = 0;
+        siteD = 0;
+        siteE = 0;
+        siteF = 0;
+        siteG = 0;
+        siteH = 0;
 
         KesuCover_01();
         KesuCover_02();

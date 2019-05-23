@@ -39,7 +39,7 @@ public class EndBGMManager : MonoBehaviour
         Debug.Log("エンディングBGM開始");
         Debug.Log("audioSource.volume"+ audioSource.volume);
 
-        audioSource.volume = VolumeMSC.ForEnding_BGMvol;  // 現在のBGM音量を audioSource3 に適応させる
+        audioSource.volume = (VolumeMSC.ForEnding_BGMvol)*0.5f;  // 現在のBGM音量を audioSource3 に適応させる
         BGMMSC.StopBGM();
         audioSource.clip = Ending;
         audioSource.loop = true;

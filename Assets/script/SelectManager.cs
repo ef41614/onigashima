@@ -6,6 +6,7 @@ using DG.Tweening;
 using System.Linq;
 using System;
 using UnityEngine.SceneManagement;
+using System.Runtime.InteropServices;
 
 public class SelectManager : MonoBehaviour
 {
@@ -26,7 +27,7 @@ public class SelectManager : MonoBehaviour
     public GameObject Credit_Box;
     public GameObject Setumei_Box;
 
-    string url = "http://onigashima.starfree.jp/";
+ //   string url = "http://onigashima.starfree.jp/";
 
     public GameObject Cover_01;
     public GameObject Cover_02;
@@ -1131,14 +1132,39 @@ public class SelectManager : MonoBehaviour
 
     public void GoToWebsite()
     {
-#if UNITY_EDITOR
-        Application.OpenURL(url);
-#elif UNITY_WEBGL
-		Application.ExternalEval(string.Format("window.open('{0}','_blank')", url));
-#else
-		Application.OpenURL(url);
-#endif
+
+        //        Application.OpenURL(url);
+        OpenURLNewTab("http://onigashima.starfree.jp/");
+        
     }
+
+    public static void OpenURLNewTab(string url)
+    {
+        var uri = new System.Uri(url);
+        if (Application.platform == RuntimePlatform.WebGLPlayer)
+        {
+            openWindow(uri.AbsoluteUri);
+        }
+        else
+        {
+            Application.OpenURL(uri.AbsoluteUri);
+        }
+    }
+    public static void ClipboardWrite(string str)
+    {
+        if (Application.platform == RuntimePlatform.WebGLPlayer)
+        {
+            clipboardWriteText(str);
+        }
+        else
+        {
+            GUIUtility.systemCopyBuffer = str;
+        }
+    }
+    [DllImport("__Internal")]
+    private static extern void openWindow(string url);
+    [DllImport("__Internal")]
+    private static extern void clipboardWriteText(string str);
 
     //#################################################################################
 

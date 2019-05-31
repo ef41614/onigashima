@@ -121,6 +121,7 @@ public class TurnMarkManager : MonoBehaviour {
 
     public int TurnMarkSet(Image turnMark, int x)
     {
+        turnMark.sprite = null;
         switch (SiteMSC.turnM[x])
         {
             case 1:

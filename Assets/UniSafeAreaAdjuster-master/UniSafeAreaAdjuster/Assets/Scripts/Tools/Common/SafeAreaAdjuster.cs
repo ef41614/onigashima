@@ -22,9 +22,9 @@ public class SafeAreaAdjuster : MonoBehaviour {
   }
 
   [SerializeField, Header("スケールを自動調整する")]
-  private bool isAutoScale;
+  private bool isAutoScale = default;
 
-  private Rect safeArea;
+    private Rect safeArea;
   private Vector2Int screenSize;
 
   //*************************************************************************************************
@@ -131,10 +131,10 @@ public class SafeAreaAdjuster : MonoBehaviour {
   [SerializeField, Header("Debug: シミュレートしたい機種"), Tooltip("実行時は無視されます")]
   private SimulateType simulateType;
   [SerializeField, Header("Debug: 縦持ちか"), Tooltip("実行時は無視されます")]
-  private bool isPortrait;
+  private bool isPortrait = default;
 
-  // 端末の解像度. インデックスは SimulateType と一致させる
-  private Vector2Int[] resolutions = new Vector2Int[] {
+    // 端末の解像度. インデックスは SimulateType と一致させる
+    private Vector2Int[] resolutions = new Vector2Int[] {
     Vector2Int.zero,
     new Vector2Int(1125, 2436),
     new Vector2Int(828, 1792),

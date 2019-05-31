@@ -170,6 +170,8 @@ public class SelectManager : MonoBehaviour
         CloseSetumei_Box();
         BGMMSC.Play_Opening_BGM();
         // BGMMSC.Play_Battle_BGM();  // バトルBGM開始
+
+        CharaFace.sprite = null;
     }
 
 
@@ -306,6 +308,7 @@ public class SelectManager : MonoBehaviour
     public void chooseAi()
     {
         charaNum = 1;
+        CharaFace.sprite = null;
         CharaFace.sprite = VTuber_icon1;
 //        image = CharaFace;
         CharaNameText.GetComponent<Text>().text = "アイ";
@@ -314,6 +317,7 @@ public class SelectManager : MonoBehaviour
     public void chooseAkari()
     {
         charaNum = 2;
+        CharaFace.sprite = null;
         CharaFace.sprite = VTuber_icon2;
 //        image = CharaFace;
         CharaNameText.GetComponent<Text>().text = "アカリ";
@@ -322,6 +326,7 @@ public class SelectManager : MonoBehaviour
     public void chooseAoi()
     {
         charaNum = 3;
+        CharaFace.sprite = null;
         CharaFace.sprite = VTuber_icon3;
 //        image = CharaFace;
         CharaNameText.GetComponent<Text>().text = "あおい";
@@ -330,6 +335,7 @@ public class SelectManager : MonoBehaviour
     public void chooseHinata()
     {
         charaNum = 4;
+        CharaFace.sprite = null;
         CharaFace.sprite = VTuber_icon4;
 //        image = CharaFace;
         CharaNameText.GetComponent<Text>().text = "ひなた";
@@ -338,6 +344,7 @@ public class SelectManager : MonoBehaviour
     public void chooseKaede()
     {
         charaNum = 5;
+        CharaFace.sprite = null;
         CharaFace.sprite = VTuber_icon5;
 //        image = CharaFace;
         CharaNameText.GetComponent<Text>().text = "かえで";
@@ -346,6 +353,7 @@ public class SelectManager : MonoBehaviour
     public void chooseLuna()
     {
         charaNum = 6;
+        CharaFace.sprite = null;
         CharaFace.sprite = VTuber_icon6;
 //        image = CharaFace;
         CharaNameText.GetComponent<Text>().text = "ルナ";
@@ -354,6 +362,7 @@ public class SelectManager : MonoBehaviour
     public void chooseMito()
     {
         charaNum = 7;
+        CharaFace.sprite = null;
         CharaFace.sprite = VTuber_icon7;
 //        image = CharaFace;
         CharaNameText.GetComponent<Text>().text = "みと";
@@ -362,6 +371,7 @@ public class SelectManager : MonoBehaviour
     public void chooseNoja()
     {
         charaNum = 8;
+        CharaFace.sprite = null;
         CharaFace.sprite = VTuber_icon8;
 //        image = CharaFace;
         CharaNameText.GetComponent<Text>().text = "ねこます";
@@ -370,6 +380,7 @@ public class SelectManager : MonoBehaviour
     public void chooseNora()
     {
         charaNum = 9;
+        CharaFace.sprite = null;
         CharaFace.sprite = VTuber_icon9;
 //        image = CharaFace;
 //        image = CharaFace;
@@ -379,6 +390,7 @@ public class SelectManager : MonoBehaviour
     public void chooseRin()
     {
         charaNum = 10;
+        CharaFace.sprite = null;
         CharaFace.sprite = VTuber_icon10;
 //        image = CharaFace;
         CharaNameText.GetComponent<Text>().text = "りん";
@@ -387,6 +399,7 @@ public class SelectManager : MonoBehaviour
     public void chooseShiro()
     {
         charaNum = 11;
+        CharaFace.sprite = null;
         CharaFace.sprite = VTuber_icon11;
 //        image = CharaFace;
         CharaNameText.GetComponent<Text>().text = "シロ";
@@ -395,6 +408,7 @@ public class SelectManager : MonoBehaviour
     public void chooseSora()
     {
         charaNum = 12;
+        CharaFace.sprite = null;
         CharaFace.sprite = VTuber_icon12;
 //        image = CharaFace;
         CharaNameText.GetComponent<Text>().text = "そら";

@@ -228,6 +228,7 @@ public class ButtonController : MonoBehaviour {
     public void AppearP_image()
     {
         int rndP = UnityEngine.Random.Range(1, 3);
+        ImageP_CannotSelect.sprite = null;
         switch (rndP)
         {
             case 1: //

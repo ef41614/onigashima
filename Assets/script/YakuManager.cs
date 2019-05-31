@@ -191,6 +191,7 @@ public class YakuManager : MonoBehaviour {
 
     public String RollFaceSet(Image RollFace, int x, string RoleName)
     {
+        RollFace.sprite = null;
         switch (SiteMSC.rollF[x])
         {
             case 1:
@@ -239,6 +240,7 @@ public class YakuManager : MonoBehaviour {
     {
         if (countX <= SiteMSC.human_num)
         {
+            PreventRollFace.sprite = null;
             switch (SiteMSC.rollF[countX])
             {
                 case 1:
@@ -290,6 +292,7 @@ public class YakuManager : MonoBehaviour {
 
     public void CheckPreventRole() // 【ゲーム開始後】巻物に現在手番の役職を表示させる（やくわりチェック）
     {
+        PreventRollFace.sprite = null;
         switch (SiteMSC.NowActiveSiteN)
         {
             case 1:
@@ -334,6 +337,7 @@ public class YakuManager : MonoBehaviour {
 
     public void CheckAimedRole() // 【役わり名予想フェーズ】画面中央に役わり名を当てられた人の役職を表示させる
     {
+        AimedRollFace.sprite = null;
         switch (SiteMSC.rollF[SiteMSC.TargetSiteNum])
         {
             case 1:
@@ -370,6 +374,7 @@ public class YakuManager : MonoBehaviour {
 
     public void OpenCounteredRole() // 【カウンター発動時、反撃フェーズ】画面中央にカウンターを当てられた人の役職を表示させる
     {
+        CounteredRollFace.sprite = null;
         switch (SiteMSC.rollF[SiteMSC.NowActiveSiteN])
         {
             case 1:
@@ -406,6 +411,7 @@ public class YakuManager : MonoBehaviour {
 
     public void CheckAttackedRole() // 【攻撃フェーズ】画面中央に攻撃を狙われている人の役職を表示させる
     {
+        AttackedRollFace.sprite = null;
         switch (SiteMSC.rollF[SiteMSC.TargetSiteNum])
         {
             case 1:

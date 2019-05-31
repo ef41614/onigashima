@@ -156,6 +156,9 @@ public class CharaManager : MonoBehaviour {
 
     void Start()
     {
+
+        AimedCharaFace.sprite = null;
+        PreventCharaFace.sprite = null;
         //countX = SiteMSC.human_num;
         SiteMSC = SiteManager.GetComponent<SiteManager>();
         TurnMarkMSC = TurnMarkManager.GetComponent<TurnMarkManager>();
@@ -181,6 +184,7 @@ public class CharaManager : MonoBehaviour {
 
         CopyCharaFace(); // 役わりカードの上にキャラ顔を小さく表示させる
         ResetWinAppearFlg();  // 勝利者表示フラグのリセット
+
     }
 
 
@@ -196,6 +200,7 @@ public class CharaManager : MonoBehaviour {
 
     public String CharaFaceSet(Image charaFace, int x, string CharaName)
     {
+        charaFace.sprite = null;
         switch (SiteMSC.charaN[x])
         {
             case 1:
@@ -251,17 +256,13 @@ public class CharaManager : MonoBehaviour {
                 break;
         }
         return CharaName;
-//        image = charaFace;
-//        str = CharaName;
-//        Debug.Log("★CharaName: "+ CharaName);
-//        Debug.Log("★SiteA_charaNametext はじめの: " + SiteA_charaNametext);
-        //        PreventCharaFace = image;
     }
 
     public void AppearPreventChara() // 【初回時】巻物に現在手番のキャラを表示させる（やくわりチェック）
     {
         if (countX <= SiteMSC.human_num)
         {
+            PreventCharaFace.sprite = null;
             switch (SiteMSC.charaN[countX])
             {
                 case 1:
@@ -318,16 +319,13 @@ public class CharaManager : MonoBehaviour {
             }
         }
         countX++;
-//        image = PreventCharaFace;
-
- //       PreventCharaFace.sprite = VTuber_icon1;
- //      image = PreventCharaFace;
-
     }
 
     public void AppearNowActiveSite() // 下のスクロール欄と画面中央に現在手番のキャラを表示させる
     {
         Debug.Log("◎●SiteMSC.NowActiveSiteN: " + SiteMSC.NowActiveSiteN);
+        NowActiveCharaFace.sprite = null;
+        NowActiveCharaFace2.sprite = null;
         switch (SiteMSC.NowActiveSiteN)
         {
             case 1:
@@ -382,9 +380,7 @@ public class CharaManager : MonoBehaviour {
                 // 処理３
                 break;
         }
-//        image = NowActiveCharaFace;
         Debug.Log("◎●SiteA_charaNametext: " + SiteA_charaNametext);
-//        Debug.Log("◎●NowActiveCharaNameText: " + NowActiveCharaNameText);
     }
 
     public void OpenPanelYourTurn()
@@ -412,6 +408,7 @@ public class CharaManager : MonoBehaviour {
 
     public void CheckPreventChara() // 【ゲーム開始後】巻物に現在手番のキャラを表示させる（やくわりチェック）
     {
+        PreventCharaFace.sprite = null;
         switch (SiteMSC.NowActiveSiteN)
         {
             case 1:
@@ -455,55 +452,63 @@ public class CharaManager : MonoBehaviour {
     #region  ShowSite_Aimed
     public void ShowSiteA_Aimed()
     {
+        AimedCharaFace.sprite = null;
         AimedCharaFace.sprite = SiteA_charaF.sprite;
         AimedCharaNameText.GetComponent<Text>().text = SiteA_charaNametext;
     }
 
     public void ShowSiteB_Aimed()
     {
+        AimedCharaFace.sprite = null;
         AimedCharaFace.sprite = SiteB_charaF.sprite;
         AimedCharaNameText.GetComponent<Text>().text = SiteB_charaNametext;
     }
 
     public void ShowSiteC_Aimed()
     {
+        AimedCharaFace.sprite = null;
         AimedCharaFace.sprite = SiteC_charaF.sprite;
         AimedCharaNameText.GetComponent<Text>().text = SiteC_charaNametext;
     }
 
     public void ShowSiteD_Aimed()
     {
+        AimedCharaFace.sprite = null;
         AimedCharaFace.sprite = SiteD_charaF.sprite;
         AimedCharaNameText.GetComponent<Text>().text = SiteD_charaNametext;
     }
 
     public void ShowSiteE_Aimed()
     {
+        AimedCharaFace.sprite = null;
         AimedCharaFace.sprite = SiteE_charaF.sprite;
         AimedCharaNameText.GetComponent<Text>().text = SiteE_charaNametext;
     }
 
     public void ShowSiteF_Aimed()
     {
+        AimedCharaFace.sprite = null;
         AimedCharaFace.sprite = SiteF_charaF.sprite;
         AimedCharaNameText.GetComponent<Text>().text = SiteF_charaNametext;
     }
 
     public void ShowSiteG_Aimed()
     {
+        AimedCharaFace.sprite = null;
         AimedCharaFace.sprite = SiteG_charaF.sprite;
         AimedCharaNameText.GetComponent<Text>().text = SiteG_charaNametext;
     }
 
     public void ShowSiteH_Aimed()
     {
+        AimedCharaFace.sprite = null;
         AimedCharaFace.sprite = SiteH_charaF.sprite;
         AimedCharaNameText.GetComponent<Text>().text = SiteH_charaNametext;
     }
 
     #endregion
 
-    public void CopyCharaFace()
+    public void CopyCharaFace() // 役わりカードの上にキャラ顔を小さく表示させる
     {
         SiteA_charaF_Copy.sprite = SiteA_charaF.sprite;
         SiteB_charaF_Copy.sprite = SiteB_charaF.sprite;

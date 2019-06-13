@@ -1146,39 +1146,14 @@ public class SelectManager : MonoBehaviour
 
     public void GoToWebsite()
     {
-
-        //        Application.OpenURL(url);
-        OpenURLNewTab("http://onigashima.starfree.jp/");
-        
+        Application.OpenURL("http://onigashima.starfree.jp/");  // 「おにがしま＊かわらばん」をブラウザで開く
     }
 
-    public static void OpenURLNewTab(string url)
+
+    public void OpenKawaraban()
     {
-        var uri = new System.Uri(url);
-        if (Application.platform == RuntimePlatform.WebGLPlayer)
-        {
-            openWindow(uri.AbsoluteUri);
-        }
-        else
-        {
-            Application.OpenURL(uri.AbsoluteUri);
-        }
+        Application.OpenURL("http://onigashima.starfree.jp/");  // 「おにがしま＊かわらばん」をブラウザで開く
     }
-    public static void ClipboardWrite(string str)
-    {
-        if (Application.platform == RuntimePlatform.WebGLPlayer)
-        {
-            clipboardWriteText(str);
-        }
-        else
-        {
-            GUIUtility.systemCopyBuffer = str;
-        }
-    }
-    [DllImport("__Internal")]
-    private static extern void openWindow(string url);
-    [DllImport("__Internal")]
-    private static extern void clipboardWriteText(string str);
 
     //#################################################################################
 
